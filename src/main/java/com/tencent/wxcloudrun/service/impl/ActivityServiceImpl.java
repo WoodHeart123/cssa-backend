@@ -27,8 +27,22 @@ public class ActivityServiceImpl implements ActivityService {
             activity.setUserJoinedListJSON(JSON.toJSONString(activity.getUserJoined()));
             activityMapper.createActivity(activity);
             return Response.builder().status(100).message("成功").build();
-        }catch(Exception exception){
+        } catch (Exception exception) {
             return Response.builder().status(101).message(exception.getMessage()).build();
         }
     }
+
+    @Override
+    public Response regsiterActivity(Activity activity, String userId) {
+        try {
+            activity.getUserJoined().add(userId);
+            activity.setUserJoinedListJSON(JSON.toJSONString(activity.getUserJoined()));
+            activityMapper.regsiterActivity(activity, userId);
+            return Response.builder().status(100).message("成功").build();
+
+        } catch (Exception exception) {
+            return Response.builder().status(101).message(exception.getMessage()).build();
+        }
+    }
+
 }
