@@ -28,7 +28,7 @@ public class ActivityServiceImpl implements ActivityService {
             activityMapper.createActivity(activity);
             return Response.builder().status(100).message("成功").build();
         }catch(Exception exception){
-            return Response.builder().status(101).message("意料之外的错误").build();
+            return Response.builder().status(101).message(exception.getMessage()).build();
         }
     }
 }

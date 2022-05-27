@@ -4,7 +4,7 @@
 
 
     <insert id="createActivity" parameterType="Activity">
-        INSERT INTO activity (title,startDate,location,price,capacity,imgs,additionalInfo,description,userJoined) values (#{title},#{startDate},#{location},#{price},#{capacity},#{imgs},#{additionalInfoJSON},#{description},#{userJoinedJSON})
+        INSERT INTO activity (title,startDate,location,price,capacity,imgs,additionalInfo,description,userJoined) values (#{title},#{startDate},#{location},#{price},#{capacity},#{imgs},#{additionalInfoJSON},#{description},#{userJoinedListJSON})
     </insert>
 
 </mapper>

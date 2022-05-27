@@ -22,6 +22,7 @@ public class Activity {
     public String title;
     // 图片URL
     public String imgs;
+    public Integer price;
     public String description;
     public String additionalInfoJSON;
     public String userJoinedListJSON;
