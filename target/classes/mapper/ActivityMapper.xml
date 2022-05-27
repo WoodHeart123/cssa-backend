@@ -7,4 +7,8 @@
         INSERT INTO activity (title,startDate,location,price,capacity,imgs,additionalInfo,description,userJoined) values (#{title},#{startDate},#{location},#{price},#{capacity},#{imgs},#{additionalInfoJSON},#{description},#{userJoinedListJSON})
     </insert>
 
+    <select id="findByID" parameterType="int" resultType="com.tencent.wxcloudrun.model.Activity">
+        SELECT * FROM activity WHERE actID = #{id}
+    </select>
+
 </mapper>

@@ -7,4 +7,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ActivityService {
     Response createActivity(Activity activity);
+
+    Response findByID(int id);
 }

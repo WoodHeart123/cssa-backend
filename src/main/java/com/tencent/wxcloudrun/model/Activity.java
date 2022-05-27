@@ -9,7 +9,7 @@ public class Activity {
     // 活动ID
     public Integer actID;
     // 活动开始时间
-    public Long startDate;
+    public String startDate;
     // 活动地点
     public String location;
     // 人数报名上限
