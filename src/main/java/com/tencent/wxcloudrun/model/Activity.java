@@ -16,8 +16,6 @@ public class Activity {
     public int capacity;
     // 活动参加人数
     public int userJoinedNum;
-    // 判断用户是否加入
-    public boolean isJoined;
     // 活动标题
     public String title;
     // 图片URL
@@ -25,8 +23,6 @@ public class Activity {
     public Integer price;
     public String description;
     public String additionalInfoJSON;
-    public String userJoinedListJSON;
-    public ArrayList<String> userJoined;
     public ArrayList<info> additionalInfo;
 
 }
