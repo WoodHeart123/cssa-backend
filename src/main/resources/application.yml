@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 8080
 
 
 spring:
@@ -15,14 +15,9 @@ spring:
 
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml
-
+  config-location:  classpath:mapper/mybatis-config.xml
 
 jwt:
   header: Authorization
   secret: finance
   expiration: 31536000
-
-
-wxMini:
-  appId: wxb228506b8c666a11
-  secret: 833a83388341fcb416895c09f32cec4c
