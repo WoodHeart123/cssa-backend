@@ -23,6 +23,6 @@ public class Activity {
     private Integer price;
     private String description;
     private String additionalInfoJSON;
-    private ArrayList<info> additionalInfo;
+    private ArrayList<Info> additionalInfo;
 
 }

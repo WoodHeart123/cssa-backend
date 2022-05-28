@@ -9,5 +9,10 @@ import java.util.ArrayList;
 @Mapper
 public interface ActivityMapper {
     void createActivity(Activity activity);
+
     ArrayList<SignupInfo> checkSignup(String userID, Long date);
+
+    Activity getActivity(String actID); // will be changed to findActivity(id);
+
+    Integer updateActivity(Activity activity);
 }

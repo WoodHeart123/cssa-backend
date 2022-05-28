@@ -40,4 +40,15 @@ public class ActivityController {
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         return Response.builder().data(openid).message("success").build();
     }
+
+
+    @RequestMapping(value = { "/register" }, method = { RequestMethod.POST })
+    public Response register(@RequestParam("actID") String actID, @RequestParam("notes") String[] notes) { // TODO:
+                                                                                                           // Should we
+                                                                                                           // use
+                                                                                                           // @RequestBody
+                                                                                                           // or
+                                                                                                           // @RequestParam?
+        return activityService.regsiterActivity(actID, notes);
+    }
 }

@@ -11,4 +11,12 @@
         SELECT actID, response FROM signup_activity,activity where userID = #{userID} and signup_activity.actID = activity.actID and activity.startDate &gt; #{date}
     </select>
 
+    <update id="updateActivity" parameterType="Activity">
+        UPDATE activity SET title=#{title},startDate=#{startDate},location=#{location},price=#{price},capacity=#{capacity},imgs=#{imgs},additionalInfo=#{additionalInfoJSON},description=#{description} WHERE id=#{id}
+    </update>
+
+    <select id="getActivity" parameterType="String">
+        SELECT * FROM activity WHERE id=#{id}
+    </select>
+
 </mapper>

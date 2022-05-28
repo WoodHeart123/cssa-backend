@@ -17,4 +17,11 @@ public interface ActivityService {
      * @return
      */
     Response checkSignup(String actID, String userID,Long date);
+
+    /**
+     * sign up for an activity
+     * @return
+     */
+    Response regsiterActivity(String actID, String[] notes);
+
 }
