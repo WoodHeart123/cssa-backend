@@ -1,12 +1,13 @@
 package com.tencent.wxcloudrun.dao;
 
-import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.model.Activity;
+import com.tencent.wxcloudrun.model.SignupInfo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.ArrayList;
 
 @Mapper
 public interface ActivityMapper {
-    Integer createActivity(Activity activity);
-
-    Integer regsiterActivity(Activity activity, String userId);
+    void createActivity(Activity activity);
+    ArrayList<SignupInfo> checkSignup(String userID, Long date);
 }

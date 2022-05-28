@@ -4,7 +4,11 @@
 
 
     <insert id="createActivity" parameterType="Activity">
-        INSERT INTO activity (title,startDate,location,price,capacity,imgs,additionalInfo,description,userJoined) values (#{title},#{startDate},#{location},#{price},#{capacity},#{imgs},#{additionalInfoJSON},#{description},#{userJoinedListJSON})
+        INSERT INTO activity (title,startDate,location,price,capacity,imgs,additionalInfo,description) values (#{title},#{startDate},#{location},#{price},#{capacity},#{imgs},#{additionalInfoJSON},#{description})
     </insert>
+
+    <select id="checkSignup" resultType="User">
+        SELECT actID, response FROM signup_activity,activity where userID = #{userID} and signup_activity.actID = activity.actID and activity.startDate &gt; #{date}
+    </select>
 
 </mapper>

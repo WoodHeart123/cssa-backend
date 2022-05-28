@@ -7,26 +7,22 @@ import java.util.ArrayList;
 @Data
 public class Activity {
     // 活动ID
-    public Integer actID;
+    private Integer actID;
     // 活动开始时间
-    public Long startDate;
+    private Long startDate;
     // 活动地点
-    public String location;
+    private String location;
     // 人数报名上限
-    public int capacity;
+    private int capacity;
     // 活动参加人数
-    public int userJoinedNum;
-    // 判断用户是否加入
-    public boolean isJoined;
+    private int userJoinedNum;
     // 活动标题
-    public String title;
+    private String title;
     // 图片URL
-    public String imgs;
-    public Integer price;
-    public String description;
-    public String additionalInfoJSON;
-    public String userJoinedListJSON;
-    public ArrayList<String> userJoined;
-    public ArrayList<info> additionalInfo;
+    private String imgs;
+    private Integer price;
+    private String description;
+    private String additionalInfoJSON;
+    private ArrayList<info> additionalInfo;
 
 }
