@@ -34,13 +34,8 @@ public class ActivityController {
         return Response.builder().data(openid).message("success").build();
     }
 
-    @PostMapping()
-    public Response findByID(@RequestParam int id /*, @RequestBody String token*/){
-        /*
-        if(!jwtutil.isTokenValid(token)){
-            return Response.builder().status(404).message("用户认证失败").build();
-        }
-         */
-        return activityService.findByID(id);
+    @RequestMapping(value = {"/activityList"}, method = {RequestMethod.GET})
+    public Response findByID(@RequestParam Long current){
+        return activityService.getActivityList(current);
     }
 }

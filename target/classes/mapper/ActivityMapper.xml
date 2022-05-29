@@ -4,11 +4,11 @@
 
 
     <insert id="createActivity" parameterType="Activity">
-        INSERT INTO activity (title,startDate,location,price,capacity,imgs,additionalInfo,description,userJoined) values (#{title},#{startDate},#{location},#{price},#{capacity},#{imgs},#{additionalInfoJSON},#{description},#{userJoinedListJSON})
+        INSERT INTO activity (title,startDate,location,price,capacity,imgs,additionalInfoJSON,description) values (#{title},#{startDate},#{location},#{price},#{capacity},#{imgs},#{additionalInfoJSON},#{description})
     </insert>
 
-    <select id="findByID" parameterType="int" resultType="com.tencent.wxcloudrun.model.Activity">
-        SELECT * FROM activity WHERE actID = #{id}
+    <select id="getActivityList" parameterType="Long" resultType="Activity">
+        SELECT title,startDate,location,price,capacity,imgs,additionalInfoJSON,description,userJoinedNum FROM activity WHERE startDate &gt; #{current}
     </select>
 
 </mapper>

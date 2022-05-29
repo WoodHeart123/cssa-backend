@@ -8,5 +8,5 @@ import org.springframework.stereotype.Service;
 public interface ActivityService {
     Response createActivity(Activity activity);
 
-    Response findByID(int id);
+    Response getActivityList(Long current);
 }
