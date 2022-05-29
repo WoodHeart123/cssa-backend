@@ -38,7 +38,8 @@ public class ActivityServiceImpl implements ActivityService {
         for(int i = 0;i < result.size();i++){
             if(result.get(i).getActID().equals(actID)){
                 result.get(i).setDiscount(1 - (result.size() - 1) * 0.1);
-                return Response.builder().status(100).message("").data(result.get(i)).build();
+                result.get(i).setIfJoined(true);
+                return Response.builder().status(100).data(result.get(i)).build();
             }
         }
         SignupInfo temp = new SignupInfo();
