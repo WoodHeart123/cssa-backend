@@ -2,14 +2,16 @@ package com.tencent.wxcloudrun.model;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class Activity {
     // 活动ID
     private Integer actID;
     // 活动开始时间
-    private Long startDate;
+    private Timestamp startDate;
     // 活动地点
     private String location;
     // 人数报名上限
@@ -23,6 +25,6 @@ public class Activity {
     private Integer price;
     private String description;
     private String additionalInfoJSON;
-    private ArrayList<info> additionalInfo;
+    private List<info> additionalInfo;
 
 }

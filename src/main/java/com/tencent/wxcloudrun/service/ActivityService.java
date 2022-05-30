@@ -17,4 +17,6 @@ public interface ActivityService {
      * @return
      */
     Response checkSignup(String actID, String userID,Long date);
+
+    Response getActivityList(Long current);
 }
