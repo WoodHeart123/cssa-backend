@@ -1,21 +1,19 @@
 package com.tencent.wxcloudrun.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import com.tencent.wxcloudrun.dao.ActivityMapper;
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.Response;
+import com.tencent.wxcloudrun.model.SignupInfo;
 import com.tencent.wxcloudrun.model.info;
 import com.tencent.wxcloudrun.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.List;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 @Service
 public class ActivityServiceImpl implements ActivityService {
@@ -28,7 +26,7 @@ public class ActivityServiceImpl implements ActivityService {
     public Response createActivity(Activity activity) {
         try {
             if (activity.getAdditionalInfo() == null) {
-                activity.setAdditionalInfo(new ArrayList<>());
+                activity.setAdditionalInfo(new List<>());
             }
             activity.setAdditionalInfoJSON(JSON.toJSONString(activity.getAdditionalInfo()));
             activityMapper.createActivity(activity);
