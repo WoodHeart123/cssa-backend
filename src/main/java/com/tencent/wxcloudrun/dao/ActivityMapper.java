@@ -13,4 +13,7 @@ public interface ActivityMapper {
     void createActivity(Activity activity);
     ArrayList<SignupInfo> checkSignup(String userID, Long date);
     List<Activity> getActivityList(Long current);
+    Integer updateActivity(Activity activity);
+    Activity findActivity(Integer actID);
+    void recordResponse(SignupInfo info);
 }

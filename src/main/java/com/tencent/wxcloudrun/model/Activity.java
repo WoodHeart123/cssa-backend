@@ -3,7 +3,6 @@ package com.tencent.wxcloudrun.model;
 import lombok.Data;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -25,6 +24,6 @@ public class Activity {
     private Integer price;
     private String description;
     private String additionalInfoJSON;
-    private List<info> additionalInfo;
+    private List<Info> additionalInfo;
 
 }

@@ -15,4 +15,12 @@
         SELECT title,startDate,location,price,capacity,imgs,additionalInfoJSON,description,userJoinedNum FROM activity WHERE startDate &gt; #{current}
     </select>
 
+    <update id="updateActivity" parameterType="Activity">
+        UPDATE activity SET userJoinedNum=#{userJoinedNum} WHERE actID =#{actID}
+    </update>
+
+    <insert id="recordResponse" parameterType="SignupInfo">
+        INSERT INTO signup_activity (userID,actID,response) values (#{userID},#{actID},#{response})
+    </insert>
+
 </mapper>

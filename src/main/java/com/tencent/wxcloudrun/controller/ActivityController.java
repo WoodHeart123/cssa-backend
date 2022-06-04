@@ -3,12 +3,14 @@ package com.tencent.wxcloudrun.controller;
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.Jwtutil;
 import com.tencent.wxcloudrun.model.Response;
+import com.tencent.wxcloudrun.model.SignupInfo;
 import com.tencent.wxcloudrun.service.ActivityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
@@ -19,9 +21,6 @@ public class ActivityController {
 
     @Autowired
     ActivityService activityService;
-
-    @Autowired
-    Jwtutil jwtutil;
 
     @RequestMapping(value={"/createActivity"}, method={RequestMethod.POST})
     public Response createActivity(@RequestBody Activity activity){
@@ -41,6 +40,17 @@ public class ActivityController {
     public Response Detail(HttpServletRequest request) {
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         return Response.builder().data(openid).message("success").build();
+    }
+
+
+    @RequestMapping(value = { "/register" }, method = { RequestMethod.POST })
+    public Response register(@RequestBody SignupInfo info, HttpServletRequest request) {
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        if(openid.isEmpty()) {
+            return Response.builder().status(102).message("无用户信息").build();
+        }
+        info.setUserID(openid.get());
+        return activityService.regsiterActivity(info);
     }
 
     @RequestMapping(value = {"/activityList"}, method = {RequestMethod.GET})
