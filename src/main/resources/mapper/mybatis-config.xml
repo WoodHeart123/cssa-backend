@@ -5,5 +5,6 @@
 <configuration>
     <typeAliases>
         <typeAlias alias = "Activity" type = "com.tencent.wxcloudrun.model.Activity"/>
+        <typeAlias alias= "SignupInfo" type = "com.tencent.wxcloudrun.model.SignupInfo"/>
     </typeAliases>
 </configuration>

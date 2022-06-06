@@ -7,11 +7,11 @@
         INSERT INTO activity (title,startDate,location,price,capacity,imgs,additionalInfoJSON,description) values (#{title},#{startDate},#{location},#{price},#{capacity},#{imgs},#{additionalInfoJSON},#{description})
     </insert>
 
-    <select id="checkSignup" resultType="User">
+    <select id="checkSignup" resultType="SignupInfo">
         SELECT actID, response FROM signup_activity,activity where userID = #{userID} and signup_activity.actID = activity.actID and activity.startDate &gt; #{date}
     </select>
 
-    <select id="getActivityList" parameterType="Long" resultType="Activity">
+    <select id="getActivityList" parameterType="java.sql.Timestamp" resultType="Activity">
         SELECT title,startDate,location,price,capacity,imgs,additionalInfoJSON,description,userJoinedNum FROM activity WHERE startDate &gt; #{current}
     </select>
 

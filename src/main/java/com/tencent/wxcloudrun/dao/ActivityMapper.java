@@ -5,6 +5,7 @@ import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.SignupInfo;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 public interface ActivityMapper {
     void createActivity(Activity activity);
     ArrayList<SignupInfo> checkSignup(String userID, Long date);
-    List<Activity> getActivityList(Long current);
+    List<Activity> getActivityList(Timestamp current);
     Integer updateActivity(Activity activity);
     Activity findActivity(Integer actID);
     void recordResponse(SignupInfo info);

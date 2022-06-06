@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,6 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     private ActivityMapper activityMapper;
 
-    @Transactional
     @Override
     public Response createActivity(Activity activity) {
         try {
@@ -53,7 +53,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public Response getActivityList(Long current) {
+    public Response getActivityList(Timestamp current) {
         List<Activity> activityList = activityMapper.getActivityList(current);
         for(int i = 0;i < activityList.size();i++){
             activityList.get(i).setAdditionalInfo(JSON.parseArray(activityList.get(i).getAdditionalInfoJSON(), Info.class));

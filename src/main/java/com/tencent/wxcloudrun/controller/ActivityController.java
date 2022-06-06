@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.Optional;
 
 
@@ -55,6 +56,6 @@ public class ActivityController {
 
     @RequestMapping(value = {"/activityList"}, method = {RequestMethod.GET})
     public Response findByID(@RequestParam Long current){
-        return activityService.getActivityList(current);
+        return activityService.getActivityList(new Timestamp(current));
     }
 }

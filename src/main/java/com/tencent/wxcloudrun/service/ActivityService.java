@@ -5,6 +5,8 @@ import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.SignupInfo;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+
 @Service
 public interface ActivityService {
     /**
@@ -19,7 +21,7 @@ public interface ActivityService {
      */
     Response checkSignup(String actID, String userID,Long date);
 
-    Response getActivityList(Long current);
+    Response getActivityList(Timestamp current);
 
     /**
      * sign up for an activity
