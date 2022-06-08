@@ -23,4 +23,8 @@
         INSERT INTO signup_activity (userID,actID,response) values (#{userID},#{actID},#{response})
     </insert>
 
+    <select id="findActivity" parameterType="Integer">
+        SELECT startDate,userJoinedNum FROM activity where actID = #{actID}
+    </select>
+
 </mapper>
