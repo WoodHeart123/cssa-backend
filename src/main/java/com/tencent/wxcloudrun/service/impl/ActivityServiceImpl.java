@@ -38,7 +38,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Response checkSignup(String actID, String userID, Long Date) {
-        ArrayList<SignupInfo> result = activityMapper.checkSignup(actID, Date);
+        ArrayList<SignupInfo> result = activityMapper.checkSignup(userID, Date);
         for (int i = 0; i < result.size(); i++) {
             if (result.get(i).getActID().equals(actID)) {
                 result.get(i).setDiscount(1 - (result.size() - 1) * 0.1);
