@@ -29,7 +29,7 @@ public class ActivityController {
     }
 
     @RequestMapping(value={"/checksignup"},method={RequestMethod.GET})
-    public Response checkSignup(@RequestParam(name="actID") String actID, @RequestParam(name="date") Long date, HttpServletRequest request){
+    public Response checkSignup(@RequestParam(name="actID") Integer actID, @RequestParam(name="date") Long date, HttpServletRequest request){
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();

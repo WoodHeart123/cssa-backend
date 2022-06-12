@@ -19,7 +19,7 @@ public interface ActivityService {
      * check whether user has signed up for the activity
      * @return
      */
-    Response checkSignup(String actID, String userID,Long date);
+    Response checkSignup(Integer actID, String userID,Long date);
 
     Response getActivityList(Timestamp current);
 
