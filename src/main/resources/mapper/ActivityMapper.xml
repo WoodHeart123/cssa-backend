@@ -12,7 +12,7 @@
     </select>
 
     <select id="getActivityList" parameterType="java.sql.Timestamp" resultType="Activity">
-        SELECT title,startDate,location,price,capacity,imgs,additionalInfoJSON,description,userJoinedNum FROM activity WHERE startDate &gt; #{current}
+        SELECT actID,title,startDate,location,price,capacity,imgs,additionalInfoJSON,description,userJoinedNum FROM activity WHERE startDate &gt; #{current}
     </select>
 
     <update id="updateActivity" parameterType="Activity">
