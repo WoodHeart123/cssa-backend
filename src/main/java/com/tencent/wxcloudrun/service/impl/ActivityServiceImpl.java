@@ -48,7 +48,7 @@ public class ActivityServiceImpl implements ActivityService {
         }
         SignupInfo temp = new SignupInfo();
         temp.setIfJoined(false);
-        temp.setDiscount(1.0);
+        temp.setDiscount(1 - result.size() * 0.1);
         return Response.builder().status(100).data(temp).build();
     }
 
