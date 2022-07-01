@@ -12,7 +12,31 @@
     </select>
 
     <select id="getActivityList" parameterType="java.sql.Timestamp" resultType="Activity">
-        SELECT actID,title,startDate,location,price,capacity,imgs,additionalInfoJSON,description,userJoinedNum FROM activity WHERE startDate &gt; #{current}
+        SELECT
+            activity.actID,
+            COUNT(userID) as userJoinedNum,
+            title,
+            startDate,
+            location,
+            price,
+            capacity,
+            imgs,
+            additionalInfoJSON,
+            description
+        FROM
+            signup_activity
+                RIGHT JOIN activity ON activity.actID = signup_activity.actID
+                and activity.startDate >= &gt; #{current}
+        GROUP BY
+            activity.actID,
+            title,
+            startDate,
+            location,
+            price,
+            capacity,
+            imgs,
+            additionalInfoJSON,
+            description
     </select>
 
     <update id="updateActivity" parameterType="Activity">

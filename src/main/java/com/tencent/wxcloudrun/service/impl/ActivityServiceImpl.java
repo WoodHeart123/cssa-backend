@@ -74,8 +74,6 @@ public class ActivityServiceImpl implements ActivityService {
                 return Response.builder().status(101).message("活动人数已满").build();
             }
             info.setResponseJSON(JSON.toJSONString(info.getResponse()));
-            activity.setUserJoinedNum(activity.getUserJoinedNum() + 1);
-            activityMapper.updateActivity(activity);
             activityMapper.recordResponse(info);
             return Response.builder().status(100).message("成功").build();
 
