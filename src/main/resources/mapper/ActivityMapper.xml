@@ -24,7 +24,7 @@
     </insert>
 
     <select id="findActivity" parameterType="Integer" resultType="Activity">
-        SELECT startDate,userJoinedNum FROM activity where actID = #{actID}
+        SELECT startDate,userJoinedNum,capacity FROM activity where actID = #{actID}
     </select>
 
 </mapper>
