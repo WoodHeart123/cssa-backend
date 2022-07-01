@@ -20,7 +20,7 @@
     </update>
 
     <insert id="recordResponse" parameterType="SignupInfo">
-        INSERT INTO signup_activity (userID,actID,response) values (#{userID},#{actID},#{response})
+        INSERT INTO signup_activity (userID,actID,response) values (#{userID},#{actID},#{responseJSON})
     </insert>
 
     <select id="findActivity" parameterType="Integer" resultType="Activity">

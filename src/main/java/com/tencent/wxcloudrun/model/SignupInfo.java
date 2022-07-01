@@ -9,7 +9,8 @@ public class SignupInfo {
     private String userID;
     private Integer actID;
     private Double discount;
-    private String response;
+    private ArrayList<String> response;
+    private String responseJSON;
     private Boolean ifJoined;
 
 }
