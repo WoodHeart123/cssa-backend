@@ -81,4 +81,10 @@ public class ActivityServiceImpl implements ActivityService {
             return Response.builder().status(101).message(exception.getMessage()).build();
         }
     }
+
+    @Override
+    public Response getRegisterList(String userID){
+        List<Activity> activityList = activityMapper.getRegisterList(userID);
+        return Response.builder().status(100).data(activityList).message("成功").build();
+    }
 }

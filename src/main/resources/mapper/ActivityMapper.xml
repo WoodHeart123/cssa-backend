@@ -39,12 +39,24 @@
             description
     </select>
 
+    <select id="getRegisterList" parameterType="String" resultType="Activity">
+        SELECT
+            activity.actID,
+            title,
+            startDate,
+            location,
+        FROM
+            signup_activity
+                RIGHT JOIN activity ON activity.actID = signup_activity.actID
+        WHERE signup_activity.userId = #{userID}
+    </select>
+
     <update id="updateActivity" parameterType="Activity">
         UPDATE activity SET userJoinedNum=#{userJoinedNum} WHERE actID =#{actID}
     </update>
 
     <insert id="recordResponse" parameterType="SignupInfo">
-        INSERT INTO signup_activity (userID,actID,response) values (#{userID},#{actID},#{responseJSON})
+        INSERT INTO signup_activity (userID,actID,response,payment) values (#{userID},#{actID},#{responseJSON},#{payment})
     </insert>
 
     <select id="findActivity" parameterType="Integer" resultType="Activity">

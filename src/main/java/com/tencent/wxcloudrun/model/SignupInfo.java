@@ -12,5 +12,5 @@ public class SignupInfo {
     private ArrayList<String> response;
     private String responseJSON;
     private Boolean ifJoined;
-
+    private Integer payment;
 }

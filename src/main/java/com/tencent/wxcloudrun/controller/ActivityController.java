@@ -58,4 +58,13 @@ public class ActivityController {
     public Response findByID(@RequestParam Long current){
         return activityService.getActivityList(new Timestamp(current));
     }
+
+    @RequestMapping(value = {"/registerList"}, method = {RequestMethod.GET})
+    public Response getRegisterList(HttpServletRequest request){
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        if(openid.isEmpty()) {
+            return Response.builder().status(102).message("无用户信息").build();
+        }
+        return activityService.getRegisterList(openid.get());
+    }
 }

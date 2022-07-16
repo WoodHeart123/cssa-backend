@@ -29,4 +29,5 @@ public interface ActivityService {
      */
     Response regsiterActivity(SignupInfo info);
 
+    Response getRegisterList(String userID);
 }
