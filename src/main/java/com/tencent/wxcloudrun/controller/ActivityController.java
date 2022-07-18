@@ -51,12 +51,16 @@ public class ActivityController {
             return Response.builder().status(102).message("无用户信息").build();
         }
         info.setUserID(openid.get());
-        return activityService.regsiterActivity(info);
+        return activityService.registerActivity(info);
     }
 
     @RequestMapping(value = {"/activityList"}, method = {RequestMethod.GET})
-    public Response findByID(@RequestParam Long current){
-        return activityService.getActivityList(new Timestamp(current));
+    public Response findByID(@RequestParam Long current,HttpServletRequest request){
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        if(openid.isEmpty()) {
+            return Response.builder().status(102).message("无用户信息").build();
+        }
+        return activityService.getActivityList(new Timestamp(current),openid.get());
     }
 
     @RequestMapping(value = {"/registerList"}, method = {RequestMethod.GET})

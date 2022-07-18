@@ -21,13 +21,13 @@ public interface ActivityService {
      */
     Response checkSignup(Integer actID, String userID,Long date);
 
-    Response getActivityList(Timestamp current);
+    Response getActivityList(Timestamp current, String userID);
 
     /**
      * sign up for an activity
      * @return
      */
-    Response regsiterActivity(SignupInfo info);
+    Response registerActivity(SignupInfo info);
 
     Response getRegisterList(String userID);
 }

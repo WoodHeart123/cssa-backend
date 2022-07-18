@@ -37,6 +37,7 @@
             imgs,
             additionalInfoJSON,
             description
+        ORDER BY activity.actID ASC
     </select>
 
     <select id="getRegisterList" parameterType="String" resultType="Activity">
@@ -49,6 +50,7 @@
             signup_activity
                 RIGHT JOIN activity ON activity.actID = signup_activity.actID
         WHERE signup_activity.userId = #{userID}
+        ORDER BY activity.actID ASC
     </select>
 
     <update id="updateActivity" parameterType="Activity">

@@ -53,16 +53,28 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public Response getActivityList(Timestamp current) {
+    public Response getActivityList(Timestamp current, String userID) {
         List<Activity> activityList = activityMapper.getActivityList(current);
-        for(int i = 0;i < activityList.size();i++){
+        List<Activity> joinList = activityMapper.getRegisterList(userID);
+        int i = 0,j = 0;
+        while(i < activityList.size() && j < joinList.size()){
+            if(activityList.get(i).getActID().equals(joinList.get(j).getActID())){
+                activityList.remove(i);
+                j++;
+            }else if(activityList.get(i).getActID().compareTo(joinList.get(j).getActID()) > 0){
+                j++;
+            }else{
+                i++;
+            }
+        }
+        for(i = 0;i < activityList.size();i++){
             activityList.get(i).setAdditionalInfo(JSON.parseArray(activityList.get(i).getAdditionalInfoJSON(), Info.class));
         }
         return Response.builder().status(100).message("成功").data(activityList).build();
     }
 
     @Override
-    public Response regsiterActivity(SignupInfo info) {
+    public Response registerActivity(SignupInfo info) {
         try {
             Activity activity = activityMapper.findActivity(info.getActID());
 
