@@ -29,5 +29,11 @@ public interface ActivityService {
      */
     Response registerActivity(SignupInfo info);
 
+    /**
+     * @param userID open id
+     * @return a list of activity user registered
+     */
     Response getRegisterList(String userID);
+
+    Response login(String nickname, String userID);
 }

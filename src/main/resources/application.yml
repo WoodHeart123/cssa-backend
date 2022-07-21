@@ -1,4 +1,5 @@
 server:
+#  port: 9090
   port: 80
 
 
@@ -16,6 +17,17 @@ spring:
     view:
       suffix: .html
       prefix: /
+
+#  mail:
+#    host:
+#    port:
+#    username:
+#    password:
+#    protocol: smtp
+#    default-encoding: UTF-8
+
+
+
 
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml

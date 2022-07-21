@@ -2,14 +2,12 @@ package com.tencent.wxcloudrun.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.dao.ActivityMapper;
-import com.tencent.wxcloudrun.model.Activity;
-import com.tencent.wxcloudrun.model.Response;
-import com.tencent.wxcloudrun.model.SignupInfo;
-import com.tencent.wxcloudrun.model.Info;
+import com.tencent.wxcloudrun.event.SignupEvent;
+import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.ApplicationContext;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -21,6 +19,9 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Autowired
     private ActivityMapper activityMapper;
+
+    @Autowired
+    ApplicationContext applicationContext;
 
     @Override
     public Response createActivity(Activity activity) {
@@ -87,6 +88,7 @@ public class ActivityServiceImpl implements ActivityService {
             }
             info.setResponseJSON(JSON.toJSONString(info.getResponse()));
             activityMapper.recordResponse(info);
+            applicationContext.publishEvent(new SignupEvent(this,info));
             return Response.builder().status(100).message("成功").build();
 
         } catch (Exception exception) {
@@ -98,5 +100,15 @@ public class ActivityServiceImpl implements ActivityService {
     public Response getRegisterList(String userID){
         List<Activity> activityList = activityMapper.getRegisterList(userID);
         return Response.builder().status(100).data(activityList).message("成功").build();
+    }
+
+    @Override
+    public Response login(String nickname, String userID){
+        User user = activityMapper.login(userID);
+        if(user == null){
+            activityMapper.register(nickname, userID);
+            return Response.builder().status(102).message("新用户").build();
+        }
+        return Response.builder().status(100).data(user).build();
     }
 }

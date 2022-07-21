@@ -45,7 +45,7 @@
             activity.actID,
             title,
             startDate,
-            location,
+            location
         FROM
             signup_activity
                 RIGHT JOIN activity ON activity.actID = signup_activity.actID
@@ -64,5 +64,13 @@
     <select id="findActivity" parameterType="Integer" resultType="Activity">
         SELECT startDate,userJoinedNum,capacity FROM activity where actID = #{actID}
     </select>
+
+    <select id="login" parameterType="String" resultType="User">
+        SELECT email,nickname FROM user WHERE userID = #{userID}
+    </select>
+
+    <insert id="register" parameterType="String">
+        INSERT INTO user (userID,nickname) VALUES (#{userID},#{nickname})
+    </insert>
 
 </mapper>
