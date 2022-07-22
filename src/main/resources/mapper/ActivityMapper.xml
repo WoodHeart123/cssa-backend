@@ -8,7 +8,7 @@
     </insert>
 
     <select id="checkSignup" resultType="SignupInfo">
-        SELECT signup_activity.actID, response FROM signup_activity,activity where userID = #{userID} and signup_activity.actID = activity.actID and activity.startDate &gt; #{date}
+        SELECT signup_activity.actID, response, payment FROM signup_activity,activity where userID = #{userID} and signup_activity.actID = activity.actID and activity.startDate &gt; #{date}
     </select>
 
     <select id="getActivityList" parameterType="java.sql.Timestamp" resultType="Activity">
