@@ -73,4 +73,12 @@
         INSERT INTO user (userID,nickname) VALUES (#{userID},#{nickname})
     </insert>
 
+    <update id="updateEmail" parameterType="String">
+        UPDATE user SET email = #{email} WHERE userID = #{userID}
+    </update>
+
+    <update id="updateNickname" parameterType="String">
+        UPDATE  user SET nickname = #{nickname} WHERE userID = #{userID}
+    </update>
+
 </mapper>

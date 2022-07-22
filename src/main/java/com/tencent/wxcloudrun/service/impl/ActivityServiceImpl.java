@@ -12,6 +12,8 @@ import org.springframework.context.ApplicationContext;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Service
@@ -107,8 +109,31 @@ public class ActivityServiceImpl implements ActivityService {
         User user = activityMapper.login(userID);
         if(user == null){
             activityMapper.register(nickname, userID);
-            return Response.builder().status(102).message("新用户").build();
+            user = new User();
+            user.setNickname(nickname);
+            return Response.builder().status(103).message("新用户").data(nickname).build();
         }
         return Response.builder().status(100).data(user).build();
+    }
+
+    @Override
+    public Response updateEmail(String email,String userID){
+        String regex = "^\t^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        if (!matcher.matches()) {
+           return Response.builder().status(104).message("邮箱格式不正确").build();
+        }
+        activityMapper.updateEmail(email,userID);
+        return Response.builder().status(100).build();
+    }
+
+    @Override
+    public Response updateNickname(String nickname, String userID){
+        if(nickname.length() >= 32){
+            return Response.builder().status(105).message("用户名过长").build();
+        }
+        activityMapper.updateNickname(nickname, userID);
+        return Response.builder().status(100).build();
     }
 }

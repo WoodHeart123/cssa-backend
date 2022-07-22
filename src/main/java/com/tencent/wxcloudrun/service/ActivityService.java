@@ -36,4 +36,8 @@ public interface ActivityService {
     Response getRegisterList(String userID);
 
     Response login(String nickname, String userID);
+
+    Response updateEmail(String email, String userID);
+
+    Response updateNickname(String nickname, String userID);
 }

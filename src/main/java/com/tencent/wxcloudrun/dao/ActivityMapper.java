@@ -1,10 +1,8 @@
 package com.tencent.wxcloudrun.dao;
 
 import com.tencent.wxcloudrun.model.Activity;
-import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.SignupInfo;
 import com.tencent.wxcloudrun.model.User;
-import com.tencent.wxcloudrun.service.impl.ActivityServiceImpl;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.sql.Timestamp;
@@ -29,5 +27,9 @@ public interface ActivityMapper {
 
     User login(String userID);
 
-    Integer register(String nickname, String userID);
+    void register(String nickname, String userID);
+
+    void updateEmail(String email, String userID);
+
+    void updateNickname(String nickname, String userID);
 }

@@ -28,11 +28,24 @@ public class ActivityController {
         return activityService.login(nickname,openid.get());
     }
 
-    @RequestMapping(value={"/updateprofile"}, method={RequestMethod.GET})
-    public Response updateProfile(HttpServletRequest request){
-        //TODO
+    @RequestMapping(value={"/updateEmail"}, method={RequestMethod.GET})
+    public Response updateEmail(String email, HttpServletRequest request){
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        if(openid.isEmpty()){
+            return Response.builder().status(102).message("无用户信息").build();
+        }
         return null;
     }
+
+    @RequestMapping(value={"/updateNickname"}, method={RequestMethod.GET})
+    public Response updateNickname(String nickname, HttpServletRequest request){
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        if(openid.isEmpty()){
+            return Response.builder().status(102).message("无用户信息").build();
+        }
+        return null;
+    }
+
     @RequestMapping(value={"/createActivity"}, method={RequestMethod.POST})
     public Response createActivity(@RequestBody Activity activity){
         return activityService.createActivity(activity);
