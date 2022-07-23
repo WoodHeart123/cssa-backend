@@ -66,7 +66,7 @@
     </select>
 
     <select id="login" parameterType="String" resultType="User">
-        SELECT email,nickname FROM user WHERE userID = #{userID}
+        SELECT email FROM user WHERE userID = #{userID}
     </select>
 
     <insert id="register" parameterType="String">
