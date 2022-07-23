@@ -105,13 +105,11 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public Response login(String nickname, String userID){
+    public Response login(String userID){
         User user = activityMapper.login(userID);
         if(user == null){
-            activityMapper.register(nickname, userID);
-            user = new User();
-            user.setNickname(nickname);
-            return Response.builder().status(103).message("新用户").data(nickname).build();
+            activityMapper.register(userID);
+            return Response.builder().status(103).message("新用户").build();
         }
         return Response.builder().status(100).data(user).build();
     }
@@ -128,12 +126,4 @@ public class ActivityServiceImpl implements ActivityService {
         return Response.builder().status(100).build();
     }
 
-    @Override
-    public Response updateNickname(String nickname, String userID){
-        if(nickname.length() >= 32){
-            return Response.builder().status(105).message("用户名过长").build();
-        }
-        activityMapper.updateNickname(nickname, userID);
-        return Response.builder().status(100).build();
-    }
 }
