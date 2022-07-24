@@ -116,7 +116,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Response updateEmail(String email,String userID){
-        String regex = "^\t^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
+        String regex = "^([-a-zA-Z0-9_.]+)@([-a-zA-Z0-9_.]+).([a-zA-Z]{2,5})$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         if (!matcher.matches()) {

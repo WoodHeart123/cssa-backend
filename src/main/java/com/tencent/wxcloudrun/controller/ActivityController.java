@@ -34,7 +34,7 @@ public class ActivityController {
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();
         }
-        return null;
+        return activityService.updateEmail(email,openid.get());
     }
 
     @RequestMapping(value={"/createActivity"}, method={RequestMethod.POST})
