@@ -7,6 +7,7 @@ import com.tencent.wxcloudrun.model.User;
 import com.tencent.wxcloudrun.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,6 +20,7 @@ public class UserEventListener {
     EmailService emailService;
 
     @EventListener
+    @Async
     public void Register(SignupEvent signupEvent){
         SignupInfo signupInfo = signupEvent.getSignupInfo();
         User user = activityMapper.login(signupInfo.getUserID());
