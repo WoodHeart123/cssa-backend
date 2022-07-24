@@ -46,7 +46,7 @@
             title,
             startDate,
             location,
-            activity.payment as price
+            payment as price
         FROM
             signup_activity
                 RIGHT JOIN activity ON activity.actID = signup_activity.actID
