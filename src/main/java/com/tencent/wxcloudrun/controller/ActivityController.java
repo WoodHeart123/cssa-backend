@@ -1,9 +1,11 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.model.Activity;
+import com.tencent.wxcloudrun.model.EmailDetail;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.SignupInfo;
 import com.tencent.wxcloudrun.service.ActivityService;
+import com.tencent.wxcloudrun.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,9 @@ public class ActivityController {
 
     @Autowired
     ActivityService activityService;
+
+    @Autowired
+    EmailService emailService;
 
     @RequestMapping(value={"/login"}, method={RequestMethod.GET})
     public Response login(HttpServletRequest request){
