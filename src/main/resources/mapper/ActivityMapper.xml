@@ -46,7 +46,11 @@
             title,
             startDate,
             location,
-            payment as price
+            payment as price,
+            capacity,
+            imgs,
+            additionalInfoJSON,
+            description
         FROM
             signup_activity
                 RIGHT JOIN activity ON activity.actID = signup_activity.actID
