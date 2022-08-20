@@ -26,20 +26,6 @@ public class ActivityServiceImpl implements ActivityService {
     ApplicationContext applicationContext;
 
     @Override
-    public Response createActivity(Activity activity) {
-        try {
-            if (activity.getAdditionalInfo() == null) {
-                activity.setAdditionalInfo(new ArrayList<>());
-            }
-            activity.setAdditionalInfoJSON(JSON.toJSONString(activity.getAdditionalInfo()));
-            activityMapper.createActivity(activity);
-            return Response.builder().status(100).message("成功").build();
-        }catch(Exception exception){
-            return Response.builder().status(101).message(exception.getMessage()).build();
-        }
-    }
-
-    @Override
     public Response checkSignup(Integer actID, String userID, Long Date) {
         ArrayList<SignupInfo> result = activityMapper.checkSignup(userID, Date);
         for (int i = 0; i < result.size(); i++) {

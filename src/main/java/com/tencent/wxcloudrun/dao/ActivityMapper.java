@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 @Mapper
 public interface ActivityMapper {
-    void createActivity(Activity activity);
 
     ArrayList<SignupInfo> checkSignup(String userID, Long date);
 

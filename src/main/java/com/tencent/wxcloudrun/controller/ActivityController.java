@@ -42,10 +42,6 @@ public class ActivityController {
         return activityService.updateEmail(email,openid.get());
     }
 
-    @RequestMapping(value={"/createActivity"}, method={RequestMethod.POST})
-    public Response createActivity(@RequestBody Activity activity){
-        return activityService.createActivity(activity);
-    }
 
     @RequestMapping(value={"/checksignup"},method={RequestMethod.GET})
     public Response checkSignup(@RequestParam(name="actID") Integer actID, @RequestParam(name="date") Long date, HttpServletRequest request){

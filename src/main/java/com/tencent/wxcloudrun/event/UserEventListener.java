@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.event;
 
 import com.tencent.wxcloudrun.dao.ActivityMapper;
+import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.EmailDetail;
 import com.tencent.wxcloudrun.model.SignupInfo;
 import com.tencent.wxcloudrun.model.User;

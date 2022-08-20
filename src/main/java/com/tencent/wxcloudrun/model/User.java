@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.model;
 
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 @Data
