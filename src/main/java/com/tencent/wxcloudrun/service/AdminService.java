@@ -20,4 +20,5 @@ public interface AdminService {
     Response getActivitySignup(String actID);
 
     Response login(Admin admin);
+
 }

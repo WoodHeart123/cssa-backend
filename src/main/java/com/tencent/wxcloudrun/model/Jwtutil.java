@@ -96,7 +96,7 @@ public class Jwtutil {
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(generateExpirationDate())
-                .signWith(SignatureAlgorithm.HS512, this.secret)
+                .signWith(SignatureAlgorithm.HS512,this.secret)
                 .compact();
     }
 

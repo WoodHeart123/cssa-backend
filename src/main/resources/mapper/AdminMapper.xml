@@ -36,7 +36,7 @@
         INSERT INTO activity (title,startDate,location,price,capacity,imgs,additionalInfoJSON,description) values (#{title},#{startDate},#{location},#{price},#{capacity},#{imgs},#{additionalInfoJSON},#{description})
     </insert>
 
-    <select id="login" parameterType="Admin">
-        SELECT COUNT(username) FROM admin WHERE username = ${username} AND password = ${password}
+    <select id="login" parameterType="Admin" resultType="Integer">
+        SELECT COUNT(username) FROM admin WHERE username = #{username} AND password = #{password}
     </select>
 </mapper>

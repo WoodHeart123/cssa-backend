@@ -15,4 +15,8 @@ public interface AdminMapper {
     List<Activity> getActivityList();
 
     Integer login(Admin admin);
+
+    Integer checkUsername(String username);
+
+    Void register(Admin admin);
 }
