@@ -21,4 +21,6 @@ public interface AdminService {
 
     Response login(Admin admin);
 
+
+    Response deleteActivity(String actID);
 }

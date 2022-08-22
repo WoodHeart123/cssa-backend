@@ -11,6 +11,10 @@ public class Activity {
     private Integer actID;
     // 活动开始时间
     private Timestamp startDate;
+
+    // 报名截止时间
+    private Timestamp endDate;
+
     // 活动地点
     private String location;
     // 人数报名上限

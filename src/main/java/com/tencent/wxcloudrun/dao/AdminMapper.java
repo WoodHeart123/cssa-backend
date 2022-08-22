@@ -18,5 +18,7 @@ public interface AdminMapper {
 
     Integer checkUsername(String username);
 
-    Void register(Admin admin);
+    void register(Admin admin);
+
+    void deleteActivity(String actID);
 }

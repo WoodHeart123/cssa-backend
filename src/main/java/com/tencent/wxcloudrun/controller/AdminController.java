@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 @RequestMapping({"/admin"})
 public class AdminController {
 
@@ -27,8 +28,8 @@ public class AdminController {
     @RequestMapping(value={"getActivityList"},method={RequestMethod.GET})
     Response getActivityList(HttpServletRequest request){
         Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
-        if(token.isEmpty()){
-            return Response.builder().status(110).message("无用户信息").build();
+        if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
+            return Response.builder().status(110).message("无管理员信息").build();
         }
         return adminService.getActivityList();
     }
@@ -36,8 +37,8 @@ public class AdminController {
     @RequestMapping(value={"/createActivity"}, method={RequestMethod.POST})
     public Response createActivity(@RequestBody Activity activity, HttpServletRequest request){
         Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
-        if(token.isEmpty()){
-            return Response.builder().status(110).message("无用户信息").build();
+        if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
+            return Response.builder().status(310).message("无管理员信息").build();
         }
         return adminService.createActivity(activity);
     }
@@ -45,5 +46,14 @@ public class AdminController {
     @RequestMapping(value={"activitySignup"}, method={RequestMethod.GET})
     public Response getActivitySignup(@RequestParam String actID, HttpServletRequest request){
         return null;
+    }
+
+    @RequestMapping(value={"deleteActivity"}, method={RequestMethod.GET})
+    public Response deleteActivity(@RequestParam String actID, HttpServletRequest request){
+        Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
+        if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
+            return Response.builder().status(310).message("无管理员信息").build();
+        }
+        return adminService.deleteActivity(actID);
     }
 }

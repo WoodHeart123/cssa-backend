@@ -39,4 +39,8 @@
     <select id="login" parameterType="Admin" resultType="Integer">
         SELECT COUNT(username) FROM admin WHERE username = #{username} AND password = #{password}
     </select>
+
+    <update id="deleteActivity" parameterType="String">
+        UPDATE activity SET startDate = 0 WHERE actID = #{actID}
+    </update>
 </mapper>

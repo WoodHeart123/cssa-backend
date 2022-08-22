@@ -10,6 +10,7 @@ import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.util.ArrayList;
@@ -56,5 +57,12 @@ public class AdminServiceImpl implements AdminService {
         }else{
             return Response.builder().status(301).message("用户名密码错误").build();
         }
+    }
+
+    @Override
+    @Transactional
+    public Response deleteActivity(String actID) {
+        this.adminMapper.deleteActivity(actID);
+        return Response.builder().status(100).build();
     }
 }

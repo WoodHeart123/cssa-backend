@@ -15,6 +15,7 @@ import java.util.Optional;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping({"/activity"})
 public class ActivityController {
 
