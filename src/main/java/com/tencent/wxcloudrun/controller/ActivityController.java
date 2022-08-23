@@ -26,12 +26,12 @@ public class ActivityController {
     EmailService emailService;
 
     @RequestMapping(value={"/login"}, method={RequestMethod.GET})
-    public Response login(HttpServletRequest request){
+    public Response login(@RequestParam String nickname, HttpServletRequest request){
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();
         }
-        return activityService.login(openid.get());
+        return activityService.login(nickname, openid.get());
     }
 
     @RequestMapping(value={"/updateEmail"}, method={RequestMethod.GET})

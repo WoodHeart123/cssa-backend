@@ -91,10 +91,10 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public Response login(String userID){
+    public Response login(String nickname, String userID){
         User user = activityMapper.login(userID);
         if(user == null){
-            activityMapper.register(userID);
+            activityMapper.register(nickname,userID);
             return Response.builder().status(103).message("新用户").build();
         }
         return Response.builder().status(100).data(user).build();

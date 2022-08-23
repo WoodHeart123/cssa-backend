@@ -73,7 +73,7 @@
     </select>
 
     <insert id="register" parameterType="String">
-        INSERT INTO user (userID) VALUES (#{userID})
+        INSERT INTO user (userID,nickname) VALUES (#{userID},#{nickname})
     </insert>
 
     <update id="updateEmail" parameterType="String">

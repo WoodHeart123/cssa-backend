@@ -7,6 +7,7 @@ import java.util.ArrayList;
 @Data
 public class SignupInfo {
     private String userID;
+    private String nickname;
     private Integer actID;
     private Double discount;
     private ArrayList<String> response;

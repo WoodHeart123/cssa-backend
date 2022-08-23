@@ -18,7 +18,7 @@
         FROM
             signup_activity
                 RIGHT JOIN activity ON activity.actID = signup_activity.actID
-        WHERE activity.startDate > ('1969-12-31 18:00:00')
+        WHERE activity.startDate &gt; 19700101010000
         GROUP BY
             activity.actID,
             title,

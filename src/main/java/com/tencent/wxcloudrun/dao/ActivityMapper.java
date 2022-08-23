@@ -26,7 +26,7 @@ public interface ActivityMapper {
 
     User login(String userID);
 
-    void register(String userID);
+    void register(String nickname, String userID);
 
     void updateEmail(String email, String userID);
 
