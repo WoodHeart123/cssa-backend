@@ -23,7 +23,7 @@
         FROM
             signup_activity
                 RIGHT JOIN activity ON activity.actID = signup_activity.actID
-        WHERE activity.startDate &gt; CURRENT_TIMESTAMP
+        WHERE activity.endDate &gt; CURRENT_TIMESTAMP
         GROUP BY
             activity.actID,
             title,
@@ -52,7 +52,7 @@
         FROM
             signup_activity
                 RIGHT JOIN activity ON activity.actID = signup_activity.actID
-        WHERE signup_activity.userId = #{userID}
+        WHERE signup_activity.userId = #{userID} AND activity.startDate &gt; 19700101010000
         ORDER BY activity.actID ASC
     </select>
 
