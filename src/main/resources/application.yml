@@ -9,7 +9,7 @@ spring:
 #    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:springboot_demo}
 #    username: ${MYSQL_USERNAME}
 #    password: ${MySQL_PASSWORD}
-    url: jdbc:mysql://sh-cynosdbmysql-grp-5ljk41ng.sql.tencentcdb.com:28513/springboot_demo?characterEncoding=utf-8&useUnicode=true
+    url: jdbc:mysql://sh-cynosdbmysql-grp-5ljk41ng.sql.tencentcdb.com:28513/springboot_demo?characterEncoding=utf-8&useUnicode=true&serverTimezone=US/Central
     username: root
     password: NST4VU3f
 

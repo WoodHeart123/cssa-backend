@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 @Service
@@ -62,7 +63,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     @Transactional
     public Response deleteActivity(String actID) {
-        this.adminMapper.deleteActivity(actID);
+        this.adminMapper.deleteActivity(actID, new Timestamp(0));
         return Response.builder().status(100).build();
     }
 }

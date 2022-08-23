@@ -18,7 +18,7 @@
         FROM
             signup_activity
                 RIGHT JOIN activity ON activity.actID = signup_activity.actID
-        WHERE activity.startDate &gt; 0
+        WHERE activity.startDate > ('1969-12-31 18:00:00')
         GROUP BY
             activity.actID,
             title,
@@ -29,7 +29,7 @@
             imgs,
             additionalInfoJSON,
             description
-        ORDER BY activity.actID ASC
+        ORDER BY activity.actID DESC
     </select>
 
     <insert id="createActivity" parameterType="Activity">
@@ -40,7 +40,7 @@
         SELECT COUNT(username) FROM admin WHERE username = #{username} AND password = #{password}
     </select>
 
-    <update id="deleteActivity" parameterType="String">
-        UPDATE activity SET startDate = 0 WHERE actID = #{actID}
+    <update id="deleteActivity" parameterType="map">
+        UPDATE activity SET startDate = #{timestamp} WHERE actID = #{actID}
     </update>
 </mapper>

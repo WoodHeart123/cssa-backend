@@ -4,7 +4,9 @@ package com.tencent.wxcloudrun.dao;
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.Admin;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -20,5 +22,5 @@ public interface AdminMapper {
 
     void register(Admin admin);
 
-    void deleteActivity(String actID);
+    void deleteActivity(@Param("actID") String actID,@Param("timestamp") Timestamp timestamp);
 }
