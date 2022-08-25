@@ -47,7 +47,9 @@ public class AdminServiceImpl implements AdminService {
     public Response getActivitySignup(String actID) {
         ArrayList<SignupInfo> list = adminMapper.getActivitySignup(actID);
         for (SignupInfo signupInfo : list) {
-            signupInfo.setNickname(URLDecoder.decode(signupInfo.getNickname(), StandardCharsets.UTF_8));
+            if(signupInfo.getNickname() != null){
+                signupInfo.setNickname(URLDecoder.decode(signupInfo.getNickname(), StandardCharsets.UTF_8));
+            }
         }
         return Response.builder().status(100).data(list).build();
     }
