@@ -5,6 +5,7 @@ import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.SignupInfo;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 
 @Service
@@ -30,7 +31,7 @@ public interface ActivityService {
      */
     Response getRegisterList(String userID);
 
-    Response login(String nickname, String userID);
+    Response login(String nickname, String userID) throws UnsupportedEncodingException;
 
     Response updateEmail(String email, String userID);
 }

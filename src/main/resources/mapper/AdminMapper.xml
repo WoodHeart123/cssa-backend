@@ -45,4 +45,15 @@
     <update id="deleteActivity" parameterType="map">
         UPDATE activity SET startDate = #{timestamp} WHERE actID = #{actID}
     </update>
+
+    <select id="getActivitySignup" parameterType="String">
+        SELECT
+            signup_activity.response,
+            signup_activity.payment
+        FROM
+            signup_activity
+                right join user ON user.userID = signup_activity.userID
+        WHERE
+            signup_activity.actID = 3
+    </select>
 </mapper>

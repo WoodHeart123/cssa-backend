@@ -46,7 +46,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Response getActivitySignup(String actID) {
-        return null;
+        return Response.builder().status(100).data(adminMapper.getActivitySignup(actID)).build();
     }
 
     @Override

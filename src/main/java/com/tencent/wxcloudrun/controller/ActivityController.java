@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class ActivityController {
     EmailService emailService;
 
     @RequestMapping(value={"/login"}, method={RequestMethod.GET})
-    public Response login(@RequestParam String nickname, HttpServletRequest request){
+    public Response login(@RequestParam String nickname, HttpServletRequest request) throws UnsupportedEncodingException {
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();

@@ -13,4 +13,5 @@ public class SignupInfo {
     private String responseJSON;
     private Boolean ifJoined;
     private Integer payment;
+    private String nickname;
 }

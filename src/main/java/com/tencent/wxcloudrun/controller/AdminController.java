@@ -45,7 +45,11 @@ public class AdminController {
 
     @RequestMapping(value={"activitySignup"}, method={RequestMethod.GET})
     public Response getActivitySignup(@RequestParam String actID, HttpServletRequest request){
-        return null;
+        Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
+        if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
+            return Response.builder().status(310).message("无管理员信息").build();
+        }
+        return adminService.getActivitySignup(actID);
     }
 
     @RequestMapping(value={"deleteActivity"}, method={RequestMethod.GET})

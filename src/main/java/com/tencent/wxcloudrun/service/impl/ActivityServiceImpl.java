@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.context.ApplicationContext;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,12 +94,14 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public Response login(String nickname, String userID){
+    public Response login(String nickname, String userID) throws UnsupportedEncodingException {
         User user = activityMapper.login(userID);
         if(user == null){
-            activityMapper.register(nickname,userID);
+            String name = URLEncoder.encode(nickname, StandardCharsets.UTF_8);
+            activityMapper.register(name,userID);
             return Response.builder().status(103).message("新用户").build();
         }
+        user.setNickname(URLEncoder.encode(user.getNickname(), StandardCharsets.UTF_8));
         return Response.builder().status(100).data(user).build();
     }
 
