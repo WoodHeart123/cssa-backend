@@ -33,7 +33,7 @@
     </select>
 
     <insert id="createActivity" parameterType="Activity">
-        INSERT INTO activity (title,startDate,location,price,capacity,imgs,additionalInfoJSON,description) values (#{title},#{startDate},#{location},#{price},#{capacity},#{imgs},#{additionalInfoJSON},#{description})
+        INSERT INTO activity (title,startDate,endDate,location,price,capacity,imgs,additionalInfoJSON,description) values (#{title},#{startDate},#{endDate},#{location},#{price},#{capacity},#{imgs},#{additionalInfoJSON},#{description})
     </insert>
 
     <select id="login" parameterType="Admin" resultType="Integer">
