@@ -98,11 +98,9 @@ public class ActivityServiceImpl implements ActivityService {
     public Response login(String nickname, String userID) throws UnsupportedEncodingException {
         User user = activityMapper.login(userID);
         if(user == null){
-            String name = URLEncoder.encode(nickname, StandardCharsets.UTF_8);
-            activityMapper.register(name,userID);
+            activityMapper.register(nickname,userID);
             return Response.builder().status(103).message("新用户").build();
         }
-        user.setNickname(URLDecoder.decode(user.getNickname(), StandardCharsets.UTF_8));
         return Response.builder().status(100).data(user).build();
     }
 
