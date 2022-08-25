@@ -54,6 +54,6 @@
             signup_activity
                 right join user ON user.userID = signup_activity.userID
         WHERE
-            signup_activity.actID = 3
+            signup_activity.actID = #{actID}
     </select>
 </mapper>

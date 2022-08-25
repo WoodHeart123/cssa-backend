@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.context.ApplicationContext;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
@@ -101,7 +102,7 @@ public class ActivityServiceImpl implements ActivityService {
             activityMapper.register(name,userID);
             return Response.builder().status(103).message("新用户").build();
         }
-        user.setNickname(URLEncoder.encode(user.getNickname(), StandardCharsets.UTF_8));
+        user.setNickname(URLDecoder.decode(user.getNickname(), StandardCharsets.UTF_8));
         return Response.builder().status(100).data(user).build();
     }
 

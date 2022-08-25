@@ -3,16 +3,15 @@ package com.tencent.wxcloudrun.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.dao.AdminMapper;
-import com.tencent.wxcloudrun.model.Activity;
-import com.tencent.wxcloudrun.model.Admin;
-import com.tencent.wxcloudrun.model.Jwtutil;
-import com.tencent.wxcloudrun.model.Response;
+import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -46,7 +45,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Response getActivitySignup(String actID) {
-        return Response.builder().status(100).data(adminMapper.getActivitySignup(actID)).build();
+        ArrayList<SignupInfo> list = adminMapper.getActivitySignup(actID);
+        for (SignupInfo signupInfo : list) {
+            signupInfo.setNickname(URLDecoder.decode(signupInfo.getNickname(), StandardCharsets.UTF_8));
+        }
+        return Response.builder().status(100).data(list).build();
     }
 
     @Override
