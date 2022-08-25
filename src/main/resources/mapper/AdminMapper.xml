@@ -46,7 +46,7 @@
         UPDATE activity SET startDate = #{timestamp} WHERE actID = #{actID}
     </update>
 
-    <select id="getActivitySignup" parameterType="String">
+    <select id="getActivitySignup" parameterType="String" resultType="SignupInfo">
         SELECT
             signup_activity.response,
             signup_activity.payment
