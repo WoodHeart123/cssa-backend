@@ -49,7 +49,8 @@
     <select id="getActivitySignup" parameterType="String" resultType="SignupInfo">
         SELECT
             signup_activity.response,
-            signup_activity.payment
+            signup_activity.payment,
+            user.nickname
         FROM
             signup_activity
                 right join user ON user.userID = signup_activity.userID
