@@ -14,6 +14,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -26,7 +27,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Response getActivityList() {
-        return Response.builder().data(adminMapper.getActivityList()).status(100).build();
+        List<Activity> activityList = adminMapper.getActivityList();
+        for(Activity activity: activityList){
+            activity.setAdditionalInfo(JSON.parseArray(activity.getAdditionalInfoJSON(),Info.class));
+        }
+        return Response.builder().data(activityList).status(100).build();
     }
 
     @Override
