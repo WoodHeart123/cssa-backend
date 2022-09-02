@@ -48,7 +48,7 @@
 
     <select id="getActivitySignup" parameterType="String" resultType="SignupInfo">
         SELECT
-            signup_activity.response,
+            signup_activity.response as responseJSON,
             signup_activity.payment,
             user.nickname
         FROM
