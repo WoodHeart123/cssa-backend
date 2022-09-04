@@ -43,7 +43,7 @@
     </select>
 
     <update id="deleteActivity" parameterType="map">
-        UPDATE activity SET startDate = #{timestamp} WHERE actID = #{actID}
+        UPDATE activity SET startDate = #{timestamp} AND endDate = #{timestamp} WHERE actID = #{actID}
     </update>
 
     <select id="getActivitySignup" parameterType="String" resultType="SignupInfo">
