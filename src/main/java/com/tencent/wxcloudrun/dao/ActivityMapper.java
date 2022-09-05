@@ -14,20 +14,49 @@ public interface ActivityMapper {
 
     ArrayList<SignupInfo> checkSignup(String userID, Long date);
 
+    /**
+     * @param current current time stamp
+     * @return list of activity that is available to user
+     */
     List<Activity> getActivityList(Timestamp current);
 
-    Integer updateActivity(Activity activity);
-
+    /**
+     * @param actID activity actID
+     * @return an activity with matched actID, NULL when not found
+     */
     Activity findActivity(Integer actID);
 
+    /**
+     * record all user's response for one activity
+     * @param info information user provided
+     */
     void recordResponse(SignupInfo info);
 
+    /**
+     * @param userID user ID
+     * @return a list of activity user registered before
+     */
     List<Activity> getRegisterList(String userID);
 
+    /**
+     * get user's info
+     * @param userID user ID
+     * @return email, nickname
+     */
     User login(String userID);
 
+    /**
+     * user register
+     * @param nickname wechat nickname
+     * @param userID user ID
+     */
     void register(String nickname, String userID);
 
+    /**
+     * update user email
+     * @param email email
+     * @param userID userID
+     */
     void updateEmail(String email, String userID);
 
 }

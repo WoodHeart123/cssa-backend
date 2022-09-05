@@ -14,17 +14,38 @@ import java.util.List;
 @Mapper
 public interface AdminMapper {
 
+    /**
+     * create activity with provided info
+     * @param activity all activity info
+     */
     void createActivity(Activity activity);
 
+    /**
+     * get all activity list
+     */
     List<Activity> getActivityList();
 
+    /**
+     * login method for admin
+     * @param admin password and username
+     * @return 0 for mismatch, 1 for success
+     */
     Integer login(Admin admin);
 
     Integer checkUsername(String username);
 
     void register(Admin admin);
 
+    /**
+     * delete the activity by setting timestamp to zero
+     * @param actID actID
+     * @param timestamp timestamp(0)
+     */
     void deleteActivity(@Param("actID") String actID,@Param("timestamp") Timestamp timestamp);
 
+    /**
+     * get all user list that register the activity
+     * @param actID actID
+     */
     ArrayList<SignupInfo> getActivitySignup(String actID);
 }
