@@ -30,11 +30,13 @@ public class UserEventListener {
         SignupInfo signupInfo = signupEvent.getSignupInfo();
         User user = activityMapper.login(signupInfo.getUserID());
         Activity activity= activityMapper.findActivity(signupInfo.getActID());
-        if(user.getEmail() == null){
+        if(user.getEmail() == null) {
             return;
         }
         Context context = new Context();
         context.setVariable("title",activity.getTitle());
+        context.setVariable("location",activity.getLocation());
+        context.setVariable("startDate",activity.getStartDate().toString());
         EmailDetail emailDetail = new EmailDetail();
         emailDetail.setMessage(templateEngine.process("ActivityConfirmation",context));
         emailDetail.setReceiver(user.getEmail());
