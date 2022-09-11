@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 @Component
 public class UserEventListener {
@@ -20,18 +22,25 @@ public class UserEventListener {
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    TemplateEngine templateEngine;
     @EventListener
     @Async
     public void Register(SignupEvent signupEvent){
         SignupInfo signupInfo = signupEvent.getSignupInfo();
         User user = activityMapper.login(signupInfo.getUserID());
-        if(user.getEmail() == null){
+        Activity activity= activityMapper.findActivity(signupInfo.getActID());
+        if(user.getEmail() == null) {
             return;
         }
+        Context context = new Context();
+        context.setVariable("title",activity.getTitle());
+        context.setVariable("location",activity.getLocation());
+        context.setVariable("startDate",activity.getStartDate().toString());
         EmailDetail emailDetail = new EmailDetail();
-        emailDetail.setMessage("报名成功");
+        emailDetail.setMessage(templateEngine.process("ActivityConfirmation",context));
         emailDetail.setReceiver(user.getEmail());
-        emailDetail.setSubject("活动报名");
+        emailDetail.setSubject(activity.getTitle() + "报名");
         emailService.sendSimpleMail(emailDetail);
     }
 }
