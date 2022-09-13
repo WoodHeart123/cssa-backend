@@ -28,7 +28,7 @@ public class ActivityController {
 
     @RequestMapping(value={"/login"}, method={RequestMethod.GET})
     public Response login(@RequestParam String nickname, HttpServletRequest request) throws UnsupportedEncodingException {
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        Optional<String> openid = Optional.ofNullable(request.getHeader(""));
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();
         }
