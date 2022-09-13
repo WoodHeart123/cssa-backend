@@ -4,6 +4,7 @@ package com.tencent.wxcloudrun.model;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * 评论类
@@ -22,9 +23,9 @@ public class Comment {
     //喜爱值 1-5
     private Double prefer;
     private String comment;
-    private Integer zanCount;
-    private Integer caiCount;
-    private Integer reportCount;
+    private Integer likeCount;
+    // 举报信息列表
+    private List<String> reportList;
     private Boolean visible;
     //评论时间
     private Timestamp commentTime;

@@ -169,7 +169,7 @@ x-wx-openid | sdjenww | Text | 是 | token
 ```
 ## /课程页面/举报
 ```text
-暂无描述
+举报评价
 ```
 #### 接口状态
 > 开发中
@@ -187,9 +187,11 @@ x-wx-openid | sdjenww | Text | 是 | token
 参数名 | 示例值 | 参数类型 | 是否必填 | 参数描述
 --- | --- | --- | --- | ---
 commentID |  | Text | 是 |
-## /课程页面/赞/踩
+reportList | | Array | 是 | 虽然为array类型，但array.length == 1
+## /课程页面/赞
 ```text
-暂无描述
+添加commentID到user列表
+like计数加一
 ```
 #### 接口状态
 > 开发中
@@ -207,11 +209,10 @@ commentID |  | Text | 是 |
 参数名 | 示例值 | 参数类型 | 是否必填 | 参数描述
 --- | --- | --- | --- | ---
 commentID |  | Text | 是 |
-zan |  | Text | 是 | (0 = 踩, 1=赞)
 
 ## /课程页面/获取课程信息
 ```text
-暂无描述
+获取当前课程的所有信息
 ```
 #### 接口状态
 > 开发中
@@ -231,7 +232,8 @@ zan |  | Text | 是 | (0 = 踩, 1=赞)
 courseID |  | Text | 是 |
 ## /课程页面/获取评论列表
 ```text
-暂无描述
+获取当前课程下的评论列表
+1页20条信息
 ```
 #### 接口状态
 > 开发中
@@ -253,7 +255,7 @@ pageNumber |  | Text | 是 | 1页为20行信息
 sortType |  | Text | 是 | 排序方式（SORT_BY_LIKE,SORT_BY_TIME)
 ## /课程页面/发布评论
 ```text
-暂无描述
+发布评论
 ```
 #### 接口状态
 > 开发中
