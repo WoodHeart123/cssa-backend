@@ -170,6 +170,7 @@ x-wx-openid | sdjenww | Text | 是 | token
 ## /课程页面/举报
 ```text
 举报评价
+如果举报条数==10，暂时把commentTime设置为Timestamp(0) 
 ```
 #### 接口状态
 > 开发中
