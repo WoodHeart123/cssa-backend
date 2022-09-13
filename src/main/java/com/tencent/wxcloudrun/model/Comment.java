@@ -26,6 +26,7 @@ public class Comment {
     private Integer likeCount;
     // 举报信息列表
     private List<String> reportList;
+    private String reportListJSON;
     private Boolean visible;
     //评论时间
     private Timestamp commentTime;
