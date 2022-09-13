@@ -16,13 +16,7 @@
 ~~~
 
 
-
-
-# License
-
-[MIT](./LICENSE)
-
-#接口说明
+# 接口说明
 
 ## 公共Header参数
 ### 所有接口都将接受到该参数
@@ -90,7 +84,7 @@ departmentID |  | Text | 否 |
 > 开发中
 
 #### 接口URL
-> http://localhost:9090/activity/activityList?current=1661563571000
+> /activity/activityList?current=1661563571000
 
 #### 请求方式
 > GET
@@ -145,7 +139,7 @@ data.actList.additionalInfo | {} | Text |
 > 开发中
 
 #### 接口URL
-> http://localhost:9090/activity/register
+> /activity/register
 
 #### 请求方式
 > POST
@@ -279,3 +273,7 @@ courseTime |  | Text | 是 | 上课时间
 difficulty |  | Text | 是 | 难度评分
 prefer |  | Text | 是 | 喜爱程度
 comment |  | Text | 是 | 评论
+
+# License
+
+[MIT](./LICENSE)
