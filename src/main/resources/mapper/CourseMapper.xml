@@ -3,4 +3,30 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.CourseMapper">
 
 
+    <update id="get_zan">
+        UPDATE comment SET likeCount = likeCount + #{zan} WHERE commentID = #{commentID};
+        UPDATE user SET likedComment = JSON_MODIFY(likedComment, 'append $', #{commentID}) WHERE userid = #{openid}
+    </update>
+    <update id="create_zan">
+        UPDATE comment SET likeCount = likeCount + #{zan} WHERE commentID = #{commentID};
+        UPDATE user SET likedComment = '[]' WHERE userid = #{openid};
+        UPDATE user SET likedComment = JSON_MODIFY(likedComment, 'append $', #{commentID}) WHERE userid = #{openid}
+    </update>
+    <update id="create_post">
+        UPDATE comment SET reportListJSON = '[]' WHERE commentID = #{commentID};
+        UPDATE comment SET reportListJSON = JSON_MODIFY(reportListJSON, 'append $', #{report}) WHERE commentID = #{commentID}
+    </update>
+    <select id="get_user" resultType="User">
+        SELECT * FROM user WHERE userid = #{openid}
+    </select>
+    <select id="get_comment" resultType="com.tencent.wxcloudrun.model.Comment">
+        SELECT * FROM comment WHERE commentID = #{commentID}
+    </select>
+    <update id="get_post">
+        UPDATE comment SET reportListJSON = JSON_MODIFY(reportListJSON, 'append $', #{report}) WHERE commentID = #{commentID}
+    </update>
+    <update id="disable_comment">
+        UPDATE comment SET commentTime = TIMESTAMP(0) WHERE commentID = #{commentID}
+    </update>
+
 </mapper>
