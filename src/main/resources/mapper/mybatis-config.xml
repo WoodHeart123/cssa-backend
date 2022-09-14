@@ -8,5 +8,6 @@
         <typeAlias alias= "SignupInfo" type = "com.tencent.wxcloudrun.model.SignupInfo"/>
         <typeAlias alias="User" type="com.tencent.wxcloudrun.model.User" />
         <typeAlias alias="Admin" type="com.tencent.wxcloudrun.model.Admin" />
+        <typeAlias alias="Comment" type="com.tencent.wxcloudrun.model.Comment" />
     </typeAliases>
 </configuration>
