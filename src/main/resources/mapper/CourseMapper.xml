@@ -3,21 +3,30 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.CourseMapper">
 
 
-    <update id="get_zan">
+    <update id="get_zan_1">
         UPDATE comment SET likeCount = likeCount + #{zan} WHERE commentID = #{commentID};
-        UPDATE user SET likedComment = JSON_MODIFY(likedComment, 'append $', #{commentID}) WHERE userid = #{openid}
     </update>
-    <update id="create_zan">
+
+    <update id="get_zan_2">
+        UPDATE user SET likedCommentJSON = JSON_MERGE(likedCommentJSON, #{commentID}) WHERE userID = #{openid};
+    </update>
+
+    <update id="create_zan_1">
+        UPDATE user SET likedCommentJSON='[]' WHERE userID= #{openid};
+    </update>
+    <update id="create_zan_2">
+        UPDATE user SET likedCommentJSON = JSON_MERGE(likedCommentJSON, #{commentID}) WHERE userID = #{openid};
+    </update>
+    <update id="create_zan_3">
         UPDATE comment SET likeCount = likeCount + #{zan} WHERE commentID = #{commentID};
-        UPDATE user SET likedComment = '[]' WHERE userid = #{openid};
-        UPDATE user SET likedComment = JSON_MODIFY(likedComment, 'append $', #{commentID}) WHERE userid = #{openid}
     </update>
+
     <update id="create_post">
         UPDATE comment SET reportListJSON = '[]' WHERE commentID = #{commentID};
         UPDATE comment SET reportListJSON = JSON_MODIFY(reportListJSON, 'append $', #{report}) WHERE commentID = #{commentID}
     </update>
     <select id="get_user" resultType="User">
-        SELECT * FROM user WHERE userid = #{openid}
+        SELECT * FROM user WHERE userID = #{openid}
     </select>
     <select id="get_comment" resultType="com.tencent.wxcloudrun.model.Comment">
         SELECT * FROM comment WHERE commentID = #{commentID}

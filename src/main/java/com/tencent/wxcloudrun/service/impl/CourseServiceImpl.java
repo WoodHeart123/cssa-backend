@@ -21,16 +21,23 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Response get_zan(String openid, Integer commentID, short zan) {
         User user = courseMapper.get_user(openid);
-        if(user.getLikedComment() == null){
+        if(user.getLikedCommentJSON() == null){
             try{
-                courseMapper.create_zan(openid,commentID, zan);
+                courseMapper.create_zan_1(openid,commentID,zan);
+                courseMapper.create_zan_2(openid, String.valueOf(commentID),zan);
+                courseMapper.create_zan_3(openid,commentID,zan);
                 return Response.builder().status(100).message("成功").build();
             }catch (Exception exception){
                 return Response.builder().status(101).message(exception.getMessage()).build();
             }
         }
+        user.setLikedComment(JSON.parseArray(user.getLikedCommentJSON(), Integer.class));
+        if(user.getLikedComment().contains(commentID)){
+            return Response.builder().status(500).message("已点赞").build();
+        }
         try{
-            courseMapper.get_zan(openid,commentID, zan);
+            courseMapper.get_zan_1(openid,commentID, zan);
+            courseMapper.get_zan_2(openid,String.valueOf(commentID), zan);
             return Response.builder().status(100).message("成功").build();
         }catch (Exception exception){
             return Response.builder().status(101).message(exception.getMessage()).build();

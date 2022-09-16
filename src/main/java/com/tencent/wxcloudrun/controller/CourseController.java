@@ -27,7 +27,7 @@ public class CourseController {
         if(openid.isEmpty()) {
             return Response.builder().status(102).message("无用户信息").build();
         }
-        return courseService.get_zan(String.valueOf(openid), commentID, zan);
+        return courseService.get_zan(openid.get(), commentID, zan);
     }
 
     @RequestMapping(value = {"/report"}, method = {RequestMethod.POST})
