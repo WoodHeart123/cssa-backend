@@ -8,6 +8,8 @@ import java.util.List;
 public class Course {
     private Integer courseID;
     private String courseName;
+    private Integer courseNum;
+    private String departmentAbrev;
     private Integer departmentID;
     private Double avgDifficulty;
     private String credit;

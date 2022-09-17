@@ -3,6 +3,6 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.CourseMapper">
 
     <select id="getCourseList" parameterType="Integer" resultType="Course">
-        SELECT courseID, departmentID, courseName, avgDifficulty, avgLike, credit FROM course WHERE departmentID = #{departmentID}
+        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgLike, credit FROM course WHERE departmentID = #{departmentID}
     </select>
 </mapper>
