@@ -23,12 +23,11 @@ public class CourseServiceImpl implements CourseService {
     public Response save(Comment comment) {
         courseMapper.save(comment);
         return Response.builder().message("成功").status(100).build();
-
+    }
     @Override
     public Response getCourseList(Integer departmentID) {
         return Response.builder().data(courseMapper.getCourseList(departmentID)).status(100).message("成功").build();
-
-
+    }
     @Override
     public Response get_zan(String openid, Integer commentID, short zan) {
         User user = courseMapper.get_user(openid);
