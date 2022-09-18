@@ -27,6 +27,9 @@ public class CourseController {
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();
         }
+        if(comment.getComment().length() > 300){
+            return Response.builder().status(102).message("超过字数限制").build();
+        }
         comment.setUserID(openid.get());
         return courseService.save(comment);
     }

@@ -3,7 +3,7 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.CourseMapper">
 
     <insert id="save" parameterType="Comment">
-        INSERT INTO comment (courseID,professor,courseTime,difficulty,prefer,comment) VALUES (#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{comment})
+        INSERT INTO comment (userID,courseID,professor,courseTime,difficulty,prefer,comment) VALUES (#{userID},#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{comment})
     </insert>
 
 </mapper>
