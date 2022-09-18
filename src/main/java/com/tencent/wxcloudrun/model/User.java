@@ -14,4 +14,5 @@ public class User {
     private String nickname;
     private List<Integer> likedComment;
     private String likedCommentJSON;
+    private Boolean isStudent;
 }
