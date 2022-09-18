@@ -43,7 +43,7 @@ public class UserController {
             return Response.builder().status(102).message("无用户信息").build();
         }
         if(authCodeCache.get(openid.get()) != null && Objects.equals(authCodeCache.get(openid.get()), authCode)){
-            return Response.builder().status(100).build();
+            return userService.authSuccess(openid.get());
         }else{
             return Response.builder().status(120).message("验证码错误").build();
         }
