@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import javax.mail.MessagingException;
+
 @Component
 public class UserEventListener {
 
@@ -24,9 +26,10 @@ public class UserEventListener {
 
     @Autowired
     TemplateEngine templateEngine;
+
     @EventListener
     @Async
-    public void Register(SignupEvent signupEvent){
+    public void register(SignupEvent signupEvent){
         SignupInfo signupInfo = signupEvent.getSignupInfo();
         User user = activityMapper.login(signupInfo.getUserID());
         Activity activity= activityMapper.findActivity(signupInfo.getActID());
@@ -41,6 +44,29 @@ public class UserEventListener {
         emailDetail.setMessage(templateEngine.process("ActivityConfirmation",context));
         emailDetail.setReceiver(user.getEmail());
         emailDetail.setSubject(activity.getTitle() + "报名");
-        emailService.sendSimpleMail(emailDetail);
+        try{
+            emailService.sendSimpleMail(emailDetail);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @EventListener
+    @Async
+    public void getAuthCode(AuthEvent authEvent){
+        Integer authCode = authEvent.getAuthCode();
+        String email = authEvent.getEmail();
+        Context context = new Context();
+        context.setVariable("authCode",authCode);
+        EmailDetail emailDetail = new EmailDetail();
+        emailDetail.setMessage(templateEngine.process("SendAuthCode",context));
+        emailDetail.setReceiver(email);
+        emailDetail.setSubject("验证码");
+        try{
+            emailService.sendSimpleMail(emailDetail);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
     }
 }
