@@ -1,7 +1,9 @@
 package com.tencent.wxcloudrun.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.Generated;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
  */
 @Data
 public class Comment {
+
     private String userID;
     private Integer courseID;
     private Integer commentID;
@@ -28,5 +31,6 @@ public class Comment {
     private List<String> reportList;
     private String reportListJSON;
     //评论时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp commentTime;
 }
