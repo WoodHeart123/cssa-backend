@@ -1,6 +1,8 @@
 package com.tencent.wxcloudrun.controller;
 
 
+import com.alibaba.fastjson.JSON;
+import com.tencent.wxcloudrun.model.Comment;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +33,12 @@ public class CourseController {
     }
 
     @RequestMapping(value = {"/report"}, method = {RequestMethod.POST})
-    public Response Post(@RequestBody Integer commentID, @RequestBody List<String> reportList, HttpServletRequest request){
+    public Response Post(@RequestBody Comment comment, HttpServletRequest request){
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         if(openid.isEmpty()) {
             return Response.builder().status(102).message("无用户信息").build();
         }
-        return courseService.get_post(commentID, reportList.get(0));
+        comment.setReportList(JSON.parseArray(comment.getReportListJSON(), String.class));
+        return courseService.get_post(comment.getCommentID(), comment.getReportList().get(0));
     }
 }

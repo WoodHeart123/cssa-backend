@@ -15,7 +15,8 @@ public interface CourseMapper {
 
     Comment get_comment(Integer commentID);
 
-    void create_post(Integer commentID, String report);
+    void create_post_1(Integer commentID, String report);
+
 
     void get_post(Integer commentID, String report);
 

@@ -23,7 +23,7 @@ public class CourseServiceImpl implements CourseService {
         User user = courseMapper.get_user(openid);
         if(user.getLikedCommentJSON() == null){
             try{
-                courseMapper.create_zan_1(openid,commentID,zan);
+                courseMapper.create_zan_1(openid,commentID, zan);
                 courseMapper.create_zan_2(openid, String.valueOf(commentID),zan);
                 courseMapper.create_zan_3(openid,commentID,zan);
                 return Response.builder().status(100).message("成功").build();
@@ -46,10 +46,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Response get_post(Integer commentID, String report) {
+        report = "\"" + report + "\"";
         Comment comment = courseMapper.get_comment(commentID);
-        if(comment.getReportList() == null){
+        if(comment.getReportListJSON() == null){
             try{
-                courseMapper.create_post(commentID, report);
+                courseMapper.create_post_1(commentID, report);
+                //courseMapper.create_post_2(commentID, report);
                 return Response.builder().status(100).message("成功").build();
             }catch (Exception exception){
                 return Response.builder().status(101).message(exception.getMessage()).build();
