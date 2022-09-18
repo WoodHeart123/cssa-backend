@@ -9,4 +9,41 @@
     <select id="getCourseList" parameterType="Integer" resultType="Course">
         SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgLike, credit FROM course WHERE departmentID = #{departmentID}
     </select>
+    
+    <update id="get_zan_1">
+        UPDATE comment SET likeCount = likeCount + #{zan} WHERE commentID = #{commentID};
+    </update>
+
+    <update id="get_zan_2">
+        UPDATE user SET likedCommentJSON = JSON_MERGE(likedCommentJSON, #{commentID}) WHERE userID = #{openid};
+    </update>
+
+    <update id="create_zan_1">
+        UPDATE user SET likedCommentJSON='[]' WHERE userID= #{openid};
+    </update>
+    <update id="create_zan_2">
+        UPDATE user SET likedCommentJSON = JSON_MERGE(likedCommentJSON, #{commentID}) WHERE userID = #{openid};
+    </update>
+    <update id="create_zan_3">
+        UPDATE comment SET likeCount = likeCount + #{zan} WHERE commentID = #{commentID};
+    </update>
+
+    <update id="create_post_1">
+        UPDATE comment SET reportListJSON = '[]' WHERE commentID = #{commentID};
+        UPDATE comment SET reportListJSON = JSON_MERGE(reportListJSON, #{report}) WHERE commentID = #{commentID}
+    </update>
+
+    <select id="get_user" resultType="User">
+        SELECT * FROM user WHERE userID = #{openid}
+    </select>
+    <select id="get_comment" resultType="com.tencent.wxcloudrun.model.Comment">
+        SELECT * FROM comment WHERE commentID = #{commentID}
+    </select>
+    <update id="get_post">
+        UPDATE comment SET reportListJSON = JSON_MERGE(reportListJSON, #{report}) WHERE commentID = #{commentID}
+    </update>
+    <update id="disable_comment">
+        UPDATE comment SET commentTime = '1000-01-01 00:00:00' WHERE commentID = #{commentID}
+    </update>
+
 </mapper>
