@@ -7,7 +7,7 @@
     </insert>
 
     <select id="getCourseList" parameterType="Integer" resultType="Course">
-        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgLike, credit FROM course WHERE departmentID = #{departmentID}
+        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgLike, credit, commentCount FROM course WHERE departmentID = #{departmentID}
     </select>
     
     <update id="get_zan_1">
