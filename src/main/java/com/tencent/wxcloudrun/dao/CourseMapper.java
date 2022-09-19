@@ -11,6 +11,8 @@ import java.util.List;
 public interface CourseMapper{
     void save(Comment comment);
     List<Course> getCourseList(Integer departmentID);
+    List<Department> getDepartmentList();
+    
     void get_zan_1(String openid, Integer commentID, short zan);
 
     User get_user(String openid);
