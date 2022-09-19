@@ -52,6 +52,12 @@ public class CourseController {
         }
         return courseService.getCourseList(departmentID.get());
     }
+    
+    @RequestMapping(value={ "/departmentlist"}, method = {RequestMethod.GET})
+    public Response getDepartmentList(HttpServletRequest request) {
+        return courseService.getDepartmentList();
+    }
+    
     @RequestMapping(value = {"/zan"}, method = {RequestMethod.GET})
     public Response Zan(@RequestParam(name="commentID") Integer commentID, @RequestParam(name="zan") short zan,
                         HttpServletRequest request){
