@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 public interface CourseService {
     Response save(Comment comment);
     Response getCourseList(Integer departmentID);
+    Response getDepartmentList();
 
     Response get_zan(String openid, Integer commentID, short zan);
 
