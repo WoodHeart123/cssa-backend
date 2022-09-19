@@ -28,6 +28,12 @@ public class CourseServiceImpl implements CourseService {
     public Response getCourseList(Integer departmentID) {
         return Response.builder().data(courseMapper.getCourseList(departmentID)).status(100).message("成功").build();
     }
+    
+    @Override
+    public Response getDepartmentList() {
+        return Response.builder().data(courseMapper.getDepartmentList()).status(100).message("成功").build();
+    }
+    
     @Override
     public Response get_zan(String openid, Integer commentID, short zan) {
         User user = courseMapper.get_user(openid);
