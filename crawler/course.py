@@ -32,14 +32,16 @@ if __name__ == "__main__":
             for courseblock in html.find_all("div", class_="courseblock"):
                 name = courseblock.find("strong")
                 courseText = name.text.split("—",1)
-                try:
+                try:  
+                    lastOpenYear = int(courseblock.find_all("span", class_="cbextra-data")[-1].text[-4:])
                     courseNum = int(courseText[0].strip()[-3:])
                 except:
                     print(name.text + " skipped")
                     continue
-                courseName = courseText[1].strip().replace("\"","'").lower().title()
-                credit = html.find("p", class_="courseblockcredits").text.replace(".","").replace("credits","").replace("credit","").strip()
-                insertDB(departmentID, courseName, credit,courseNum,departmentAbrev)
+                if courseNum < 800 and lastOpenYear >= 2021:
+	                courseName = courseText[1].strip().replace("\"","'").lower().title()
+	                credit = html.find("p", class_="courseblockcredits").text.replace(".","").replace("credits","").replace("credit","").strip()
+	                insertDB(departmentID, courseName, credit,courseNum,departmentAbrev)
             print(str(departmentID) + " finished")
         except Exception as e:
             print(e)

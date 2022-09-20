@@ -13,6 +13,8 @@ public interface CourseMapper{
     void save(Comment comment);
     List<Course> getCourseList(Integer departmentID);
 
+    List<Course> getSearchCourseList();
+
     List<Department> getDepartmentList();
     
     void get_zan_1(String openid, Integer commentID, short zan);

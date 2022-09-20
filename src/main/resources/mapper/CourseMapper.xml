@@ -9,6 +9,10 @@
     <select id="getCourseList" parameterType="Integer" resultType="Course">
         SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgLike, credit, commentCount FROM course WHERE departmentID = #{departmentID}
     </select>
+
+    <select id="getSearchCourseList" resultType="Course">
+        SELECT courseID, courseName, departmentAbrev, courseNum FROM course
+    </select>
     
     <update id="get_zan_1">
         UPDATE comment SET likeCount = likeCount + #{zan} WHERE commentID = #{commentID};
