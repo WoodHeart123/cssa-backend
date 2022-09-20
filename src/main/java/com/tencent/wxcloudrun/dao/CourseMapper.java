@@ -2,6 +2,7 @@ package com.tencent.wxcloudrun.dao;
 
 import com.tencent.wxcloudrun.model.Comment;
 import com.tencent.wxcloudrun.model.Course;
+import com.tencent.wxcloudrun.model.Department;
 import com.tencent.wxcloudrun.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
@@ -11,6 +12,7 @@ import java.util.List;
 public interface CourseMapper{
     void save(Comment comment);
     List<Course> getCourseList(Integer departmentID);
+
     List<Department> getDepartmentList();
     
     void get_zan_1(String openid, Integer commentID, short zan);
