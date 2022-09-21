@@ -22,7 +22,7 @@ public class SonicBeans implements InitializingBean {
 
     static {
         try {
-            channel = new IngestChannel("47.97.183.103",1491,"SecretPassword",2000,2000);
+            channel = new IngestChannel("47.97.183.103",1491,"SecretPassword",10000,10000);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,11 +34,10 @@ public class SonicBeans implements InitializingBean {
         try {
             channel.flushc("course");
             for (Course course : courseList) {
-                channel.push("course", "default", JSON.toJSONString(course), course.getDepartmentAbrev() + course.getCourseNum().toString() + " " + course.getCourseName());
+                channel.push("course", "default", course.getCourseID().toString(), course.getDepartmentAbrev() + course.getCourseNum().toString() + " " + course.getCourseName());
             }
         }catch (Exception e){
             e.printStackTrace();
         }
-        channel.quit();
     }
 }
