@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.controller;
 
+import com.github.twohou.sonic.ChannelFactory;
 import com.github.twohou.sonic.IngestChannel;
 import com.github.twohou.sonic.SearchChannel;
 import com.tencent.wxcloudrun.dao.CourseMapper;
@@ -34,15 +35,8 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    private static SearchChannel channel;
+    private static ChannelFactory factory = new ChannelFactory("47.97.183.103",1491,"SecretPassword",2000,2000);
 
-    static {
-        try {
-            channel = new SearchChannel("47.97.183.103",1491,"SecretPassword",2000,2000);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
     public Response search(@RequestParam String value, HttpServletRequest request) throws IOException {
@@ -50,7 +44,9 @@ public class CourseController {
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();
         }
-        return courseService.getCourse(channel.query("course","default", value));
+        SearchChannel search = factory.newSearchChannel();
+        search.ping();
+        return courseService.getCourse(search.query("course","default", value));
     }
 
     @PostMapping("/postcomment")
