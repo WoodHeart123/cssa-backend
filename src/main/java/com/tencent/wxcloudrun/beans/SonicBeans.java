@@ -34,7 +34,7 @@ public class SonicBeans implements InitializingBean {
         try {
             channel.flushc("course");
             for (Course course : courseList) {
-                channel.push("course", "default", course.getCourseID().toString(), course.getDepartmentAbrev() + " " + course.getCourseNum().toString() + " " + course.getCourseName());
+                channel.push("course", "default", course.getCourseID().toString(), course.getDepartmentAbrev().replaceAll("\\s", "") + course.getCourseNum().toString());
             }
         }catch (Exception e){
             e.printStackTrace();
