@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.beans;
 
 
+import com.alibaba.fastjson.JSON;
 import com.github.twohou.sonic.IngestChannel;
 import com.tencent.wxcloudrun.dao.CourseMapper;
 import com.tencent.wxcloudrun.model.Course;
@@ -33,10 +34,11 @@ public class SonicBeans implements InitializingBean {
         try {
             channel.flushc("course");
             for (Course course : courseList) {
-                channel.push("course", "default", course.getCourseID().toString(), course.getDepartmentAbrev() + course.getCourseNum().toString() + " " + course.getCourseName());
+                channel.push("course", "default", JSON.toJSONString(course), course.getDepartmentAbrev() + course.getCourseNum().toString() + " " + course.getCourseName());
             }
         }catch (Exception e){
             e.printStackTrace();
         }
+        channel.quit();
     }
 }

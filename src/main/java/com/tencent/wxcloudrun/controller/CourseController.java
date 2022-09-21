@@ -1,5 +1,7 @@
 package com.tencent.wxcloudrun.controller;
 
+import com.github.twohou.sonic.IngestChannel;
+import com.github.twohou.sonic.SearchChannel;
 import com.tencent.wxcloudrun.dao.CourseMapper;
 import com.tencent.wxcloudrun.model.Comment;
 import com.tencent.wxcloudrun.model.Response;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.Optional;
 import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.model.Comment;
@@ -30,7 +33,30 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
-    
+
+    private static SearchChannel channel;
+
+    static {
+        try {
+            channel = new SearchChannel("47.97.183.103",1491,"SecretPassword",2000,2000);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
+    public Response search(@RequestParam String value, HttpServletRequest request)  {
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        if(openid.isEmpty()){
+            return Response.builder().status(102).message("无用户信息").build();
+        }
+        try{
+            return Response.builder().data(channel.suggest("course","default",value, 20)).status(100).build();
+        }catch( IOException ioException){
+            return Response.builder().status(130).build();
+        }
+    }
+
     @PostMapping("/postcomment")
     public Response save(@RequestBody Comment comment, HttpServletRequest request) {
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
