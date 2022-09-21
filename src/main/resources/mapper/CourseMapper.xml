@@ -13,6 +13,13 @@
     <select id="getSearchCourseList" resultType="Course">
         SELECT courseID, courseName, departmentAbrev, courseNum FROM course
     </select>
+
+    <select id="getCourse" resultType="Course">
+        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgLike, credit, commentCount FROM course WHERE courseID in
+        <foreach item="course" collection="courseID" separator="," open="(" close=")" index="index">
+            #{course}
+        </foreach>
+    </select>
     
     <update id="get_zan_1">
         UPDATE comment SET likeCount = likeCount + #{zan} WHERE commentID = #{commentID};

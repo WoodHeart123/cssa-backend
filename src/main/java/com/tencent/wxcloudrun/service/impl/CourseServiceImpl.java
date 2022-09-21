@@ -13,6 +13,8 @@ import com.tencent.wxcloudrun.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class CourseServiceImpl implements CourseService {
 
@@ -83,5 +85,13 @@ public class CourseServiceImpl implements CourseService {
         }catch (Exception exception){
             return Response.builder().status(101).message(exception.getMessage()).build();
         }
+    }
+
+    @Override
+    public Response getCourse(ArrayList<String> courseID) {
+        if(courseID.size() != 0) {
+            return Response.builder().data(courseMapper.getCourse(courseID)).status(100).build();
+        }
+        return Response.builder().status(130).build();
     }
 }

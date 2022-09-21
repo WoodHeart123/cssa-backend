@@ -12,32 +12,36 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.List;
 
-@Component
-public class SonicBeans implements InitializingBean {
+public class SonicBeans {
 
-    private static IngestChannel channel;
-
-    @Autowired
-    CourseMapper courseMapper;
-
-    static {
-        try {
-            channel = new IngestChannel("47.97.183.103",1491,"SecretPassword",10000,10000);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        List<Course> courseList = courseMapper.getSearchCourseList();
-        try {
-            channel.flushc("course");
-            for (Course course : courseList) {
-                channel.push("course", "default", course.getCourseID().toString(), course.getDepartmentAbrev().replaceAll("\\s", "") + course.getCourseNum().toString());
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+//    private static IngestChannel channel;
+//
+//    @Autowired
+//    CourseMapper courseMapper;
+//
+//    static {
+//        try {
+//            channel = new IngestChannel("localhost",1491,"SecretPassword",10000,10000);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    @Override
+//    public void afterPropertiesSet() throws Exception {
+//        List<Course> courseList = courseMapper.getSearchCourseList();
+//        try {
+//            channel.flushc("course");
+//            for (Course course : courseList) {
+//                if(course.getDepartmentAbrev().contains("COMP")){
+//                    channel.push("course", "default", course.getCourseID().toString(), "CS" + course.getCourseNum().toString());
+//                }else{
+//                    channel.push("course", "default", course.getCourseID().toString(), course.getDepartmentAbrev().replaceAll("\\s", "") + course.getCourseNum().toString());
+//                }
+//
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 }

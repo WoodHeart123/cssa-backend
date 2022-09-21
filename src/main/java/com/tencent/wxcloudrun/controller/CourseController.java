@@ -38,7 +38,7 @@ public class CourseController {
 
     static {
         try {
-            channel = new SearchChannel("47.97.183.103",1491,"SecretPassword",2000,2000);
+            channel = new SearchChannel("localhost",1491,"SecretPassword",2000,2000);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,7 +51,7 @@ public class CourseController {
             return Response.builder().status(102).message("无用户信息").build();
         }
         try{
-            return Response.builder().data(channel.suggest("course","default",value, 20)).status(100).build();
+            return courseService.getCourse(channel.query("course","default", value));
         }catch( IOException ioException){
             return Response.builder().status(130).build();
         }

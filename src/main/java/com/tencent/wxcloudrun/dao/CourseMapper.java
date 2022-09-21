@@ -6,6 +6,8 @@ import com.tencent.wxcloudrun.model.Department;
 import com.tencent.wxcloudrun.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper
@@ -14,6 +16,8 @@ public interface CourseMapper{
     List<Course> getCourseList(Integer departmentID);
 
     List<Course> getSearchCourseList();
+
+    List<Course> getCourse(ArrayList<String> courseID);
 
     List<Department> getDepartmentList();
     
