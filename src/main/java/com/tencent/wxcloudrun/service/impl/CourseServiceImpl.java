@@ -89,9 +89,6 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Response getCourse(ArrayList<String> courseID) {
-        if(courseID.size() != 0) {
-            return Response.builder().data(courseMapper.getCourse(courseID)).status(100).build();
-        }
-        return Response.builder().status(130).build();
+        return Response.builder().data(courseMapper.getCourse(courseID)).status(100).build();
     }
 }

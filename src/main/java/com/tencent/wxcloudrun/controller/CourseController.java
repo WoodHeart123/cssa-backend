@@ -45,16 +45,12 @@ public class CourseController {
     }
 
     @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
-    public Response search(@RequestParam String value, HttpServletRequest request)  {
+    public Response search(@RequestParam String value, HttpServletRequest request) throws IOException {
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();
         }
-        try{
-            return courseService.getCourse(channel.query("course","default", value));
-        }catch( IOException ioException){
-            return Response.builder().status(130).build();
-        }
+        return courseService.getCourse(channel.query("course","default", value));
     }
 
     @PostMapping("/postcomment")
