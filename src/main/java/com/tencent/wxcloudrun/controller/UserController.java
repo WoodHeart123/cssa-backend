@@ -32,7 +32,7 @@ public class UserController {
         Random ran = new Random();
         int authCode = ran.nextInt(1000000);
         authCodeCache.add(openid.get(),authCode);
-        userService.getAuthCode(email.concat("@wisc.edu"),authCode);
+        userService.getAuthCode(email,authCode);
         return Response.builder().status(100).build();
     }
 
