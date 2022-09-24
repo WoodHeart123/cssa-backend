@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -23,7 +24,15 @@ public class CourseServiceImpl implements CourseService {
     
     @Override
     public Response save(Comment comment) {
-        courseMapper.save(comment);
+        courseMapper.saveComment(comment);
+        //List<Comment> comments= courseMapper.getCommentList();
+        Double avgDifficulty = courseMapper.getAvgDifficulty();
+        Double avgLike = courseMapper.getAvgLike();
+        Integer commentCount = courseMapper.getCommentCount();
+        Double newAvgDifficulty = (avgDifficulty * commentCount + comment.getDifficulty())/(commentCount + 1);
+        Double newAvgLike = (avgLike * commentCount + comment.getPrefer())/(commentCount + 1);
+        commentCount ++;
+        courseMapper.saveCourse(comment.getCourseID(), newAvgDifficulty , newAvgLike, commentCount);
         return Response.builder().message("成功").status(100).build();
     }
     @Override

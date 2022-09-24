@@ -47,6 +47,7 @@ public class CourseController {
         SearchChannel search = factory.newSearchChannel();
         search.ping();
         return courseService.getCourse(search.query("course","default", value));
+
     }
 
     @PostMapping("/postcomment")

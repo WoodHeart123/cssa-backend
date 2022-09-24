@@ -12,7 +12,14 @@ import java.util.List;
 
 @Mapper
 public interface CourseMapper{
-    void save(Comment comment);
+    void saveComment(Comment comment);
+
+    void saveCourse(Integer commentID, Double avgDifficulty, Double avgLike, Integer commentCount);
+    List<Comment> getCommentList();
+    Double getAvgDifficulty();
+    Double getAvgLike();
+    Integer getCommentCount();
+
     List<Course> getCourseList(Integer departmentID);
 
     List<Course> getSearchCourseList();

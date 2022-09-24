@@ -2,7 +2,7 @@ package com.tencent.wxcloudrun.beans;
 
 
 import com.alibaba.fastjson.JSON;
-import com.github.twohou.sonic.IngestChannel;
+//import com.github.twohou.sonic.IngestChannel;
 import com.tencent.wxcloudrun.dao.CourseMapper;
 import com.tencent.wxcloudrun.model.Course;
 import org.springframework.beans.factory.InitializingBean;
