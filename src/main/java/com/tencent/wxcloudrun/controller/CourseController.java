@@ -1,30 +1,19 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.github.twohou.sonic.ChannelFactory;
-import com.github.twohou.sonic.IngestChannel;
 import com.github.twohou.sonic.SearchChannel;
-import com.tencent.wxcloudrun.dao.CourseMapper;
 import com.tencent.wxcloudrun.model.Comment;
+import com.tencent.wxcloudrun.model.OrderType;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Optional;
-import com.alibaba.fastjson.JSON;
-import com.tencent.wxcloudrun.model.Comment;
-import com.tencent.wxcloudrun.model.Response;
-import com.tencent.wxcloudrun.service.CourseService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -35,7 +24,8 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    private static ChannelFactory factory = new ChannelFactory("47.97.183.103",1491,"SecretPassword",2000,2000);
+    @Autowired
+    private ChannelFactory channelFactory;
 
 
     @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
@@ -44,7 +34,7 @@ public class CourseController {
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();
         }
-        SearchChannel search = factory.newSearchChannel();
+        SearchChannel search = channelFactory.newSearchChannel();
         search.ping();
         return courseService.getCourse(search.query("course","default", value));
 
@@ -63,8 +53,17 @@ public class CourseController {
         return courseService.postComment(comment);
 
     }
+
+    @RequestMapping(value={"/getCommentList"}, method = {RequestMethod.GET})
+    public Response getCommentList(@RequestParam Integer courseID, @RequestParam Integer offset, @RequestParam Integer limit, @RequestParam OrderType order, HttpServletRequest request){
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        if(openid.isEmpty()){
+            return Response.builder().status(102).message("无用户信息").build();
+        }
+        return courseService.getCommentList(courseID,offset,limit,order);
+    }
     
-    @RequestMapping(value={ "/courselist"}, method = {RequestMethod.GET})
+    @RequestMapping(value={"/courselist"}, method = {RequestMethod.GET})
     public Response getCourseList(@RequestParam Optional<Integer> departmentID, HttpServletRequest request) {
         if (departmentID.isEmpty()) {
             return Response.builder().message("部门ID为空").status(501).build();
@@ -78,13 +77,12 @@ public class CourseController {
     }
     
     @RequestMapping(value = {"/zan"}, method = {RequestMethod.GET})
-    public Response Zan(@RequestParam(name="commentID") Integer commentID, @RequestParam(name="zan") short zan,
-                        HttpServletRequest request){
+    public Response Zan(@RequestParam(name="commentID") Integer commentID, HttpServletRequest request){
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         if(openid.isEmpty()) {
             return Response.builder().status(102).message("无用户信息").build();
         }
-        return courseService.get_zan(openid.get(), commentID, zan);
+        return courseService.zan(openid.get(), commentID);
     }
 
     @RequestMapping(value = {"/report"}, method = {RequestMethod.POST})
@@ -93,7 +91,6 @@ public class CourseController {
         if(openid.isEmpty()) {
             return Response.builder().status(102).message("无用户信息").build();
         }
-        comment.setReportList(JSON.parseArray(comment.getReportListJSON(), String.class));
-        return courseService.get_post(comment.getCommentID(), comment.getReportList().get(0));
+        return courseService.report(comment.getCommentID(), comment.getReportList().get(0));
     }
 }

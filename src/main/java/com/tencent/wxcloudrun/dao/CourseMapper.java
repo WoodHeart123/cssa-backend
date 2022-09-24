@@ -5,7 +5,9 @@ import com.tencent.wxcloudrun.model.Course;
 import com.tencent.wxcloudrun.model.Department;
 import com.tencent.wxcloudrun.model.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,25 +24,19 @@ public interface CourseMapper{
 
     List<Department> getDepartmentList();
     
-    void get_zan_1(String openid, Integer commentID, short zan);
+    void setLikeList(User user);
 
-    User get_user(String openid);
+    void incrementCount(Integer commentID);
 
-    void create_zan_1(String openid, Integer commentID, short zan);
+    User getUser(String userID);
 
-    Comment get_comment(Integer commentID);
+    Comment getComment(Integer commentID);
 
-    void create_post_1(Integer commentID, String report);
+    void addReportList(Comment comment);
 
+    void hideComment(Integer commentID);
 
-    void get_post(Integer commentID, String report);
+    List<Comment> getCommentList(@Param("commentID")Integer commentID,@Param("offset") Integer offset,@Param("limit") Integer limit,@Param("orderField")String orderField);
 
-    void disable_comment(Integer commentID);
-
-    void create_zan_2(String openid, String commentID, short zan);
-
-    void create_zan_3(String openid, Integer commentID, short zan);
-
-    void get_zan_2(String openid, String commentID, short zan);
 }
 

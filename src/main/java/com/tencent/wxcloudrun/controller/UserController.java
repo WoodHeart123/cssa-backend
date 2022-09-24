@@ -23,6 +23,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
+
     @RequestMapping(value={"/getAuthCode"}, method = {RequestMethod.GET})
     public Response getAuthCode(@RequestParam String email, HttpServletRequest request){
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));

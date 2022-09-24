@@ -2,7 +2,9 @@ package com.tencent.wxcloudrun.service;
 
 
 import com.tencent.wxcloudrun.model.Comment;
+import com.tencent.wxcloudrun.model.OrderType;
 import com.tencent.wxcloudrun.model.Response;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,9 +15,11 @@ public interface CourseService {
     Response getCourseList(Integer departmentID);
     Response getDepartmentList();
 
-    Response get_zan(String openid, Integer commentID, short zan);
+    Response zan(String userID, Integer commentID);
 
-    Response get_post(Integer commentID, String report);
+    Response report(Integer commentID, String report);
 
     Response getCourse(ArrayList<String> courseID);
+
+    Response getCommentList(Integer courseID, Integer offset, Integer limit, OrderType orderType);
 }

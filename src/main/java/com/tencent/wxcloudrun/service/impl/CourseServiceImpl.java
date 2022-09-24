@@ -3,12 +3,7 @@ package com.tencent.wxcloudrun.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.dao.CourseMapper;
-import com.tencent.wxcloudrun.model.Comment;
-import com.tencent.wxcloudrun.model.Info;
-import com.tencent.wxcloudrun.model.Response;
-import com.tencent.wxcloudrun.model.User;
-import com.tencent.wxcloudrun.model.Course;
-import com.tencent.wxcloudrun.model.Response;
+import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +27,7 @@ public class CourseServiceImpl implements CourseService {
         List<Course> courseList = courseMapper.getCourse(courseIDList);
         Course course = courseList.get(0);
         course.setAvgDifficulty(course.getAvgDifficulty() * course.getCommentCount() + comment.getDifficulty() /(course.getCommentCount() + 1));
-        course.setAvgLike(course.getAvgLike() * course.getCommentCount() + comment.getPrefer()/(course.getCommentCount() + 1));
+        course.setAvgPrefer(course.getAvgPrefer() * course.getCommentCount() + comment.getPrefer()/(course.getCommentCount() + 1));
         course.setCommentCount(course.getCommentCount() + 1);
         courseMapper.updateCourse(course);
         return Response.builder().message("成功").status(100).build();
@@ -49,58 +44,54 @@ public class CourseServiceImpl implements CourseService {
     }
     
     @Override
-    public Response get_zan(String openid, Integer commentID, short zan) {
-        User user = courseMapper.get_user(openid);
+    @Transactional
+    public Response zan(String userID, Integer commentID) {
+        User user = courseMapper.getUser(userID);
         if(user.getLikedCommentJSON() == null){
-            try{
-                courseMapper.create_zan_1(openid,commentID, zan);
-                courseMapper.create_zan_2(openid, String.valueOf(commentID),zan);
-                courseMapper.create_zan_3(openid,commentID,zan);
-                return Response.builder().status(100).message("成功").build();
-            }catch (Exception exception){
-                return Response.builder().status(101).message(exception.getMessage()).build();
-            }
+            user.setLikedComment(new ArrayList<>());
+        }else{
+            user.setLikedComment(JSON.parseArray(user.getLikedCommentJSON(), Integer.class));
         }
-        user.setLikedComment(JSON.parseArray(user.getLikedCommentJSON(), Integer.class));
         if(user.getLikedComment().contains(commentID)){
-            return Response.builder().status(500).message("已点赞").build();
+            return Response.builder().status(180).message("已点赞").build();
         }
-        try{
-            courseMapper.get_zan_1(openid,commentID, zan);
-            courseMapper.get_zan_2(openid,String.valueOf(commentID), zan);
-            return Response.builder().status(100).message("成功").build();
-        }catch (Exception exception){
-            return Response.builder().status(101).message(exception.getMessage()).build();
-        }
+        user.getLikedComment().add(commentID);
+        user.setLikedCommentJSON(JSON.toJSONString(user.getLikedComment()));
+        courseMapper.setLikeList(user);
+        courseMapper.incrementCount(commentID);
+        return Response.builder().status(100).message("成功").build();
     }
 
     @Override
-    public Response get_post(Integer commentID, String report) {
-        report = "\"" + report + "\"";
-        Comment comment = courseMapper.get_comment(commentID);
+    @Transactional
+    public Response report(Integer commentID, String report) {
+        Comment comment = courseMapper.getComment(commentID);
         if(comment.getReportListJSON() == null){
-            try{
-                courseMapper.create_post_1(commentID, report);
-                //courseMapper.create_post_2(commentID, report);
-                return Response.builder().status(100).message("成功").build();
-            }catch (Exception exception){
-                return Response.builder().status(101).message(exception.getMessage()).build();
-            }
+            comment.setReportList(new ArrayList<>());
+        }else{
+            comment.setReportList(JSON.parseArray(comment.getReportListJSON(), String.class));
         }
-        comment.setReportList(JSON.parseArray(comment.getReportListJSON(), String.class));
-        try{
-            courseMapper.get_post(commentID, report);
-            if(comment.getReportList().size() >= 9){
-                courseMapper.disable_comment(commentID);
-            }
-            return Response.builder().status(100).message("成功").build();
-        }catch (Exception exception){
-            return Response.builder().status(101).message(exception.getMessage()).build();
+        comment.getReportList().add(report);
+        courseMapper.addReportList(comment);
+        if(comment.getReportList().size() == 10) {
+            courseMapper.hideComment(commentID);
         }
+        return Response.builder().status(100).message("成功").build();
     }
 
     @Override
     public Response getCourse(ArrayList<String> courseID) {
         return Response.builder().data(courseMapper.getCourse(courseID)).status(100).build();
+    }
+
+    @Override
+    public Response getCommentList(Integer courseID, Integer offset, Integer limit, OrderType orderType) {
+        List<Comment> commentList;
+        if (orderType == OrderType.SORT_BY_LIKE) {
+            commentList = courseMapper.getCommentList(courseID, offset, limit, "likeCount");
+        } else {
+            commentList = courseMapper.getCommentList(courseID, offset, limit, "commentTime");
+        }
+        return Response.builder().data(commentList).status(100).message("成功").build();
     }
 }
