@@ -14,15 +14,9 @@ import java.util.List;
 public interface CourseMapper{
     void saveComment(Comment comment);
 
-    void saveCourse(Integer commentID, Double avgDifficulty, Double avgLike, Integer commentCount);
-    List<Comment> getCommentList();
-    Double getAvgDifficulty();
-    Double getAvgLike();
-    Integer getCommentCount();
+    void updateCourse(Course course);
 
     List<Course> getCourseList(Integer departmentID);
-
-    List<Course> getSearchCourseList();
 
     List<Course> getCourse(ArrayList<String> courseID);
 

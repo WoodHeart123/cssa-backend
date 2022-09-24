@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 @Service
 public interface CourseService {
-    Response save(Comment comment);
+    Response postComment(Comment comment);
     Response getCourseList(Integer departmentID);
     Response getDepartmentList();
 

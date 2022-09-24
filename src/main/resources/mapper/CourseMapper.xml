@@ -6,17 +6,13 @@
         INSERT INTO comment (userID,courseID,professor,courseTime,difficulty,prefer,comment) VALUES (#{userID},#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{comment})
     </insert>
 
-    <insert id="saveCourse" parameterType="Course">
-        UPDATE course SET avgDifficulty = #{avgDifficulty}, avgLike = #{avgLike}, commentCount = #{commentCount} WHERE courseID = #{courseID}
-    </insert>
-
     <select id="getCourseList" parameterType="Integer" resultType="Course">
         SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgLike, credit, commentCount FROM course WHERE departmentID = #{departmentID}
     </select>
 
-    <select id="getSearchCourseList" resultType="Course">
-        SELECT courseID, courseName, departmentAbrev, courseNum FROM course
-    </select>
+    <update id="updateCourse" parameterType="Course">
+        UPDATE course SET avgDifficulty = #{avgDifficulty}, avgLike = #{avgLike}, commentCount = #{commentCount} WHERE courseID = #{courseID}
+    </update>
 
     <select id="getCourse" resultType="Course">
         SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgLike, credit, commentCount FROM course WHERE courseID in

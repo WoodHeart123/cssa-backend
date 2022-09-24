@@ -60,7 +60,7 @@ public class CourseController {
             return Response.builder().status(102).message("超过字数限制").build();
         }
         comment.setUserID(openid.get());
-        return courseService.save(comment);
+        return courseService.postComment(comment);
 
     }
     
