@@ -12,8 +12,10 @@ import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -22,10 +24,20 @@ public class CourseServiceImpl implements CourseService {
     private CourseMapper courseMapper;
     
     @Override
-    public Response save(Comment comment) {
-        courseMapper.save(comment);
+    @Transactional
+    public Response postComment(Comment comment) {
+        courseMapper.saveComment(comment);
+        ArrayList<String> courseIDList = new ArrayList<String>(1);
+        courseIDList.add(comment.getCourseID().toString());
+        List<Course> courseList = courseMapper.getCourse(courseIDList);
+        Course course = courseList.get(0);
+        course.setAvgDifficulty(course.getAvgDifficulty() * course.getCommentCount() + comment.getDifficulty() /(course.getCommentCount() + 1));
+        course.setAvgLike(course.getAvgLike() * course.getCommentCount() + comment.getPrefer()/(course.getCommentCount() + 1));
+        course.setCommentCount(course.getCommentCount() + 1);
+        courseMapper.updateCourse(course);
         return Response.builder().message("成功").status(100).build();
     }
+
     @Override
     public Response getCourseList(Integer departmentID) {
         return Response.builder().data(courseMapper.getCourseList(departmentID)).status(100).message("成功").build();

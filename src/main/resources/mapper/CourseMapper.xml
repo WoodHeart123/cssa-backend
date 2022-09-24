@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tencent.wxcloudrun.dao.CourseMapper">
 
-    <insert id="save" parameterType="Comment">
+    <insert id="saveComment" parameterType="Comment">
         INSERT INTO comment (userID,courseID,professor,courseTime,difficulty,prefer,comment) VALUES (#{userID},#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{comment})
     </insert>
 
@@ -10,9 +10,9 @@
         SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgLike, credit, commentCount FROM course WHERE departmentID = #{departmentID}
     </select>
 
-    <select id="getSearchCourseList" resultType="Course">
-        SELECT courseID, courseName, departmentAbrev, courseNum FROM course
-    </select>
+    <update id="updateCourse" parameterType="Course">
+        UPDATE course SET avgDifficulty = #{avgDifficulty}, avgLike = #{avgLike}, commentCount = #{commentCount} WHERE courseID = #{courseID}
+    </update>
 
     <select id="getCourse" resultType="Course">
         SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgLike, credit, commentCount FROM course WHERE courseID in

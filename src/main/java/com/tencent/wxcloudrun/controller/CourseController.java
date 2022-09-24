@@ -47,6 +47,7 @@ public class CourseController {
         SearchChannel search = factory.newSearchChannel();
         search.ping();
         return courseService.getCourse(search.query("course","default", value));
+
     }
 
     @PostMapping("/postcomment")
@@ -59,7 +60,7 @@ public class CourseController {
             return Response.builder().status(102).message("超过字数限制").build();
         }
         comment.setUserID(openid.get());
-        return courseService.save(comment);
+        return courseService.postComment(comment);
 
     }
     

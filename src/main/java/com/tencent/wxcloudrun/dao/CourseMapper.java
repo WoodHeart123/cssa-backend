@@ -12,10 +12,11 @@ import java.util.List;
 
 @Mapper
 public interface CourseMapper{
-    void save(Comment comment);
-    List<Course> getCourseList(Integer departmentID);
+    void saveComment(Comment comment);
 
-    List<Course> getSearchCourseList();
+    void updateCourse(Course course);
+
+    List<Course> getCourseList(Integer departmentID);
 
     List<Course> getCourse(ArrayList<String> courseID);
 

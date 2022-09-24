@@ -33,4 +33,5 @@ public class Comment {
     //评论时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp commentTime;
+
 }
