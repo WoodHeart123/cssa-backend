@@ -15,7 +15,7 @@
     </update>
 
     <select id="getCourse" resultType="Course">
-        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgLike, credit, commentCount FROM course WHERE courseID in
+        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit, commentCount FROM course WHERE courseID in
         <foreach item="course" collection="courseID" separator="," open="(" close=")" index="index">
             #{course}
         </foreach>
