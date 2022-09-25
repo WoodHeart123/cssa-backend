@@ -1,7 +1,5 @@
 package com.tencent.wxcloudrun.controller;
 
-import com.tencent.wxcloudrun.model.Activity;
-import com.tencent.wxcloudrun.model.EmailDetail;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.SignupInfo;
 import com.tencent.wxcloudrun.service.ActivityService;

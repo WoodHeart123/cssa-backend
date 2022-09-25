@@ -6,8 +6,6 @@ import com.tencent.wxcloudrun.model.Department;
 import com.tencent.wxcloudrun.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Update;
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.List;

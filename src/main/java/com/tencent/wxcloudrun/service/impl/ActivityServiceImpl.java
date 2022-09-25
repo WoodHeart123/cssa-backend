@@ -10,9 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.context.ApplicationContext;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;

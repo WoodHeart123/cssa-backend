@@ -1,8 +1,6 @@
 package com.tencent.wxcloudrun.event;
 
-import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.SignupInfo;
-import com.tencent.wxcloudrun.model.User;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
