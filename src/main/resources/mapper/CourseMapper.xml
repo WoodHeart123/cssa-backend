@@ -29,11 +29,6 @@
         UPDATE user SET likedCommentJSON= #{likedCommentJSON} WHERE userID= #{userID};
     </update>
 
-    <update id="create_post_1">
-        UPDATE comment SET reportListJSON = '[]' WHERE commentID = #{commentID};
-        UPDATE comment SET reportListJSON = JSON_MERGE(reportListJSON, #{report}) WHERE commentID = #{commentID}
-    </update>
-
     <select id="getUser" parameterType="Integer" resultType="User">
         SELECT * FROM user WHERE userID = #{userID}
     </select>

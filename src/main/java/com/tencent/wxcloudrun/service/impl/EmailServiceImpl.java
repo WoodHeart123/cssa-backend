@@ -22,11 +22,9 @@ public class EmailServiceImpl implements EmailService {
     @Value("${spring.mail.username}")
     private String sender;
 
-    @Autowired
-    private TemplateEngine templateEngine;
-
     @Override
-    public Integer sendSimpleMail(EmailDetail emailDetail) throws MessagingException {
+    public void sendSimpleMail(EmailDetail emailDetail) throws MessagingException {
+        System.out.println(sender);
         MimeMessage mailMessage = mailSender.createMimeMessage();
         MimeMessageHelper mailMessageHelper = new MimeMessageHelper(mailMessage, true);
         mailMessageHelper.setFrom(sender);
@@ -34,6 +32,5 @@ public class EmailServiceImpl implements EmailService {
         mailMessageHelper.setSubject(emailDetail.getSubject());
         mailMessageHelper.setText(emailDetail.getMessage(), true);
         mailSender.send(mailMessage);
-        return 1;
     }
 }
