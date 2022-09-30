@@ -29,7 +29,7 @@
         UPDATE user SET likedCommentJSON= #{likedCommentJSON} WHERE userID= #{userID};
     </update>
 
-    <select id="getUser" parameterType="Integer" resultType="User">
+    <select id="getUser" parameterType="String" resultType="User">
         SELECT * FROM user WHERE userID = #{userID}
     </select>
 
