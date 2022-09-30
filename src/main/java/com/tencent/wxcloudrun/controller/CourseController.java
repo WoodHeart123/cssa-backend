@@ -83,12 +83,12 @@ public class CourseController {
      * @return Response information and data
      */
     @RequestMapping(value = {"/zan"}, method = {RequestMethod.GET})
-    public Response Zan(@RequestParam(name="commentID") Integer commentID, HttpServletRequest request){
+    public Response Zan(@RequestParam(name="commentID") String commentID, HttpServletRequest request){
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         if(openid.isEmpty()) {
             return Response.builder().status(102).message("无用户信息").build();
         }
-        return courseService.zan(openid.get(), commentID);
+        return courseService.zan(openid.get(), Integer.valueOf(commentID));
     }
 
     /**
