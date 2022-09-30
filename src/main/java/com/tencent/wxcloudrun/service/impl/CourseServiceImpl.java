@@ -42,7 +42,14 @@ public class CourseServiceImpl implements CourseService {
     public Response getDepartmentList() {
         return Response.builder().data(courseMapper.getDepartmentList()).status(100).message("成功").build();
     }
-    
+
+    /**
+     * Service to do what Zan controller want to request
+     * @param userID wx-openid
+     * @param commentID ID of comment
+     * @return success Response information if everything is recorded in Database correctly
+     * else error Response or 已点赞
+     */
     @Override
     @Transactional
     public Response zan(String userID, Integer commentID) {
@@ -62,6 +69,12 @@ public class CourseServiceImpl implements CourseService {
         return Response.builder().status(100).message("成功").build();
     }
 
+    /**
+     * Service to do what Post controller want to request
+     * @param commentID ID of comment
+     * @param report Feedback of this comment
+     * @return success Response information if report is recorded in Database correctly
+     */
     @Override
     @Transactional
     public Response report(Integer commentID, String report) {
@@ -72,6 +85,7 @@ public class CourseServiceImpl implements CourseService {
             comment.setReportList(JSON.parseArray(comment.getReportListJSON(), String.class));
         }
         comment.getReportList().add(report);
+        comment.setReportListJSON(JSON.toJSONString(comment.getReportList()));
         courseMapper.addReportList(comment);
         if(comment.getReportList().size() == 10) {
             courseMapper.hideComment(commentID);

@@ -74,7 +74,14 @@ public class CourseController {
     public Response getDepartmentList(HttpServletRequest request) {
         return courseService.getDepartmentList();
     }
-    
+
+    /**
+     * This controller record which comment users give zan, and increase the number of zan in this comment by one
+     * Request path is /zan, and method is GET
+     * @param commentID ID of comment
+     * @param request Header of this request(for getting wx-openid)
+     * @return Response information and data
+     */
     @RequestMapping(value = {"/zan"}, method = {RequestMethod.GET})
     public Response Zan(@RequestParam(name="commentID") Integer commentID, HttpServletRequest request){
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
@@ -84,6 +91,12 @@ public class CourseController {
         return courseService.zan(openid.get(), commentID);
     }
 
+    /**
+     * Report a bad comment, and record the number of reports of this comment
+     * @param comment comment which is reported
+     * @param request Header of this Request
+     * @return Response information and data
+     */
     @RequestMapping(value = {"/report"}, method = {RequestMethod.POST})
     public Response Post(@RequestBody Comment comment, HttpServletRequest request){
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
