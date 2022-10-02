@@ -68,4 +68,4 @@
         SELECT startDate,userJoinedNum,capacity FROM activity where actID = #{actID}
     </select>
 
-
+</mapper>
