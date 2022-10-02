@@ -38,7 +38,12 @@ public class CourseController {
         return courseService.getCourse(search.query("course","default", value));
 
     }
-
+    /**
+     * Add a newly posted comment to database
+     * @param comment comment which is posted
+     * @param request Header of this Request
+     * @return Add comment content and related information to database
+     */
     @PostMapping("/postcomment")
     public Response save(@RequestBody Comment comment, HttpServletRequest request) {
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
