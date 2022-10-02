@@ -50,6 +50,6 @@
     </select>
 
     <select id="getCommentList" parameterType="Integer" resultType="Comment">
-        SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount FROM comment ORDER BY ${orderField} limit #{offset}, #{limit}
+        SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime FROM comment ORDER BY ${orderField} limit #{offset}, #{limit}
     </select>
 </mapper>
