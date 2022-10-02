@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.event;
 
 import com.tencent.wxcloudrun.dao.ActivityMapper;
+import com.tencent.wxcloudrun.dao.UserMapper;
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.EmailDetail;
 import com.tencent.wxcloudrun.model.SignupInfo;
@@ -19,6 +20,9 @@ import javax.mail.MessagingException;
 public class UserEventListener {
 
     @Autowired
+    UserMapper userMapper;
+
+    @Autowired
     ActivityMapper activityMapper;
 
     @Autowired
@@ -31,7 +35,7 @@ public class UserEventListener {
     @Async
     public void register(SignupEvent signupEvent){
         SignupInfo signupInfo = signupEvent.getSignupInfo();
-        User user = activityMapper.login(signupInfo.getUserID());
+        User user = userMapper.login(signupInfo.getUserID());
         Activity activity= activityMapper.findActivity(signupInfo.getActID());
         if(user.getEmail() == null) {
             return;
