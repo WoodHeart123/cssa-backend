@@ -17,7 +17,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private CourseMapper courseMapper;
-    
+
+    /**
+     * Service to do what postComment controller want to request
+     * @param comment the comment
+     * @return success Response information if everything is recorded in Database correctly
+     */
     @Override
     @Transactional
     public Response postComment(Comment comment) {
@@ -106,6 +111,7 @@ public class CourseServiceImpl implements CourseService {
         } else {
             commentList = courseMapper.getCommentList(courseID, offset, limit, "commentTime");
         }
+
         return Response.builder().data(commentList).status(100).message("成功").build();
     }
 }
