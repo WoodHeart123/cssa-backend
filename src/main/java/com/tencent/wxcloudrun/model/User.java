@@ -15,4 +15,5 @@ public class User {
     private List<Integer> likedComment;
     private String likedCommentJSON;
     private Boolean isStudent;
+    private Integer avatar;
 }

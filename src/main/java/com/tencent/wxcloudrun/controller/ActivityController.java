@@ -24,23 +24,7 @@ public class ActivityController {
     @Autowired
     EmailService emailService;
 
-    @RequestMapping(value={"/login"}, method={RequestMethod.GET})
-    public Response login(@RequestParam String nickname, HttpServletRequest request) throws UnsupportedEncodingException {
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
-        if(openid.isEmpty()){
-            return Response.builder().status(102).message("无用户信息").build();
-        }
-        return activityService.login(nickname, openid.get());
-    }
 
-    @RequestMapping(value={"/updateEmail"}, method={RequestMethod.GET})
-    public Response updateEmail(String email, HttpServletRequest request){
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
-        if(openid.isEmpty()){
-            return Response.builder().status(102).message("无用户信息").build();
-        }
-        return activityService.updateEmail(email,openid.get());
-    }
 
 
     @RequestMapping(value={"/checksignup"},method={RequestMethod.GET})

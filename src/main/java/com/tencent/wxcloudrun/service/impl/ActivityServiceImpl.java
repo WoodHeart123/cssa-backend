@@ -91,26 +91,5 @@ public class ActivityServiceImpl implements ActivityService {
         return Response.builder().status(100).data(activityList).message("成功").build();
     }
 
-    @Override
-    public Response login(String nickname, String userID) throws UnsupportedEncodingException {
-        User user = activityMapper.login(userID);
-        if(user == null){
-            activityMapper.register(nickname,userID);
-            return Response.builder().status(103).message("新用户").build();
-        }
-        return Response.builder().status(100).data(user).build();
-    }
-
-    @Override
-    public Response updateEmail(String email,String userID){
-        String regex = "^([-a-zA-Z0-9_.]+)@([-a-zA-Z0-9_.]+).([a-zA-Z]{2,5})$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(email);
-        if (!matcher.matches()) {
-           return Response.builder().status(104).message("邮箱格式不正确").build();
-        }
-        activityMapper.updateEmail(email,userID);
-        return Response.builder().status(100).build();
-    }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
@@ -49,6 +50,23 @@ public class UserController {
             return Response.builder().status(120).message("验证码错误").build();
         }
 
+    }
+    @RequestMapping(value={"/login"}, method={RequestMethod.GET})
+    public Response login(@RequestParam String nickname, HttpServletRequest request) throws UnsupportedEncodingException {
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        if(openid.isEmpty()){
+            return Response.builder().status(102).message("无用户信息").build();
+        }
+        return userService.login(nickname, openid.get());
+    }
+
+    @RequestMapping(value={"/updateEmail"}, method={RequestMethod.GET})
+    public Response updateEmail(String email, HttpServletRequest request){
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        if(openid.isEmpty()){
+            return Response.builder().status(102).message("无用户信息").build();
+        }
+        return userService.updateEmail(email,openid.get());
     }
 
 

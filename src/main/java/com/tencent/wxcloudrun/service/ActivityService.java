@@ -31,7 +31,5 @@ public interface ActivityService {
      */
     Response getRegisterList(String userID);
 
-    Response login(String nickname, String userID) throws UnsupportedEncodingException;
 
-    Response updateEmail(String email, String userID);
 }

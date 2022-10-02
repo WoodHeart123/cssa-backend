@@ -27,6 +27,13 @@ public class CourseController {
     private ChannelFactory channelFactory;
 
 
+    /**
+     *
+     * @param value
+     * @param request
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
     public Response search(@RequestParam String value, HttpServletRequest request) throws IOException {
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
@@ -68,7 +75,7 @@ public class CourseController {
     }
     
     @RequestMapping(value={"/courselist"}, method = {RequestMethod.GET})
-    public Response getCourseList(@RequestParam Optional<Integer> departmentID, HttpServletRequest request) {
+    public Response getCourseList(@RequestParam Optional<Integer> departmentID, @RequestParam Integer page,  HttpServletRequest request) {
         if (departmentID.isEmpty()) {
             return Response.builder().message("部门ID为空").status(501).build();
         }

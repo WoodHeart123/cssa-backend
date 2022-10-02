@@ -6,4 +6,17 @@
         UPDATE user SET isStudent = 1 WHERE userID = #{userID}
     </update>
 
+    <select id="login" parameterType="String" resultType="User">
+        SELECT email,nickname, isStudent, avatar FROM user WHERE userID = #{userID}
+    </select>
+
+    <insert id="register" parameterType="String">
+        INSERT INTO user (userID,nickname) VALUES (#{userID},#{nickname})
+    </insert>
+
+    <update id="updateEmail" parameterType="String">
+        UPDATE user SET email = #{email} WHERE userID = #{userID}
+    </update>
+
+</mapper>
 </mapper>
