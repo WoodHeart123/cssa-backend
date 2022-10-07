@@ -6,6 +6,10 @@
         INSERT INTO comment (userID,courseID,professor,courseTime,difficulty,prefer,comment) VALUES (#{userID},#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{comment})
     </insert>
 
+    <select id="getAllCourseList"  resultType="Course">
+        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit, commentCount FROM course ORDER BY courseNum
+    </select>
+
     <select id="getCourseList" parameterType="Integer" resultType="Course">
         SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit, commentCount FROM course WHERE departmentID = #{departmentID}
     </select>

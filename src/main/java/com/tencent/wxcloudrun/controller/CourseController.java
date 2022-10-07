@@ -75,7 +75,7 @@ public class CourseController {
     }
     
     @RequestMapping(value={"/courselist"}, method = {RequestMethod.GET})
-    public Response getCourseList(@RequestParam Optional<Integer> departmentID, @RequestParam Integer page,  HttpServletRequest request) {
+    public Response getCourseList(@RequestParam Optional<Integer> departmentID,  HttpServletRequest request) {
         if (departmentID.isEmpty()) {
             return Response.builder().message("部门ID为空").status(501).build();
         }

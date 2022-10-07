@@ -27,7 +27,7 @@ public class CourseServiceImpl implements CourseService {
     @Transactional
     public Response postComment(Comment comment) {
         courseMapper.saveComment(comment);
-        ArrayList<String> courseIDList = new ArrayList<String>(1);
+        ArrayList<String> courseIDList = new ArrayList<>(1);
         courseIDList.add(comment.getCourseID().toString());
         List<Course> courseList = courseMapper.getCourse(courseIDList);
         Course course = courseList.get(0);
@@ -38,11 +38,21 @@ public class CourseServiceImpl implements CourseService {
         return Response.builder().message("成功").status(100).build();
     }
 
+    /**
+     * @param departmentID if departmentID == 0, return all course, else return course in given department
+     * @return list of course matched given department
+     */
     @Override
     public Response getCourseList(Integer departmentID) {
+        if(departmentID.equals(0)){
+            return Response.builder().data(courseMapper.getAllCourseList()).status(100).message("成功").build();
+        }
         return Response.builder().data(courseMapper.getCourseList(departmentID)).status(100).message("成功").build();
     }
-    
+
+    /**
+     * @return list of department
+     */
     @Override
     public Response getDepartmentList() {
         return Response.builder().data(courseMapper.getDepartmentList()).status(100).message("成功").build();

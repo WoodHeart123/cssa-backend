@@ -16,8 +16,15 @@ public interface CourseMapper{
 
     void updateCourse(Course course);
 
+    List<Course> getAllCourseList();
+
     List<Course> getCourseList(Integer departmentID);
 
+    /**
+     * get list of course provided by search db
+     * @param courseID list of course ID
+     * @return list of course
+     */
     List<Course> getCourse(ArrayList<String> courseID);
 
     List<Department> getDepartmentList();
