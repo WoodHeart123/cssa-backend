@@ -75,11 +75,18 @@ public class CourseController {
     }
     
     @RequestMapping(value={"/courselist"}, method = {RequestMethod.GET})
-    public Response getCourseList(@RequestParam Optional<Integer> departmentID,  HttpServletRequest request) {
+    public Response getCourseList(@RequestParam Optional<Integer> departmentID,  @RequestParam Optional<Integer> offset, @RequestParam Optional<Integer> limit, @RequestParam Optional<OrderType> orderType, HttpServletRequest request) {
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        if(openid.isEmpty()){
+            return Response.builder().status(102).message("无用户信息").build();
+        }
         if (departmentID.isEmpty()) {
             return Response.builder().message("部门ID为空").status(501).build();
         }
-        return courseService.getCourseList(departmentID.get());
+        if (departmentID.get().equals(0) && (offset.isEmpty() || limit.isEmpty() || orderType.isEmpty())){
+            return Response.builder().message("缺少参数").status(502).build();
+        }
+        return courseService.getCourseList(departmentID.get(),offset.get(),limit.get(),orderType.get());
     }
     
     @RequestMapping(value={ "/departmentlist"}, method = {RequestMethod.GET})

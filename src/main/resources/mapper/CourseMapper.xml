@@ -7,7 +7,7 @@
     </insert>
 
     <select id="getAllCourseList"  resultType="Course">
-        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit, commentCount FROM course ORDER BY courseNum
+        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit, commentCount FROM course ORDER BY ${field} ${order} LIMIT #{offset}, #{limit}
     </select>
 
     <select id="getCourseList" parameterType="Integer" resultType="Course">
@@ -53,7 +53,7 @@
         SELECT departmentID, department, departmentAbrev FROM department ORDER BY departmentID
     </select>
 
-    <select id="getCommentList" parameterType="Integer" resultType="Comment">
-        SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime FROM comment ORDER BY ${orderField} limit #{offset}, #{limit}
+    <select id="getCommentList" resultType="Comment">
+        SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime FROM comment ORDER BY ${orderField} LIMIT #{offset}, #{limit}
     </select>
 </mapper>

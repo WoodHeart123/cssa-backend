@@ -16,7 +16,7 @@ public interface CourseMapper{
 
     void updateCourse(Course course);
 
-    List<Course> getAllCourseList();
+    List<Course> getAllCourseList(@Param("offset") Integer offset,@Param("limit") Integer limit,@Param("field")String field, @Param("order") String order);
 
     List<Course> getCourseList(Integer departmentID);
 
