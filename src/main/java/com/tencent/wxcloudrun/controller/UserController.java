@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.controller;
 
 
+import com.github.twohou.sonic.ChannelFactory;
 import com.tencent.wxcloudrun.model.CacheStore;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.service.UserService;
@@ -23,6 +24,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    private ChannelFactory channelFactory;
 
 
     @RequestMapping(value={"/getAuthCode"}, method = {RequestMethod.GET})
@@ -47,7 +51,7 @@ public class UserController {
         if(authCodeCache.get(openid.get()) != null && Objects.equals(authCodeCache.get(openid.get()), authCode)){
             return userService.authSuccess(openid.get());
         }else{
-            return Response.builder().status(120).message("验证码错误").build();
+            return Response.builder().status(106).message("验证码错误").build();
         }
 
     }
@@ -67,6 +71,18 @@ public class UserController {
             return Response.builder().status(102).message("无用户信息").build();
         }
         return userService.updateEmail(email,openid.get());
+    }
+
+    @RequestMapping(value={"/updateAvatar"}, method={RequestMethod.GET})
+    public Response updateAvatar(Integer avatar, HttpServletRequest request){
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        if(openid.isEmpty()){
+            return Response.builder().status(102).message("无用户信息").build();
+        }
+        if(avatar <= 0 || avatar >= 12){
+            return Response.builder().status(110).build();
+        }
+        return null;
     }
 
 

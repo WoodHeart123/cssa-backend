@@ -58,7 +58,7 @@ public class CourseController {
             return Response.builder().status(102).message("无用户信息").build();
         }
         if(comment.getComment().length() > 300){
-            return Response.builder().status(102).message("超过字数限制").build();
+            return Response.builder().status(103).message("超过字数限制").build();
         }
         comment.setUserID(openid.get());
         return courseService.postComment(comment);
@@ -81,10 +81,13 @@ public class CourseController {
             return Response.builder().status(102).message("无用户信息").build();
         }
         if (departmentID.isEmpty()) {
-            return Response.builder().message("部门ID为空").status(501).build();
+            return Response.builder().message("部门ID为空").status(104).build();
         }
         if (departmentID.get().equals(0) && (offset.isEmpty() || limit.isEmpty() || orderType.isEmpty())){
-            return Response.builder().message("缺少参数").status(502).build();
+            return Response.builder().message("缺少参数").status(105).build();
+        }
+        if(orderType.isEmpty()){
+            return Response.builder().message("缺少参数").status(105).build();
         }
         return courseService.getCourseList(departmentID.get(),offset.get(),limit.get(),orderType.get());
     }

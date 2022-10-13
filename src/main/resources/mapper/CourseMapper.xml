@@ -10,8 +10,8 @@
         SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit, commentCount FROM course ORDER BY ${field} ${order} LIMIT #{offset}, #{limit}
     </select>
 
-    <select id="getCourseList" parameterType="Integer" resultType="Course">
-        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit, commentCount FROM course WHERE departmentID = #{departmentID}
+    <select id="getCourseList" resultType="Course">
+        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit, commentCount FROM course WHERE departmentID = #{departmentID} ORDER BY ${field} ${order}
     </select>
 
     <update id="updateCourse" parameterType="Course">

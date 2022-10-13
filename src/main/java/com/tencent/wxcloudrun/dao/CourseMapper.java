@@ -16,9 +16,25 @@ public interface CourseMapper{
 
     void updateCourse(Course course);
 
+    /**
+     *
+     * @param offset
+     * @param limit
+     * @param field
+     * @param order
+     * @return
+     */
     List<Course> getAllCourseList(@Param("offset") Integer offset,@Param("limit") Integer limit,@Param("field")String field, @Param("order") String order);
 
-    List<Course> getCourseList(Integer departmentID);
+
+    /**
+     *
+     * @param departmentID department ID
+     * @param field field that need to be sorted
+     * @param order ASC/DESC
+     * @return list of course under department with given order
+     */
+    List<Course> getCourseList(@Param("departmentID")Integer departmentID,@Param("field")String field, @Param("order") String order);
 
     /**
      * get list of course provided by search db

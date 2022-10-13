@@ -47,7 +47,7 @@ public class CourseServiceImpl implements CourseService {
         if(departmentID.equals(0)){
             return Response.builder().data(courseMapper.getAllCourseList(offset,limit,orderType.getField(),orderType.getOrder())).status(100).message("成功").build();
         }
-        return Response.builder().data(courseMapper.getCourseList(departmentID)).status(100).message("成功").build();
+        return Response.builder().data(courseMapper.getCourseList(departmentID,orderType.getField(),orderType.getOrder())).status(100).message("成功").build();
     }
 
     /**
@@ -75,7 +75,7 @@ public class CourseServiceImpl implements CourseService {
             user.setLikedComment(JSON.parseArray(user.getLikedCommentJSON(), Integer.class));
         }
         if(user.getLikedComment().contains(commentID)){
-            return Response.builder().status(180).message("已点赞").build();
+            return Response.builder().status(107).message("已点赞").build();
         }
         user.getLikedComment().add(commentID);
         user.setLikedCommentJSON(JSON.toJSONString(user.getLikedComment()));
