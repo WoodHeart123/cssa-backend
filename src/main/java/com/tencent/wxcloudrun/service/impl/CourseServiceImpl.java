@@ -43,11 +43,11 @@ public class CourseServiceImpl implements CourseService {
      * @return list of course matched given department
      */
     @Override
-    public Response getCourseList(Integer departmentID, Integer offset, Integer limit, OrderType orderType) {
+    public Response getCourseList(Integer departmentID, Integer offset, Integer limit, SortType sortType) {
         if(departmentID.equals(0)){
-            return Response.builder().data(courseMapper.getAllCourseList(offset,limit,orderType.getField(),orderType.getOrder())).status(100).message("成功").build();
+            return Response.builder().data(courseMapper.getAllCourseList(offset,limit, sortType.getField(), sortType.getOrder())).status(100).message("成功").build();
         }
-        return Response.builder().data(courseMapper.getCourseList(departmentID,orderType.getField(),orderType.getOrder())).status(100).message("成功").build();
+        return Response.builder().data(courseMapper.getCourseList(departmentID, sortType.getField(), sortType.getOrder())).status(100).message("成功").build();
     }
 
     /**
@@ -114,9 +114,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Response getCommentList(Integer courseID, Integer offset, Integer limit, OrderType orderType) {
+    public Response getCommentList(Integer courseID, Integer offset, Integer limit, SortType sortType) {
         List<Comment> commentList;
-        commentList = courseMapper.getCommentList(courseID, offset, limit, orderType.getField());
+        commentList = courseMapper.getCommentList(courseID, offset, limit, sortType.getField());
         return Response.builder().data(commentList).status(100).message("成功").build();
     }
 }

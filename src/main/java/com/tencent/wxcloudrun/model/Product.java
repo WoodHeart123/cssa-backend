@@ -2,7 +2,6 @@ package com.tencent.wxcloudrun.model;
 
 import lombok.Data;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 

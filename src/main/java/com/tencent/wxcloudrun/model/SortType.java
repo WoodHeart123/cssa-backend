@@ -3,7 +3,7 @@ package com.tencent.wxcloudrun.model;
 import lombok.Getter;
 
 @Getter
-public enum OrderType {
+public enum SortType {
     SORT_BY_LIKE("likeCount","DESC"),
     SORT_BY_TIME("commentTime","DESC"),
     SORT_BY_COURSE_NUM("courseNum","ASC"),
@@ -17,7 +17,7 @@ public enum OrderType {
     private final String field;
     private final String order;
 
-    OrderType(String field, String order){
+    SortType(String field, String order){
         this.field = field;
         this.order = order;
     }

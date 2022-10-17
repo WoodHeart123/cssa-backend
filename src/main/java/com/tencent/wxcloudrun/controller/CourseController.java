@@ -3,7 +3,7 @@ package com.tencent.wxcloudrun.controller;
 import com.github.twohou.sonic.ChannelFactory;
 import com.github.twohou.sonic.SearchChannel;
 import com.tencent.wxcloudrun.model.Comment;
-import com.tencent.wxcloudrun.model.OrderType;
+import com.tencent.wxcloudrun.model.SortType;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +36,6 @@ public class CourseController {
      */
     @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
     public Response search(@RequestParam String value, HttpServletRequest request) throws IOException {
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
-        if(openid.isEmpty()){
-            return Response.builder().status(102).message("无用户信息").build();
-        }
         SearchChannel search = channelFactory.newSearchChannel();
         search.ping();
         return courseService.getCourse(search.query("course","default", value));
@@ -66,20 +62,13 @@ public class CourseController {
     }
 
     @RequestMapping(value={"/getCommentList"}, method = {RequestMethod.GET})
-    public Response getCommentList(@RequestParam Integer courseID, @RequestParam Integer offset, @RequestParam Integer limit, @RequestParam OrderType order, HttpServletRequest request){
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
-        if(openid.isEmpty()){
-            return Response.builder().status(102).message("无用户信息").build();
-        }
+    public Response getCommentList(@RequestParam Integer courseID, @RequestParam Integer offset, @RequestParam Integer limit, @RequestParam SortType order, HttpServletRequest request){
         return courseService.getCommentList(courseID,offset,limit,order);
     }
     
     @RequestMapping(value={"/courselist"}, method = {RequestMethod.GET})
-    public Response getCourseList(@RequestParam Optional<Integer> departmentID,  @RequestParam Optional<Integer> offset, @RequestParam Optional<Integer> limit, @RequestParam Optional<OrderType> orderType, HttpServletRequest request) {
+    public Response getCourseList(@RequestParam Optional<Integer> departmentID, @RequestParam Optional<Integer> offset, @RequestParam Optional<Integer> limit, @RequestParam Optional<SortType> orderType, HttpServletRequest request) {
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
-        if(openid.isEmpty()){
-            return Response.builder().status(102).message("无用户信息").build();
-        }
         if (departmentID.isEmpty()) {
             return Response.builder().message("部门ID为空").status(104).build();
         }
@@ -93,7 +82,7 @@ public class CourseController {
     }
     
     @RequestMapping(value={ "/departmentlist"}, method = {RequestMethod.GET})
-    public Response getDepartmentList(HttpServletRequest request) {
+    public Response getDepartmentList() {
         return courseService.getDepartmentList();
     }
 
