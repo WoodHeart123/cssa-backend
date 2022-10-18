@@ -83,7 +83,7 @@ public interface CourseMapper{
      */
     void hideComment(Integer commentID);
 
-    List<Comment> getCommentList(@Param("commentID")Integer commentID,@Param("offset") Integer offset,@Param("limit") Integer limit,@Param("orderField")String orderField);
+    List<Comment> getCommentList(@Param("courseID")Integer courseID,@Param("offset") Integer offset,@Param("limit") Integer limit,@Param("orderField")String orderField);
 
 }
 
