@@ -34,8 +34,8 @@ public class CourseServiceImpl implements CourseService {
         courseIDList.add(comment.getCourseID().toString());
         List<Course> courseList = courseMapper.getCourse(courseIDList);
         Course course = courseList.get(0);
-        course.setAvgDifficulty(course.getAvgDifficulty() * course.getCommentCount() + comment.getDifficulty() /(course.getCommentCount() + 1));
-        course.setAvgPrefer(course.getAvgPrefer() * course.getCommentCount() + comment.getPrefer()/(course.getCommentCount() + 1));
+        course.setAvgDifficulty((course.getAvgDifficulty() * course.getCommentCount() + comment.getDifficulty())/(course.getCommentCount() + 1));
+        course.setAvgPrefer((course.getAvgPrefer() * course.getCommentCount() + comment.getPrefer())/(course.getCommentCount() + 1));
         course.setCommentCount(course.getCommentCount() + 1);
         courseMapper.updateCourse(course);
         return Response.builder().message("成功").status(100).build();
