@@ -3,7 +3,7 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.CourseMapper">
 
     <insert id="saveComment" parameterType="Comment">
-        INSERT INTO comment (userID,courseID,professor,courseTime,difficulty,prefer,comment,commentTime) VALUES (#{userID},#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{comment},#{commentTime})
+        INSERT INTO comment (userID,courseID,professor,courseTime,difficulty,prefer,comment,commentTime,userAvatar) VALUES (#{userID},#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{comment},#{commentTime},#{userAvatar})
     </insert>
 
     <select id="getAllCourseList"  resultType="Course">
@@ -54,6 +54,6 @@
     </select>
 
     <select id="getCommentList" resultType="Comment">
-        SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime FROM comment WHERE courseID = #{courseID} ORDER BY ${orderField} DESC LIMIT #{offset}, #{limit}
+        SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime, userAvatar FROM comment WHERE courseID = #{courseID} ORDER BY ${orderField} DESC LIMIT #{offset}, #{limit}
     </select>
 </mapper>

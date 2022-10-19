@@ -15,6 +15,7 @@ import java.util.List;
 public class Comment {
 
     private String userID;
+    private Integer userAvatar;
     private Integer courseID;
     private Integer commentID;
     //教授名
