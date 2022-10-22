@@ -12,4 +12,7 @@ public interface SecondHandMapper {
     ArrayList<Product> getProductList(String productType, Integer offset, Integer limit);
 
     ArrayList<Product> getAllProductList(Integer offset, Integer limit);
+    
+    boolean collect(Product, product);
+    boolean cancelCollect(Product, product);
 }
