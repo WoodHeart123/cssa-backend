@@ -2,6 +2,7 @@ package com.tencent.wxcloudrun.service;
 
 import com.tencent.wxcloudrun.model.ProductType;
 import com.tencent.wxcloudrun.model.Response;
+import com.tencent.wxcloudrun.model.Product;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,4 +15,6 @@ public interface SecondHandService {
      * @return list of product information
      */
     Response getProductList(ProductType productType,Integer offset, Integer limit);
+    
+    Response collect(Product product);
 }
