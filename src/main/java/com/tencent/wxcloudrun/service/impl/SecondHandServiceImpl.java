@@ -17,7 +17,7 @@ public class SecondHandServiceImpl implements SecondHandService {
 
     @Autowired
     SecondHandMapper secondHandMapper;
-
+    ArrayList<Product> collection = new ArrayList<Product>();
     @Override
     public Response getProductList(ProductType productType, Integer offset, Integer limit) {
         ArrayList<Product> productArrayList;
@@ -25,6 +25,21 @@ public class SecondHandServiceImpl implements SecondHandService {
             productArrayList = secondHandMapper.getAllProductList(offset,limit);
         }else{
             productArrayList = secondHandMapper.getProductList(productType.name(),offset,limit);
+        }
+        return Response.builder().data(productArrayList).status(100).build();
+    }
+    
+    @Override
+    public Response collect(Product product) {
+        if(!(collection.contains(product))){
+            collection.add(product);
+        }
+        return Response.builder().data(productArrayList).status(100).build();
+    }
+    @Override
+    public Response cancelCollect(Product product) {
+        if(collection.contains(product)){
+            collection.remove(product);
         }
         return Response.builder().data(productArrayList).status(100).build();
     }
