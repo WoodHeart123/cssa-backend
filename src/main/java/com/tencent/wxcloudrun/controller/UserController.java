@@ -82,7 +82,16 @@ public class UserController {
         if(avatar < 1 || avatar > 12){
             return Response.builder().status(110).build();
         }
-        return null;
+        return userService.updateAvatar(avatar);
+    }
+
+    @RequestMapping(value={"/getZanList"}, method={RequestMethod.GET})
+    public Response getZanList(HttpServletRequest request){
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        if(openid.isEmpty()){
+            return Response.builder().status(102).message("无用户信息").build();
+        }
+        return userService.getLikedCommentList(openid.get());
     }
 
 

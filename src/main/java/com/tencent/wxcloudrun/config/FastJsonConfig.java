@@ -22,7 +22,6 @@ public class FastJsonConfig {
 
         List<MediaType> supportedMediaTypes = new ArrayList<>();
         supportedMediaTypes.add(MediaType.APPLICATION_JSON);
-        supportedMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
         supportedMediaTypes.add(MediaType.APPLICATION_ATOM_XML);
         supportedMediaTypes.add(MediaType.APPLICATION_FORM_URLENCODED);
         supportedMediaTypes.add(MediaType.APPLICATION_OCTET_STREAM);
@@ -45,7 +44,7 @@ public class FastJsonConfig {
                 SerializerFeature.DisableCircularReferenceDetect,
                 SerializerFeature.WriteMapNullValue
         );
-        SerializeConfig serializeConfig = SerializeConfig.globalInstance;
+        SerializeConfig serializeConfig = SerializeConfig.getGlobalInstance();
         serializeConfig.put(BigInteger.class, ToStringSerializer.instance);
         serializeConfig.put(Long.class, ToStringSerializer.instance);
         serializeConfig.put(Long.TYPE, ToStringSerializer.instance);

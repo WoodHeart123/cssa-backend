@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.service.impl;
 
 
+import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.dao.UserMapper;
 import com.tencent.wxcloudrun.event.AuthEvent;
 import com.tencent.wxcloudrun.model.Response;
@@ -11,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,6 +40,12 @@ public class UserServiceImpl implements UserService {
         if(user == null){
             userMapper.register(nickname,userID);
             return Response.builder().status(103).message("新用户").build();
+        }else{
+            if(user.getLikedCommentJSON() == null){
+                user.setLikedComment(new ArrayList<>());
+            }else {
+                user.setLikedComment(JSON.parseArray(user.getLikedCommentJSON(), Integer.class));
+            }
         }
         return Response.builder().status(100).data(user).build();
     }
@@ -51,6 +59,19 @@ public class UserServiceImpl implements UserService {
             return Response.builder().status(104).message("邮箱格式不正确").build();
         }
         userMapper.updateEmail(email,userID);
+        return Response.builder().status(100).build();
+    }
+
+    @Override
+    public Response getLikedCommentList(String userID) {
+        User user = userMapper.getLikedCommentList(userID);
+        user.setLikedComment(JSON.parseArray(user.getLikedCommentJSON(), Integer.class));
+        return Response.builder().data(user.getLikedComment()).status(100).build();
+    }
+
+    @Override
+    public Response updateAvatar(Integer avatar){
+        userMapper.updateAvatar(avatar);
         return Response.builder().status(100).build();
     }
 
