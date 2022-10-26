@@ -13,6 +13,6 @@ public interface SecondHandMapper {
 
     ArrayList<Product> getAllProductList(Integer offset, Integer limit);
     
-    boolean collect(Product, product);
-    boolean cancelCollect(Product, product);
+    boolean collect(Product product);
+    boolean cancelCollect(Product product);
 }

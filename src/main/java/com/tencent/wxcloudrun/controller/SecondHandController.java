@@ -22,14 +22,14 @@ public class SecondHandController {
     public Response getProductList(@RequestParam ProductType productType, @RequestParam Integer offset, @RequestParam Integer limit, HttpServletRequest request){
         return secondHandService.getProductList(productType,offset,limit);
     }
-    
-    @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})
-    public Response collect(@RequestParam Product product, HttpServletRequest request){
-        return secondHandService.collect(product);
-    }
-    
+
     @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})
     public Response cancelCollect(@RequestParam Product product, HttpServletRequest request){
         return secondHandService.collect(product);
     }
+
+//    @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})
+//    public Response collect(@RequestParam Product product, HttpServletRequest request){
+//        return secondHandService.collect(product);
+//    }
 }

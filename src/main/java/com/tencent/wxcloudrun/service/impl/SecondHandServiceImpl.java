@@ -34,13 +34,13 @@ public class SecondHandServiceImpl implements SecondHandService {
         if(!(collection.contains(product))){
             collection.add(product);
         }
-        return Response.builder().data(productArrayList).status(100).build();
+        return Response.builder().data(null).status(100).build();
     }
     @Override
     public Response cancelCollect(Product product) {
         if(collection.contains(product)){
             collection.remove(product);
         }
-        return Response.builder().data(productArrayList).status(100).build();
+        return Response.builder().data(null).status(100).build();
     }
 }
