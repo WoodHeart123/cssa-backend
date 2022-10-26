@@ -31,7 +31,7 @@ public class UserController {
 
     @RequestMapping(value={"/getAuthCode"}, method = {RequestMethod.GET})
     public Response getAuthCode(@RequestParam String email, HttpServletRequest request){
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-unionid"));
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();
         }
@@ -44,7 +44,7 @@ public class UserController {
 
     @RequestMapping(value={"/verifyAuthCode"}, method = {RequestMethod.GET})
     public Response verifyAuthCod(@RequestParam Integer authCode, HttpServletRequest request){
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-unionid"));
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();
         }
@@ -57,7 +57,7 @@ public class UserController {
     }
     @RequestMapping(value={"/login"}, method={RequestMethod.GET})
     public Response login(@RequestParam String nickname, HttpServletRequest request) throws UnsupportedEncodingException {
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-unionid"));
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();
         }
@@ -66,7 +66,7 @@ public class UserController {
 
     @RequestMapping(value={"/updateEmail"}, method={RequestMethod.GET})
     public Response updateEmail(String email, HttpServletRequest request){
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-unionid"));
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();
         }
@@ -75,7 +75,7 @@ public class UserController {
 
     @RequestMapping(value={"/updateAvatar"}, method={RequestMethod.GET})
     public Response updateAvatar(Integer avatar, HttpServletRequest request){
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-unionid"));
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();
         }
@@ -87,7 +87,7 @@ public class UserController {
 
     @RequestMapping(value={"/getZanList"}, method={RequestMethod.GET})
     public Response getZanList(HttpServletRequest request){
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-unionid"));
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();
         }

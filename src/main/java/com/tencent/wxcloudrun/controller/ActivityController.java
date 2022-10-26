@@ -29,7 +29,7 @@ public class ActivityController {
 
     @RequestMapping(value={"/checksignup"},method={RequestMethod.GET})
     public Response checkSignup(@RequestParam(name="actID") Integer actID, @RequestParam(name="date") Long date, HttpServletRequest request){
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-unionid"));
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();
         }
@@ -38,14 +38,14 @@ public class ActivityController {
 
     @RequestMapping(value = {"/detail"}, method = {RequestMethod.GET})
     public Response Detail(HttpServletRequest request) {
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-unionid"));
         return Response.builder().data(openid).message("success").build();
     }
 
 
     @RequestMapping(value = { "/register" }, method = { RequestMethod.POST })
     public Response register(@RequestBody SignupInfo info, HttpServletRequest request) {
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-unionid"));
         if(openid.isEmpty()) {
             return Response.builder().status(102).message("无用户信息").build();
         }
@@ -55,7 +55,7 @@ public class ActivityController {
 
     @RequestMapping(value = {"/activityList"}, method = {RequestMethod.GET})
     public Response findByID(@RequestParam Long current,HttpServletRequest request){
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-unionid"));
         if(openid.isEmpty()) {
             return Response.builder().status(102).message("无用户信息").build();
         }
@@ -64,7 +64,7 @@ public class ActivityController {
 
     @RequestMapping(value = {"/registerList"}, method = {RequestMethod.GET})
     public Response getRegisterList(HttpServletRequest request){
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-unionid"));
         if(openid.isEmpty()) {
             return Response.builder().status(102).message("无用户信息").build();
         }
