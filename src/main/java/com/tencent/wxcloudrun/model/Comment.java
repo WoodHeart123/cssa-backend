@@ -17,6 +17,9 @@ public class Comment {
     private String userID;
     private Integer userAvatar;
     private Integer courseID;
+    private String courseName;
+    private Integer courseNum;
+    private String departmentAbrev;
     private Integer commentID;
     //教授名
     private String professor;
