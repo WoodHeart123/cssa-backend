@@ -49,7 +49,7 @@ public class CourseController {
      */
     @PostMapping("/postcomment")
     public Response save(@RequestBody Comment comment, HttpServletRequest request) {
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-unionid"));
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();
         }
@@ -68,7 +68,7 @@ public class CourseController {
     
     @RequestMapping(value={"/courselist"}, method = {RequestMethod.GET})
     public Response getCourseList(@RequestParam Optional<Integer> departmentID, @RequestParam Optional<Integer> offset, @RequestParam Optional<Integer> limit, @RequestParam Optional<SortType> orderType, HttpServletRequest request) {
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-unionid"));
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         if (departmentID.isEmpty()) {
             return Response.builder().message("部门ID为空").status(104).build();
         }
@@ -95,7 +95,7 @@ public class CourseController {
      */
     @RequestMapping(value = {"/zan"}, method = {RequestMethod.GET})
     public Response Zan(@RequestParam(name="commentID") Integer commentID, HttpServletRequest request){
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-unionid"));
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         if(openid.isEmpty()) {
             return Response.builder().status(102).message("无用户信息").build();
         }
@@ -110,7 +110,7 @@ public class CourseController {
      */
     @RequestMapping(value = {"/report"}, method = {RequestMethod.POST})
     public Response Post(@RequestBody Comment comment, HttpServletRequest request){
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-unionid"));
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         if(openid.isEmpty()) {
             return Response.builder().status(102).message("无用户信息").build();
         }
