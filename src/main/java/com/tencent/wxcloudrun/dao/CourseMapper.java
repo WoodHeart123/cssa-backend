@@ -85,9 +85,8 @@ public interface CourseMapper{
 
     List<Comment> getCommentList(@Param("courseID")Integer courseID,@Param("offset") Integer offset,@Param("limit") Integer limit,@Param("orderField")String orderField);
 
-    User getPostCommentList(String userID);
+    Integer getPostCommentCount(String userID, Integer courseID);
 
-    void setPostCommentList(User user);
 
 }
 

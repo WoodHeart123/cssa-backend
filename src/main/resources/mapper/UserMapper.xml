@@ -7,7 +7,7 @@
     </update>
 
     <select id="login" parameterType="String" resultType="User">
-        SELECT email,nickname, isStudent, avatar, likedCommentJSON FROM user WHERE userID = #{userID}
+        SELECT email,nickname, isStudent, avatar, likedCommentJSON, savedProductJSON FROM user WHERE userID = #{userID}
     </select>
 
     <insert id="register" parameterType="String">

@@ -57,10 +57,7 @@
         SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime, userAvatar FROM comment WHERE courseID = #{courseID} ORDER BY ${orderField} DESC LIMIT #{offset}, #{limit}
     </select>
 
-    <select id="getPostCommentList" parameterType="String" resultType="User">
-        SELECT userID, postCommentJSON from user WHERE userID = #{userID}
-    </select>
-    <select id="setPostCommentList" parameterType="User">
-        UPDATE user SET postCommentJSON = #{postCommentJSON}  WHERE userID = #{userID}
+    <select id="getPostCommentCount" parameterType="Map" resultType="Integer">
+        SELECT COUNT(commentID) from comment WHERE courseID = #{courseID} AND userID = #{userID}
     </select>
 </mapper>
