@@ -28,8 +28,26 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public Response postComment(Comment comment) {
+        // to check if there is already two comments
+        User user = courseMapper.getPostCommentList(comment.getUserID());
+        if(user == null){
+            return Response.builder().status(102).message("无用户信息").build();
+        }
+        if(user.getPostCommentJSON() == null){
+            user.setPostComment(new ArrayList<>());
+        }else{
+            user.setPostComment(JSON.parseArray(user.getPostCommentJSON(), Integer.class));
+        }
+        if(user.getPostComment().indexOf(comment.getCommentID()) != user.getPostComment().lastIndexOf(comment.getCommentID())){
+            return Response.builder().message("本学期已评论超过两次").status(111).build();
+        }
+        user.getPostComment().add(comment.getCommentID());
+        user.setPostCommentJSON(JSON.toJSONString(user.getPostComment()));
+        courseMapper.setPostCommentList(user);
+        // save the comment
         comment.setCommentTime(new Timestamp(new Date().getTime()));
         courseMapper.saveComment(comment);
+        // update course stats
         ArrayList<String> courseIDList = new ArrayList<>(1);
         courseIDList.add(comment.getCourseID().toString());
         List<Course> courseList = courseMapper.getCourse(courseIDList);

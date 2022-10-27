@@ -16,6 +16,8 @@ public class User {
     private String likedCommentJSON;
     private List<Integer> savedProduct;
     private String savedProductJSON;
+    private List<Integer> postComment;
+    private String postCommentJSON;
     private Boolean isStudent;
     private Integer avatar;
 }
