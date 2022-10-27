@@ -1,7 +1,11 @@
 package com.tencent.wxcloudrun.dao;
 
+import com.tencent.wxcloudrun.model.Comment;
 import com.tencent.wxcloudrun.model.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface UserMapper {
@@ -40,4 +44,13 @@ public interface UserMapper {
      * @param avatar a number ranged from 1 to 12
      */
     void updateAvatar(Integer avatar);
+
+    /**
+     *
+     * @param userID user ID
+     * @param offset the starting commentID
+     * @param limit number of comments
+     * @return list of comment with limit size
+     */
+    List<Comment> getMyComment(@Param("userID")String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
 }

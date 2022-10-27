@@ -94,5 +94,13 @@ public class UserController {
         return userService.getLikedCommentList(openid.get());
     }
 
+    @RequestMapping(value={"/getMyComment"}, method={RequestMethod.GET})
+    public Response getMyComment(@RequestParam Integer offset, @RequestParam Integer limit,HttpServletRequest request){
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        if(openid.isEmpty()){
+            return Response.builder().status(102).message("无用户信息").build();
+        }
+        return userService.getMyComment(openid.get(),offset,limit);
+    }
 
 }

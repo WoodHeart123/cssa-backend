@@ -75,4 +75,10 @@ public class UserServiceImpl implements UserService {
         return Response.builder().status(100).build();
     }
 
+    @Override
+    public Response getMyComment(String userID, Integer offset, Integer limit) {
+        return Response.builder().status(100).data(userMapper.getMyComment(userID,offset,limit)).build();
+    }
+
+
 }

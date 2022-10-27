@@ -26,4 +26,7 @@
         UPDATE user SET avatar = #{avatar}
     </update>
 
+    <select id="getMyComment" parameterType="Map" resultType="Comment">
+        SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime, userAvatar from comment WHERE courseID > #{offset} AND userID = #{userID} LIMIT ${limit}
+    </select>
 </mapper>
