@@ -15,4 +15,5 @@ public interface UserService {
     Response getLikedCommentList(String userID);
     Response updateAvatar(Integer avatar);
     Response getMyComment(String userID, Integer offset, Integer limit);
+    Response updateComment(String userID,Integer commentID,String comment);
 }

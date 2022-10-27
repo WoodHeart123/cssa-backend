@@ -53,4 +53,5 @@ public interface UserMapper {
      * @return list of comment with limit size
      */
     List<Comment> getMyComment(@Param("userID")String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
+    void updateComment(String userID, Integer commentID, String comment);
 }

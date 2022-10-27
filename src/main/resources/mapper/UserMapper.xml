@@ -29,4 +29,8 @@
     <select id="getMyComment" parameterType="Map" resultType="Comment">
         SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime, userAvatar from comment WHERE courseID > #{offset} AND userID = #{userID} LIMIT ${limit}
     </select>
+
+    <update id="updateComment" parameterType="Map">
+        UPDATE comment SET comment = #{comment} WHERE userID = #{userID} AND commentID = #{commentID}
+    </update>
 </mapper>

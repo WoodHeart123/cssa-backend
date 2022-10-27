@@ -80,5 +80,11 @@ public class UserServiceImpl implements UserService {
         return Response.builder().status(100).data(userMapper.getMyComment(userID,offset,limit)).build();
     }
 
+    @Override
+    public Response updateComment(String userID, Integer commentID, String comment) {
+        userMapper.updateComment(userID,commentID,comment);
+        return Response.builder().status(100).build();
+    }
+
 
 }

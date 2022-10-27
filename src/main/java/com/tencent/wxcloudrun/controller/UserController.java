@@ -103,4 +103,15 @@ public class UserController {
         return userService.getMyComment(openid.get(),offset,limit);
     }
 
+    @RequestMapping(value={"/updateComemnt"},method={RequestMethod.GET})
+    public Response updateComment(@RequestParam Integer commentID,@RequestParam String comment,HttpServletRequest request){
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        if(openid.isEmpty()){
+            return Response.builder().status(102).message("无用户信息").build();
+        }
+        if(comment.length() > 300){
+            return Response.builder().status(103).message("超过字数限制").build();
+        }
+        return userService.updateComment(openid.get(),commentID,comment);
+    }
 }
