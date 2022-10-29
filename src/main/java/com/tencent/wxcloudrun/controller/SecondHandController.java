@@ -27,6 +27,11 @@ public class SecondHandController {
     public Response cancelCollect(@RequestParam Product product, HttpServletRequest request){
         return secondHandService.collect(product);
     }
+    
+    @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})
+    public Response post(@RequestParam Product product, HttpServletRequest request){
+        return secondHandService.post(product);
+    }
 
 //    @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})
 //    public Response collect(@RequestParam Product product, HttpServletRequest request){
