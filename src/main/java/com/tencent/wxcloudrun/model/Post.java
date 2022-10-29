@@ -27,6 +27,7 @@ public class Post {
     private Integer price;
     private String situation;
     private String getWay;
+    private String contactID;
     //发布时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp releaseTime;
