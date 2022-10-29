@@ -3,6 +3,7 @@ package com.tencent.wxcloudrun.controller;
 
 import com.github.twohou.sonic.ChannelFactory;
 import com.tencent.wxcloudrun.model.CacheStore;
+import com.tencent.wxcloudrun.model.Comment;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,15 +104,15 @@ public class UserController {
         return userService.getMyComment(openid.get(),offset,limit);
     }
 
-    @RequestMapping(value={"/updateComemnt"},method={RequestMethod.GET})
-    public Response updateComment(@RequestParam Integer commentID,@RequestParam String comment,HttpServletRequest request){
+    @RequestMapping(value={"/updateComemnt"},method={RequestMethod.POST})
+    public Response updateComment(@RequestBody Comment comment, HttpServletRequest request){
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         if(openid.isEmpty()){
             return Response.builder().status(102).message("无用户信息").build();
         }
-        if(comment.length() > 300){
+        if(comment.getComment().length() > 300){
             return Response.builder().status(103).message("超过字数限制").build();
         }
-        return userService.updateComment(openid.get(),commentID,comment);
+        return userService.updateComment(openid.get(),comment.getCommentID(),comment.getComment());
     }
 }
