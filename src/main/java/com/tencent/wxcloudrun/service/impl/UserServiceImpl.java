@@ -39,7 +39,8 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.login(userID);
         if(user == null){
             userMapper.register(nickname,userID);
-            return Response.builder().status(103).message("新用户").build();
+            user = new User(nickname);
+            return Response.builder().data(user).status(103).message("新用户").build();
         }else{
             if(user.getLikedCommentJSON() == null){
                 user.setLikedComment(new ArrayList<>());

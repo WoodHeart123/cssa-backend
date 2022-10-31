@@ -4,6 +4,7 @@ package com.tencent.wxcloudrun.model;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -18,4 +19,17 @@ public class User {
     private String savedProductJSON;
     private Boolean isStudent;
     private Integer avatar;
+
+    /**
+     * constructor for new user
+     * @param nickname nickname of user;
+     */
+    public User(String nickname){
+        this.nickname = nickname;
+        this.email = null;
+        this.likedComment = new ArrayList<>();
+        this.savedProduct = new ArrayList<>();
+        this.isStudent = false;
+        this.avatar = 1;
+    }
 }
