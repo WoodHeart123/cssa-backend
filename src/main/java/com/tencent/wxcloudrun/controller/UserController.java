@@ -104,7 +104,7 @@ public class UserController {
         return userService.getMyComment(openid.get(),offset,limit);
     }
 
-    @RequestMapping(value={"/updateComemnt"},method={RequestMethod.POST})
+    @RequestMapping(value={"/updateComment"},method={RequestMethod.POST})
     public Response updateComment(@RequestBody Comment comment, HttpServletRequest request){
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         if(openid.isEmpty()){
