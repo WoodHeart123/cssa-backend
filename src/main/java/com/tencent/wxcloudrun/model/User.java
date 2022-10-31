@@ -20,6 +20,11 @@ public class User {
     private Boolean isStudent;
     private Integer avatar;
 
+
+    /**
+     * a no argument constructor for mybatis injection
+     */
+    public User(){}
     /**
      * constructor for new user
      * @param nickname nickname of user;
