@@ -25,6 +25,7 @@ public class User {
      * a no argument constructor for mybatis injection
      */
     public User(){}
+
     /**
      * constructor for new user
      * @param nickname nickname of user;

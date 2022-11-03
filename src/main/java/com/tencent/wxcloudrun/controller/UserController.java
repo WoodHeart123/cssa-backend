@@ -115,4 +115,12 @@ public class UserController {
         }
         return userService.updateComment(openid.get(),comment.getCommentID(),comment.getComment());
     }
+    @RequestMapping(value={"/deleteComment"},method={RequestMethod.POST})
+    public Response updateComment(@RequestBody Integer commentID, HttpServletRequest request){
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        if(openid.isEmpty()){
+            return Response.builder().status(102).message("无用户信息").build();
+        }
+        return userService.deleteComment(openid.get(), commentID);
+    }
 }

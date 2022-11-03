@@ -87,5 +87,11 @@ public class UserServiceImpl implements UserService {
         return Response.builder().status(100).build();
     }
 
+    @Override
+    public Response deleteComment(String userID, Integer commentID) {
+        userMapper.deleteComment(userID,commentID);
+        return Response.builder().status(100).build();
+    }
+
 
 }

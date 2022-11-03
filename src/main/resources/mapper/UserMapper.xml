@@ -33,4 +33,8 @@
     <update id="updateComment" parameterType="Map">
         UPDATE comment SET comment = #{comment} WHERE userID = #{userID} AND commentID = #{commentID}
     </update>
+
+    <delete id="deleteComment">
+        DELETE FROM comment WHERE userID = #{userID} AND commentID = #{commentID}
+    </delete>
 </mapper>

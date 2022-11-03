@@ -54,4 +54,6 @@ public interface UserMapper {
      */
     List<Comment> getMyComment(@Param("userID")String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
     void updateComment(String userID, Integer commentID, String comment);
+
+    void deleteComment(String userID, Integer commentID);
 }
