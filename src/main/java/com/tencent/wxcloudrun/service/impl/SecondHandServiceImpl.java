@@ -57,7 +57,7 @@ public class SecondHandServiceImpl implements SecondHandService {
             productArrayList.add(productID);
             String json = JSON.toJSONString(productArrayList);
             user.setSavedProductJSON(json);
-            update(user);
+            updateCollect(user);
         }
         return Response.builder().data(null).status(100).build();
     }
