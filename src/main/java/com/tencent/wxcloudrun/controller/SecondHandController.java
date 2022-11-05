@@ -24,7 +24,7 @@ public class SecondHandController {
     }
     
     @RequestMapping(value= {"/savePost"}, method = {RequestMethod.GET}) {
-        public Response savePost(@RequestParam Product product, HttpServletRequest request){
+        public Response saveProduct(@RequestParam Product product, HttpServletRequest request){
         return secondHandService.savePost(product);
     }
 
