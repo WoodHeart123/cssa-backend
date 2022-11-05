@@ -26,8 +26,4 @@ public interface SecondHandService {
 
     Response getProduct(ArrayList<String> productID);
 
-    Response getProductName(ArrayList<String> productID);
-
-
-    
 }

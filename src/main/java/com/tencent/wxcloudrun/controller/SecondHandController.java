@@ -28,7 +28,7 @@ public class SecondHandController {
     public Response suggest(@RequestParam String value, HttpServletRequest request) throws IOException {
         SearchChannel search = channelFactory.newSearchChannel();
         search.ping();
-        return secondHandService.getProductName(search.suggest("product","default", value));
+        return Response.builder().data(search.suggest("product","default", value)).status(100).build();
     }
 
     @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
@@ -36,7 +36,6 @@ public class SecondHandController {
         SearchChannel search = channelFactory.newSearchChannel();
         search.ping();
         return secondHandService.getProduct(search.query("product","default", value));
-
     }
 
     @RequestMapping(value= {"/getProductList"}, method = {RequestMethod.GET})
