@@ -32,10 +32,10 @@ public class SecondHandController {
     }
 
     @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
-    public Response search(@RequestParam String value, HttpServletRequest request) throws IOException {
+    public Response search(@RequestParam String value, int limit, int offset, HttpServletRequest request) throws IOException {
         SearchChannel search = channelFactory.newSearchChannel();
         search.ping();
-        return secondHandService.getProduct(search.query("product","default", value));
+        return secondHandService.getProduct(search.query("product","default", value, limit, offset));
     }
 
     @RequestMapping(value= {"/getProductList"}, method = {RequestMethod.GET})
