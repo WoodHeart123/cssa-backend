@@ -20,11 +20,6 @@ public class SecondHandServiceImpl implements SecondHandService {
     ArrayList<Product> collection = new ArrayList<Product>();
 
     @Override
-    public Response getProductName(ArrayList<String> productID) {
-        return Response.builder().data(secondHandMapper.getProductName(productID)).status(100).build();
-    }
-
-    @Override
     public Response getProduct(ArrayList<String> productID) {
         return Response.builder().data(secondHandMapper.getProduct(productID)).status(100).build();
     }
@@ -39,7 +34,12 @@ public class SecondHandServiceImpl implements SecondHandService {
         }
         return Response.builder().data(productArrayList).status(100).build();
     }
-    
+
+    @Override
+    public Response post(Product product) {
+        return null;
+    }
+
     @Override
     public Response collect(Product product) {
         if(!(collection.contains(product))){

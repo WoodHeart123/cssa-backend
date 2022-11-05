@@ -19,5 +19,5 @@ public interface SecondHandMapper {
 
     ArrayList<Product> getProduct(ArrayList<String> productID);
 
-    ArrayList<String> getProductName(ArrayList<String> productID);
+
 }
