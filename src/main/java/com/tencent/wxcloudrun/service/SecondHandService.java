@@ -18,6 +18,6 @@ public interface SecondHandService {
     
     Response post(Product product);
     
-    Response collect(Product product, String UserID);
+    Response collect(Integer productID, String UserID);
     
 }
