@@ -30,8 +30,21 @@ public class SecondHandServiceImpl implements SecondHandService {
     }
 
     @Override
-    public Response post(Product product) {
-        return null;
+    public Response savePost(Product product) {
+        Post post = new Post();
+        ArrayList<Product> productArrayList;
+        if(product.productDescription!=NULL){
+            post.setProductDescription(product.productDescription);
+        }
+        post.setPrice(product.price);
+        post.setProductType(product.productType);
+        post.setCondition(product.condition);
+        post.setProductTitle(product.productTitle);
+        post.setContact(product.contact);
+        post.setDelivery(product.delivery);
+        productArrayList.add(product);
+        return Response.builder().data(product).status(100).build();
+     
     }
 
     @Override
