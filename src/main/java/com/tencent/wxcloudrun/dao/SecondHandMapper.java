@@ -14,5 +14,6 @@ public interface SecondHandMapper {
     ArrayList<Product> getAllProductList(Integer offset, Integer limit);
     
     User collect(Integer productID,String UserID);
-
+    
+    void updateCollect(User user);
 }
