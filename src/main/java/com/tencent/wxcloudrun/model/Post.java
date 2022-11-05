@@ -51,7 +51,7 @@ public class Post {
     }
 
     // need to set
-    public void getProductDescription() {
+    public String getProductDescription() {
         return productDescription;
     }
     
@@ -59,7 +59,7 @@ public class Post {
         this.productDescription = productDescription;
     }
     
-    public void getPrice() {
+    public Integer getPrice() {
         return productDescription;
     }
     
@@ -67,15 +67,15 @@ public class Post {
         this.price = price;
     }
     
-    public void getProductType() {
+    public ProductType getProductType() {
         return productType;
     }
     
-    public ProductType setProductType(ProductType productType) {
+    public void setProductType(ProductType productType) {
         this.productType = productType;
     }
     
-    public void getCondition() {
+    public Condition getCondition() {
         return condtion;
     }
     
@@ -83,7 +83,7 @@ public class Post {
         this.condition = condition;
     }
     
-    public void getProductTitle() {
+    public String getProductTitle() {
         return productTitle;
     }
     
@@ -91,7 +91,7 @@ public class Post {
         this.productTitle = productTitle;
     }
     
-    public void getContact() {
+    public String getContact() {
         return contact;
     }
     
@@ -99,7 +99,7 @@ public class Post {
         this.contact = contact;
     }
     
-    public void getDelivery() {
+    public String getDelivery() {
         return delivery;
     }
     
