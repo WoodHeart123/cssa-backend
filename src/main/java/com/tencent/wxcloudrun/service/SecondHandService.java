@@ -16,7 +16,7 @@ public interface SecondHandService {
      */
     Response getProductList(ProductType productType,Integer offset, Integer limit);
     
-    Response savePost(Product product);
+    Response saveProduct(Product product);
     
     Response collect(Product product);
     
