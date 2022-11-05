@@ -6,6 +6,20 @@
         SELECT productID,sellerAvatar,sellerNickname, productTitle,productDescription,productType,time,price,`condition`,contact,imagesJSON,delivery  FROM secondhand WHERE productID >= #{offest} ORDER BY secondhand.productID  LIMIT #{limit}
     </select>
 
+    <select id="getProductName" resultType="String">
+        SELECT productTitle FROM product WHERE productID in
+        <foreach item="product" collection="productID" separator="," open="(" close=")" index="index">
+            #{product}
+        </foreach>
+    </select>
+
+    <select id="getProduct" resultType="Product">
+        SELECT productID, userID, sellerAvatar, sellerNickname, productTitle, productDescription, price, productType, condition, time, contact, images, imagesJSON, delivery FROM product WHERE productID in
+        <foreach item="product" collection="productID" separator="," open="(" close=")" index="index">
+            #{product}
+        </foreach>
+    </select>
+
 
 
 </mapper>

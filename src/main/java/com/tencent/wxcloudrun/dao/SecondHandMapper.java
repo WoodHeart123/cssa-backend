@@ -5,6 +5,7 @@ import com.tencent.wxcloudrun.model.Product;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Mapper
 public interface SecondHandMapper {
@@ -15,4 +16,8 @@ public interface SecondHandMapper {
     
     boolean collect(Product product);
     boolean cancelCollect(Product product);
+
+    ArrayList<Product> getProduct(ArrayList<String> productID);
+
+    ArrayList<String> getProductName(ArrayList<String> productID);
 }
