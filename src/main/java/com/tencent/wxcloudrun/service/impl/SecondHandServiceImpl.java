@@ -37,6 +37,7 @@ public class SecondHandServiceImpl implements SecondHandService {
             post.setProductDescription(product.productDescription);
         }
         post.setPrice(product.price);
+        post.setCondition(product.condition);
         post.setProductType(product.productType);
         post.setCondition(product.condition);
         post.setProductTitle(product.productTitle);
