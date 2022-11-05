@@ -20,6 +20,17 @@ public class SecondHandServiceImpl implements SecondHandService {
     @Autowired
     SecondHandMapper secondHandMapper;
     ArrayList<Product> collection = new ArrayList<Product>();
+
+    @Override
+    public Response getProductName(ArrayList<String> productID) {
+        return Response.builder().data(secondHandMapper.getProductName(productID)).status(100).build();
+    }
+
+    @Override
+    public Response getProduct(ArrayList<String> productID) {
+        return Response.builder().data(secondHandMapper.getProduct(productID)).status(100).build();
+    }
+
     @Override
     public Response getProductList(ProductType productType, Integer offset, Integer limit) {
         ArrayList<Product> productArrayList;

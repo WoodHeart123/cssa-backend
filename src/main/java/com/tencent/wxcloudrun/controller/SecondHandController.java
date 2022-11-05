@@ -1,6 +1,8 @@
 package com.tencent.wxcloudrun.controller;
 
 
+import com.github.twohou.sonic.ChannelFactory;
+import com.github.twohou.sonic.SearchChannel;
 import com.tencent.wxcloudrun.model.ProductType;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.Product;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @RestController
 @CrossOrigin
@@ -17,6 +20,24 @@ public class SecondHandController {
 
     @Autowired
     SecondHandService secondHandService;
+
+    @Autowired
+    private ChannelFactory channelFactory;
+
+    @RequestMapping(value={ "/suggest"}, method = {RequestMethod.GET})
+    public Response suggest(@RequestParam String value, HttpServletRequest request) throws IOException {
+        SearchChannel search = channelFactory.newSearchChannel();
+        search.ping();
+        return secondHandService.getProductName(search.suggest("product","default", value));
+    }
+
+    @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
+    public Response search(@RequestParam String value, HttpServletRequest request) throws IOException {
+        SearchChannel search = channelFactory.newSearchChannel();
+        search.ping();
+        return secondHandService.getProduct(search.query("product","default", value));
+
+    }
 
     @RequestMapping(value= {"/getProductList"}, method = {RequestMethod.GET})
     public Response getProductList(@RequestParam ProductType productType, @RequestParam Integer offset, @RequestParam Integer limit, HttpServletRequest request){
