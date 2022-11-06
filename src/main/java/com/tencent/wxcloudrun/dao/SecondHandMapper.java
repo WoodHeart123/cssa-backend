@@ -13,7 +13,7 @@ public interface SecondHandMapper {
 
     ArrayList<Product> getAllProductList(Integer offset, Integer limit);
     
-    void saveProduct(Product product);
+    void save(Product product);
     
     boolean collect(Product product);
     boolean cancelCollect(Product product);
