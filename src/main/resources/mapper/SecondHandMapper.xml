@@ -5,6 +5,10 @@
     <select id="getProductList" resultType="Product">
         SELECT productID,sellerAvatar,sellerNickname, productTitle,productDescription,productType,time,price,`condition`,contact,imagesJSON,delivery  FROM secondhand WHERE productID >= #{offest} ORDER BY secondhand.productID  LIMIT #{limit}
     </select>
+    
+    <insert id="saveProduct" parameterType="Product">
+        INSERT INTO product (productID,sellerAvatar,sellerNickname,productTitle,productDescription,productType,time,price,`condition`,contact,imagesJSON,delivery) VALUES (#{productID},#{sellerAvatar},#{sellerNickname},#{productTitle},#{productDescription},#{productType},#{time},#{price},#{'condition'}, #{contact}, #{imagesJSON}, #{delivery})
+    </insert>
 
 
 
