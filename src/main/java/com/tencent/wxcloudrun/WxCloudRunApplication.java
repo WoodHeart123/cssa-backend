@@ -51,9 +51,9 @@ public class WxCloudRunApplication {
                 Map<String, Object> fields = new HashMap<>();
                 fields.put("courseID", course.getCourseID());
                 if(course.getDepartmentAbrev().equals("COMP SCI")){
-                    fields.put("courseName", "CS" + course.getCourseNum().toString());
+                    fields.put("courseName", "CS CS" + course.getCourseNum().toString());
                 }else {
-                    fields.put("courseName", course.getDepartmentAbrev().replace(" ", "") + course.getCourseNum().toString());
+                    fields.put("courseName", course.getDepartmentAbrev().replace(" ", "") + " " + course.getDepartmentAbrev().replace(" ", "")  + course.getCourseNum().toString());
                 }
                 jedisPooled.hset("course:" + course.getCourseID().toString(), RediSearchUtil.toStringMap(fields));
             }
