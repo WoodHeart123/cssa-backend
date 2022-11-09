@@ -1,16 +1,20 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.github.twohou.sonic.ChannelFactory;
-import com.github.twohou.sonic.SearchChannel;
 import com.tencent.wxcloudrun.model.Comment;
 import com.tencent.wxcloudrun.model.SortType;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.JedisPooled;
+import redis.clients.jedis.search.Document;
+import redis.clients.jedis.search.Query;
+import redis.clients.jedis.search.SearchResult;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 
@@ -24,21 +28,19 @@ public class CourseController {
     private CourseService courseService;
 
     @Autowired
-    private ChannelFactory channelFactory;
+    private JedisPooled jedisPooled;
 
-
-    /**
-     *
-     * @param value
-     * @param request
-     * @return
-     * @throws IOException
-     */
     @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
     public Response search(@RequestParam String value, HttpServletRequest request) throws IOException {
-        SearchChannel search = channelFactory.newSearchChannel();
-        search.ping();
-        return courseService.getCourse(search.query("course","default", value));
+        ArrayList<String> courseIDList = new ArrayList<>();
+        SearchResult sr = jedisPooled.ftSearch("course-index","%" + value + "%");
+        for(Document document: sr.getDocuments()){
+            courseIDList.add(document.getString("courseID"));
+        }
+        if(courseIDList.size() == 0){
+            return Response.builder().message("没有匹配结果").status(124).build();
+        }
+        return courseService.getCourse(courseIDList);
 
     }
     /**
