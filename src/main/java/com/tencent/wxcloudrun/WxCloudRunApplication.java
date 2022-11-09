@@ -53,7 +53,7 @@ public class WxCloudRunApplication {
                 if(course.getDepartmentAbrev().equals("COMP SCI")){
                     fields.put("courseName", "CS" + course.getCourseNum().toString());
                 }else {
-                    fields.put("courseName", course.getDepartmentAbrev().replace(" ", "") + " " + course.getCourseNum().toString());
+                    fields.put("courseName", course.getDepartmentAbrev().replace(" ", "") + course.getCourseNum().toString());
                 }
                 jedisPooled.hset("course:" + course.getCourseID().toString(), RediSearchUtil.toStringMap(fields));
             }
