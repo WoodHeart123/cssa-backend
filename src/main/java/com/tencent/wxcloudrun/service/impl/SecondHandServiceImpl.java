@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scripting.support.RefreshableScriptTargetSource;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 @Service
@@ -31,7 +33,7 @@ public class SecondHandServiceImpl implements SecondHandService {
 
     @Override
     public Response saveProduct(Product product) {
-        product.setProductTime(new Timestamp(new Date().getTime()));
+        product.setTime(new Timestamp(new Date().getTime()));
         secondHandMapper.save(product);
         return Response.builder().message("成功").status(100).build();
     }
