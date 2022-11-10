@@ -25,38 +25,10 @@ import java.util.Map;
 @MapperScan(basePackages = {"com.tencent.wxcloudrun.dao"})
 public class WxCloudRunApplication {
 
-    @Autowired
-    CourseMapper courseMapper;
-
-    @Autowired
-    JedisPooled jedisPooled;
 
     public static void main(String[] args) {
         SpringApplication.run(WxCloudRunApplication.class, args);
     }
 
 
-    @Bean
-    CommandLineRunner loadCourseData() {
-        return args -> {
-            try {
-                jedisPooled.ftDropIndex("course-index");
-            }catch(Exception ignored){} finally {
-                Schema sc = new Schema().addNumericField("courseID").addTextField("courseName", 1.0);
-                IndexDefinition def = new IndexDefinition().setPrefixes("course");
-                jedisPooled.ftCreate("course-index", IndexOptions.defaultOptions().setDefinition(def), sc);
-            }
-            ArrayList<Course> courseArrayList = (ArrayList<Course>) courseMapper.getAllCourseList(0, 10000, "courseNum", "ASC");
-            for (Course course : courseArrayList) {
-                Map<String, Object> fields = new HashMap<>();
-                fields.put("courseID", course.getCourseID());
-                if(course.getDepartmentAbrev().equals("COMP SCI")){
-                    fields.put("courseName", "CS CS" + course.getCourseNum().toString());
-                }else {
-                    fields.put("courseName", course.getDepartmentAbrev().replace(" ", "") + " " + course.getDepartmentAbrev().replace(" ", "")  + course.getCourseNum().toString());
-                }
-                jedisPooled.hset("course:" + course.getCourseID().toString(), RediSearchUtil.toStringMap(fields));
-            }
-        };
-    }
 }
