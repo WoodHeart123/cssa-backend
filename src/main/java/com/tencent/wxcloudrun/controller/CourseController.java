@@ -31,10 +31,9 @@ public class CourseController {
     private JedisPooled jedisPooled;
 
     @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
-    public Response search(@RequestParam String value, HttpServletRequest request) throws IOException {
+    public Response search(@RequestParam String value, HttpServletRequest request) {
         ArrayList<String> courseIDList = new ArrayList<>();
-        Query q = new Query("\"%\" + value.toUpperCase() + \"%\"").setLanguage("chinese");
-        SearchResult sr = jedisPooled.ftSearch("course-index", q);
+        SearchResult sr = jedisPooled.ftSearch("course-index", "%" + value.toUpperCase() + "%");
         for(Document document: sr.getDocuments()){
             courseIDList.add(document.getString("courseID"));
         }
