@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPooled;
@@ -23,6 +24,7 @@ import java.util.Map;
 
 @SpringBootApplication
 @MapperScan(basePackages = {"com.tencent.wxcloudrun.dao"})
+@EnableScheduling
 public class WxCloudRunApplication {
 
 
