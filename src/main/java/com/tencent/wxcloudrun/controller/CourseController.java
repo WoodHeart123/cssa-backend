@@ -1,6 +1,5 @@
 package com.tencent.wxcloudrun.controller;
 
-import com.github.twohou.sonic.ChannelFactory;
 import com.tencent.wxcloudrun.model.Comment;
 import com.tencent.wxcloudrun.model.SortType;
 import com.tencent.wxcloudrun.model.Response;
@@ -9,11 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.search.Document;
-import redis.clients.jedis.search.Query;
 import redis.clients.jedis.search.SearchResult;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 

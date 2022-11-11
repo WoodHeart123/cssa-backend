@@ -28,20 +28,23 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     @Override
     public void run(String...args) {
         try {
-            Schema sc = new Schema().addNumericField("courseID").addTextField("courseName", 1.0);
-            IndexDefinition def = new IndexDefinition().setPrefixes("course:");
-            jedisPooled.ftCreate("course-index", IndexOptions.defaultOptions().setDefinition(def), sc);
-        }catch(Exception ignored){}
-        ArrayList<Course> courseArrayList = (ArrayList<Course>) courseMapper.getAllCourseList(0, 10000, "courseNum", "ASC");
-        for (Course course : courseArrayList) {
-            Map<String, Object> fields = new HashMap<>();
-            fields.put("courseID", course.getCourseID());
-            if(course.getDepartmentAbrev().equals("COMP SCI")){
-                fields.put("courseName", "CS CS" + course.getCourseNum().toString());
-            }else {
-                fields.put("courseName",course.getDepartmentAbrev().replace(" ", "") + " " + course.getDepartmentAbrev().replace(" ", "")  + course.getCourseNum().toString());
+            try {
+                Schema sc = new Schema().addNumericField("courseID").addTextField("courseName", 1.0);
+                IndexDefinition def = new IndexDefinition().setPrefixes("course:");
+                jedisPooled.ftCreate("course-index", IndexOptions.defaultOptions().setDefinition(def), sc);
+            } catch (Exception ignored) {
             }
-            jedisPooled.hset("course:" + course.getCourseID().toString(), RediSearchUtil.toStringMap(fields));
-        }
+            ArrayList<Course> courseArrayList = (ArrayList<Course>) courseMapper.getAllCourseList(0, 10000, "courseNum", "ASC");
+            for (Course course : courseArrayList) {
+                Map<String, Object> fields = new HashMap<>();
+                fields.put("courseID", course.getCourseID());
+                if (course.getDepartmentAbrev().equals("COMP SCI")) {
+                    fields.put("courseName", "CS CS" + course.getCourseNum().toString());
+                } else {
+                    fields.put("courseName", course.getDepartmentAbrev().replace(" ", "") + " " + course.getDepartmentAbrev().replace(" ", "") + course.getCourseNum().toString());
+                }
+                jedisPooled.hset("course:" + course.getCourseID().toString(), RediSearchUtil.toStringMap(fields));
+            }
+        }catch (Exception ignored){}
     }
 }

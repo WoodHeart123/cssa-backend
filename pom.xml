@@ -94,20 +94,7 @@
             <version>4.3.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.github.twohou</groupId>
-            <artifactId>java-sonic</artifactId>
-            <version>1.0.1</version>
-        </dependency>
-
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
 
     <build>
         <plugins>
