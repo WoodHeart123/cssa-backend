@@ -16,4 +16,5 @@ public interface SecondHandMapper {
     User collect(Integer productID,String UserID);
     
     void updateCollect(User user);
+    void save(Product product);
 }
