@@ -19,5 +19,13 @@
     </select>
 
 
+    <select id="getProduct" resultType="Product">
+        SELECT productID, userID, sellerAvatar, sellerNickname, productTitle, productDescription, price, productType, condition, time, contact, images, imagesJSON, delivery FROM product WHERE productID in
+        <foreach item="product" collection="productID" separator="," open="(" close=")" index="index">
+            #{product}
+        </foreach>
+    </select>
+
+
 
 </mapper>
