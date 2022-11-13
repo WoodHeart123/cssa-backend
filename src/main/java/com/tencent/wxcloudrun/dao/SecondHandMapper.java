@@ -15,10 +15,8 @@ public interface SecondHandMapper {
 
     ArrayList<Product> getAllProductList(Integer offset, Integer limit);
     
+    User collect(Integer productID,String UserID);
+    
+    void updateCollect(User user);
     void save(Product product);
-    
-    boolean collect(Product product);
-    boolean cancelCollect(Product product);
-    
-    
 }

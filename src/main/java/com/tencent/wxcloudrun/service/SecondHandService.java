@@ -5,8 +5,6 @@ import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.Product;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-
 @Service
 public interface SecondHandService {
 
@@ -20,10 +18,6 @@ public interface SecondHandService {
     
     Response saveProduct(Product product);
     
-    Response collect(Product product);
+    Response collect(Integer productID, String UserID);
     
-    Response cancelCollect(Product product);
-
-    Response getProduct(ArrayList<String> productID);
-
 }
