@@ -1,7 +1,9 @@
 package com.tencent.wxcloudrun.config;
 
 import com.tencent.wxcloudrun.dao.CourseMapper;
+import com.tencent.wxcloudrun.dao.SecondHandMapper;
 import com.tencent.wxcloudrun.model.Course;
+import com.tencent.wxcloudrun.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
     @Autowired
     CourseMapper courseMapper;
+
+    @Autowired
+    SecondHandMapper secondHandMapper;
 
     @Autowired
     JedisPooled jedisPooled;
@@ -43,5 +48,21 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
             }
             jedisPooled.hset("course:" + course.getCourseID().toString(), RediSearchUtil.toStringMap(fields));
         }
+
+        try {
+            Schema sc = new Schema().addNumericField("productID").addTextField("productName", 1.0);
+            IndexDefinition def = new IndexDefinition().setPrefixes("product:");
+            jedisPooled.ftCreate("product-index", IndexOptions.defaultOptions().setDefinition(def), sc);
+        }catch(Exception ignored){}
+        ArrayList<Product> productArrayList = secondHandMapper.getAllProductList(0, 5000);
+        for (Product product : productArrayList) {
+            Map<String, Object> fields = new HashMap<>();
+            fields.put("productID", product.getProductID());
+            fields.put("productName", product.getProductTitle());
+            jedisPooled.hset("product:" + product.getProductID().toString(), RediSearchUtil.toStringMap(fields));
+        }
+
+
+
     }
 }

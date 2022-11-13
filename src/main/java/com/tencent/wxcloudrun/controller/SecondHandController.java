@@ -9,9 +9,14 @@ import com.tencent.wxcloudrun.model.Product;
 import com.tencent.wxcloudrun.service.SecondHandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.JedisPooled;
+import redis.clients.jedis.search.Document;
+import redis.clients.jedis.search.Query;
+import redis.clients.jedis.search.SearchResult;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @RestController
 @CrossOrigin
@@ -22,20 +27,27 @@ public class SecondHandController {
     SecondHandService secondHandService;
 
     @Autowired
-    private ChannelFactory channelFactory;
+    private JedisPooled jedisPooled;
+
 
     @RequestMapping(value={ "/suggest"}, method = {RequestMethod.GET})
     public Response suggest(@RequestParam String value, HttpServletRequest request) throws IOException {
-        SearchChannel search = channelFactory.newSearchChannel();
-        search.ping();
-        return Response.builder().data(search.suggest("product","default", value)).status(100).build();
+        return Response.builder().data(jedisPooled.ftSugGet("productName", value, true, 50)).status(100).build();
     }
 
     @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
-    public Response search(@RequestParam String value, int limit, int offset, HttpServletRequest request) throws IOException {
-        SearchChannel search = channelFactory.newSearchChannel();
-        search.ping();
-        return secondHandService.getProduct(search.query("product","default", value, limit, offset));
+    public Response search(@RequestParam String value, HttpServletRequest request) throws IOException {
+        ArrayList<String> productIDList = new ArrayList<>();
+        Query q = new Query("*" + value + "*").setLanguage("chinese");
+        SearchResult sr = jedisPooled.ftSearch("product-index",q);
+        for(Document document: sr.getDocuments()){
+           productIDList.add(document.getString("productID"));
+        }
+        if(productIDList.size() == 0){
+            return Response.builder().message("没有匹配结果").status(124).build();
+        }
+        return secondHandService.getProduct(productIDList);
+
     }
 
     @RequestMapping(value= {"/getProductList"}, method = {RequestMethod.GET})
