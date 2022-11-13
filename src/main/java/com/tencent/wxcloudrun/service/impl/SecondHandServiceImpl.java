@@ -4,6 +4,7 @@ import com.tencent.wxcloudrun.dao.SecondHandMapper;
 import com.tencent.wxcloudrun.model.Product;
 import com.tencent.wxcloudrun.model.ProductType;
 import com.tencent.wxcloudrun.model.Response;
+import com.tencent.wxcloudrun.model.User;
 import com.tencent.wxcloudrun.service.SecondHandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scripting.support.RefreshableScriptTargetSource;
@@ -39,17 +40,16 @@ public class SecondHandServiceImpl implements SecondHandService {
     }
     
     @Override
-    public Response collect(Product product) {
-        if(!(collection.contains(product))){
-            collection.add(product);
+    public Response collect(Integer productID, String UserID) {
+        User user = secondHandMapper.collect(productID, UserID);
+        ArrayList<Integer> productArrayList = JSON.parseArray(user.getSavedProductJSON());
+        if(!(productArrayList.contains(productID))){
+            productArrayList.add(productID);
+            String json = JSON.toJSONString(productArrayList);
+            user.setSavedProductJSON(json);
+            updateCollect(user);
         }
         return Response.builder().data(null).status(100).build();
     }
-    @Override
-    public Response cancelCollect(Product product) {
-        if(collection.contains(product)){
-            collection.remove(product);
-        }
-        return Response.builder().data(null).status(100).build();
-    }
+
 }

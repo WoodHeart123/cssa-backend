@@ -3,13 +3,24 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.SecondHandMapper">
 
     <select id="getProductList" resultType="Product">
-        SELECT productID,sellerAvatar,sellerNickname, productTitle,productDescription,productType,time,price,`condition`,contact,imagesJSON,delivery  FROM secondhand WHERE productID >= #{offest} ORDER BY secondhand.productID  LIMIT #{limit}
+        SELECT productID,sellerAvatar,sellerNickname, productTitle,productDescription,productType,time,price,`condition`,contact,imagesJSON,delivery  
+        FROM secondhand 
+        WHERE productID >= #{offest} 
+        ORDER BY secondhand.productID  
+        LIMIT #{limit}
     </select>
     
     <insert id="saveProduct" parameterType="Product">
         INSERT INTO product (productID,sellerAvatar,sellerNickname,productTitle,productDescription,productType,time,price,`condition`,contact,imagesJSON,delivery) VALUES (#{productID},#{sellerAvatar},#{sellerNickname},#{productTitle},#{productDescription},#{productType},#{time},#{price},#{'condition'}, #{contact}, #{imagesJSON}, #{delivery})
     </insert>
-
-
-
+    <select id="collect" resultType="boolean">
+        SELECT saveProductJson
+        FROM user
+    </select>
+    
+    <update id="updateCollect" resultType="void">
+        UPDATE user 
+        SET productID = #{savedProductJSON} 
+        WHERE UserID = #{userID}
+    </update>
 </mapper>
