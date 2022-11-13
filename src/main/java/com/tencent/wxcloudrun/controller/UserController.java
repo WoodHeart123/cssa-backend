@@ -1,7 +1,5 @@
 package com.tencent.wxcloudrun.controller;
 
-
-import com.github.twohou.sonic.ChannelFactory;
 import com.tencent.wxcloudrun.model.CacheStore;
 import com.tencent.wxcloudrun.model.Comment;
 import com.tencent.wxcloudrun.model.Response;
@@ -25,9 +23,6 @@ public class UserController {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    private ChannelFactory channelFactory;
 
 
     @RequestMapping(value={"/getAuthCode"}, method = {RequestMethod.GET})
