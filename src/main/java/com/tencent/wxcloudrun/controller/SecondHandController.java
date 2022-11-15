@@ -1,8 +1,6 @@
 package com.tencent.wxcloudrun.controller;
 
 
-import com.github.twohou.sonic.ChannelFactory;
-import com.github.twohou.sonic.SearchChannel;
 import com.tencent.wxcloudrun.model.ProductType;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.Product;
@@ -60,8 +58,8 @@ public class SecondHandController {
         return secondHandService.saveProduct(product);
     }
 
-    @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})
-    public Response cancelCollect(@RequestParam Integer productID, String UserID, HttpServletRequest request){
-        return secondHandService.collect(product,UserID);
-    }
+//    @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})
+//    public Response cancelCollect(@RequestParam Integer productID, String UserID, HttpServletRequest request){
+//        return secondHandService.collect(product,UserID);
+//    }
 }

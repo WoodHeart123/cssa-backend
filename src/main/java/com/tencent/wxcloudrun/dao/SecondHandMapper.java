@@ -2,6 +2,7 @@ package com.tencent.wxcloudrun.dao;
 
 
 import com.tencent.wxcloudrun.model.Product;
+import com.tencent.wxcloudrun.model.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public interface SecondHandMapper {
 
     ArrayList<Product> getAllProductList(Integer offset, Integer limit);
     
-    User collect(Integer productID,String UserID);
+    User collect(Integer productID, String UserID);
     
     void updateCollect(User user);
     void save(Product product);

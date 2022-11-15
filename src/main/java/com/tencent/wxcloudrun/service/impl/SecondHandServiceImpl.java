@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.dao.SecondHandMapper;
 import com.tencent.wxcloudrun.model.Product;
 import com.tencent.wxcloudrun.model.ProductType;
@@ -20,7 +21,6 @@ public class SecondHandServiceImpl implements SecondHandService {
 
     @Autowired
     SecondHandMapper secondHandMapper;
-    ArrayList<Product> collection = new ArrayList<Product>();
 
 
     @Override
@@ -42,20 +42,21 @@ public class SecondHandServiceImpl implements SecondHandService {
     @Override
     public Response saveProduct(Product product) {
         product.setTime(new Timestamp(new Date().getTime()));
+        product.setImagesJSON(JSON.toJSONString(product.getImages()));
         secondHandMapper.save(product);
         return Response.builder().message("成功").status(100).build();
     }
     
     @Override
     public Response collect(Integer productID, String UserID) {
-        User user = secondHandMapper.collect(productID, UserID);
-        ArrayList<Integer> productArrayList = JSON.parseArray(user.getSavedProductJSON());
-        if(!(productArrayList.contains(productID))){
-            productArrayList.add(productID);
-            String json = JSON.toJSONString(productArrayList);
-            user.setSavedProductJSON(json);
-            updateCollect(user);
-        }
+//        User user = secondHandMapper.collect(productID, UserID);
+//        ArrayList<Integer> productArrayList = JSON.parseArray(user.getSavedProductJSON());
+//        if(!(productArrayList.contains(productID))){
+//            productArrayList.add(productID);
+//            String json = JSON.toJSONString(productArrayList);
+//            user.setSavedProductJSON(json);
+//            updateCollect(user);
+//        }
         return Response.builder().data(null).status(100).build();
     }
 

@@ -14,8 +14,7 @@
         INSERT INTO product (productID,sellerAvatar,sellerNickname,productTitle,productDescription,productType,time,price,`condition`,contact,imagesJSON,delivery) VALUES (#{productID},#{sellerAvatar},#{sellerNickname},#{productTitle},#{productDescription},#{productType},#{time},#{price},#{'condition'}, #{contact}, #{imagesJSON}, #{delivery})
     </insert>
     <select id="collect" resultType="boolean">
-        SELECT saveProductJson
-        FROM user
+        SELECT saveProductJson FROM user
     </select>
     
     <update id="updateCollect">

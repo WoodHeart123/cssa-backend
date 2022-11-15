@@ -5,12 +5,18 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://${MYSQL_ADDRESS}/springboot_demo?characterEncoding=utf-8&useUnicode=true&serverTimezone=US/Central
-#    username: ${MYSQL_USERNAME}
-#    password: ${MySQL_PASSWORD}
-    url: jdbc:mysql://sh-cynosdbmysql-grp-5ljk41ng.sql.tencentcdb.com:28513/springboot_demo?characterEncoding=utf-8&useUnicode=true&serverTimezone=US/Central
-    username: root
-    password: NST4VU3f
+    url: jdbc:mysql://${MYSQL_ADDRESS}/springboot_demo?characterEncoding=utf-8&useUnicode=true&serverTimezone=US/Central
+    username: ${MYSQL_USERNAME}
+    password: ${MySQL_PASSWORD}
+  redis:
+    port: 6379
+    host: localhost
+    timeout: 10000
+    jedis:
+      pool:
+        max-active: 10
+        min-idle: 2
+        max-idle: 8
 
   mvc:
     view:
@@ -40,4 +46,7 @@ jwt:
   header: Authorization
   secret: cssauwmadisoncssauwmadisoncssauwmadisoncssauwmadisoncssauwmadisoncssauwmadisoncssauwmadisoncssauwmadison
   expiration: 31536000
+
+
+
 
