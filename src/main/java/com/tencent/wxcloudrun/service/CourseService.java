@@ -17,4 +17,5 @@ public interface CourseService {
     Response report(Integer commentID, String report);
     Response getCourse(ArrayList<String> courseID);
     Response getCommentList(Integer courseID, Integer offset, Integer limit, SortType sortType);
+    Response searchCourse(String query);
 }

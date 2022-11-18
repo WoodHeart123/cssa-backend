@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -128,5 +129,16 @@ public class CourseServiceImpl implements CourseService {
         List<Comment> commentList;
         commentList = courseMapper.getCommentList(courseID, offset, limit, sortType.getField());
         return Response.builder().data(commentList).status(100).message("成功").build();
+    }
+
+    @Override
+    public Response searchCourse(String query) {
+        int i;
+        for(i = 0;i < query.length();i++){
+            if(query.charAt(i) >= '0' && query.charAt(i) <= '9'){
+                break;
+            }
+        }
+        return Response.builder().data(courseMapper.searchCourse(query.substring(0,i) + "%",  query.substring(i) + "%")).build();
     }
 }

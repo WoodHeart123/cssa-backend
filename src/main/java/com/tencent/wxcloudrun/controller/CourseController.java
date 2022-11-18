@@ -7,6 +7,7 @@ import com.tencent.wxcloudrun.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.JedisPooled;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.search.Document;
 import redis.clients.jedis.search.SearchResult;
 
@@ -30,14 +31,19 @@ public class CourseController {
     @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
     public Response search(@RequestParam String value, HttpServletRequest request) {
         ArrayList<String> courseIDList = new ArrayList<>();
-        SearchResult sr = jedisPooled.ftSearch("course-index", "%" + value.toUpperCase() + "%");
-        for(Document document: sr.getDocuments()){
-            courseIDList.add(document.getString("courseID"));
+        try {
+            SearchResult sr = jedisPooled.ftSearch("course-index", "%" + value.toUpperCase() + "%");
+            for(Document document: sr.getDocuments()){
+                courseIDList.add(document.getString("courseID"));
+            }
+            if(courseIDList.size() == 0){
+                return Response.builder().message("没有匹配结果").status(124).build();
+            }
+            return courseService.getCourse(courseIDList);
+        }catch(JedisConnectionException e){
+            return courseService.searchCourse(value);
         }
-        if(courseIDList.size() == 0){
-            return Response.builder().message("没有匹配结果").status(124).build();
-        }
-        return courseService.getCourse(courseIDList);
+
 
     }
     /**

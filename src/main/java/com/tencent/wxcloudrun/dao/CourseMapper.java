@@ -43,6 +43,13 @@ public interface CourseMapper{
      */
     List<Course> getCourse(ArrayList<String> courseID);
 
+    /**
+     * a backup method if redis failed
+     * @param query
+     * @return list of course
+     */
+    List<Course> searchCourse(String departmentAbrev, String courseNum);
+
     List<Department> getDepartmentList();
 
     /**

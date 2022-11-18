@@ -60,4 +60,8 @@
     <select id="getPostCommentCount" parameterType="Map" resultType="Integer">
         SELECT COUNT(commentID) from comment WHERE courseID = #{courseID} AND userID = #{userID}
     </select>
+
+    <select id="searchCourse" parameterType="String" resultType="Course">
+        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit, commentCount, REPLACE(departmentAbrev,' ','') AS strname FROM course HAVING strname LIKE #{departmentAbrev} AND courseNum LIKE #{courseNum} limit 10
+    </select>
 </mapper>
