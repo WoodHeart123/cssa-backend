@@ -24,7 +24,7 @@ public interface CourseMapper{
      * @param order
      * @return
      */
-    List<Course> getAllCourseList(@Param("offset") Integer offset,@Param("limit") Integer limit,@Param("field")String field, @Param("order") String order);
+    List<Course> getAllCourseList(@Param("offset") Integer offset,@Param("limit") Integer limit,@Param("field")String field, @Param("order") String order, @Param("commentCount") Integer commentCount);
 
 
     /**

@@ -39,7 +39,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
                 IndexDefinition def = new IndexDefinition().setPrefixes("course:");
                 jedisPooled.ftCreate("course-index", IndexOptions.defaultOptions().setDefinition(def), sc);
             }catch(Exception ignored){}
-            ArrayList<Course> courseArrayList = (ArrayList<Course>) courseMapper.getAllCourseList(0, 10000, "courseNum", "ASC");
+            ArrayList<Course> courseArrayList = (ArrayList<Course>) courseMapper.getAllCourseList(0, 10000, "courseNum", "ASC", 0);
             for (Course course : courseArrayList) {
                 Map<String, Object> fields = new HashMap<>();
                 fields.put("courseID", course.getCourseID());

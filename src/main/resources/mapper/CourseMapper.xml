@@ -7,7 +7,7 @@
     </insert>
 
     <select id="getAllCourseList"  resultType="Course">
-        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit, commentCount FROM course ORDER BY ${field} ${order} LIMIT #{offset}, #{limit}
+        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit, commentCount FROM course WHERE commentCount &gt;= #{commentCount} ORDER BY ${field} ${order} LIMIT #{offset}, #{limit}
     </select>
 
     <select id="getCourseList" resultType="Course">
