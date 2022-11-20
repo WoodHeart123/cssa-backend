@@ -62,6 +62,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
                 fields.put("productID", product.getProductID());
                 fields.put("productName", product.getProductTitle());
                 jedisPooled.hset("product:" + product.getProductID().toString(), RediSearchUtil.toStringMap(fields));
+                jedisPooled.ftSugAdd("productName", product.getProductTitle(), 1.0);
             }
         }catch (JedisConnectionException ignored){}
 
