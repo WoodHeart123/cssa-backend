@@ -60,4 +60,13 @@ public class AdminController {
         }
         return adminService.deleteActivity(actID);
     }
+
+    @RequestMapping(value={"deleteComment"}, method={RequestMethod.GET})
+    public Response deleteComment(@RequestParam String commentID, HttpServletRequest request){
+        Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
+        if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
+            return Response.builder().status(310).message("无管理员信息").build();
+        }
+        return adminService.deleteComment(commentID);
+    }
 }

@@ -74,4 +74,10 @@ public class AdminServiceImpl implements AdminService {
         this.adminMapper.deleteActivity(actID, new Timestamp(0));
         return Response.builder().status(100).build();
     }
+
+    @Override
+    public Response deleteComment(String commentID) {
+        adminMapper.deleteComment(commentID);
+        return Response.builder().status(100).message("success").build();
+    }
 }

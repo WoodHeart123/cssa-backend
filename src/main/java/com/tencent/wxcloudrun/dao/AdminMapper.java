@@ -48,4 +48,10 @@ public interface AdminMapper {
      * @param actID actID
      */
     ArrayList<SignupInfo> getActivitySignup(String actID);
+
+    /**
+     * delete the comment by comment ID
+     * @param commentID
+     */
+    void deleteComment(String commentID);
 }
