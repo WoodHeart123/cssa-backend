@@ -9,14 +9,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPooled;
-import redis.clients.jedis.exceptions.JedisDataException;
-import redis.clients.jedis.search.IndexDefinition;
-import redis.clients.jedis.search.IndexOptions;
-import redis.clients.jedis.search.RediSearchUtil;
-import redis.clients.jedis.search.Schema;
 
 import java.util.ArrayList;
 import java.util.HashMap;
