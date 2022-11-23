@@ -47,10 +47,7 @@ public class UserServiceImpl implements UserService {
             }else {
                 user.setLikedComment(JSON.parseArray(user.getLikedCommentJSON(), Integer.class));
             }
-            if(!user.getNickname().equals(nickname)){
-                userMapper.updateNickname(nickname,userID);
-                user.setNickname(nickname);
-            }
+
         }
         return Response.builder().status(100).data(user).build();
     }
@@ -94,6 +91,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public Response deleteComment(String userID, Integer commentID) {
         userMapper.deleteComment(userID,commentID);
+        return Response.builder().status(100).build();
+    }
+
+    @Override
+    public Response updateNickname(String userID, String nickname) {
+        userMapper.updateNickname(nickname,userID);
         return Response.builder().status(100).build();
     }
 

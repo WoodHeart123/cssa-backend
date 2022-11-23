@@ -118,4 +118,16 @@ public class UserController {
         }
         return userService.deleteComment(openid.get(), commentID);
     }
+
+    @RequestMapping(value={"/updateNickname"},method={RequestMethod.GET})
+    public Response updateComment(@RequestParam String nickname, HttpServletRequest request){
+        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+        if(openid.isEmpty()){
+            return Response.builder().status(102).message("无用户信息").build();
+        }
+        if(nickname.length() == 0){
+            return Response.builder().status(105).message("参数错误").build();
+        }
+        return userService.updateNickname(openid.get(),nickname);
+    }
 }
