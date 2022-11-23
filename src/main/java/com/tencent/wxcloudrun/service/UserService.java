@@ -17,4 +17,5 @@ public interface UserService {
     Response getMyComment(String userID, Integer offset, Integer limit);
     Response updateComment(String userID,Integer commentID,String comment);
     Response deleteComment(String userID,Integer commentID);
+    Response updateNickname(String userID, String nickname);
 }
