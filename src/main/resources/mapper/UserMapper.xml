@@ -23,7 +23,7 @@
     </select>
 
     <update id="updateAvatar" parameterType="Integer">
-        UPDATE user SET avatar = #{avatar}
+        UPDATE user SET avatar = #{avatar} WHERE userID = #{userID}
     </update>
 
     <select id="getMyComment" parameterType="Map" resultType="Comment">

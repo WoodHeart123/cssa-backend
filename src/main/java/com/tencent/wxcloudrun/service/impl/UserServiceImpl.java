@@ -71,8 +71,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Response updateAvatar(Integer avatar){
-        userMapper.updateAvatar(avatar);
+    public Response updateAvatar(String userID,Integer avatar){
+        userMapper.updateAvatar(userID,avatar);
         return Response.builder().status(100).build();
     }
 
