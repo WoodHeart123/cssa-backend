@@ -52,7 +52,7 @@ public class CourseController {
      * @param request Header of this Request
      * @return Add comment content and related information to database
      */
-    @PostMapping(value = "/postcomment", consumes = "image/png")
+    @PostMapping(value = "/postcomment")
     public Response save(@RequestBody Comment comment, HttpServletRequest request) {
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         if(openid.isEmpty()){
