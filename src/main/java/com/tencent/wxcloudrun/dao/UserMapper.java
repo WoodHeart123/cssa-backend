@@ -56,4 +56,6 @@ public interface UserMapper {
     void updateComment(String userID, Integer commentID, String comment);
 
     void deleteComment(String userID, Integer commentID);
+
+    void updateNickname(String nickname, String userID);
 }

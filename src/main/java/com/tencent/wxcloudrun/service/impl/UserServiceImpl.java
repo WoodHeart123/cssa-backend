@@ -47,6 +47,9 @@ public class UserServiceImpl implements UserService {
             }else {
                 user.setLikedComment(JSON.parseArray(user.getLikedCommentJSON(), Integer.class));
             }
+            if(!user.getNickname().equals(nickname)){
+                userMapper.updateNickname(nickname,userID);
+            }
         }
         return Response.builder().status(100).data(user).build();
     }
