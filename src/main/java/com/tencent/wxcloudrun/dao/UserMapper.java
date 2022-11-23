@@ -43,7 +43,7 @@ public interface UserMapper {
      * update user's avatar
      * @param avatar a number ranged from 1 to 12
      */
-    void updateAvatar(Integer avatar);
+    void updateAvatar(String userID,Integer avatar);
 
     /**
      *

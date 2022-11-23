@@ -78,7 +78,7 @@ public class UserController {
         if(avatar < 1 || avatar > 12){
             return Response.builder().status(110).build();
         }
-        return userService.updateAvatar(avatar);
+        return userService.updateAvatar(openid.get(),avatar);
     }
 
     @RequestMapping(value={"/getZanList"}, method={RequestMethod.GET})
