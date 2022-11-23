@@ -22,7 +22,7 @@
         select userID,likedCommentJSON from user WHERE userID = #{userID}
     </select>
 
-    <update id="updateAvatar" parameterType="Integer">
+    <update id="updateAvatar" parameterType="String">
         UPDATE user SET avatar = #{avatar} WHERE userID = #{userID}
     </update>
 
