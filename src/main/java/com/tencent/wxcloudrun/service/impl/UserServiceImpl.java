@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService {
             }
             if(!user.getNickname().equals(nickname)){
                 userMapper.updateNickname(nickname,userID);
+                user.setNickname(nickname);
             }
         }
         return Response.builder().status(100).data(user).build();
