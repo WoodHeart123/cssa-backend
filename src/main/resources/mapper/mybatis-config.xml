@@ -12,5 +12,6 @@
         <typeAlias alias="Department" type="com.tencent.wxcloudrun.model.Department" />
         <typeAlias alias="Course" type="com.tencent.wxcloudrun.model.Course" />
         <typeAlias alias="Product" type="com.tencent.wxcloudrun.model.Product" />
+        <typeAlias alias="Rental" type="com.tencent.wxcloudrun.model.Rental"/>
     </typeAliases>
 </configuration>
