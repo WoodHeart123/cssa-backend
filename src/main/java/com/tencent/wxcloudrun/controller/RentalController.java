@@ -32,7 +32,7 @@ public class RentalController {
     /**
      * 搜索转租信息
      * @param value 用户输入字符
-     * @return 匹配的转租信息
+     * @return 匹配的转租信
      */
     @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
     public Response search(@RequestParam String value, HttpServletRequest request){
