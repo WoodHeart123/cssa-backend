@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 
 @Component
 public class AdminServiceInterceptor implements HandlerInterceptor {
-    private final Logger logger = LoggerFactory.getLogger(WeixinServiceInterceptor.class);
+    private final Logger logger = LoggerFactory.getLogger(AdminServiceInterceptor.class);
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         PrintWriter writer = null;
