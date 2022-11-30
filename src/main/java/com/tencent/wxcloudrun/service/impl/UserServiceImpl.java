@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Response authSuccess(String userID) {
         userMapper.authSuccess(userID);
-        return Response.builder().status(100).build();
+        return new Response();
     }
     @Override
     public Response login(String nickname, String userID) throws UnsupportedEncodingException {
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
             }
 
         }
-        return Response.builder().status(100).data(user).build();
+        return new Response(user);
     }
 
     @Override
@@ -62,43 +62,43 @@ public class UserServiceImpl implements UserService {
             return Response.builder().status(104).message("邮箱格式不正确").build();
         }
         userMapper.updateEmail(email,userID);
-        return Response.builder().status(100).build();
+        return new Response();
     }
 
     @Override
     public Response getLikedCommentList(String userID) {
         User user = userMapper.getLikedCommentList(userID);
         user.setLikedComment(JSON.parseArray(user.getLikedCommentJSON(), Integer.class));
-        return Response.builder().data(user.getLikedComment()).status(100).build();
+        return new Response(user.getLikedComment());
     }
 
     @Override
     public Response updateAvatar(String userID,Integer avatar){
         userMapper.updateAvatar(userID,avatar);
-        return Response.builder().status(100).build();
+        return new Response();
     }
 
     @Override
     public Response getMyComment(String userID, Integer offset, Integer limit) {
-        return Response.builder().status(100).data(userMapper.getMyComment(userID,offset,limit)).build();
+        return new Response(userMapper.getMyComment(userID,offset,limit));
     }
 
     @Override
     public Response updateComment(String userID, Integer commentID, String comment) {
         userMapper.updateComment(userID,commentID,comment);
-        return Response.builder().status(100).build();
+        return new Response();
     }
 
     @Override
     public Response deleteComment(String userID, Integer commentID) {
         userMapper.deleteComment(userID,commentID);
-        return Response.builder().status(100).build();
+        return new Response();
     }
 
     @Override
     public Response updateNickname(String userID, String nickname) {
         userMapper.updateNickname(nickname,userID);
-        return new Response(ReturnCode.SUCCESS);
+        return new Response();
     }
 
 
