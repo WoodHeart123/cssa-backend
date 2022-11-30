@@ -6,6 +6,7 @@ import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.ReturnCode;
 import com.tencent.wxcloudrun.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;

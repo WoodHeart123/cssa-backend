@@ -10,6 +10,10 @@ public class Response {
     public String message;
     public Object data;
 
+    public Response(){
+        this.message = ReturnCode.SUCCESS.getMessage();
+        this.status = ReturnCode.SUCCESS.getCode();
+    }
     public Response(int status,String message,Object data){
         this.status = status;
         this.message = message;
