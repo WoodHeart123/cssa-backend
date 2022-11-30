@@ -1,4 +1,4 @@
-package com.tencent.wxcloudrun.config;
+package com.tencent.wxcloudrun.util;
 
 import com.tencent.wxcloudrun.dao.CourseMapper;
 import com.tencent.wxcloudrun.dao.SecondHandMapper;
