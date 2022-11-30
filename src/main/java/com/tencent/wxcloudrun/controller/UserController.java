@@ -120,14 +120,10 @@ public class UserController {
     }
 
     @RequestMapping(value={"/updateNickname"},method={RequestMethod.GET})
-    public Response updateComment(@RequestParam String nickname, HttpServletRequest request){
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
-        if(openid.isEmpty()){
-            return Response.builder().status(102).message("无用户信息").build();
-        }
+    public Response updateComment(@RequestParam String nickname,@RequestHeader("x-wx-openid") String openid,HttpServletRequest request){
         if(nickname.length() == 0){
             return Response.builder().status(105).message("参数错误").build();
         }
-        return userService.updateNickname(openid.get(),nickname);
+        return userService.updateNickname(openid,nickname);
     }
 }

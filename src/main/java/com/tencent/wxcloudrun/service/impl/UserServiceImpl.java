@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.dao.UserMapper;
 import com.tencent.wxcloudrun.event.AuthEvent;
 import com.tencent.wxcloudrun.model.Response;
+import com.tencent.wxcloudrun.model.ReturnCode;
 import com.tencent.wxcloudrun.model.User;
 import com.tencent.wxcloudrun.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +98,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Response updateNickname(String userID, String nickname) {
         userMapper.updateNickname(nickname,userID);
-        return Response.builder().status(100).build();
+        return new Response(ReturnCode.SUCCESS);
     }
 
 
