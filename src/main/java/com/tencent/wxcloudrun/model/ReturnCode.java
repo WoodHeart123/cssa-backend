@@ -14,6 +14,7 @@ public enum ReturnCode {
     AUTH_FALSE(106,"验证码错误"),
     REPEATED_ZAN(107,"已点赞"),
     INTEGER_OUT_OF_RANGE(108,"整型超过范围"),
+    EMPTY_STRING(109,"空字符串"),
     INVALID_ADMIN_TOKEN(301,"管理者信息无效")
     ;
 

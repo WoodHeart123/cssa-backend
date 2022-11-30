@@ -15,7 +15,11 @@ public class Response {
         this.message = message;
         this.data = data;
     }
-
+    public Response(Object data){
+        this.data = data;
+        this.message = ReturnCode.SUCCESS.getMessage();
+        this.status = ReturnCode.SUCCESS.getCode();
+    }
     public Response(ReturnCode rc){
         this.message = rc.getMessage();
         this.status = rc.getCode();
