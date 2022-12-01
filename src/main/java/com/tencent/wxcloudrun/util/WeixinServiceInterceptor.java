@@ -29,7 +29,6 @@ public class WeixinServiceInterceptor implements HandlerInterceptor {
                 response.setCharacterEncoding("utf-8");
                 response.setContentType("application/json;charset:utf-8");
                 writer = response.getWriter();
-
                 writer.print(JSON.toJSON(new Response(ReturnCode.INVALID_USER_TOKEN)));
                 return false;
             }
