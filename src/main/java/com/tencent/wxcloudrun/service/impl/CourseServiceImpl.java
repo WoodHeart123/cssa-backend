@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 @Service
@@ -29,6 +30,10 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public Response postComment(Comment comment) {
+        if(comment.getUserAvatar() == null){
+            Random random = new Random();
+            comment.setUserAvatar(random.nextInt(10) + 1);
+        }
         // to check if there is already two comments
         Integer count = courseMapper.getPostCommentCount(comment.getUserID(),comment.getCourseID());
         if(count >= 2){

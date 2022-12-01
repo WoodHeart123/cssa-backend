@@ -52,7 +52,7 @@ public class CourseController {
      * @param request Header of this Request
      * @return Add comment content and related information to database
      */
-    @PostMapping("/postcomment")
+    @PostMapping(value = "/postcomment")
     public Response save(@RequestBody Comment comment, HttpServletRequest request) {
         Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
         if(openid.isEmpty()){
@@ -67,7 +67,7 @@ public class CourseController {
     }
 
     @RequestMapping(value={"/getCommentList"}, method = {RequestMethod.GET})
-    public Response getCommentList(@RequestParam Integer courseID, @RequestParam Integer offset, @RequestParam Integer limit, @RequestParam SortType order, HttpServletRequest request){
+    public Response getCommentList(@RequestParam Integer courseID, @CookieValue@RequestParam Integer offset, @RequestParam Integer limit, @RequestParam SortType order, HttpServletRequest request){
         return courseService.getCommentList(courseID,offset,limit,order);
     }
     

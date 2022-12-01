@@ -13,8 +13,9 @@ public interface UserService {
     Response login(String nickname, String userID) throws UnsupportedEncodingException;
     Response updateEmail(String email, String userID);
     Response getLikedCommentList(String userID);
-    Response updateAvatar(Integer avatar);
+    Response updateAvatar(String userID,Integer avatar);
     Response getMyComment(String userID, Integer offset, Integer limit);
     Response updateComment(String userID,Integer commentID,String comment);
     Response deleteComment(String userID,Integer commentID);
+    Response updateNickname(String userID, String nickname);
 }

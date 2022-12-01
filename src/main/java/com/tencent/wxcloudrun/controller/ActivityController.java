@@ -17,15 +17,10 @@ import java.util.Optional;
 @CrossOrigin
 @RequestMapping({"/activity"})
 public class ActivityController {
-
     @Autowired
     ActivityService activityService;
-
     @Autowired
     EmailService emailService;
-
-
-
 
     @RequestMapping(value={"/checksignup"},method={RequestMethod.GET})
     public Response checkSignup(@RequestParam(name="actID") Integer actID, @RequestParam(name="date") Long date, HttpServletRequest request){

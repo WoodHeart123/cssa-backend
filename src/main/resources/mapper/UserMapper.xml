@@ -22,8 +22,8 @@
         select userID,likedCommentJSON from user WHERE userID = #{userID}
     </select>
 
-    <update id="updateAvatar" parameterType="Integer">
-        UPDATE user SET avatar = #{avatar}
+    <update id="updateAvatar">
+        UPDATE user SET avatar = #{avatar} WHERE userID = #{userID}
     </update>
 
     <select id="getMyComment" parameterType="Map" resultType="Comment">
@@ -37,4 +37,8 @@
     <delete id="deleteComment">
         DELETE FROM comment WHERE userID = #{userID} AND commentID = #{commentID}
     </delete>
+
+    <update id="updateNickname" parameterType="String">
+        update user SET nickname = #{nickname} WHERE userID = #{userID}
+    </update>
 </mapper>

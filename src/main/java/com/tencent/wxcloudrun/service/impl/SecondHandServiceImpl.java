@@ -8,12 +8,12 @@ import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.User;
 import com.tencent.wxcloudrun.service.SecondHandService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scripting.support.RefreshableScriptTargetSource;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -48,15 +48,15 @@ public class SecondHandServiceImpl implements SecondHandService {
     }
     
     @Override
-    public Response collect(Integer productID, String UserID) {
-//        User user = secondHandMapper.collect(productID, UserID);
-//        ArrayList<Integer> productArrayList = JSON.parseArray(user.getSavedProductJSON());
-//        if(!(productArrayList.contains(productID))){
-//            productArrayList.add(productID);
-//            String json = JSON.toJSONString(productArrayList);
-//            user.setSavedProductJSON(json);
-//            updateCollect(user);
-//        }
+    public Response collect(Integer productID, String userID) {
+        User user = secondHandMapper.collect(userID);
+        List<Integer> productArrayList = JSON.parseArray(user.getSavedProductJSON(), Integer.class);
+        if(!(productArrayList.contains(productID))){
+            productArrayList.add(productID);
+            String json = JSON.toJSONString(productArrayList);
+            user.setSavedProductJSON(json);
+           secondHandMapper.updateCollect(user);
+        }
         return Response.builder().data(null).status(100).build();
     }
 

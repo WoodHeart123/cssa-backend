@@ -2,6 +2,9 @@ package com.tencent.wxcloudrun.service.impl;
 
 import com.tencent.wxcloudrun.model.EmailDetail;
 import com.tencent.wxcloudrun.service.EmailService;
+import com.tencent.wxcloudrun.util.WeixinServiceInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,6 +19,7 @@ import javax.mail.internet.MimeMessage;
 @Service
 public class EmailServiceImpl implements EmailService {
 
+    private final Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
     @Autowired
     private JavaMailSender mailSender;
 
@@ -24,7 +28,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendSimpleMail(EmailDetail emailDetail) throws MessagingException {
-        System.out.println(sender);
+        logger.info("sending email to " + emailDetail.getReceiver());
         MimeMessage mailMessage = mailSender.createMimeMessage();
         MimeMessageHelper mailMessageHelper = new MimeMessageHelper(mailMessage, true);
         mailMessageHelper.setFrom(sender);
