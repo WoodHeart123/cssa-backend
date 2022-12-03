@@ -19,20 +19,20 @@
     </select>
     
     <insert id="saveProduct" parameterType="Product">
-        INSERT INTO secondhand (productID,sellerAvatar,sellerNickname,productTitle,productDescription,productType,time,price,productCondition,contact,imagesJSON,delivery) VALUES (#{productID},#{sellerAvatar},#{sellerNickname},#{productTitle},#{productDescription},#{productType},#{time},#{price},#{productCondition}, #{contact}, #{imagesJSON}, #{delivery})
+        INSERT INTO secondhand (productID,userID,sellerAvatar,sellerNickname,productTitle,productDescription,productType,time,price,productCondition,contact,imagesJSON,delivery) VALUES (#{productID},#{userID},#{sellerAvatar},#{sellerNickname},#{productTitle},#{productDescription},#{productType},#{time},#{price},#{productCondition}, #{contact}, #{imagesJSON}, #{delivery})
     </insert>
     <select id="collect" resultType="boolean">
-        SELECT saveProductJson,userID FROM user WHERE userID = #{userID}
+        SELECT savedProductJson,userID FROM user WHERE userID = #{userID}
     </select>
     
     <update id="updateCollect">
         UPDATE user 
-        SET productID = #{savedProductJSON} 
+        SET savedProductJSON = #{savedProductJSON}
         WHERE userID = #{userID}
     </update>
 
     <select id="getProduct" resultType="Product">
-        SELECT productID, userID, sellerAvatar, sellerNickname, productTitle, productDescription, price, productType, productCondition, time, contact, images, imagesJSON, delivery FROM product WHERE productID in
+        SELECT productID, userID, sellerAvatar, sellerNickname, productTitle, productDescription, price, productType, productCondition, time, contact, images, imagesJSON, delivery FROM secondhand WHERE productID in
         <foreach item="product" collection="productID" separator="," open="(" close=")" index="index">
             #{product}
         </foreach>
