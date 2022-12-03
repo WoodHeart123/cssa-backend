@@ -62,7 +62,7 @@ public class AdminController {
     }
 
     @RequestMapping(value={"deleteComment"}, method={RequestMethod.GET})
-    public Response deleteComment(@RequestParam String commentID, HttpServletRequest request){
+    public Response deleteComment(@RequestParam Integer commentID, HttpServletRequest request){
         Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
         if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
             return Response.builder().status(310).message("无管理员信息").build();

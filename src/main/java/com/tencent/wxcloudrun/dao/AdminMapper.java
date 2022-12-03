@@ -53,5 +53,5 @@ public interface AdminMapper {
      * delete the comment by comment ID
      * @param commentID
      */
-    void deleteComment(String commentID);
+    void deleteComment(Integer commentID);
 }

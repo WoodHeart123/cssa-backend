@@ -76,7 +76,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Response deleteComment(String commentID) {
+    public Response deleteComment(Integer commentID) {
         adminMapper.deleteComment(commentID);
         return Response.builder().status(100).message("success").build();
     }

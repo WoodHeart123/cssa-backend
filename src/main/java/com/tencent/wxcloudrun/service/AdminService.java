@@ -23,5 +23,5 @@ public interface AdminService {
 
     Response deleteActivity(String actID);
 
-    Response deleteComment(String commentID);
+    Response deleteComment(Integer commentID);
 }
