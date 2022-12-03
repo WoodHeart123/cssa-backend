@@ -32,7 +32,7 @@
     </update>
 
     <select id="getProduct" resultType="Product">
-        SELECT productID, userID, sellerAvatar, sellerNickname, productTitle, productDescription, price, productType, productCondition, time, contact, images, imagesJSON, delivery FROM secondhand WHERE productID in
+        SELECT productID, userID, sellerAvatar, sellerNickname, productTitle, productDescription, price, productType, productCondition, time, contact, imagesJSON, delivery FROM secondhand WHERE productID in
         <foreach item="product" collection="productID" separator="," open="(" close=")" index="index">
             #{product}
         </foreach>
