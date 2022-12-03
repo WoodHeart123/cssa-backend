@@ -36,6 +36,9 @@ public class SecondHandServiceImpl implements SecondHandService {
         }else{
             productArrayList = secondHandMapper.getProductList(productType.name(),offset,limit);
         }
+        for(Product product: productArrayList){
+            product.setImages(JSON.parseArray(product.getImagesJSON(),String.class));
+        }
         return Response.builder().data(productArrayList).status(100).build();
     }
 
