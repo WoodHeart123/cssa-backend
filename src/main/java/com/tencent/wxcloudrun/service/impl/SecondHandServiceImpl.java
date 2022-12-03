@@ -43,7 +43,7 @@ public class SecondHandServiceImpl implements SecondHandService {
     public Response saveProduct(Product product,Boolean save,String userID) {
         product.setTime(new Timestamp(new Date().getTime()));
         product.setImagesJSON(JSON.toJSONString(product.getImages()));
-        secondHandMapper.save(product);
+        secondHandMapper.saveProduct(product);
         if(save){
             secondHandMapper.saveContact(userID, product.getContact());
         }
