@@ -3,7 +3,7 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.SecondHandMapper">
 
     <select id="getAllProductList" resultType="Product">
-        SELECT productID,sellerAvatar,sellerNickname, productTitle,productDescription,productType,time,price,`condition`,contact,imagesJSON,delivery
+        SELECT productID,sellerAvatar,sellerNickname, productTitle,productDescription,productType,time,price,productCondition,contact,imagesJSON,delivery
         FROM secondhand
         WHERE productID >= #{offset}
         ORDER BY secondhand.productID
@@ -11,7 +11,7 @@
     </select>
 
     <select id="getProductList" resultType="Product">
-        SELECT productID,sellerAvatar,sellerNickname, productTitle,productDescription,productType,time,price,`condition`,contact,imagesJSON,delivery
+        SELECT productID,sellerAvatar,sellerNickname, productTitle,productDescription,productType,time,price,productCondition,contact,imagesJSON,delivery
         FROM secondhand
         WHERE productID >= #{offset} AND productType = #{productType}
         ORDER BY secondhand.productID
@@ -19,7 +19,7 @@
     </select>
     
     <insert id="saveProduct" parameterType="Product">
-        INSERT INTO product (productID,sellerAvatar,sellerNickname,productTitle,productDescription,productType,time,price,`condition`,contact,imagesJSON,delivery) VALUES (#{productID},#{sellerAvatar},#{sellerNickname},#{productTitle},#{productDescription},#{productType},#{time},#{price},#{'condition'}, #{contact}, #{imagesJSON}, #{delivery})
+        INSERT INTO product (productID,sellerAvatar,sellerNickname,productTitle,productDescription,productType,time,price,productCondition,contact,imagesJSON,delivery) VALUES (#{productID},#{sellerAvatar},#{sellerNickname},#{productTitle},#{productDescription},#{productType},#{time},#{price},#{productCondition}, #{contact}, #{imagesJSON}, #{delivery})
     </insert>
     <select id="collect" resultType="boolean">
         SELECT saveProductJson,userID FROM user WHERE userID = #{userID}
@@ -32,7 +32,7 @@
     </update>
 
     <select id="getProduct" resultType="Product">
-        SELECT productID, userID, sellerAvatar, sellerNickname, productTitle, productDescription, price, productType, condition, time, contact, images, imagesJSON, delivery FROM product WHERE productID in
+        SELECT productID, userID, sellerAvatar, sellerNickname, productTitle, productDescription, price, productType, productCondition, time, contact, images, imagesJSON, delivery FROM product WHERE productID in
         <foreach item="product" collection="productID" separator="," open="(" close=")" index="index">
             #{product}
         </foreach>
