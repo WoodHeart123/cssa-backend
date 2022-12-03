@@ -58,8 +58,8 @@ public class SecondHandController {
         return secondHandService.saveProduct(product);
     }
 
-//    @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})
-//    public Response cancelCollect(@RequestParam Integer productID, String UserID, HttpServletRequest request){
-//        return secondHandService.collect(product,UserID);
-//    }
+    @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})
+    public Response cancelCollect(@RequestParam Integer productID, @RequestHeader("x-wx-openid") String openid, HttpServletRequest request){
+        return secondHandService.collect(productID,openid);
+    }
 }
