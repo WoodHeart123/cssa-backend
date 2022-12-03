@@ -15,7 +15,7 @@ public class Product {
     private String productDescription;
     private Integer price;
     private ProductType productType;
-    private Condition condition;
+    private Condition productCondition;
     private Timestamp time;
     private String contact;
     private List<String> images;
