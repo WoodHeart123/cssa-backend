@@ -54,8 +54,8 @@ public class SecondHandController {
     }
     
     @RequestMapping(value= {"/saveProduct"}, method = {RequestMethod.POST})
-        public Response saveProduct(@RequestBody Product product, HttpServletRequest request){
-        return secondHandService.saveProduct(product);
+        public Response saveProduct(@RequestParam Boolean save,@RequestBody Product product, @RequestHeader("x-wx-openid") String openid){
+        return secondHandService.saveProduct(product,save,openid);
     }
 
     @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})

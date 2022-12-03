@@ -19,4 +19,6 @@ public interface SecondHandMapper {
     User collect(String userID);
     void updateCollect(User user);
     void save(Product product);
+
+    void saveContact(String userID,String contact);
 }
