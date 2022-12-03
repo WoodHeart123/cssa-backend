@@ -38,4 +38,8 @@
         </foreach>
     </select>
 
+    <update id="saveContact">
+        UPDATE user SET wechatID = #{contact} WHERE userID = #{userID}
+    </update>
+
 </mapper>
