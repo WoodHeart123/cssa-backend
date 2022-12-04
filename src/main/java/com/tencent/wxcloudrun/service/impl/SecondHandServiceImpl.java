@@ -57,13 +57,19 @@ public class SecondHandServiceImpl implements SecondHandService {
     public Response collect(Integer productID, String userID) {
         User user = secondHandMapper.collect(userID);
         List<Integer> productArrayList = JSON.parseArray(user.getSavedProductJSON(), Integer.class);
+        int i = 0;
         if(!(productArrayList.contains(productID))){
+            i = 1;
             productArrayList.add(productID);
             String json = JSON.toJSONString(productArrayList);
             user.setSavedProductJSON(json);
            secondHandMapper.updateCollect(user);
         }
-        return Response.builder().data(null).status(100).build();
+        if (i == 1) {
+            return Response.builder().data(null).status(101).build();
+        } else {
+            return Response.builder().data(null).status(100).build();
+        }
     }
 
 }
