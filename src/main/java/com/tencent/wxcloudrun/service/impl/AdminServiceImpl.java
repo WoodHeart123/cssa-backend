@@ -75,11 +75,11 @@ public class AdminServiceImpl implements AdminService {
         return Response.builder().status(100).build();
     }
 
-//    @Override
-//    public Response postMainPagePhoto(MainPagePhoto mainPagePhoto) {
-//        adminMapper.postMainPagePhoto(mainPagePhoto);
-//        return Response.builder().status(100).message("成功").build();
-//    }
+    @Override
+    public Response postMainPagePhoto(MainPagePhoto mainPagePhoto) {
+        adminMapper.postMainPagePhoto(mainPagePhoto);
+        return Response.builder().status(100).message("成功").build();
+    }
 
     @Override
     @Transactional
