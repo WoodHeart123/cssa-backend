@@ -46,6 +46,10 @@
         UPDATE activity SET startDate = #{timestamp} AND endDate = #{timestamp} WHERE actID = #{actID}
     </update>
 
+    <delete id="deleteComment" parameterType="Integer">
+        DELETE FROM comment WHERE commentID = #{commentID}
+    </delete>
+
     <select id="getActivitySignup" parameterType="String" resultType="SignupInfo">
         SELECT
             signup_activity.response as responseJSON,
@@ -61,9 +65,4 @@
     <select id="getActivity" parameterType="String" resultType="Activity">
         SELECT title,startDate,location FROM activity WHERE  actID = #{actID}
     </select>
-
-    <update id="deleteComment" parameterType="Integer">
-        UPDATE activity SET startDate = #{timestamp} AND endDate = #{timestamp} WHERE actID = #{actID}
-    </update>
-
 </mapper>
