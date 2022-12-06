@@ -36,14 +36,20 @@ public class SecondHandServiceImpl implements SecondHandService {
         }else{
             productArrayList = secondHandMapper.getProductList(productType.name(),offset,limit);
         }
+        for(Product product: productArrayList){
+            product.setImages(JSON.parseArray(product.getImagesJSON(),String.class));
+        }
         return Response.builder().data(productArrayList).status(100).build();
     }
 
     @Override
-    public Response saveProduct(Product product) {
+    public Response saveProduct(Product product,Boolean save,String userID) {
         product.setTime(new Timestamp(new Date().getTime()));
         product.setImagesJSON(JSON.toJSONString(product.getImages()));
-        secondHandMapper.save(product);
+        secondHandMapper.saveProduct(product);
+        if(save){
+            secondHandMapper.saveContact(userID, product.getContact());
+        }
         return Response.builder().message("成功").status(100).build();
     }
     
@@ -51,13 +57,19 @@ public class SecondHandServiceImpl implements SecondHandService {
     public Response collect(Integer productID, String userID) {
         User user = secondHandMapper.collect(userID);
         List<Integer> productArrayList = JSON.parseArray(user.getSavedProductJSON(), Integer.class);
+        int i = 0;
         if(!(productArrayList.contains(productID))){
+            i = 1;
             productArrayList.add(productID);
             String json = JSON.toJSONString(productArrayList);
             user.setSavedProductJSON(json);
            secondHandMapper.updateCollect(user);
         }
-        return Response.builder().data(null).status(100).build();
+        if (i == 1) {
+            return Response.builder().data(null).status(101).build();
+        } else {
+            return Response.builder().data(null).status(100).build();
+        }
     }
 
 }

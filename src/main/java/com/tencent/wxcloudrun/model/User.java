@@ -20,6 +20,8 @@ public class User {
     private Boolean isStudent;
     private Integer avatar;
 
+    private String wechatID;
+
 
     /**
      * a no argument constructor for mybatis injection
