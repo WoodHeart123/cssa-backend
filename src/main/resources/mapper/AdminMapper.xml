@@ -61,4 +61,14 @@
     <select id="getActivity" parameterType="String" resultType="Activity">
         SELECT title,startDate,location FROM activity WHERE  actID = #{actID}
     </select>
+
+<!--    <insert id="postMainPagePhoto" parameterType="MainPagePhoto">-->
+<!--        INSERT INTO mainpage_photo (startDate,endDate,smallPhoto,largePhoto) values (#{startDate},#{endDate},#{smallPhoto},#{largePhoto)-->
+<!--    </insert>-->
+
+    <update id="deleteMainPagePhoto">
+        UPDATE mainpage_photo SET startDate = #{timestamp} AND endDate = #{timestamp} WHERE photoID = #{photoID}
+    </update>
+
+
 </mapper>

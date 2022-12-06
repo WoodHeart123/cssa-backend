@@ -60,4 +60,23 @@ public class AdminController {
         }
         return adminService.deleteActivity(actID);
     }
+
+//    @RequestMapping(value={"/postMainPagePhoto"}, method={RequestMethod.POST})
+//    public Response postMainPagePhoto(@RequestBody MainPagePhoto mainPagePhoto, HttpServletRequest request){
+//        Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
+//        if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
+//            return Response.builder().status(310).message("无管理员信息").build();
+//        }
+//        return adminService.postMainPagePhoto(mainPagePhoto);
+//    }
+
+    @RequestMapping(value={"deleteMainPagePhoto"}, method={RequestMethod.GET})
+    public Response deleteMainPagePhoto(@RequestParam String photoID, HttpServletRequest request){
+        Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
+        if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
+            return Response.builder().status(310).message("无管理员信息").build();
+        }
+        return adminService.deleteMainPagePhoto(photoID);
+    }
+
 }

@@ -3,6 +3,7 @@ package com.tencent.wxcloudrun.service;
 
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.Admin;
+import com.tencent.wxcloudrun.model.MainPagePhoto;
 import com.tencent.wxcloudrun.model.Response;
 import org.springframework.stereotype.Service;
 
@@ -22,4 +23,8 @@ public interface AdminService {
     Response login(Admin admin);
 
     Response deleteActivity(String actID);
+
+//    Response postMainPagePhoto(MainPagePhoto mainPagePhoto);
+
+    Response deleteMainPagePhoto(String photoID);
 }
