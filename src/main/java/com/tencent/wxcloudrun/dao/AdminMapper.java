@@ -50,7 +50,7 @@ public interface AdminMapper {
      */
     ArrayList<SignupInfo> getActivitySignup(String actID);
 
-//    void postMainPagePhoto(MainPagePhoto mainPagePhoto);
+    void postMainPagePhoto(MainPagePhoto mainPagePhoto);
 
     void deleteMainPagePhoto(@Param("photoID") String actID,@Param("timestamp") Timestamp timestamp);
 

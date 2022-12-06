@@ -24,7 +24,7 @@ public interface AdminService {
 
     Response deleteActivity(String actID);
 
-//    Response postMainPagePhoto(MainPagePhoto mainPagePhoto);
+    Response postMainPagePhoto(MainPagePhoto mainPagePhoto);
 
     Response deleteMainPagePhoto(String photoID);
 }
