@@ -27,4 +27,6 @@ public interface AdminService {
     Response postMainPagePhoto(MainPagePhoto mainPagePhoto);
 
     Response deleteMainPagePhoto(String photoID);
+
+    Response getMainPagePhotoList(Integer offset, Integer limit);
 }

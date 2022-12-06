@@ -79,4 +79,13 @@ public class AdminController {
         return adminService.deleteMainPagePhoto(photoID);
     }
 
+    @RequestMapping(value={"getMainPagePhotoList"},method={RequestMethod.GET})
+    Response getMainPagePhotoList(@RequestParam Integer offset, @RequestParam Integer limit,HttpServletRequest request){
+        Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
+        if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
+            return Response.builder().status(110).message("无管理员信息").build();
+        }
+        return adminService.getMainPagePhotoList(offset, limit);
+    }
+
 }
