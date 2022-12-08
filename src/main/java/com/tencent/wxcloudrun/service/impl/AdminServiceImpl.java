@@ -87,4 +87,10 @@ public class AdminServiceImpl implements AdminService {
         this.adminMapper.deleteMainPagePhoto(photoID, new Timestamp(0));
         return Response.builder().status(100).build();
     }
+
+    @Override
+    public Response getMainPagePhotoList(Integer offset, Integer limit) {
+        List<MainPagePhoto> mainPagePhotoList = adminMapper.getMainPagePhotoList(offset, limit);
+        return Response.builder().data(mainPagePhotoList).status(100).build();
+    }
 }
