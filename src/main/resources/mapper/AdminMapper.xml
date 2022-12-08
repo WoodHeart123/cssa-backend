@@ -84,5 +84,13 @@
         LIMIT #{offset}, #{limit}
     </select>
 
+    <select id="getDepartmentList" resultType="Department">
+        SELECT departmentID, department, departmentAbrev FROM department ORDER BY departmentID
+    </select>
+
+    <select id="getCourseList" resultType="Course">
+        SELECT courseID, courseName, courseNum, commentCount FROM course WHERE departmentID = #{departmentID} ORDER BY courseNum
+    </select>
+
 
 </mapper>

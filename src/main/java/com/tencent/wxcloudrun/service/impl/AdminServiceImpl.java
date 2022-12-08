@@ -95,6 +95,16 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public Response getDepartmentList() {
+        return Response.builder().data(adminMapper.getDepartmentList()).status(100).message("成功").build();
+    }
+
+    @Override
+    public Response getCourseList(Integer departmentID) {
+        return Response.builder().data(adminMapper.getCourseList(departmentID)).status(100).message("成功").build();
+    }
+
+    @Override
     public Response deleteComment(Integer commentID) {
         adminMapper.deleteComment(commentID);
         return Response.builder().status(100).message("success").build();

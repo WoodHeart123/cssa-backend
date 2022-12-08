@@ -30,9 +30,9 @@ public interface AdminMapper {
      */
     Integer login(Admin admin);
 
-    Integer checkUsername(String username);
+    //Integer checkUsername(String username);
 
-    void register(Admin admin);
+   // void register(Admin admin);
 
     /**
      * delete the activity by setting timestamp to zero
@@ -58,4 +58,8 @@ public interface AdminMapper {
     void deleteMainPagePhoto(@Param("photoID") String actID,@Param("timestamp") Timestamp timestamp);
 
     List<MainPagePhoto> getMainPagePhotoList(@Param("offset") Integer offset, @Param("limit") Integer limit);
+
+    List<Department> getDepartmentList();
+
+    List<Course> getCourseList(Integer departmentID);
 }

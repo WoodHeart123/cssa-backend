@@ -31,4 +31,8 @@ public interface AdminService {
     Response deleteMainPagePhoto(String photoID);
 
     Response getMainPagePhotoList(Integer offset, Integer limit);
+
+    Response getDepartmentList();
+
+    Response getCourseList(Integer departmentID);
 }

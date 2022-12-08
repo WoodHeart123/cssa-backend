@@ -96,4 +96,25 @@ public class AdminController {
         }
         return adminService.getMainPagePhotoList(offset, limit);
     }
+
+    /**
+     * @return list of department
+     */
+    @RequestMapping(value={"getDepartmentList"}, method={RequestMethod.GET})
+    public Response getDepartmentList(HttpServletRequest request){
+        Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
+        if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
+            return Response.builder().status(310).message("无管理员信息").build();
+        }
+        return adminService.getDepartmentList();
+    }
+
+    @RequestMapping(value={"getCourseList"}, method={RequestMethod.GET})
+    public Response getDepartmentList(@RequestParam Integer departmentID, HttpServletRequest request){
+        Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
+        if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
+            return Response.builder().status(310).message("无管理员信息").build();
+        }
+        return adminService.getCourseList(departmentID);
+    }
 }
