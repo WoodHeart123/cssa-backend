@@ -1,9 +1,7 @@
 package com.tencent.wxcloudrun.dao;
 
 
-import com.tencent.wxcloudrun.model.Activity;
-import com.tencent.wxcloudrun.model.Admin;
-import com.tencent.wxcloudrun.model.SignupInfo;
+import com.tencent.wxcloudrun.model.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -54,4 +52,10 @@ public interface AdminMapper {
      * @param commentID
      */
     void deleteComment(Integer commentID);
+
+    void postMainPagePhoto(MainPagePhoto mainPagePhoto);
+
+    void deleteMainPagePhoto(@Param("photoID") String actID,@Param("timestamp") Timestamp timestamp);
+
+    List<MainPagePhoto> getMainPagePhotoList(@Param("offset") Integer offset, @Param("limit") Integer limit);
 }
