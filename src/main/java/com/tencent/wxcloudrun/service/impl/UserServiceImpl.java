@@ -101,5 +101,10 @@ public class UserServiceImpl implements UserService {
         return new Response();
     }
 
+    @Override
+    public Response getMySecondhand(String userID, Integer offset, Integer limit) {
+        return new Response(userMapper.getMySecondhand(userID,offset,limit));
+    }
+
 
 }
