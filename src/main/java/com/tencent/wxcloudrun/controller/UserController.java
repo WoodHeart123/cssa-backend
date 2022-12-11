@@ -75,7 +75,7 @@ public class UserController {
 
     @RequestMapping(value={"/getMySecondhand"}, method={RequestMethod.GET})
     public Response getMySecondhand(@RequestParam Integer offset, @RequestParam Integer limit,@RequestHeader("x-wx-openid") String openid){
-        return userService.getMyComment(openid,offset,limit);
+        return userService.getMySecondhand(openid,offset,limit);
     }
 
     @RequestMapping(value={"/updateComment"},method={RequestMethod.POST})

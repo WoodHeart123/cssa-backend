@@ -4,6 +4,7 @@ package com.tencent.wxcloudrun.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.dao.UserMapper;
 import com.tencent.wxcloudrun.event.AuthEvent;
+import com.tencent.wxcloudrun.model.Product;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.ReturnCode;
 import com.tencent.wxcloudrun.model.User;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -103,7 +106,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response getMySecondhand(String userID, Integer offset, Integer limit) {
-        return new Response(userMapper.getMySecondhand(userID,offset,limit));
+        List<Product> productList = userMapper.getMySecondhand(userID,offset,limit);
+        for(Product product:productList){
+            product.setImages(JSON.parseArray(product.getImagesJSON(),String.class));
+        }
+        return new Response(productList);
     }
 
 
