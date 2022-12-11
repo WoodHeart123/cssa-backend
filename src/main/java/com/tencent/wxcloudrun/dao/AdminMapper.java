@@ -62,4 +62,8 @@ public interface AdminMapper {
     List<Department> getDepartmentList();
 
     List<Course> getCourseList(Integer departmentID);
+
+    Integer getCommentNum(Integer departmentID);
+
+    List<Comment> getCommentList(Integer courseID);
 }

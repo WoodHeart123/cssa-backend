@@ -35,4 +35,6 @@ public interface AdminService {
     Response getDepartmentList();
 
     Response getCourseList(Integer departmentID);
+
+    Response getCommentList(Integer courseID);
 }

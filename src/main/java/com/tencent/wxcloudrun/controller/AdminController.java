@@ -50,11 +50,6 @@ public class AdminController {
         return adminService.deleteActivity(actID);
     }
 
-    @RequestMapping(value={"deleteComment"}, method={RequestMethod.GET})
-    public Response deleteComment(@RequestParam Integer commentID){
-        return adminService.deleteComment(commentID);
-    }
-
     @RequestMapping(value={"/postMainPagePhoto"}, method={RequestMethod.POST})
     public Response postMainPagePhoto(@RequestBody MainPagePhoto mainPagePhoto){
         return adminService.postMainPagePhoto(mainPagePhoto);
@@ -83,7 +78,16 @@ public class AdminController {
     }
 
     @RequestMapping(value={"getCourseList"}, method={RequestMethod.GET})
-    public Response getDepartmentList(@RequestParam Integer departmentID){
+    public Response getCourseList(@RequestParam Integer departmentID){
         return adminService.getCourseList(departmentID);
+    }
+
+    @RequestMapping(value={"getCommentList"}, method={RequestMethod.GET})
+    public Response getCommentList(@RequestParam Integer courseID){
+        return adminService.getCommentList(courseID);
+    }
+    @RequestMapping(value={"deleteComment"}, method={RequestMethod.GET})
+    public Response deleteComment(@RequestParam Integer commentID){
+        return adminService.deleteComment(commentID);
     }
 }

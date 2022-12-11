@@ -11,4 +11,5 @@ public class Department {
     private String departmentAbrev;
     private Integer departmentID;
     private List<Course> courseList;
+    private Integer commentNum;
 }
