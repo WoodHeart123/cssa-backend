@@ -73,7 +73,7 @@
 
     <select id="getMainPagePhotoList" resultType="MainPagePhoto">
         SELECT
-            startDate,endDate,smallPhoto,largePhoto
+            photoID, startDate,endDate,smallPhoto,largePhoto
         FROM
             mainpage_photo
         ORDER BY photoID DESC
