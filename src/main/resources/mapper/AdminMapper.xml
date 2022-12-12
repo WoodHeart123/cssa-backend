@@ -67,7 +67,7 @@
     </insert>
 
     <update id="deleteMainPagePhoto" parameterType="map">
-        UPDATE mainpage_photo SET startDate = #{timestamp} AND endDate = #{timestamp} WHERE photoID = #{photoID}
+        UPDATE mainpage_photo SET startDate = #{timestamp}, endDate = #{timestamp} WHERE photoID = #{photoID}
     </update>
 
 
