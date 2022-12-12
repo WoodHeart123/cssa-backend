@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Objects;
 
 @Component
 public class AdminServiceInterceptor implements HandlerInterceptor {
@@ -22,8 +21,8 @@ public class AdminServiceInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         PrintWriter writer = null;
         try{
-            if(!Objects.equals(request.getMethod(), "OPTIONS") && request.getHeader("Authorization") == null) {
-                logger.info("filter admin request to " + request.getRequestURI() + " because of no token");
+            if(request.getHeader("Authorization") == null) {
+                logger.info("filter admin request to " + request.getRequestURI() + "because of no token");
                 response.setCharacterEncoding("utf-8");
                 response.setContentType("application/json;charset:utf-8");
                 writer = response.getWriter();
