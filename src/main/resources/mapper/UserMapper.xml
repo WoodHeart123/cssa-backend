@@ -41,4 +41,8 @@
     <update id="updateNickname" parameterType="String">
         update user SET nickname = #{nickname} WHERE userID = #{userID}
     </update>
+
+    <select id="getMySecondhand" parameterType="Map" resultType="Product">
+        SELECT productID, userID, sellerAvatar, sellerNickname, productTitle, productDescription, price, productType, productCondition, time, contact, imagesJSON, delivery from secondhand ORDER BY productID DESC LIMIT ${offset},${limit}
+    </select>
 </mapper>

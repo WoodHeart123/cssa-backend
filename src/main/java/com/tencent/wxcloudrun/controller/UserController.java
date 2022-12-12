@@ -73,6 +73,11 @@ public class UserController {
         return userService.getMyComment(openid,offset,limit);
     }
 
+    @RequestMapping(value={"/getMySecondhand"}, method={RequestMethod.GET})
+    public Response getMySecondhand(@RequestParam Integer offset, @RequestParam Integer limit,@RequestHeader("x-wx-openid") String openid){
+        return userService.getMySecondhand(openid,offset,limit);
+    }
+
     @RequestMapping(value={"/updateComment"},method={RequestMethod.POST})
     public Response updateComment(@RequestBody Comment comment, @RequestHeader("x-wx-openid") String openid){
         if(comment.getComment().length() > 300){

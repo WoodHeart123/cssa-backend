@@ -29,7 +29,7 @@ public class CourseController {
     private JedisPooled jedisPooled;
 
     @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
-    public Response search(@RequestParam String value, HttpServletRequest request) {
+    public Response search(@RequestParam String value) {
         ArrayList<String> courseIDList = new ArrayList<>();
         try {
             SearchResult sr = jedisPooled.ftSearch("course-index", "%" + value.toUpperCase() + "%");
@@ -53,27 +53,22 @@ public class CourseController {
      * @return Add comment content and related information to database
      */
     @PostMapping(value = "/postcomment")
-    public Response save(@RequestBody Comment comment, HttpServletRequest request) {
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
-        if(openid.isEmpty()){
-            return Response.builder().status(102).message("无用户信息").build();
-        }
+    public Response save(@RequestBody Comment comment, @RequestHeader("x-wx-openid") String openid) {
         if(comment.getComment().length() > 300){
             return Response.builder().status(103).message("超过字数限制").build();
         }
-        comment.setUserID(openid.get());
+        comment.setUserID(openid);
         return courseService.postComment(comment);
 
     }
 
     @RequestMapping(value={"/getCommentList"}, method = {RequestMethod.GET})
-    public Response getCommentList(@RequestParam Integer courseID, @CookieValue@RequestParam Integer offset, @RequestParam Integer limit, @RequestParam SortType order, HttpServletRequest request){
+    public Response getCommentList(@RequestParam Integer courseID, @CookieValue@RequestParam Integer offset, @RequestParam Integer limit, @RequestParam SortType order){
         return courseService.getCommentList(courseID,offset,limit,order);
     }
     
     @RequestMapping(value={"/courselist"}, method = {RequestMethod.GET})
-    public Response getCourseList(@RequestParam Optional<Integer> departmentID, @RequestParam Optional<Integer> offset, @RequestParam Optional<Integer> limit, @RequestParam Optional<SortType> orderType, HttpServletRequest request) {
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
+    public Response getCourseList(@RequestParam Optional<Integer> departmentID, @RequestParam Optional<Integer> offset, @RequestParam Optional<Integer> limit, @RequestParam Optional<SortType> orderType) {
         if (departmentID.isEmpty()) {
             return Response.builder().message("部门ID为空").status(104).build();
         }
@@ -95,30 +90,20 @@ public class CourseController {
      * This controller record which comment users give zan, and increase the number of zan in this comment by one
      * Request path is /zan, and method is GET
      * @param commentID ID of comment
-     * @param request Header of this request(for getting wx-openid)
      * @return Response information and data
      */
     @RequestMapping(value = {"/zan"}, method = {RequestMethod.GET})
-    public Response Zan(@RequestParam(name="commentID") Integer commentID, HttpServletRequest request){
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
-        if(openid.isEmpty()) {
-            return Response.builder().status(102).message("无用户信息").build();
-        }
-        return courseService.zan(openid.get(), commentID);
+    public Response Zan(@RequestParam(name="commentID") Integer commentID, @RequestHeader("x-wx-openid") String openid){
+        return courseService.zan(openid, commentID);
     }
 
     /**
      * Report a bad comment, and record the number of reports of this comment
      * @param comment comment which is reported
-     * @param request Header of this Request
      * @return Response information and data
      */
     @RequestMapping(value = {"/report"}, method = {RequestMethod.POST})
-    public Response Post(@RequestBody Comment comment, HttpServletRequest request){
-        Optional<String> openid = Optional.ofNullable(request.getHeader("x-wx-openid"));
-        if(openid.isEmpty()) {
-            return Response.builder().status(102).message("无用户信息").build();
-        }
+    public Response Post(@RequestBody Comment comment, @RequestHeader("x-wx-openid") String openid){
         return courseService.report(comment.getCommentID(), comment.getReportList().get(0));
     }
 }

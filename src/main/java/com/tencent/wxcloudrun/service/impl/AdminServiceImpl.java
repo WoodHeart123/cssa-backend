@@ -93,4 +93,20 @@ public class AdminServiceImpl implements AdminService {
         List<MainPagePhoto> mainPagePhotoList = adminMapper.getMainPagePhotoList(offset, limit);
         return Response.builder().data(mainPagePhotoList).status(100).build();
     }
+
+    @Override
+    public Response getDepartmentList() {
+        return Response.builder().data(adminMapper.getDepartmentList()).status(100).message("成功").build();
+    }
+
+    @Override
+    public Response getCourseList(Integer departmentID) {
+        return Response.builder().data(adminMapper.getCourseList(departmentID)).status(100).message("成功").build();
+    }
+
+    @Override
+    public Response deleteComment(Integer commentID) {
+        adminMapper.deleteComment(commentID);
+        return Response.builder().status(100).message("success").build();
+    }
 }

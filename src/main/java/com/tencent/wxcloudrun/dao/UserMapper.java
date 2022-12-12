@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.dao;
 
 import com.tencent.wxcloudrun.model.Comment;
+import com.tencent.wxcloudrun.model.Product;
 import com.tencent.wxcloudrun.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -21,7 +22,7 @@ public interface UserMapper {
 
     /**
      * user register
-     * @param nickname wechat nickname
+     * @param nickname WeChat nickname
      * @param userID user ID
      */
     void register(String nickname, String userID);
@@ -34,7 +35,7 @@ public interface UserMapper {
     void updateEmail(String email, String userID);
 
     /**
-     * @param userID user ID given by wechat
+     * @param userID user ID given by WeChat
      * @return a user object that only has likedComment field
      */
     User getLikedCommentList(String userID);
@@ -58,4 +59,6 @@ public interface UserMapper {
     void deleteComment(String userID, Integer commentID);
 
     void updateNickname(String nickname, String userID);
+
+    List<Product> getMySecondhand(@Param("userID")String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
 }

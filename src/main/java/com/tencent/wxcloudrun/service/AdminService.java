@@ -24,9 +24,15 @@ public interface AdminService {
 
     Response deleteActivity(String actID);
 
+    Response deleteComment(Integer commentID);
+
     Response postMainPagePhoto(MainPagePhoto mainPagePhoto);
 
     Response deleteMainPagePhoto(String photoID);
 
     Response getMainPagePhotoList(Integer offset, Integer limit);
+
+    Response getDepartmentList();
+
+    Response getCourseList(Integer departmentID);
 }

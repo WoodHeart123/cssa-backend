@@ -3,6 +3,9 @@ package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.service.AdminService;
+import com.tencent.wxcloudrun.util.AdminServiceInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,53 +23,40 @@ public class AdminController {
     @Autowired
     Jwtutil jwtutil;
 
+    private final Logger logger = LoggerFactory.getLogger(AdminController.class);
+
     @RequestMapping(value={"/login"}, method={RequestMethod.POST})
     Response login(@RequestBody Admin admin, HttpServletRequest request){
         return adminService.login(admin);
     }
 
     @RequestMapping(value={"getActivityList"},method={RequestMethod.GET})
-    Response getActivityList(HttpServletRequest request){
-        Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
-        if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
-            return Response.builder().status(110).message("无管理员信息").build();
-        }
+    Response getActivityList(){
         return adminService.getActivityList();
     }
 
     @RequestMapping(value={"/createActivity"}, method={RequestMethod.POST})
-    public Response createActivity(@RequestBody Activity activity, HttpServletRequest request){
-        Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
-        if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
-            return Response.builder().status(310).message("无管理员信息").build();
-        }
+    public Response createActivity(@RequestBody Activity activity){
         return adminService.createActivity(activity);
     }
 
     @RequestMapping(value={"activitySignup"}, method={RequestMethod.GET})
-    public Response getActivitySignup(@RequestParam String actID, HttpServletRequest request){
-        Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
-        if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
-            return Response.builder().status(310).message("无管理员信息").build();
-        }
+    public Response getActivitySignup(@RequestParam String actID){
         return adminService.getActivitySignup(actID);
     }
 
     @RequestMapping(value={"deleteActivity"}, method={RequestMethod.GET})
-    public Response deleteActivity(@RequestParam String actID, HttpServletRequest request){
-        Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
-        if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
-            return Response.builder().status(310).message("无管理员信息").build();
-        }
+    public Response deleteActivity(@RequestParam String actID){
         return adminService.deleteActivity(actID);
     }
 
+    @RequestMapping(value={"deleteComment"}, method={RequestMethod.GET})
+    public Response deleteComment(@RequestParam Integer commentID){
+        return adminService.deleteComment(commentID);
+    }
+
     @RequestMapping(value={"/postMainPagePhoto"}, method={RequestMethod.POST})
-    public Response postMainPagePhoto(@RequestBody MainPagePhoto mainPagePhoto, HttpServletRequest request){
-        Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
-        if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
-            return Response.builder().status(310).message("无管理员信息").build();
-        }
+    public Response postMainPagePhoto(@RequestBody MainPagePhoto mainPagePhoto){
         return adminService.postMainPagePhoto(mainPagePhoto);
     }
 
@@ -80,12 +70,20 @@ public class AdminController {
     }
 
     @RequestMapping(value={"getMainPagePhotoList"},method={RequestMethod.GET})
-    Response getMainPagePhotoList(@RequestParam Integer offset, @RequestParam Integer limit,HttpServletRequest request){
-        Optional<String> token = Optional.ofNullable(request.getHeader("Authorization"));
-        if(token.isEmpty() || !jwtutil.isTokenValid(token.get())){
-            return Response.builder().status(110).message("无管理员信息").build();
-        }
+    Response getMainPagePhotoList(@RequestParam Integer offset, @RequestParam Integer limit){
         return adminService.getMainPagePhotoList(offset, limit);
     }
 
+    /**
+     * @return list of department
+     */
+    @RequestMapping(value={"getDepartmentList"}, method={RequestMethod.GET})
+    public Response getDepartmentList(){
+        return adminService.getDepartmentList();
+    }
+
+    @RequestMapping(value={"getCourseList"}, method={RequestMethod.GET})
+    public Response getDepartmentList(@RequestParam Integer departmentID){
+        return adminService.getCourseList(departmentID);
+    }
 }

@@ -43,8 +43,12 @@
     </select>
 
     <update id="deleteActivity" parameterType="map">
-        UPDATE activity SET startDate = #{timestamp} AND endDate = #{timestamp} WHERE actID = #{actID}
+        UPDATE activity SET startDate = #{timestamp}, endDate = #{timestamp} WHERE actID = #{actID}
     </update>
+
+    <delete id="deleteComment" parameterType="Integer">
+        DELETE FROM comment WHERE commentID = #{commentID}
+    </delete>
 
     <select id="getActivitySignup" parameterType="String" resultType="SignupInfo">
         SELECT
@@ -78,6 +82,14 @@
             mainpage_photo
         ORDER BY photoID DESC
         LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="getDepartmentList" resultType="Department">
+        SELECT departmentID, department, departmentAbrev FROM department ORDER BY departmentID
+    </select>
+
+    <select id="getCourseList" resultType="Course">
+        SELECT courseID, courseName, courseNum, commentCount FROM course WHERE departmentID = #{departmentID} ORDER BY courseNum
     </select>
 
 
