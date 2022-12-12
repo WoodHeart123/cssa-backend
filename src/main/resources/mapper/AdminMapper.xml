@@ -93,7 +93,13 @@
     </select>
 
     <select id="getCommentNum" parameterType="Integer" resultType="java.lang.Integer">
-        SELECT SUM(commentCount) FROM course WHERE departmentID = #{departmentID}
+        SELECT SUM(commentCount)
+        FROM course
+        WHERE departmentID in
+        <foreach item="departmentID" collection="departmentIDList" separator="," open="(" close=")" index="index">
+        #{departmentID}
+        </foreach>
+        GROUP BY departmentID
     </select>
 
     <select id="getCommentList" parameterType="Integer" resultType="Comment">
