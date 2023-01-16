@@ -4,4 +4,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface RentalService {
+  Response saveRentalInfo(Integer productID, boolean save, String userID);
 }
