@@ -3,6 +3,9 @@ package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.model.Rental;
 import com.tencent.wxcloudrun.model.Response;
+import com.tencent.wxcloudrun.service.RentalService;
+import com.tencent.wxcloudrun.service.SecondHandService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +17,9 @@ import java.util.Map;
 @RequestMapping({"/rental"})
 public class RentalController {
 
+
+    @Autowired
+    RentalService rentalService;
     /**
      * 获取转租信息
      * @param offset 从第几行返回
@@ -64,7 +70,7 @@ public class RentalController {
      */
     @RequestMapping(value={"/saveRental"}, method = {RequestMethod.GET})
     public Response saveRentalInfo(@RequestParam Integer rentalID, @RequestParam Boolean save, @RequestParam String userID, HttpServletRequest request){
-        return RentalService.saveRentalInfo(rentalID, save, userID);
+        return rentalService.saveRentalInfo(rentalID, save, userID);
     }
 
 }

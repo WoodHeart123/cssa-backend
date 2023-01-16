@@ -1,14 +1,27 @@
 package com.tencent.wxcloudrun.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.tencent.wxcloudrun.dao.RentalMapper;
+import com.tencent.wxcloudrun.model.Rental;
+import com.tencent.wxcloudrun.model.Response;
+import com.tencent.wxcloudrun.model.User;
 import com.tencent.wxcloudrun.service.RentalService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
 public class RentalServiceImpl implements RentalService {
-     @Override
+
+    @Autowired
+    RentalMapper rentalMapper;
+
+    @Override
     public Response saveRentalInfo(Integer rentalID, boolean save, String userID) {
-        User user = RentalMapper.collect(userID);
+        User user = rentalMapper.collect(userID);
         List<Integer> rentalArrayList = JSON.parseArray(user.getSavedRentalJSON(), Integer.class);
         if(save){
           int i = 0;
