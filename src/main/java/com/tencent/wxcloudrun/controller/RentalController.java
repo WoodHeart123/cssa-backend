@@ -63,9 +63,8 @@ public class RentalController {
      * @param rentalID 转租ID
      */
     @RequestMapping(value={"/saveRental"}, method = {RequestMethod.GET})
-    public Response saveRentalInfo(@RequestParam Integer rentalID, @RequestParam Boolean save, HttpServletRequest request){
-        return null;
+    public Response saveRentalInfo(@RequestParam Integer rentalID, @RequestParam Boolean save, @RequestParam String userID, HttpServletRequest request){
+        return RentalService.saveRentalInfo(rentalID, save, userID);
     }
-
 
 }
