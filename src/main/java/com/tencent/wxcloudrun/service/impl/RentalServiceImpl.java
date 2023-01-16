@@ -30,4 +30,29 @@ public class RentalServiceImpl implements RentalService {
         }
         
     }
+    @Override
+    public Response getRentalList(Integer offset, Integer limit, Map<String, ArrayList<String>> query) {
+        ArrayList<Rental> rentalArrayList;
+        if(query == query.floorPlan){
+            rentalArrayList = rentalMapper.getRentalList(offset,limit，query.floorPlan);
+        }
+        if(query == query.price){
+            rentalArrayList = rentalMapper.getRentalList(offset,limit，query.price);
+        }
+        if(query == query.time){
+            rentalArrayList = rentalMapper.getRentalList(offset,limit, query.time);
+        }
+        for(Rental rental: rentalArrayList){
+            rental.setImages(JSON.parseArray(rental.getImagesJSON(),String.class));
+        }
+        return Response.builder().data(rentalArrayList).status(100).build();
+    }
+    @Override
+    public Response postRentalInfo(Rental rentalInfo){
+        rentalInfo.setTime(new Timestamp(new Date().getTime()));
+        rentalInfo.setImagesJSON(JSON.toJSONString(rentalInfo.getImages()));
+        rentalMapper.postRentalInfo(rentalInfo);
+        return Response.builder().message("成功").status(100).build();
+    }
+     
 }
