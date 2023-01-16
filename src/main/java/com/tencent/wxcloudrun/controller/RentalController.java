@@ -26,7 +26,7 @@ public class RentalController {
      */
     @RequestMapping(value={ "/getRentalList"}, method = {RequestMethod.POST})
     public Response getRentalList(@RequestParam Integer offset, @RequestParam Integer limit, @RequestBody Map<String, ArrayList<String>> query, HttpServletRequest request){
-        return null;
+        return rentalService.getRentalList(offset, limit,query);
     }
 
     /**
@@ -55,7 +55,7 @@ public class RentalController {
      */
     @RequestMapping(value={"/postRentalInfo"}, method = {RequestMethod.POST})
     public Response postRentalInfo(@RequestBody Rental rentalInfo, HttpServletRequest request){
-        return null;
+        return rentalService.postRentalInfo(rentalInfo);
     }
 
     /**
