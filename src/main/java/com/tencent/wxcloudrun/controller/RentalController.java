@@ -3,7 +3,14 @@ package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.model.Rental;
 import com.tencent.wxcloudrun.model.Response;
+import com.tencent.wxcloudrun.service.RentalService;
+import com.tencent.wxcloudrun.service.SecondHandService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.JedisPooled;
+import redis.clients.jedis.search.Document;
+import redis.clients.jedis.search.Query;
+import redis.clients.jedis.search.SearchResult;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -13,6 +20,12 @@ import java.util.Map;
 @CrossOrigin
 @RequestMapping({"/rental"})
 public class RentalController {
+
+    @Autowired
+    RentalService rentalService;
+
+    @Autowired
+    private JedisPooled jedisPooled;
 
     /**
      * 获取转租信息
@@ -36,7 +49,16 @@ public class RentalController {
      */
     @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
     public Response search(@RequestParam String value, HttpServletRequest request){
-        return null;
+        ArrayList<String> rentalIDList = new ArrayList<>();
+        Query q = new Query("*" + value + "*").setLanguage("chinese");//???English?
+        SearchResult sr = jedisPooled.ftSearch("rental-index",q);
+        for(Document document: sr.getDocuments()){
+            rentalIDList.add(document.getString("rentalID"));
+        }
+        if(rentalIDList.size() == 0){
+            return Response.builder().message("没有匹配结果").status(124).build();
+        }
+        return rentalService.getRental(rentalIDList);
     }
 
     /**
@@ -46,7 +68,7 @@ public class RentalController {
      */
     @RequestMapping(value={ "/suggest"}, method = {RequestMethod.GET})
     public Response suggest(@RequestParam String value, HttpServletRequest request){
-        return null;
+        return Response.builder().data(jedisPooled.ftSugGet("rentalLocation", value, true, 10)).status(100).build();
     }
 
     /**

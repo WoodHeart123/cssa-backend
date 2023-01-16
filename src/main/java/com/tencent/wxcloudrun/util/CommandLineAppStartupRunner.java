@@ -2,8 +2,10 @@ package com.tencent.wxcloudrun.util;
 
 import com.tencent.wxcloudrun.dao.CourseMapper;
 import com.tencent.wxcloudrun.dao.SecondHandMapper;
+import com.tencent.wxcloudrun.dao.RentalMapper;
 import com.tencent.wxcloudrun.model.Course;
 import com.tencent.wxcloudrun.model.Product;
+import com.tencent.wxcloudrun.model.Rental;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
     @Autowired
     SecondHandMapper secondHandMapper;
+
+    @Autowired
+    RentalMapper rentalMapper;
 
     @Autowired
     JedisPooled jedisPooled;
@@ -64,6 +69,22 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
                 jedisPooled.hset("product:" + product.getProductID().toString(), RediSearchUtil.toStringMap(fields));
                 jedisPooled.ftSugAdd("productName", product.getProductTitle(), 1.0);
             }
+
+            try {
+                Schema sc = new Schema().addNumericField("rentalID").addTextField("rentalLocation", 1.0);
+                IndexDefinition def = new IndexDefinition().setPrefixes("rental:");
+                jedisPooled.ftCreate("rental-index", IndexOptions.defaultOptions().setDefinition(def), sc);
+            }catch(Exception ignored){}
+            ArrayList<Rental> rentalArrayList = rentalMapper.getAllRentalList(0, 5000);
+            for (Rental rental : rentalArrayList) {
+                Map<String, Object> fields = new HashMap<>();
+                fields.put("rentalID", rental.getRentalID());
+                fields.put("rentalLocation", rental.getLocation());
+                jedisPooled.hset("rental:" + rental.getRentalID().toString(), RediSearchUtil.toStringMap(fields));
+                jedisPooled.ftSugAdd("rentalLocation", rental.getLocation(), 1.0);
+            }
+
+
         }catch (JedisConnectionException ignored){}
 
 
