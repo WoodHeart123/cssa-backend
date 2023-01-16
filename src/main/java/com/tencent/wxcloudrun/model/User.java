@@ -19,7 +19,7 @@ public class User {
     private String savedProductJSON;
     private Boolean isStudent;
     private Integer avatar;
-
+    private String savedRentalJSON;
     private String wechatID;
 
 

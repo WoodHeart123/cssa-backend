@@ -43,7 +43,7 @@
     </select>
 
     <update id="deleteActivity" parameterType="map">
-        UPDATE activity SET startDate = #{timestamp} AND endDate = #{timestamp} WHERE actID = #{actID}
+        UPDATE activity SET startDate = #{timestamp}, endDate = #{timestamp} WHERE actID = #{actID}
     </update>
 
     <delete id="deleteComment" parameterType="Integer">
@@ -71,13 +71,13 @@
     </insert>
 
     <update id="deleteMainPagePhoto" parameterType="map">
-        UPDATE mainpage_photo SET startDate = #{timestamp} AND endDate = #{timestamp} WHERE photoID = #{photoID}
+        UPDATE mainpage_photo SET startDate = #{timestamp}, endDate = #{timestamp} WHERE photoID = #{photoID}
     </update>
 
 
     <select id="getMainPagePhotoList" resultType="MainPagePhoto">
         SELECT
-            startDate,endDate,smallPhoto,largePhoto
+            photoID, startDate,endDate,smallPhoto,largePhoto
         FROM
             mainpage_photo
         ORDER BY photoID DESC

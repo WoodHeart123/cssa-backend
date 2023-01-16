@@ -14,11 +14,11 @@ def insertDB(department, departmentAbrev):
 
 
 db = pymysql.connect(
-    host="sh-cynosdbmysql-grp-5ljk41ng.sql.tencentcdb.com",
-    port=28513,
-    user='root',
-    password='NST4VU3f',
-    database='springboot_demo'
+    host="sh-cynosdbmysql-grp-cmngutoy.sql.tencentcdb.com",
+    port=23504,
+    user= 'root',
+    password='r7btwuTa',
+    database='cssa_mini'
 )
 
 cursor = db.cursor()
@@ -26,7 +26,7 @@ cursor = db.cursor()
 
 url = "https://guide.wisc.edu/courses/"
 strhtml = requests.get(url)
-soup = BeautifulSoup(strhtml.text, 'lxml')
+soup = BeautifulSoup(strhtml.text, 'html.parser')
 count = 0
 for a in soup.find_all(id='atozindex'):
     for b in a.find_all('a'):
