@@ -2,19 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tencent.wxcloudrun.dao.RentalMapper">
 
-<insert id="postRentalInfo" parameterType="Rental">
-    INSERT INTO rental
-    (userID,sellerAvatar,sellerNickname,rentalID,sexConstraint,floorPlan,description,publishedTime,rentalStartTime,rentalEndTime,price,location,contact,images,imagesJSON) 
-    VALUES (#{userID},#{sellerAvatar},#{sellerNickname},#{rentalID},#{sexConstraint},#{floorPlan},#{description},#{publishedTime},#{rentalStartTime},#{rentalEndTime},#{price},#{location},#{contact},#{images},#{imagesJSON})
-</insert>
+    <select id="getAllRentalList" resultType="Rental">
+        SELECT userID, sellerAvatar, sellerNickname, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, images, imagesJSON
+        FROM rental
+        WHERE rentalID >= #{offset}
+        ORDER BY rental.rentalID
+            LIMIT #{limit}
+    </select>
 
-<select id="getRentalList" resultType="Rental">
-    SELECT userID,sellerAvatar,sellerNickname,rentalID,sexConstraint,floorPlan,description,publishedTime,rentalStartTime,rentalEndTime,price,location,contact,images,imagesJSON
-    FROM rental
-    WHERE userID >= #{offset}
-    ORDER BY rental.userID
-    LIMIT #{limit}
-</select>
+    <select id="getRental" resultType="Rental">
+        SELECT userID, sellerAvatar, sellerNickname, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, images, imagesJSON
+        FROM rental WHERE rentalID in
+        <foreach item="rental" collection="rentalID" separator="," open="(" close=")" index="index">
+            #{rental}
+        </foreach>
+    </select>
 
 
 </mapper>
