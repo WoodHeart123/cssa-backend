@@ -96,12 +96,34 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Response getDepartmentList() {
-        return Response.builder().data(adminMapper.getDepartmentList()).status(100).message("成功").build();
+        List<Department> departmentList = adminMapper.getDepartmentList();
+        List<Integer> departmentIDList = null;
+
+        for (int i = 0; i < departmentList.size(); i++){
+            departmentIDList.add(departmentList.get(i).getDepartmentID());
+        }
+
+        List<Integer> comments = adminMapper.getCommentNum(departmentIDList);
+        for (int i = 0; i < departmentList.size(); i++){
+            departmentList.get(i).setCommentNum(comments.get(i));
+        }
+        /*
+        for (int i = 0; i < departmentList.size(); i++){
+            departmentList.get(i).setCommentNum(adminMapper.getCommentNum(departmentList.get(i).getDepartmentID()));
+        }
+
+         */
+        return Response.builder().data(departmentList).status(100).message("成功").build();
     }
 
     @Override
     public Response getCourseList(Integer departmentID) {
         return Response.builder().data(adminMapper.getCourseList(departmentID)).status(100).message("成功").build();
+    }
+
+    @Override
+    public Response getCommentList(Integer courseID) {
+        return Response.builder().data(adminMapper.getCommentList(courseID)).status(100).message("成功").build();
     }
 
     @Override
