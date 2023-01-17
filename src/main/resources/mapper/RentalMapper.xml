@@ -3,7 +3,7 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.RentalMapper">
 
     <select id="getAllRentalList" resultType="Rental">
-        SELECT userID, sellerAvatar, sellerNickname, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, images, imagesJSON
+        SELECT userID, sellerAvatar, sellerNickname, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
         FROM rental
         WHERE rentalID >= #{offset}
         ORDER BY rental.rentalID
@@ -11,7 +11,7 @@
     </select>
 
     <select id="getRental" resultType="Rental">
-        SELECT userID, sellerAvatar, sellerNickname, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, images, imagesJSON
+        SELECT userID, sellerAvatar, sellerNickname, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
         FROM rental WHERE rentalID in
         <foreach item="rental" collection="rentalID" separator="," open="(" close=")" index="index">
             #{rental}
