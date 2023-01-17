@@ -47,10 +47,8 @@ public class RentalServiceImpl implements RentalService {
                 }
             }
         }
-        if(rentalArrayList.contains(rentalID)){
-            rentalArrayList.remove(rentalID);
-        }
-
+        rentalArrayList.remove(rentalID);
+        return Response.builder().message("成功").status(100).build();
     }
     @Override
     public Response getRentalList(Integer offset, Integer limit, Map<String, ArrayList<String>> query) {
