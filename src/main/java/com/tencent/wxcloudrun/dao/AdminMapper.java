@@ -28,11 +28,11 @@ public interface AdminMapper {
      * @param admin password and username
      * @return 0 for mismatch, 1 for success
      */
-    Integer login(Admin admin);
+    Admin login(Admin admin);
 
     //Integer checkUsername(String username);
 
-   // void register(Admin admin);
+    void register(Admin admin);
 
     /**
      * delete the activity by setting timestamp to zero

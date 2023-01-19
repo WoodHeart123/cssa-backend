@@ -22,6 +22,8 @@ public interface AdminService {
 
     Response login(Admin admin);
 
+    Response register(Admin admin);
+
     Response deleteActivity(String actID);
 
     Response deleteComment(Integer commentID);

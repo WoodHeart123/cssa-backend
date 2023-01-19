@@ -23,6 +23,11 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     Jwtutil jwtutil;
 
+    public Response register(Admin admin){
+        admin.setPassword(DigestUtils.md5DigestAsHex(admin.getPassword().getBytes()));
+        adminMapper.register(admin);
+        return new Response(ReturnCode.SUCCESS);
+    }
     @Override
     public Response getActivityList() {
         List<Activity> activityList = adminMapper.getActivityList();
@@ -60,9 +65,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Response login(Admin admin) {
         admin.setPassword(DigestUtils.md5DigestAsHex(admin.getPassword().getBytes()));
-        Integer result = this.adminMapper.login(admin);
-        if(result.equals(1)){
-            return Response.builder().data(jwtutil.generateToken(admin.getUsername())).status(100).build();
+        Admin result = this.adminMapper.login(admin);
+        if(result != null){
+            admin.setToken(jwtutil.generateToken(admin.getUsername()));
+            return Response.builder().data(admin).status(100).build();
         }else{
             return Response.builder().status(301).message("用户名密码错误").build();
         }

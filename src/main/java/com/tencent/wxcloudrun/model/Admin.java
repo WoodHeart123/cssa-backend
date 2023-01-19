@@ -20,7 +20,8 @@ public class Admin {
     @JSONField(serialize = false)
     private String password;
     private Division department;
-    private Integer validity;
-
-    private Boolean adminType;
+    private Boolean validity;
+    // 0=超级管理员；1=管理员；2=用户；
+    private Integer adminType;
+    private String token;
 }

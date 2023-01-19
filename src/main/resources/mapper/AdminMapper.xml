@@ -38,9 +38,13 @@
         INSERT INTO activity (title,startDate,endDate,location,price,capacity,imgs,additionalInfoJSON,description) values (#{title},#{startDate},#{endDate},#{location},#{price},#{capacity},#{imgs},#{additionalInfoJSON},#{description})
     </insert>
 
-    <select id="login" parameterType="Admin" resultType="Integer">
-        SELECT COUNT(username) FROM admin WHERE username = #{username} AND password = #{password}
+    <select id="login" parameterType="Admin" resultType="Admin">
+        SELECT username,adminType FROM admin WHERE username = #{username} AND password = #{password} AND validity = 1
     </select>
+
+    <insert id="register" parameterType="Admin">
+        INSERT INTO admin(username, password, department) values(#{username},#{password},#{department})
+    </insert>
 
     <update id="deleteActivity" parameterType="map">
         UPDATE activity SET startDate = #{timestamp}, endDate = #{timestamp} WHERE actID = #{actID}

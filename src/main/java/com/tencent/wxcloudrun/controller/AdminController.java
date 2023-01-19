@@ -30,7 +30,10 @@ public class AdminController {
         return adminService.login(admin);
     }
 
-    @RequestMapping(value = {"/register"})
+    @RequestMapping(value = {"/register"},method={RequestMethod.POST})
+    Response register(@RequestBody Admin admin){
+        return adminService.register(admin);
+    }
 
     @RequestMapping(value={"getActivityList"},method={RequestMethod.GET})
     Response getActivityList(){
