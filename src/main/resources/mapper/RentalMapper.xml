@@ -9,6 +9,13 @@
         ORDER BY rental.rentalID
             LIMIT #{limit}
     </select>
+    
+    <select id="getRentalList" resultType="Rental">
+        SELECT userID, sellerAvatar, sellerNickname, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
+        <foreach item="floorplan" collection="floorplanList" separator="," open="(" close=")" index="index">
+            #{floorplan}
+        </foreach> AND price<= #{price} AND startTime >= #{startTime} AND endTime <= #{endTime}
+    </select>
 
     <select id="getRental" resultType="Rental">
         SELECT userID, sellerAvatar, sellerNickname, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
