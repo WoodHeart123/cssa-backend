@@ -1,9 +1,6 @@
 package com.tencent.wxcloudrun.controller;
 
-import com.tencent.wxcloudrun.model.CacheStore;
-import com.tencent.wxcloudrun.model.Comment;
-import com.tencent.wxcloudrun.model.Response;
-import com.tencent.wxcloudrun.model.ReturnCode;
+import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -96,5 +93,14 @@ public class UserController {
             return new Response(ReturnCode.EMPTY_STRING);
         }
         return userService.updateNickname(openid,nickname);
+    }
+
+    @RequestMapping(value={"/updateSecondHand"},method={RequestMethod.POST})
+    public Response updateMySecondHand(@RequestBody Product product, @RequestHeader("x-wx-openid") String openid){
+        return userService.updateMySecondHand(openid, product);
+    }
+    @RequestMapping(value={"/deleteMySecondHand"},method={RequestMethod.POST})
+    public Response deleteMySecondHand(@RequestBody Integer productID, @RequestHeader("x-wx-openid") String openid){
+        return userService.deleteMySecondHand(openid, productID);
     }
 }
