@@ -53,8 +53,31 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public Response getRentalList(Integer offset, Integer limit, Map<String, ArrayList<String>> query) {
         ArrayList<Rental> rentalArrayList;
-        // TODO get rental list
-        return Response.builder().data(null).status(100).build();
+        if(query.isEmpty() || query==null){
+            rentalArrayList = rentalMapper.getAllRentalList(offset,limit);
+        }else{
+            rentalArrayList = rentalMapper.getAllRentalList(offset,limit);
+            // floorPlan
+            if (query.containsKey("floorPlan")) {
+                ArrayList<String> floorPlans = query.get("floorPlan");
+                String floorPlan = floorPlans.get(0);
+                rentalList = rentalList.stream().filter(rental -> rental.getFloorPlan().equals(floorPlan));
+            }
+            // price
+            if (query.containsKey("floorPlan")) {
+                ArrayList<String> price = query.get("price");
+                String highestPrice = price.get(0);
+                rentalArrayList = rentalArrayList.stream().filter(rental -> floorPlans.contains(rental -> rental.getPrice().compareTo(highestPrice)<=0));
+            }
+            // time
+            if (query.containsKey("time")) {
+            ArrayList<String> times = query.get("time");
+            String startTime = times.get(0);
+            String endTime = times.get(1);
+            rentalArrayList = rentalArrayList.stream().filter(rental -> rental.getStartTime().compareTo(startTime) >= 0 && rental.getEndTime().compareTo(endTime) <= 0);
+            }
+        }
+        return Response.builder().data(rentalArrayList).status(100).build();
     }
     @Override
     public Response postRentalInfo(Rental rentalInfo){
