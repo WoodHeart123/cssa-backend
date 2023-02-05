@@ -58,10 +58,10 @@ public class RentalServiceImpl implements RentalService {
         }else{
             rentalArrayList = rentalMapper.getAllRentalList(offset,limit);
             // floorPlan
-            if (query.containsKey("floorPlan")) {
+            if (query.containsKey ("floorPlan")) {
                 ArrayList<String> floorPlans = query.get("floorPlan");
                 String floorPlan = floorPlans.get(0);
-                rentalList = rentalList.stream().filter(rental -> rental.getFloorPlan().equals(floorPlan));
+                rentalArrayList = rentalArrayList.stream().filter(rental -> rental.getFloorPlan().equals(floorPlan));
             }
             // price
             if (query.containsKey("floorPlan")) {
