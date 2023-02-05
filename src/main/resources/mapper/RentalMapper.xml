@@ -18,5 +18,12 @@
         </foreach>
     </select>
 
-
+    <insert id="saveRentalInfo" parameterType="Rental">
+        INSERT INTO rental (userID,sellerAvatar,sellerNickname,rentalID,sexConstraint,floorPlan,description,publishedTime,rentalStartTime,rentalEndTime,price,location,contact,images,imagesJSON) 
+        VALUES (#{userID},#{sellerAvatar},#{sellerNickname},#{rentalID},#{sexConstraint},#{floorPlan},#{description},#{publishedTime},#{rentalStartTime},#{rentalEndTime}, #{price}, #{location}, #{contact}, #{images}, #{imagesJSON})
+    </insert>
+    <select id="collect" resultType="boolean">
+        SELECT savedRentalJson,userID FROM user WHERE userID = #{userID}
+    </select>
+    
 </mapper>
