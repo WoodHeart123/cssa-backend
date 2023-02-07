@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.service;
 
 
+import com.tencent.wxcloudrun.model.Product;
 import com.tencent.wxcloudrun.model.Response;
 import org.springframework.stereotype.Service;
 
@@ -19,4 +20,6 @@ public interface UserService {
     Response deleteComment(String userID,Integer commentID);
     Response updateNickname(String userID, String nickname);
     Response getMySecondhand(String userID,Integer offset,Integer limit);
+    Response updateMySecondHand(String userID, Product product);
+    Response deleteMySecondHand(String userID, Integer productID);
 }
