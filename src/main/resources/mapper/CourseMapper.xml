@@ -3,7 +3,8 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.CourseMapper">
 
     <insert id="saveComment" parameterType="Comment">
-        INSERT INTO comment (userID,courseID,professor,courseTime,difficulty,prefer,comment,commentTime,userAvatar) VALUES (#{userID},#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{comment},#{commentTime},#{userAvatar})
+        INSERT INTO comment (userID,courseID,professor,courseTime,difficulty,prefer,comment,commentTime,userAvatar)
+        VALUES (#{userID},#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{comment},#{commentTime},#{userAvatar})
     </insert>
 
     <select id="getAllCourseList"  resultType="Course">
@@ -36,14 +37,6 @@
     <select id="getUser" parameterType="String" resultType="User">
         SELECT * FROM user WHERE userID = #{userID}
     </select>
-
-    <select id="getComment" parameterType="Integer" resultType="Comment">
-        SELECT commentID,reportListJSON FROM comment WHERE commentID = #{commentID}
-    </select>
-
-    <update id="addReportList" parameterType="Comment">
-        UPDATE comment SET reportListJSON = #{reportListJSON} WHERE commentID = #{commentID}
-    </update>
 
     <update id="hideComment" parameterType="Integer">
         UPDATE comment SET commentTime = '1000-01-01 00:00:00' WHERE commentID = #{commentID}
