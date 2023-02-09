@@ -3,7 +3,7 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.RentalMapper">
 
     <select id="getAllRentalList" resultType="Rental">
-        SELECT userID, sellerAvatar, sellerNickname, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
+        SELECT userID, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
         FROM rental
         WHERE rentalID >= #{offset}
         ORDER BY rental.rentalID
@@ -11,7 +11,7 @@
     </select>
     
     <select id="getRentalList" resultType="Rental">
-        SELECT userID, sellerAvatar, sellerNickname, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
+        SELECT userID, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
         FROM rental
         WHERE rentalID >= #{offset}
         ORDER BY rental.rentalID
@@ -22,7 +22,7 @@
     </select>
 
     <select id="getRental" resultType="Rental">
-        SELECT userID, sellerAvatar, sellerNickname, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
+        SELECT userID, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
         FROM rental WHERE rentalID in
         <foreach item="rental" collection="rentalID" separator="," open="(" close=")" index="index">
             #{rental}
@@ -30,8 +30,8 @@
     </select>
 
     <insert id="saveRentalInfo" parameterType="Rental">
-        INSERT INTO rental (userID,sellerAvatar,sellerNickname,rentalID,sexConstraint,floorPlan,description,publishedTime,rentalStartTime,rentalEndTime,price,location,contact,imagesJSON)
-        VALUES (#{userID},#{sellerAvatar},#{sellerNickname},#{rentalID},#{sexConstraint},#{floorPlan},#{description},#{publishedTime},#{rentalStartTime},#{rentalEndTime}, #{price}, #{location}, #{contact}, #{imagesJSON})
+        INSERT INTO rental (userID,rentalID,sexConstraint,floorPlan,description,publishedTime,rentalStartTime,rentalEndTime,price,location,contact,imagesJSON)
+        VALUES (#{userID},#{rentalID},#{sexConstraint},#{floorPlan},#{description},#{publishedTime},#{rentalStartTime},#{rentalEndTime}, #{price}, #{location}, #{contact}, #{imagesJSON})
     </insert>
 
     <select id="getRentalTimed" parameterType="Map" resultType="Product">
@@ -54,7 +54,7 @@
     </select>
 
     <select id="collect" resultType="boolean">
-        SELECT savedRentalJson,userID FROM user WHERE userID = #{userID}
+        SELECT savedRentalJSON,userID FROM user WHERE userID = #{userID}
     </select>
     
 </mapper>
