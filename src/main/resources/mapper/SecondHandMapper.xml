@@ -3,11 +3,13 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.SecondHandMapper">
 
     <select id="getAllProductList" resultType="Product">
-        SELECT productID,sellerAvatar,sellerNickname, productTitle,productDescription,productType,time,price,productCondition,contact,imagesJSON,delivery
+        SELECT secondhand.productID, secondhand.productTitle,secondhand.productDescription,
+               secondhand.productType,secondhand.time,secondhand.price,secondhand.productCondition,secondhand.contact,secondhand.imagesJSON,secondhand.delivery,
+               user.avatar as sellerAvatar, user.nickname as sellerNickname
         FROM secondhand
-        WHERE productID >= #{offset}
-        ORDER BY secondhand.productID
-        LIMIT #{limit}
+                 INNER JOIN user on secondhand.userID = user.userID
+        ORDER BY secondhand.time DESC
+        LIMIT #{offset}, #{limit}
     </select>
 
     <select id="getProductList" resultType="Product">
@@ -16,9 +18,9 @@
                user.avatar as sellerAvatar, user.nickname as sellerNickname
         FROM secondhand
         INNER JOIN user on secondhand.userID = user.userID
-        WHERE productID >= #{offset} AND productType = #{productType}
-        ORDER BY secondhand.productID
-        LIMIT #{limit}
+        WHERE productType = #{productType}
+        ORDER BY secondhand.time DESC
+        LIMIT #{offset}, #{limit}
     </select>
     
     <insert id="saveProduct" parameterType="Product">
