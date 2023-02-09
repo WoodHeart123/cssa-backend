@@ -18,7 +18,7 @@
         LIMIT #{limit} 
         <foreach item="floorPlan" collection="floorPlanList" separator="," open="(" close=")" index="index">
             #{floorPlan}
-        </foreach> AND price <= #{price} AND rentalStartTime>=#{startTime} AND rentalEndTime<=#{endTime}
+        </foreach> AND price &lt;= #{price} AND rentalStartTime>=#{startTime} AND rentalEndTime &lt;= #{endTime}
     </select>
 
     <select id="getRental" resultType="Rental">
@@ -30,9 +30,29 @@
     </select>
 
     <insert id="saveRentalInfo" parameterType="Rental">
-        INSERT INTO rental (userID,sellerAvatar,sellerNickname,rentalID,sexConstraint,floorPlan,description,publishedTime,rentalStartTime,rentalEndTime,price,location,contact,images,imagesJSON) 
-        VALUES (#{userID},#{sellerAvatar},#{sellerNickname},#{rentalID},#{sexConstraint},#{floorPlan},#{description},#{publishedTime},#{rentalStartTime},#{rentalEndTime}, #{price}, #{location}, #{contact}, #{images}, #{imagesJSON})
+        INSERT INTO rental (userID,sellerAvatar,sellerNickname,rentalID,sexConstraint,floorPlan,description,publishedTime,rentalStartTime,rentalEndTime,price,location,contact,imagesJSON)
+        VALUES (#{userID},#{sellerAvatar},#{sellerNickname},#{rentalID},#{sexConstraint},#{floorPlan},#{description},#{publishedTime},#{rentalStartTime},#{rentalEndTime}, #{price}, #{location}, #{contact}, #{imagesJSON})
     </insert>
+
+    <select id="getRentalTimed" parameterType="Map" resultType="Product">
+        SELECT rental.userID, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
+               rental.publishedTime, rental.rentalStartTime, rental.rentalEndTime, rental.price,
+               rental.location, rental.contact, rental.imagesJSON,
+               user.avatar as sellerAvatar, user.nickname as sellerNickname
+        FROM rental
+        INNER JOIN user on rental.userID = user.userID
+        WHERE rental.price &gt;= #{priceLimit}
+              AND rental.rentalStartTime &lt;= Date_ADD(#{startTime}, INTERVAL 5 DAY) AND rental.rentalStartTime &gt;= Date_SUB(#{startTime}, INTERVAL 5 DAY)
+              AND rental.rentalEndTime &lt;= Date_ADD(#{sendTime}, INTERVAL 5 DAY) AND rental.rentalEndTime &gt;= Date_SUB(#{endTime}, INTERVAL 5 DAY)
+              AND rental.rentalID >= #{offset}
+              AND rental.floorPlan in
+        <foreach item="floorplan" collection="floorplanList" separator="," open="(" close=")" index="index">
+            #{floorplan}
+        </foreach>
+        ORDER BY rental.rentalID ASC
+        LIMIT #{limit}
+    </select>
+
     <select id="collect" resultType="boolean">
         SELECT savedRentalJson,userID FROM user WHERE userID = #{userID}
     </select>
