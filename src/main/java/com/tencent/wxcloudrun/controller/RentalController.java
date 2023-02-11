@@ -39,10 +39,9 @@ public class RentalController {
      * @return 转租信息列表
      */
     @RequestMapping(value = {"/getRentalList"}, method = {RequestMethod.GET})
-    public Response getRentalList(@RequestParam Integer offset, @RequestParam Integer limit, @RequestParam Map<String, ArrayList<String>> query) {
-        ArrayList<String> time = query.get("time");
-        return rentalService.getRentalList(offset, limit, Integer.getInteger(query.get("priceLimit").get(0)),
-                query.get("floorPlanList"), new Timestamp(Long.parseLong(time.get(0))), new Timestamp(Long.parseLong(time.get(1))));
+    public Response getRentalList(@RequestParam Integer offset, @RequestParam Integer limit, @RequestParam Integer priceLimit, @RequestParam ArrayList<String> floorPlanList,@RequestParam ArrayList<Long> time) {
+        return rentalService.getRentalList(offset, limit, priceLimit,
+                floorPlanList, new Timestamp(time.get(0)), new Timestamp(time.get(1)));
     }
 
     /**

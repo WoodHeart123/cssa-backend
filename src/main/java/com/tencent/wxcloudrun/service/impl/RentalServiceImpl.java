@@ -25,7 +25,7 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     public Response getRental(ArrayList<String> rentalID) {
-        return Response.builder().data(rentalMapper.getRental(rentalID)).status(100).build();
+        return Response.builder().data(rentalMapper.getRentalByID(rentalID)).status(100).build();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class RentalServiceImpl implements RentalService {
             // floorPlan
         }else{
             // TODO: 获取没有时间限制的租房列表
-            rentalArrayList = new ArrayList<>();
+            rentalArrayList = rentalMapper.getRental(offset,limit,priceLimit, floorplanList);
         }
         return Response.builder().data(rentalArrayList).status(100).build();
     }
