@@ -34,7 +34,7 @@
         VALUES (#{userID},#{rentalID},#{sexConstraint},#{floorPlan},#{description},#{publishedTime},#{rentalStartTime},#{rentalEndTime}, #{price}, #{location}, #{contact}, #{imagesJSON})
     </insert>
 
-    <select id="getRental" parameterType="Map" resultType="Product">
+    <select id="getRental" parameterType="Map" resultType="Rental">
         SELECT rental.userID, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
         rental.publishedTime, rental.rentalStartTime, rental.rentalEndTime, rental.price,
         rental.location, rental.contact, rental.imagesJSON,
@@ -50,7 +50,7 @@
         LIMIT #{offset}, #{limit}
     </select>
 
-    <select id="getRentalTimed" parameterType="Map" resultType="Product">
+    <select id="getRentalTimed" parameterType="Map" resultType="Rental">
         SELECT rental.userID, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
                rental.publishedTime, rental.rentalStartTime, rental.rentalEndTime, rental.price,
                rental.location, rental.contact, rental.imagesJSON,
