@@ -94,6 +94,9 @@ public class RentalController {
     public Response saveRentalInfo(@RequestParam Integer rentalID, @RequestParam Boolean save, HttpServletRequest request) {
         return null;
     }
-
+    @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})
+    public Response cancelCollect(@RequestParam String userID, HttpServletRequest request){
+        return rentalService.collect(userID);
+    }
 
 }

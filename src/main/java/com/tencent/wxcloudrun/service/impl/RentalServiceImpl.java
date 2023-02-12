@@ -72,4 +72,10 @@ public class RentalServiceImpl implements RentalService {
         rentalMapper.postRentalInfo(rentalInfo);
         return Response.builder().message("成功").status(100).build();
     }
+    @Override
+    public Response collect(String userID) {
+        User user = rentalMapper.collect(userID);
+        List<Integer> rentalArrayList = JSON.parseArray(user.getSavedRentalJSON(), Integer.class);
+        return Response.builder().data(null).status(100).build();
+    }
 }

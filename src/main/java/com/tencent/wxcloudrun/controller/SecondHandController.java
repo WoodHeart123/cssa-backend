@@ -63,4 +63,5 @@ public class SecondHandController {
     public Response cancelCollect(@RequestParam Integer productID, @RequestHeader("x-wx-openid") String openid, HttpServletRequest request){
         return secondHandService.collect(productID,openid);
     }
+    
 }
