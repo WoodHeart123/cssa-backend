@@ -4,6 +4,7 @@ package com.tencent.wxcloudrun.model;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -31,7 +32,7 @@ public class Rental {
     public String location;
     public String contact;
     // 图片URL
-    private List<String> images;
+    private ArrayList<String> images;
     private String imagesJSON;
 
 
