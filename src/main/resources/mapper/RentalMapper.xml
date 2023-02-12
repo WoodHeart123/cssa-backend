@@ -9,13 +9,13 @@
         ORDER BY rental.rentalID
             LIMIT #{limit}
     </select>
-    
+
     <select id="getRentalList" resultType="Rental">
         SELECT userID, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
         FROM rental
         WHERE rentalID >= #{offset}
         ORDER BY rental.rentalID
-        LIMIT #{limit} 
+        LIMIT #{limit}
         <foreach item="floorPlan" collection="floorPlanList" separator="," open="(" close=")" index="index">
             #{floorPlan}
         </foreach> AND price &lt;= #{price} AND rentalStartTime>=#{startTime} AND rentalEndTime &lt;= #{endTime}
@@ -74,7 +74,7 @@
     </select>
 
     <update id="updateCollect" parameterType="Rental">
-        UPDATE user 
+        UPDATE user
         SET savedRentalJSON = #{savedRentalJSON}
         WHERE userID = #{userID}
     </update>
@@ -82,5 +82,5 @@
     <update id="saveContact">
         UPDATE user SET wechatID = #{contact} WHERE userID = #{userID}
     </update>
-    
+
 </mapper>
