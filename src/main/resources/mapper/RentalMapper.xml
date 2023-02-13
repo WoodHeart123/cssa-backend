@@ -72,5 +72,11 @@
     <select id="collect" resultType="boolean">
         SELECT savedRentalJSON,userID FROM user WHERE userID = #{userID}
     </select>
+
+    <update id="updateCollect" parameterType="Rental">
+        UPDATE user 
+        SET savedRentalJSON = #{savedRentalJSON}
+        WHERE userID = #{userID}
+    </update>
     
 </mapper>

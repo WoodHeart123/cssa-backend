@@ -59,6 +59,9 @@ public class RentalServiceImpl implements RentalService {
         }else{
             // TODO: 获取没有时间限制的租房列表
             rentalArrayList = rentalMapper.getRental(offset,limit,priceLimit, floorplanList);
+            for(Rental rental : rentalArrayList){
+                rental.setImages(JSON.parseArray(rental.getImagesJSON(),String.class));
+            }
         }
         return Response.builder().data(rentalArrayList).status(100).build();
     }
@@ -68,5 +71,11 @@ public class RentalServiceImpl implements RentalService {
         rentalInfo.setImagesJSON(JSON.toJSONString(rentalInfo.getImages()));
         rentalMapper.postRentalInfo(rentalInfo);
         return Response.builder().message("成功").status(100).build();
+    }
+    @Override
+    public Response collect(String userID) {
+        User user = rentalMapper.collect(userID);
+        List<Integer> rentalArrayList = JSON.parseArray(user.getSavedRentalJSON(), Integer.class);
+        return Response.builder().data(null).status(100).build();
     }
 }
