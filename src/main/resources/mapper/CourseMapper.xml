@@ -47,7 +47,8 @@
     </select>
 
     <select id="getCommentList" resultType="Comment">
-        SELECT comment.commentID, comment.professor, comment.courseTime,comment.difficulty,comment.prefer,comment.comment,comment.likeCount, comment.commentTime FROM comment JOIN user ON comment.userID = user.userID WHERE courseID = #{courseID} ORDER BY ${orderField} DESC LIMIT #{offset}, #{limit}
+        SELECT comment.commentID, comment.professor, comment.courseTime,comment.difficulty,comment.prefer,comment.comment,comment.likeCount, comment.commentTime, user.avatar AS userAvatar
+        FROM comment JOIN user ON comment.userID = user.userID WHERE courseID = #{courseID} ORDER BY ${orderField} DESC LIMIT #{offset}, #{limit}
     </select>
 
     <select id="getPostCommentCount" parameterType="Map" resultType="Integer">
