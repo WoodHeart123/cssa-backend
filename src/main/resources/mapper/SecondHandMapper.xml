@@ -3,16 +3,16 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.SecondHandMapper">
 
     <select id="getAllProductList" resultType="Product">
-        SELECT productID,sellerAvatar,sellerNickname, productTitle,productDescription,productType,time,price,productCondition,contact,imagesJSON,delivery
-        FROM secondhand
+        SELECT secondhand.productID,user.avatar AS sellerAvatar, user.nickname AS sellerNickname, productTitle,productDescription,productType,time,price,productCondition,contact,imagesJSON,delivery
+        FROM secondhand JOIN user ON secondhand.userID = user.userID
         WHERE productID >= #{offset}
         ORDER BY secondhand.productID
         LIMIT #{limit}
     </select>
 
     <select id="getProductList" resultType="Product">
-        SELECT productID,sellerAvatar,sellerNickname, productTitle,productDescription,productType,time,price,productCondition,contact,imagesJSON,delivery
-        FROM secondhand
+        SELECT secondhand.productID,user.avatar AS sellerAvatar,user.avatar AS sellerNickname, productTitle,productDescription,productType,time,price,productCondition,contact,imagesJSON,delivery
+        FROM secondhand JOIN user ON secondhand.userID = user.userID
         WHERE productID >= #{offset} AND productType = #{productType}
         ORDER BY secondhand.productID
         LIMIT #{limit}
@@ -32,7 +32,9 @@
     </update>
 
     <select id="getProduct" resultType="Product">
-        SELECT productID, userID, sellerAvatar, sellerNickname, productTitle, productDescription, price, productType, productCondition, time, contact, imagesJSON, delivery FROM secondhand WHERE productID in
+        SELECT secondhand.productID, user.userID, user.avatar AS sellerAvatar,user.nickname AS sellerNickname, productTitle, productDescription, price, productType, productCondition, time, contact, imagesJSON, delivery
+        FROM secondhand JOIN user ON secondhand.userID = user.userID
+        WHERE productID in
         <foreach item="product" collection="productID" separator="," open="(" close=")" index="index">
             #{product}
         </foreach>
