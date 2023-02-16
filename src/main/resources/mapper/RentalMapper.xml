@@ -3,6 +3,8 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.RentalMapper">
 
     <select id="getAllRentalList" resultType="Rental">
+        SELECT rental.userID, user.avatar AS sellerAvatar, user.nickname AS sellerNickname, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
+        FROM rental JOIN user ON rental.userID = user.userID
         SELECT userID, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
         FROM rental
         WHERE rentalID >= #{offset}
@@ -21,6 +23,9 @@
         </foreach> AND price &lt;= #{price} AND rentalStartTime>=#{startTime} AND rentalEndTime &lt;= #{endTime}
     </select>
 
+    <select id="getRental" resultType="Rental">
+        SELECT rental.userID, user.avatar AS sellerAvatar, user.nickname AS sellerNickname, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
+        FROM rental JOIN user ON rental.userID = user.userID WHERE rentalID in
     <select id="getRentalByID" resultType="Rental">
         SELECT userID, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
         FROM rental WHERE rentalID in
@@ -29,10 +34,14 @@
         </foreach>
     </select>
 
+    <insert id="saveRentalInfo" parameterType="Rental">
+        INSERT INTO rental (userID,sellerAvatar,sellerNickname,rentalID,sexConstraint,floorPlan,description,publishedTime,rentalStartTime,rentalEndTime,price,location,contact,imagesJSON)
+        VALUES (#{userID},#{sellerAvatar},#{sellerNickname},#{rentalID},#{sexConstraint},#{floorPlan},#{description},#{publishedTime},#{rentalStartTime},#{rentalEndTime}, #{price}, #{location}, #{contact}, #{imagesJSON})
     <insert id="postRentalInfo" parameterType="Rental">
         INSERT INTO rental (userID,rentalID,sexConstraint,floorPlan,description,publishedTime,rentalStartTime,rentalEndTime,price,location,contact,imagesJSON)
         VALUES (#{userID},#{rentalID},#{sexConstraint},#{floorPlan},#{description},#{publishedTime},#{rentalStartTime},#{rentalEndTime}, #{price}, #{location}, #{contact}, #{imagesJSON})
     </insert>
+
 
     <select id="getRental" parameterType="Map" resultType="Rental">
         SELECT rental.userID, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
