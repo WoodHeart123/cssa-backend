@@ -29,7 +29,7 @@
         </foreach>
     </select>
 
-    <insert id="saveRentalInfo" parameterType="Rental">
+    <insert id="postRentalInfo" parameterType="Rental">
         INSERT INTO rental (userID,rentalID,sexConstraint,floorPlan,description,publishedTime,rentalStartTime,rentalEndTime,price,location,contact,imagesJSON)
         VALUES (#{userID},#{rentalID},#{sexConstraint},#{floorPlan},#{description},#{publishedTime},#{rentalStartTime},#{rentalEndTime}, #{price}, #{location}, #{contact}, #{imagesJSON})
     </insert>
@@ -77,6 +77,10 @@
         UPDATE user 
         SET savedRentalJSON = #{savedRentalJSON}
         WHERE userID = #{userID}
+    </update>
+
+    <update id="saveContact">
+        UPDATE user SET wechatID = #{contact} WHERE userID = #{userID}
     </update>
     
 </mapper>

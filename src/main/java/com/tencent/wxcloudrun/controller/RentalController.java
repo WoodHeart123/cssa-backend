@@ -51,7 +51,7 @@ public class RentalController {
      * @return 匹配的转租信
      */
     @RequestMapping(value = {"/search"}, method = {RequestMethod.GET})
-    public Response search(@RequestParam String value, HttpServletRequest request) {
+    public Response search(@RequestParam String value) {
         ArrayList<String> rentalIDList = new ArrayList<>();
         Query q = new Query("*" + value + "*").setLanguage("chinese");
         SearchResult sr = jedisPooled.ftSearch("rental-index", q);
@@ -71,7 +71,7 @@ public class RentalController {
      * @return 字符串列表，包含10个联想词语
      */
     @RequestMapping(value = {"/suggest"}, method = {RequestMethod.GET})
-    public Response suggest(@RequestParam String value, HttpServletRequest request) {
+    public Response suggest(@RequestParam String value) {
         return Response.builder().data(jedisPooled.ftSugGet("rentalLocation", value, true, 10)).status(100).build();
     }
 
@@ -81,8 +81,9 @@ public class RentalController {
      * @param rentalInfo 转租信息
      */
     @RequestMapping(value = {"/postRentalInfo"}, method = {RequestMethod.POST})
-    public Response postRentalInfo(@RequestBody Rental rentalInfo, HttpServletRequest request) {
-        return rentalService.postRentalInfo(rentalInfo);
+    public Response postRentalInfo(@RequestBody Rental rentalInfo, @RequestParam Boolean save, @RequestHeader("x-wx-openid") String openid) {
+        rentalInfo.setUserID(openid);
+        return rentalService.postRentalInfo(rentalInfo,save);
     }
 
     /**
