@@ -19,6 +19,9 @@ public class AdminServiceInterceptor implements HandlerInterceptor {
     private final Logger logger = LoggerFactory.getLogger(AdminServiceInterceptor.class);
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if(request.getMethod().equals("OPTIONS")){
+            return true;
+        }
         PrintWriter writer = null;
         try{
             if(request.getHeader("Authorization") == null) {
