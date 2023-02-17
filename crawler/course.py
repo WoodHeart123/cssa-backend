@@ -3,11 +3,11 @@ from bs4 import BeautifulSoup
 import pymysql
 
 db = pymysql.connect(
-    host="sh-cynosdbmysql-grp-5ljk41ng.sql.tencentcdb.com",
-    port=28513,
-    user='root',
-    password='NST4VU3f',
-    database='springboot_demo'
+    host="sh-cynosdbmysql-grp-cmngutoy.sql.tencentcdb.com",
+    port=23504,
+    user= 'root',
+    password='r7btwuTa',
+    database='cssa_mini'
 )
 cursor = db.cursor()
     

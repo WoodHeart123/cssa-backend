@@ -43,12 +43,12 @@ public class SecondHandServiceImpl implements SecondHandService {
     }
 
     @Override
-    public Response saveProduct(Product product,Boolean save,String userID) {
+    public Response saveProduct(Product product,Boolean save) {
         product.setTime(new Timestamp(new Date().getTime()));
         product.setImagesJSON(JSON.toJSONString(product.getImages()));
         secondHandMapper.saveProduct(product);
         if(save){
-            secondHandMapper.saveContact(userID, product.getContact());
+            secondHandMapper.saveContact(product.getUserID(), product.getContact());
         }
         return Response.builder().message("成功").status(100).build();
     }
