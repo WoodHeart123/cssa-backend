@@ -70,8 +70,8 @@ public class AdminController {
     }
 
     @RequestMapping(value={"getMainPagePhotoList"},method={RequestMethod.GET})
-    Response getMainPagePhotoList(@RequestParam Integer offset, @RequestParam Integer limit){
-        return adminService.getMainPagePhotoList(offset, limit);
+    Response getMainPagePhotoList(){
+        return adminService.getMainPagePhotoList();
     }
 
     /**

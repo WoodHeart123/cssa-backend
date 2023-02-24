@@ -95,8 +95,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Response getMainPagePhotoList(Integer offset, Integer limit) {
-        List<MainPagePhoto> mainPagePhotoList = adminMapper.getMainPagePhotoList(offset, limit);
+    public Response getMainPagePhotoList() {
+        List<MainPagePhoto> mainPagePhotoList = adminMapper.getMainPagePhotoList();
         return Response.builder().data(mainPagePhotoList).status(100).build();
     }
 
