@@ -43,7 +43,7 @@
     </update>
 
     <select id="getMySecondhand" parameterType="Map" resultType="Product">
-        SELECT productID, userID, productTitle, productDescription, price, productType, productCondition, time, contact, imagesJSON, delivery from secondhand ORDER BY productID DESC LIMIT ${offset},${limit}
+        SELECT productID, userID, productTitle, productDescription, price, productType, productCondition, time, contact, imagesJSON, delivery from secondhand WHERE userID = #{userID} ORDER BY productID DESC LIMIT ${offset}, ${limit}
     </select>
 
     <update id="updateMySecondHand" parameterType="Map">
