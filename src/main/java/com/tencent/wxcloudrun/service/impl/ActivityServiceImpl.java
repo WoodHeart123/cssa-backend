@@ -8,13 +8,8 @@ import com.tencent.wxcloudrun.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.context.ApplicationContext;
-
-import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
 
 
 @Service
@@ -26,6 +21,7 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     ApplicationContext applicationContext;
 
+    Queue<Objects> q = new LinkedList<>();
     @Override
     public Response checkSignup(Integer actID, String userID, Long Date) {
         ArrayList<SignupInfo> result = activityMapper.checkSignup(userID, Date);

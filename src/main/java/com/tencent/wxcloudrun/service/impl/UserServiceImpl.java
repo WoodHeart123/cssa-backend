@@ -113,5 +113,17 @@ public class UserServiceImpl implements UserService {
         return new Response(productList);
     }
 
+    @Override
+    public Response updateMySecondHand(String userID, Product product) {
+        userMapper.updateMySecondHand(userID, product);
+        return new Response();
+    }
+
+    @Override
+    public Response deleteMySecondHand(String userID, Integer productID) {
+        userMapper.deleteMySecondHand(userID,productID);
+        return new Response();
+    }
+
 
 }

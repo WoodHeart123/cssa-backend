@@ -57,7 +57,7 @@ public interface AdminMapper {
 
     void deleteMainPagePhoto(@Param("photoID") String actID,@Param("timestamp") Timestamp timestamp);
 
-    List<MainPagePhoto> getMainPagePhotoList(@Param("offset") Integer offset, @Param("limit") Integer limit);
+    List<MainPagePhoto> getMainPagePhotoList();
 
     List<Department> getDepartmentList();
 

@@ -9,7 +9,7 @@ import java.util.List;
 public class Product {
     private Integer productID;
     private String userID;
-    private String sellerAvatar;
+    private Integer sellerAvatar;
     private String sellerNickname;
     private String productTitle;
     private String productDescription;

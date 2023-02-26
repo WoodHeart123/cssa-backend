@@ -43,6 +43,26 @@
     </update>
 
     <select id="getMySecondhand" parameterType="Map" resultType="Product">
-        SELECT productID, userID, sellerAvatar, sellerNickname, productTitle, productDescription, price, productType, productCondition, time, contact, imagesJSON, delivery from secondhand ORDER BY productID DESC LIMIT ${offset},${limit}
+        SELECT productID, userID, productTitle, productDescription, price, productType, productCondition, time, contact, imagesJSON, delivery from secondhand
+        ORDER BY productID DESC LIMIT ${offset},${limit}
     </select>
+
+    <update id="updateMySecondhand" parameterType="Map">
+        UPDATE secondhand
+        SET productTitle = #{product.productTitle},
+            productDescription = #{product.productDescription},
+            price = #{product.price},
+            productType = #{product.productType},
+            productCondition = #{product.productCondition},
+            time = #{product.time},
+            contact = #{product.contact},
+            imagesJSON = #{product.imagesJSON},
+            delivery = #{product.delivery}
+        WHERE userID = #{userID} AND productID = #{productID}
+    </update>
+
+    <delete id="deleteMySecondhand">
+        DELETE FROM secondhand WHERE userID = #{userID} AND productID = #{productID}
+    </delete>
+
 </mapper>

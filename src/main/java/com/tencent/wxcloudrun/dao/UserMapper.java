@@ -61,4 +61,9 @@ public interface UserMapper {
     void updateNickname(String nickname, String userID);
 
     List<Product> getMySecondhand(@Param("userID")String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
+
+    void updateMySecondHand(String userID, Product product);
+
+    void deleteMySecondHand(String userID, Integer productID);
+
 }
