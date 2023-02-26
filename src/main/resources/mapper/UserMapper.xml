@@ -52,7 +52,7 @@
     </select>
 
     <select id="getMyProductSave" parameterType="Map" resultType="Product">
-        SELECT productID, userID, productTitle, productDescription, price, productType, productCondition, contact, imagesJSON, delivery
+        SELECT *
         FROM secondhand
         WHERE productID in
             <foreach collection="productList" item="item" open="(" separator="," close=")" >
