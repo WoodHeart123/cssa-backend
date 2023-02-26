@@ -15,7 +15,7 @@
     </insert>
 
     <update id="updateEmail" parameterType="Map">
-        UPDATE user SET email = #{email} AND subscribe = #{subscribe} WHERE userID = #{userID}
+        UPDATE user SET email = #{email}, subscribe = #{subscribe} WHERE userID = #{userID}
     </update>
 
     <update id="updateWechatID" parameterType="String">
@@ -31,7 +31,7 @@
     </update>
 
     <select id="getMyComment" parameterType="Map" resultType="Comment">
-        SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime, userAvatar,courseNum,courseName,departmentAbrev from comment INNER JOIN course WHERE comment.courseID = course.courseID AND commentID > #{offset} AND userID = #{userID} ORDER BY commentID LIMIT ${limit}
+        SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime,courseNum,courseName,departmentAbrev from comment INNER JOIN course WHERE comment.courseID = course.courseID AND commentID > #{offset} AND userID = #{userID} ORDER BY commentID LIMIT ${limit}
     </select>
 
     <update id="updateComment" parameterType="Map">
