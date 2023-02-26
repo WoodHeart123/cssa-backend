@@ -32,7 +32,7 @@ public interface UserMapper {
      * @param email email
      * @param userID userID
      */
-    void updateEmail(String email, String userID);
+    void updateEmail(String email, Boolean subscribe, String userID);
 
     /**
      * @param userID user ID given by WeChat
@@ -54,6 +54,7 @@ public interface UserMapper {
      * @return list of comment with limit size
      */
     List<Comment> getMyComment(@Param("userID")String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
+
     void updateComment(String userID, Integer commentID, String comment);
 
     void deleteComment(String userID, Integer commentID);

@@ -12,7 +12,7 @@ public interface UserService {
     void getAuthCode(String email,Integer authCode);
     Response authSuccess(String userID);
     Response login(String nickname, String userID) throws UnsupportedEncodingException;
-    Response updateEmail(String email, String userID);
+    Response updateEmail(String email,Boolean subscribe, String userID);
     Response getLikedCommentList(String userID);
     Response updateAvatar(String userID,Integer avatar);
     Response getMyComment(String userID, Integer offset, Integer limit);
