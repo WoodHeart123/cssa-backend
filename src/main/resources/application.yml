@@ -5,12 +5,12 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_ADDRESS}/cssa_mini?characterEncoding=utf-8&useUnicode=true&serverTimezone=US/Central
-    username: ${MYSQL_USERNAME}
-    password: ${MySQL_PASSWORD}
-#    url: jdbc:mysql://sh-cynosdbmysql-grp-cmngutoy.sql.tencentcdb.com:23504/cssa_mini?characterEncoding=utf-8&useUnicode=true&serverTimezone=US/Central
-#    username: root
-#    password: r7btwuTa
+#    url: jdbc:mysql://${MYSQL_ADDRESS}/cssa_mini?characterEncoding=utf-8&useUnicode=true&serverTimezone=US/Central
+#    username: ${MYSQL_USERNAME}
+#    password: ${MySQL_PASSWORD}
+    url: jdbc:mysql://sh-cynosdbmysql-grp-cmngutoy.sql.tencentcdb.com:23504/cssa_mini?characterEncoding=utf-8&useUnicode=true&serverTimezone=US/Central
+    username: root
+    password: r7btwuTa
   redis:
     port: 6379
     host: 47.97.183.103
