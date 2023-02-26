@@ -22,6 +22,7 @@ public interface RentalMapper {
     User collect(String userID);
     void updateCollect(User user);
     void postRentalInfo(Rental rental);
+    void saveContact(String userID,String contact);
 
 
 }

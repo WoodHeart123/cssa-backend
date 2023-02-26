@@ -3,8 +3,8 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.CourseMapper">
 
     <insert id="saveComment" parameterType="Comment">
-        INSERT INTO comment (userID,courseID,professor,courseTime,difficulty,prefer,comment,commentTime,userAvatar)
-        VALUES (#{userID},#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{comment},#{commentTime},#{userAvatar})
+        INSERT INTO comment (userID,courseID,professor,courseTime,difficulty,prefer,comment,commentTime)
+        VALUES (#{userID},#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{comment},#{commentTime})
     </insert>
 
     <select id="getAllCourseList"  resultType="Course">
@@ -47,7 +47,8 @@
     </select>
 
     <select id="getCommentList" resultType="Comment">
-        SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime, userAvatar FROM comment WHERE courseID = #{courseID} ORDER BY ${orderField} DESC LIMIT #{offset}, #{limit}
+        SELECT comment.commentID, comment.professor, comment.courseTime,comment.difficulty,comment.prefer,comment.comment,comment.likeCount, comment.commentTime, user.avatar AS userAvatar
+        FROM comment JOIN user ON comment.userID = user.userID WHERE courseID = #{courseID} ORDER BY ${orderField} DESC LIMIT #{offset}, #{limit}
     </select>
 
     <select id="getPostCommentCount" parameterType="Map" resultType="Integer">

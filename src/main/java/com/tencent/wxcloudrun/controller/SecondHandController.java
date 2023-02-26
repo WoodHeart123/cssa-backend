@@ -56,11 +56,12 @@ public class SecondHandController {
     @RequestMapping(value= {"/saveProduct"}, method = {RequestMethod.POST})
         public Response saveProduct(@RequestParam Boolean save,@RequestBody Product product, @RequestHeader("x-wx-openid") String openid){
         product.setUserID(openid);
-        return secondHandService.saveProduct(product,save,openid);
+        return secondHandService.saveProduct(product,save);
     }
 
     @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})
     public Response cancelCollect(@RequestParam Integer productID, @RequestHeader("x-wx-openid") String openid, HttpServletRequest request){
         return secondHandService.collect(productID,openid);
     }
+    
 }

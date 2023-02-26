@@ -8,6 +8,7 @@ import com.tencent.wxcloudrun.model.User;
 import com.tencent.wxcloudrun.service.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -33,21 +34,14 @@ public class RentalServiceImpl implements RentalService {
         User user = rentalMapper.collect(userID);
         List<Integer> rentalArrayList = JSON.parseArray(user.getSavedRentalJSON(), Integer.class);
         if(save){
-            int i = 0;
             if(!(rentalArrayList.contains(rentalID))){
-                i = 1;
                 rentalArrayList.add(rentalID);
-                String json = JSON.toJSONString(rentalArrayList);
-                user.setSavedRentalJSON(json);
-                rentalMapper.updateCollect(user);
-                if (i == 1) {
-                    return Response.builder().data(null).status(101).build();
-                } else {
-                    return Response.builder().data(null).status(100).build();
-                }
             }
+        }else{
+            rentalArrayList.remove(rentalID);
         }
-        rentalArrayList.remove(rentalID);
+        user.setSavedRentalJSON(JSON.toJSONString(rentalArrayList));
+        rentalMapper.updateCollect(user);
         return Response.builder().message("成功").status(100).build();
     }
     @Override
@@ -59,14 +53,27 @@ public class RentalServiceImpl implements RentalService {
         }else{
             // TODO: 获取没有时间限制的租房列表
             rentalArrayList = rentalMapper.getRental(offset,limit,priceLimit, floorplanList);
+            for(Rental rental : rentalArrayList){
+                rental.setImages(JSON.parseArray(rental.getImagesJSON(),String.class));
+            }
         }
         return Response.builder().data(rentalArrayList).status(100).build();
     }
     @Override
-    public Response postRentalInfo(Rental rentalInfo){
+    @Transactional
+    public Response postRentalInfo(Rental rentalInfo, Boolean save){
         rentalInfo.setPublishedTime(new Timestamp(new Date().getTime()));
         rentalInfo.setImagesJSON(JSON.toJSONString(rentalInfo.getImages()));
         rentalMapper.postRentalInfo(rentalInfo);
+        if(save){
+           rentalMapper.saveContact(rentalInfo.getUserID(), rentalInfo.getContact());
+        }
         return Response.builder().message("成功").status(100).build();
+    }
+    @Override
+    public Response collect(String userID) {
+        User user = rentalMapper.collect(userID);
+        List<Integer> rentalArrayList = JSON.parseArray(user.getSavedRentalJSON(), Integer.class);
+        return Response.builder().data(null).status(100).build();
     }
 }
