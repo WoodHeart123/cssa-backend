@@ -134,6 +134,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Response delMyProductSave(String userID, Integer productID){
+        return null;
+    }
+    @Override
     public Response getMyRentalSave(String userID, Integer offset, Integer limit){
         User user = userMapper.collect(userID);
         user.setSavedRental(JSON.parseArray(user.getSavedRentalJSON(), Integer.class));

@@ -26,4 +26,6 @@ public interface UserService {
     Response getMyProductSave(String openid, Integer offset, Integer limit);
 
     Response getMyRentalSave(String openid, Integer offset, Integer limit);
+
+    Response delMyProductSave(String openid, Integer productID);
 }

@@ -109,6 +109,11 @@ public class UserController {
         return userService.getMyProductSave(openid,offset,limit);
     }
 
+    @RequestMapping(value = {"/delMyProductSave"}, method = {RequestMethod.GET})
+    public Response delMyProductSave(@RequestParam Integer productID, @RequestHeader("x-wx-openid") String openid){
+        return userService.delMyProductSave(openid,productID);
+    }
+
     @RequestMapping(value = {"/getMyRentalSave"}, method = {RequestMethod.GET})
     public Response getMyRentalSave(@RequestParam Integer offset, @RequestParam Integer limit,@RequestHeader("x-wx-openid") String openid){
         return userService.getMyRentalSave(openid,offset,limit);
