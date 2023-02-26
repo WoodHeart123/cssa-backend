@@ -96,8 +96,8 @@ public class RentalController {
         return null;
     }
     @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})
-    public Response cancelCollect(@RequestParam String userID, HttpServletRequest request){
-        return rentalService.collect(userID);
+    public Response cancelCollect(@RequestParam Integer rentalID, @RequestParam String userID, HttpServletRequest request){
+        return rentalService.collect(rentalID, userID);
     }
 
 }
