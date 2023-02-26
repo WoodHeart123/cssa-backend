@@ -48,8 +48,8 @@ public class UserController {
     }
 
     @RequestMapping(value={"/updateEmail"}, method={RequestMethod.GET})
-    public Response updateEmail(@RequestParam String email, @RequestHeader("x-wx-openid") String openid){
-        return userService.updateEmail(email,openid);
+    public Response updateEmail(@RequestParam String email,@RequestParam Boolean subscribe, @RequestHeader("x-wx-openid") String openid){
+        return userService.updateEmail(email, subscribe, openid);
     }
 
     @RequestMapping(value={"/updateAvatar"}, method={RequestMethod.GET})
@@ -93,6 +93,11 @@ public class UserController {
             return new Response(ReturnCode.EMPTY_STRING);
         }
         return userService.updateNickname(openid,nickname);
+    }
+
+    @RequestMapping(value={"/updateWechatID"}, method={RequestMethod.GET})
+    public Response updateWechatID(){
+        return null;
     }
 
     @RequestMapping(value={"/updateSecondHand"},method={RequestMethod.POST})

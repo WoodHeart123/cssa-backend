@@ -35,7 +35,7 @@ public class AdminController {
         return adminService.register(admin);
     }
 
-    @RequestMapping(value={"getActivityList"},method={RequestMethod.GET})
+    @RequestMapping(value={"/getActivityList"},method={RequestMethod.GET})
     Response getActivityList(){
         return adminService.getActivityList();
     }
@@ -45,12 +45,12 @@ public class AdminController {
         return adminService.createActivity(activity);
     }
 
-    @RequestMapping(value={"activitySignup"}, method={RequestMethod.GET})
+    @RequestMapping(value={"/activitySignup"}, method={RequestMethod.GET})
     public Response getActivitySignup(@RequestParam String actID){
         return adminService.getActivitySignup(actID);
     }
 
-    @RequestMapping(value={"deleteActivity"}, method={RequestMethod.GET})
+    @RequestMapping(value={"/deleteActivity"}, method={RequestMethod.GET})
     public Response deleteActivity(@RequestParam String actID){
         return adminService.deleteActivity(actID);
     }

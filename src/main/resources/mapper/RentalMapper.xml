@@ -3,24 +3,29 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.RentalMapper">
 
     <select id="getAllRentalList" resultType="Rental">
+        SELECT rental.userID, user.avatar AS sellerAvatar, user.nickname AS sellerNickname, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
+        FROM rental JOIN user ON rental.userID = user.userID
         SELECT userID, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
         FROM rental
         WHERE rentalID >= #{offset}
         ORDER BY rental.rentalID
             LIMIT #{limit}
     </select>
-    
+
     <select id="getRentalList" resultType="Rental">
         SELECT userID, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
         FROM rental
         WHERE rentalID >= #{offset}
         ORDER BY rental.rentalID
-        LIMIT #{limit} 
+        LIMIT #{limit}
         <foreach item="floorPlan" collection="floorPlanList" separator="," open="(" close=")" index="index">
             #{floorPlan}
         </foreach> AND price &lt;= #{price} AND rentalStartTime>=#{startTime} AND rentalEndTime &lt;= #{endTime}
     </select>
 
+    <select id="getRental" resultType="Rental">
+        SELECT rental.userID, user.avatar AS sellerAvatar, user.nickname AS sellerNickname, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
+        FROM rental JOIN user ON rental.userID = user.userID WHERE rentalID in
     <select id="getRentalByID" resultType="Rental">
         SELECT userID, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
         FROM rental WHERE rentalID in
@@ -33,6 +38,7 @@
         INSERT INTO rental (userID,rentalID,sexConstraint,floorPlan,description,publishedTime,rentalStartTime,rentalEndTime,price,location,contact,imagesJSON)
         VALUES (#{userID},#{rentalID},#{sexConstraint},#{floorPlan},#{description},#{publishedTime},#{rentalStartTime},#{rentalEndTime}, #{price}, #{location}, #{contact}, #{imagesJSON})
     </insert>
+
 
     <select id="getRental" parameterType="Map" resultType="Rental">
         SELECT rental.userID, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
@@ -74,7 +80,7 @@
     </select>
 
     <update id="updateCollect" parameterType="Rental">
-        UPDATE user 
+        UPDATE user
         SET savedRentalJSON = #{savedRentalJSON}
         WHERE userID = #{userID}
     </update>
@@ -82,5 +88,5 @@
     <update id="saveContact">
         UPDATE user SET wechatID = #{contact} WHERE userID = #{userID}
     </update>
-    
+
 </mapper>

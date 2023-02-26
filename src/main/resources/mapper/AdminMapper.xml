@@ -2,37 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tencent.wxcloudrun.dao.AdminMapper">
 
-    <select id="getActivityList" resultType="Activity">
-        SELECT
-            activity.actID,
-            COUNT(userID) as userJoinedNum,
-            title,
-            startDate,
-            endDate,
-            location,
-            price,
-            capacity,
-            imgs,
-            additionalInfoJSON,
-            description,
-            imgs
-        FROM
-            signup_activity
-                RIGHT JOIN activity ON activity.actID = signup_activity.actID
-        WHERE activity.startDate &gt; 19700101010000
-        GROUP BY
-            activity.actID,
-            title,
-            startDate,
-            endDate,
-            location,
-            price,
-            capacity,
-            imgs,
-            additionalInfoJSON,
-            description
-        ORDER BY activity.actID DESC
-    </select>
+<!--    <select id="getActivityList" resultType="Activity">-->
+<!--        SELECT-->
+<!--            activity.actID,-->
+<!--            COUNT(userID) as userJoinedNum,-->
+<!--            title,-->
+<!--            startDate,-->
+<!--            endDate,-->
+<!--            location,-->
+<!--            price,-->
+<!--            capacity,-->
+<!--            imgs,-->
+<!--            additionalInfoJSON,-->
+<!--            description,-->
+<!--            imgs-->
+<!--        FROM-->
+<!--            signup_activity-->
+<!--                RIGHT JOIN activity ON activity.actID = signup_activity.actID-->
+<!--        WHERE activity.startDate &gt; 19700101010000-->
+<!--        GROUP BY-->
+<!--            activity.actID,-->
+<!--            title,-->
+<!--            startDate,-->
+<!--            endDate,-->
+<!--            location,-->
+<!--            price,-->
+<!--            capacity,-->
+<!--            imgs,-->
+<!--            additionalInfoJSON,-->
+<!--            description-->
+<!--        ORDER BY activity.actID DESC-->
+<!--    </select>-->
 
     <insert id="createActivity" parameterType="Activity">
         INSERT INTO activity (title,startDate,endDate,location,price,capacity,imgs,additionalInfoJSON,description) values (#{title},#{startDate},#{endDate},#{location},#{price},#{capacity},#{imgs},#{additionalInfoJSON},#{description})

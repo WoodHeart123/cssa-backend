@@ -57,14 +57,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Response updateEmail(String email,String userID){
+    public Response updateEmail(String email,Boolean subscribe, String userID){
         String regex = "^([-a-zA-Z0-9_.]+)@([-a-zA-Z0-9_.]+).([a-zA-Z]{2,5})$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         if (!matcher.matches()) {
             return Response.builder().status(104).message("邮箱格式不正确").build();
         }
-        userMapper.updateEmail(email,userID);
+        userMapper.updateEmail(email, subscribe, userID);
         return new Response();
     }
 
