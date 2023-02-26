@@ -7,15 +7,19 @@
     </update>
 
     <select id="login" parameterType="String" resultType="User">
-        SELECT email,nickname, isStudent,wechatID, avatar, likedCommentJSON, savedProductJSON FROM user WHERE userID = #{userID}
+        SELECT email,nickname, isStudent,wechatID, avatar, likedCommentJSON, savedProductJSON, subscribe FROM user WHERE userID = #{userID}
     </select>
 
     <insert id="register" parameterType="String">
         INSERT INTO user (userID,nickname) VALUES (#{userID},#{nickname})
     </insert>
 
-    <update id="updateEmail" parameterType="String">
+    <update id="updateEmail" parameterType="Map">
         UPDATE user SET email = #{email} AND subscribe = #{subscribe} WHERE userID = #{userID}
+    </update>
+
+    <update id="updateWechatID" parameterType="String">
+        UPDATE user SET wechatID = #{wechatID} WHERE userID = #{userID}
     </update>
     
     <select id="getLikedCommentList" parameterType="String" resultType="User">

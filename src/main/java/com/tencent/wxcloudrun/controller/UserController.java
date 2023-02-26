@@ -83,12 +83,12 @@ public class UserController {
         return userService.updateComment(openid,comment.getCommentID(),comment.getComment());
     }
     @RequestMapping(value={"/deleteComment"},method={RequestMethod.POST})
-    public Response updateComment(@RequestBody Integer commentID, @RequestHeader("x-wx-openid") String openid){
+    public Response deleteComment(@RequestBody Integer commentID, @RequestHeader("x-wx-openid") String openid){
         return userService.deleteComment(openid, commentID);
     }
 
     @RequestMapping(value={"/updateNickname"},method={RequestMethod.GET})
-    public Response updateComment(@RequestParam String nickname,@RequestHeader("x-wx-openid") String openid){
+    public Response updateNickname(@RequestParam String nickname,@RequestHeader("x-wx-openid") String openid){
         if(nickname.length() == 0) {
             return new Response(ReturnCode.EMPTY_STRING);
         }
@@ -96,8 +96,8 @@ public class UserController {
     }
 
     @RequestMapping(value={"/updateWechatID"}, method={RequestMethod.GET})
-    public Response updateWechatID(){
-        return null;
+    public Response updateWechatID(@RequestParam String wechatID, @RequestHeader("x-wx-openid") String openid){
+        return userService.updateWechatID(wechatID, openid);
     }
 
     @RequestMapping(value={"/updateSecondHand"},method={RequestMethod.POST})

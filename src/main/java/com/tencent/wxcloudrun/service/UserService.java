@@ -18,6 +18,7 @@ public interface UserService {
     Response getMyComment(String userID, Integer offset, Integer limit);
     Response updateComment(String userID,Integer commentID,String comment);
     Response deleteComment(String userID,Integer commentID);
+    Response updateWechatID(String wechatID, String userID);
     Response updateNickname(String userID, String nickname);
     Response getMySecondhand(String userID,Integer offset,Integer limit);
     Response updateMySecondHand(String userID, Product product);

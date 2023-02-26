@@ -88,16 +88,13 @@ public class RentalController {
 
     /**
      * 收藏或取消收藏
-     *
-     * @param rentalID 转租ID
+     * @param rentalID rental ID
+     * @param userID user ID
+     * @param save true 为收藏, false 为取消
      */
-    @RequestMapping(value = {"/saveRental"}, method = {RequestMethod.GET})
-    public Response saveRentalInfo(@RequestParam Integer rentalID, @RequestParam Boolean save, HttpServletRequest request) {
-        return null;
-    }
     @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})
-    public Response cancelCollect(@RequestParam Integer rentalID, @RequestParam String userID, HttpServletRequest request){
-        return rentalService.collect(rentalID, userID);
+    public Response collect(@RequestParam Integer rentalID, @RequestParam String userID, @RequestParam Boolean save, HttpServletRequest request){
+        return rentalService.collect(rentalID, userID, save);
     }
 
 }

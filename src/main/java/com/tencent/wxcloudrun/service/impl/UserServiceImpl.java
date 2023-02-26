@@ -12,6 +12,7 @@ import com.tencent.wxcloudrun.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -87,20 +88,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Response updateComment(String userID, Integer commentID, String comment) {
         userMapper.updateComment(userID,commentID,comment);
         return new Response();
     }
 
     @Override
+    @Transactional
     public Response deleteComment(String userID, Integer commentID) {
         userMapper.deleteComment(userID,commentID);
         return new Response();
     }
 
     @Override
+    @Transactional
     public Response updateNickname(String userID, String nickname) {
         userMapper.updateNickname(nickname,userID);
+        return new Response();
+    }
+
+    @Override
+    @Transactional
+    public Response updateWechatID(String wechatID, String userID){
+        userMapper.updateWechatID(wechatID, userID);
         return new Response();
     }
 
@@ -114,12 +125,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Response updateMySecondHand(String userID, Product product) {
         userMapper.updateMySecondHand(userID, product);
         return new Response();
     }
 
     @Override
+    @Transactional
     public Response deleteMySecondHand(String userID, Integer productID) {
         userMapper.deleteMySecondHand(userID,productID);
         return new Response();

@@ -21,6 +21,7 @@ public class User {
     private Integer avatar;
     private String savedRentalJSON;
     private String wechatID;
+    private Boolean subscribe;
 
 
     /**
@@ -39,5 +40,6 @@ public class User {
         this.savedProduct = new ArrayList<>();
         this.isStudent = false;
         this.avatar = 1;
+        this.subscribe = false;
     }
 }
