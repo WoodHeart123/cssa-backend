@@ -1,8 +1,6 @@
 package com.tencent.wxcloudrun.dao;
 
-import com.tencent.wxcloudrun.model.Comment;
-import com.tencent.wxcloudrun.model.Product;
-import com.tencent.wxcloudrun.model.User;
+import com.tencent.wxcloudrun.model.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -66,4 +64,9 @@ public interface UserMapper {
 
     void deleteMySecondHand(String userID, Integer productID);
 
+    List<Product> getMyProductSave(Integer offset, Integer limit, List<Integer> productList);
+
+    User collect(String userID);
+
+    List<Rental> getMyRentalSave(Integer offset, Integer limit, List<Integer> savedProduct);
 }

@@ -27,7 +27,11 @@
     </update>
 
     <select id="getMyComment" parameterType="Map" resultType="Comment">
-        SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime, userAvatar,courseNum,courseName,departmentAbrev from comment INNER JOIN course WHERE comment.courseID = course.courseID AND commentID > #{offset} AND userID = #{userID} ORDER BY commentID LIMIT ${limit}
+        SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime, courseNum,courseName,departmentAbrev
+        from comment INNER JOIN course
+        WHERE comment.courseID = course.courseID AND commentID > #{offset} AND userID = #{userID}
+        ORDER BY commentID
+        LIMIT ${limit}
     </select>
 
     <update id="updateComment" parameterType="Map">
@@ -45,6 +49,32 @@
     <select id="getMySecondhand" parameterType="Map" resultType="Product">
         SELECT productID, userID, productTitle, productDescription, price, productType, productCondition, time, contact, imagesJSON, delivery from secondhand
         ORDER BY productID DESC LIMIT ${offset},${limit}
+    </select>
+
+    <select id="getMyProductSave" parameterType="Map" resultType="Product">
+        SELECT productID, userID, productTitle, productDescription, price, productType, productCondition, contact, imagesJSON, delivery
+        FROM secondhand
+        WHERE productID in
+            <foreach collection="productList" item="item" open="(" separator="," close=")" >
+                #{item}
+            </foreach>
+        ORDER BY productID
+        LIMIT ${limit}
+    </select>
+
+    <select id="collect" parameterType="String" resultType="User">
+        SELECT * FROM user WHERE userID = #{userID}
+    </select>
+
+    <select id="getMyRentalSave" parameterType="Map" resultType="Rental">
+        SELECT *
+        FROM rental
+        WHERE rentalID in
+        <foreach collection="rentalList" item="item" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+        ORDER BY rentalID
+        LIMIT ${limit}
     </select>
 
     <update id="updateMySecondhand" parameterType="Map">
