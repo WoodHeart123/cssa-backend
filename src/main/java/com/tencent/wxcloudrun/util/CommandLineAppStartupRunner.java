@@ -58,7 +58,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
             try {
                 Schema sc = new Schema().addNumericField("productID").addTextField("productName", 1.0);
-                IndexDefinition def = new IndexDefinition().setPrefixes("product:");
+                IndexDefinition def = new IndexDefinition().setPrefixes("product:").setLanguage("chinese");
                 jedisPooled.ftCreate("product-index", IndexOptions.defaultOptions().setDefinition(def), sc);
             }catch(Exception ignored){}
             ArrayList<Product> productArrayList = secondHandMapper.getAllProductList(0, 5000);
