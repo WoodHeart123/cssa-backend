@@ -34,9 +34,9 @@ public class SecondHandController {
     }
 
     @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
-    public Response search(@RequestParam String value, HttpServletRequest request) throws IOException {
+    public Response search(@RequestParam String value, @RequestParam Integer limit, @RequestParam Integer offset) throws IOException {
         ArrayList<String> productIDList = new ArrayList<>();
-        Query q = new Query("*" + value + "*").setLanguage("chinese");
+        Query q = new Query("*" + value + "*").setLanguage("chinese").limit(offset, limit);
         SearchResult sr = jedisPooled.ftSearch("product-index",q);
         for(Document document: sr.getDocuments()){
            productIDList.add(document.getString("productID"));
@@ -49,7 +49,7 @@ public class SecondHandController {
     }
 
     @RequestMapping(value= {"/getProductList"}, method = {RequestMethod.GET})
-    public Response getProductList(@RequestParam ProductType productType, @RequestParam Integer offset, @RequestParam Integer limit, HttpServletRequest request){
+    public Response getProductList(@RequestParam ProductType productType, @RequestParam Integer offset, @RequestParam Integer limit){
         return secondHandService.getProductList(productType,offset,limit);
     }
     
@@ -60,7 +60,7 @@ public class SecondHandController {
     }
 
     @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})
-    public Response cancelCollect(@RequestParam Integer productID, @RequestHeader("x-wx-openid") String openid, HttpServletRequest request){
+    public Response cancelCollect(@RequestParam Integer productID, @RequestHeader("x-wx-openid") String openid){
         return secondHandService.collect(productID,openid);
     }
     
