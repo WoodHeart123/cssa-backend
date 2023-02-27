@@ -35,6 +35,13 @@ public interface UserMapper {
     void updateEmail(String email, Boolean subscribe, String userID);
 
     /**
+     * update user wechatID
+     * @param email email
+     * @param userID userID
+     */
+    void updateWechatID(String wechatID, String userID);
+
+    /**
      * @param userID user ID given by WeChat
      * @return a user object that only has likedComment field
      */

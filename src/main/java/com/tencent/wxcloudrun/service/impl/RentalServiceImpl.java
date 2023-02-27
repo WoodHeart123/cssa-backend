@@ -30,21 +30,6 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public Response saveRentalInfo(Integer rentalID, boolean save, String userID) {
-        User user = rentalMapper.collect(userID);
-        List<Integer> rentalArrayList = JSON.parseArray(user.getSavedRentalJSON(), Integer.class);
-        if(save){
-            if(!(rentalArrayList.contains(rentalID))){
-                rentalArrayList.add(rentalID);
-            }
-        }else{
-            rentalArrayList.remove(rentalID);
-        }
-        user.setSavedRentalJSON(JSON.toJSONString(rentalArrayList));
-        rentalMapper.updateCollect(user);
-        return Response.builder().message("成功").status(100).build();
-    }
-    @Override
     public Response getRentalList(Integer offset, Integer limit, Integer priceLimit, ArrayList<String> floorplanList, Timestamp startTime, Timestamp endTime) {
         ArrayList<Rental> rentalArrayList;
         if(!startTime.equals(new Timestamp(0))){
@@ -70,10 +55,22 @@ public class RentalServiceImpl implements RentalService {
         }
         return Response.builder().message("成功").status(100).build();
     }
+
     @Override
-    public Response collect(String userID) {
-        User user = rentalMapper.collect(userID);
+    public Response collect(Integer rentalID, String userID, Boolean save) {
+        User user = rentalMapper.getRentalSavedList(userID);
         List<Integer> rentalArrayList = JSON.parseArray(user.getSavedRentalJSON(), Integer.class);
-        return Response.builder().data(null).status(100).build();
+
+        if(save){
+            if(!(rentalArrayList.contains(rentalID))){
+                rentalArrayList.add(rentalID);
+            }
+        }else{
+            rentalArrayList.remove(rentalID);
+        }
+
+        user.setSavedRentalJSON(JSON.toJSONString(rentalArrayList));
+        rentalMapper.updateRentalSavedList(user);
+        return new Response();
     }
 }

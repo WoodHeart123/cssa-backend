@@ -23,9 +23,6 @@
         </foreach> AND price &lt;= #{price} AND rentalStartTime>=#{startTime} AND rentalEndTime &lt;= #{endTime}
     </select>
 
-    <select id="getRental" resultType="Rental">
-        SELECT rental.userID, user.avatar AS sellerAvatar, user.nickname AS sellerNickname, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
-        FROM rental JOIN user ON rental.userID = user.userID WHERE rentalID in
     <select id="getRentalByID" resultType="Rental">
         SELECT userID, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
         FROM rental WHERE rentalID in
@@ -75,11 +72,8 @@
         LIMIT #{offset}, #{limit}
     </select>
 
-    <select id="collect" resultType="boolean">
-        SELECT savedRentalJSON,userID FROM user WHERE userID = #{userID}
-    </select>
 
-    <update id="updateCollect" parameterType="Rental">
+    <update id="updateRentalSavedList" parameterType="User">
         UPDATE user
         SET savedRentalJSON = #{savedRentalJSON}
         WHERE userID = #{userID}
@@ -88,5 +82,9 @@
     <update id="saveContact">
         UPDATE user SET wechatID = #{contact} WHERE userID = #{userID}
     </update>
+
+    <select id="getRentalSavedList" resultType="User">
+        SELECT userID, savedRentalJSON FROM user WHERE userID = #{userID}
+    </select>
 
 </mapper>

@@ -10,9 +10,9 @@ import java.util.Map;
 
 @Service
 public interface RentalService {
-    Response saveRentalInfo(Integer rentalID, boolean save, String userID);
+
     Response postRentalInfo(Rental rentalInfo, Boolean save);
     Response getRentalList(Integer offset, Integer limit, Integer priceLimit, ArrayList<String> floorplanList, Timestamp startTime, Timestamp endTime);
     Response getRental(ArrayList<String> productID);
-    Response collect(String userID);
+    Response collect(Integer rentalID, String userID, Boolean save);
 }
