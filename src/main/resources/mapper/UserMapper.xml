@@ -15,7 +15,7 @@
     </insert>
 
     <update id="updateEmail" parameterType="String">
-        UPDATE user SET email = #{email} WHERE userID = #{userID}
+        UPDATE user SET email = #{email} AND subscribe = #{subscribe} WHERE userID = #{userID}
     </update>
     
     <select id="getLikedCommentList" parameterType="String" resultType="User">
