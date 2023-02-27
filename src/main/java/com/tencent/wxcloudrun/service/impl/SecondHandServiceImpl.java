@@ -9,6 +9,7 @@ import com.tencent.wxcloudrun.model.User;
 import com.tencent.wxcloudrun.service.SecondHandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -25,7 +26,11 @@ public class SecondHandServiceImpl implements SecondHandService {
 
     @Override
     public Response getProduct(ArrayList<String> productID) {
-        return Response.builder().data(secondHandMapper.getProduct(productID)).status(100).build();
+        ArrayList<Product> result = secondHandMapper.getProduct(productID);
+        for(Product product: result){
+            product.setImages(JSON.parseArray(product.getImagesJSON(),String.class));
+        }
+        return Response.builder().data(result).status(100).build();
     }
 
     @Override
@@ -43,6 +48,7 @@ public class SecondHandServiceImpl implements SecondHandService {
     }
 
     @Override
+    @Transactional
     public Response saveProduct(Product product,Boolean save) {
         product.setTime(new Timestamp(new Date().getTime()));
         product.setImagesJSON(JSON.toJSONString(product.getImages()));
