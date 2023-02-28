@@ -72,9 +72,28 @@ public interface UserMapper {
 
     void deleteMySecondHand(String userID, Integer productID);
 
-    List<Product> getMyProductSave(Integer offset, Integer limit, List<Integer> productList);
+    /**
+     * 删除收藏
+     * @param collect 收藏信息
+     */
+    void deleteCollect(Collect collect);
 
-    User collect(String userID);
+    /**
+     * 添加收藏
+     * @param collect 收藏信息
+     */
+    void addCollect(Collect collect);
 
-    List<Rental> getMyRentalSave(Integer offset, Integer limit, List<Integer> savedProduct);
+    /**
+     *  获取用户收藏内容
+     * @param collectType 收藏类型
+     * @param userID 用户ID
+     */
+    List<Integer> getCollectID(@Param("collectType")CollectType collectType,@Param("userID")String userID);
+
+    List<Product> getProductCollectList(CollectType collectType,String userID,Integer offset, Integer limit);
+    List<Rental> getRentalCollectList(CollectType collectType,String userID,Integer offset, Integer limit);
+
+
+
 }

@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.search.Document;
 import redis.clients.jedis.search.Query;
+import redis.clients.jedis.search.RediSearchUtil;
 import redis.clients.jedis.search.SearchResult;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -83,18 +85,13 @@ public class RentalController {
     @RequestMapping(value = {"/postRentalInfo"}, method = {RequestMethod.POST})
     public Response postRentalInfo(@RequestBody Rental rentalInfo, @RequestParam Boolean save, @RequestHeader("x-wx-openid") String openid) {
         rentalInfo.setUserID(openid);
+        Map<String, Object> fields = new HashMap<>();
+        fields.put("rentalID", rentalInfo.getRentalID());
+        fields.put("rentalLocation", rentalInfo.getLocation());
+        jedisPooled.hset("rental:" + rentalInfo.getRentalID().toString(), RediSearchUtil.toStringMap(fields));
+        jedisPooled.ftSugAdd("rentalLocation", rentalInfo.getLocation(), 1.0);
         return rentalService.postRentalInfo(rentalInfo,save);
     }
 
-    /**
-     * 收藏或取消收藏
-     * @param rentalID rental ID
-     * @param userID user ID
-     * @param save true 为收藏, false 为取消
-     */
-    @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})
-    public Response collect(@RequestParam Integer rentalID, @RequestParam String userID, @RequestParam Boolean save, HttpServletRequest request){
-        return rentalService.collect(rentalID, userID, save);
-    }
 
 }

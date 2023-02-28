@@ -12,17 +12,6 @@
             LIMIT #{limit}
     </select>
 
-    <select id="getRentalList" resultType="Rental">
-        SELECT userID, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
-        FROM rental
-        WHERE rentalID >= #{offset}
-        ORDER BY rental.rentalID
-        LIMIT #{limit}
-        <foreach item="floorPlan" collection="floorPlanList" separator="," open="(" close=")" index="index">
-            #{floorPlan}
-        </foreach> AND price &lt;= #{price} AND rentalStartTime>=#{startTime} AND rentalEndTime &lt;= #{endTime}
-    </select>
-
     <select id="getRentalByID" resultType="Rental">
         SELECT userID, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime, rentalEndTime, price, location, contact, imagesJSON
         FROM rental WHERE rentalID in

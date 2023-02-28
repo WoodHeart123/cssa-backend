@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.search.Document;
 import redis.clients.jedis.search.Query;
+import redis.clients.jedis.search.RediSearchUtil;
 import redis.clients.jedis.search.SearchResult;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -54,14 +57,14 @@ public class SecondHandController {
     }
     
     @RequestMapping(value= {"/saveProduct"}, method = {RequestMethod.POST})
-        public Response saveProduct(@RequestParam Boolean save,@RequestBody Product product, @RequestHeader("x-wx-openid") String openid){
+        public Response saveProduct(@RequestParam Boolean save,@RequestBody Product product, @RequestHeader("x-wx-openid") String openid) {
         product.setUserID(openid);
-        return secondHandService.saveProduct(product,save);
+        Map<String, Object> fields = new HashMap<>();
+        fields.put("productID", product.getProductID());
+        fields.put("productName", product.getProductTitle());
+        jedisPooled.hset("product:" + product.getProductID().toString(), RediSearchUtil.toStringMap(fields));
+        jedisPooled.ftSugAdd("productName", product.getProductTitle(), 1.0);
+        return secondHandService.saveProduct(product, save);
     }
 
-    @RequestMapping(value= {"/collect"}, method = {RequestMethod.GET})
-    public Response cancelCollect(@RequestParam Integer productID, @RequestHeader("x-wx-openid") String openid){
-        return secondHandService.collect(productID,openid);
-    }
-    
 }

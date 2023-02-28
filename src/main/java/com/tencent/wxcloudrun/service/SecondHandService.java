@@ -19,8 +19,6 @@ public interface SecondHandService {
     Response getProductList(ProductType productType,Integer offset, Integer limit);
     
     Response saveProduct(Product product,Boolean save);
-    
-    Response collect(Integer productID, String UserID);
 
     Response getProduct(ArrayList<String> productID);
     

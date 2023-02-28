@@ -19,8 +19,6 @@ public interface RentalMapper {
     ArrayList<Rental> getRentalTimed(Integer offset, Integer limit, Integer priceLimit, ArrayList<String> floorplanList, Timestamp startTime, Timestamp endTime);
 
     ArrayList<Rental> getRental(Integer offset, Integer limit, Integer priceLimit, ArrayList<String> floorplanList);
-    User getRentalSavedList(String userID);
-    void updateRentalSavedList(User user);
     void postRentalInfo(Rental rental);
     void saveContact(String userID,String contact);
 

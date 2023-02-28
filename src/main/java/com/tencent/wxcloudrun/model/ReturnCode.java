@@ -15,7 +15,8 @@ public enum ReturnCode {
     REPEATED_ZAN(107,"已点赞"),
     INTEGER_OUT_OF_RANGE(108,"整型超过范围"),
     EMPTY_STRING(109,"空字符串"),
-    INVALID_ADMIN_TOKEN(301,"管理者信息无效")
+    INVALID_ADMIN_TOKEN(301,"管理者信息无效"),
+    INVALID_ENUM_TYPE(110, "无法识别枚举类型")
     ;
 
     private final Integer code;

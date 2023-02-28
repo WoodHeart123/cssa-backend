@@ -9,12 +9,11 @@ import com.tencent.wxcloudrun.service.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.JedisPooled;
+import redis.clients.jedis.search.RediSearchUtil;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -22,6 +21,9 @@ public class RentalServiceImpl implements RentalService {
 
     @Autowired
     RentalMapper rentalMapper;
+    @Autowired
+    JedisPooled jedisPooled;
+
 
 
     @Override
@@ -55,21 +57,4 @@ public class RentalServiceImpl implements RentalService {
         return Response.builder().message("成功").status(100).build();
     }
 
-    @Override
-    public Response collect(Integer rentalID, String userID, Boolean save) {
-        User user = rentalMapper.getRentalSavedList(userID);
-        List<Integer> rentalArrayList = JSON.parseArray(user.getSavedRentalJSON(), Integer.class);
-
-        if(save){
-            if(!(rentalArrayList.contains(rentalID))){
-                rentalArrayList.add(rentalID);
-            }
-        }else{
-            rentalArrayList.remove(rentalID);
-        }
-
-        user.setSavedRentalJSON(JSON.toJSONString(rentalArrayList));
-        rentalMapper.updateRentalSavedList(user);
-        return new Response();
-    }
 }

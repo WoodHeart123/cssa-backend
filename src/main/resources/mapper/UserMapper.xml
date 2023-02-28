@@ -70,6 +70,14 @@
         SELECT * FROM user WHERE userID = #{userID}
     </select>
 
+    <insert id="addCollect" parameterType="Collect">
+        INSERT INTO collect(userID, contentID, collectType) values (#{userID},#{contentID},#{collectType}) ON DUPLICATE KEY UPDATE createTime = CURRENT_TIMESTAMP
+    </insert>
+
+    <delete id="deleteCollect" parameterType="Collect">
+        DELETE FROM collect WHERE userID = #{userID} AND contentID = #{contentID} AND collectType = #{collectType}
+    </delete>
+
     <select id="getMyRentalSave" parameterType="Map" resultType="Rental">
         SELECT *
         FROM rental
@@ -88,5 +96,28 @@
     <delete id="deleteMySecondHand">
         DELETE FROM secondhand WHERE userID = #{userID} AND productID = #{productID}
     </delete>
+    
+    <select id="getCollectID" parameterType="Map" resultType="Integer">
+        SELECT contentID from collect WHERE collectType = #{collectType} AND userID = #{userID}
+    </select>
+
+    <select id="getProductCollectList" resultType="Product">
+        SELECT secondhand.productID, secondhand.productTitle,secondhand.productDescription,
+               secondhand.productType,secondhand.time,secondhand.price,secondhand.productCondition,secondhand.contact,secondhand.imagesJSON,secondhand.delivery,
+               user.avatar as sellerAvatar, user.nickname as sellerNickname
+        FROM secondhand, user, collect
+        WHERE secondhand.userID = user.userID AND collect.contentID = secondhand.productID AND collect.collectType = #{collectType} AND collect.collectID > #{offset} AND collect.userID = #{userID}
+        LIMIT #{limit}
+    </select>
+    
+    <select id="getRentalCollectList" resultType="Rental">
+        SELECT rental.userID, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
+               rental.publishedTime, rental.rentalStartTime, rental.rentalEndTime, rental.price,
+               rental.location, rental.contact, rental.imagesJSON,
+               user.avatar as sellerAvatar, user.nickname as sellerNickname
+        FROM rental, collect, user
+        WHERE rental.userID = user.userID AND collect.contentID = rental.rentalID AND collect.collectType = #{collectType} AND collect.collectID > #{offset} AND collect.userID = #{userID}
+        LIMIT #{limit}
+    </select>
 
 </mapper>

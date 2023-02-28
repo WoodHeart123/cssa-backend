@@ -5,16 +5,19 @@ import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.dao.UserMapper;
 import com.tencent.wxcloudrun.event.AuthEvent;
 import com.tencent.wxcloudrun.model.*;
+import com.tencent.wxcloudrun.service.RentalService;
 import com.tencent.wxcloudrun.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.JedisPooled;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,6 +28,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    JedisPooled jedisPooled;
+
 
     @Override
     public void getAuthCode(String email, Integer authCode) {
@@ -136,28 +143,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Response getMyProductSave(String userID, Integer offset, Integer limit){
-        User user = userMapper.collect(userID);
-        user.setSavedProduct(JSON.parseArray(user.getSavedProductJSON(), Integer.class));
-        List<Product> productList = userMapper.getMyProductSave(offset, limit, user.getSavedProduct());
-        for(Product product:productList){
-            product.setImages(JSON.parseArray(product.getImagesJSON(),String.class));
+    @Transactional
+    public Response collect(Collect collect, Boolean save) {
+        if(save){
+            userMapper.addCollect(collect);
+        }else{
+            userMapper.deleteCollect(collect);
         }
-        return new Response(productList);
+        return new Response();
     }
 
     @Override
-    public Response delMyProductSave(String userID, Integer productID){
-        return null;
+    public Response getCollectID(CollectType collectType, String userID) {
+        return new Response(userMapper.getCollectID(collectType, userID));
     }
+
     @Override
-    public Response getMyRentalSave(String userID, Integer offset, Integer limit){
-        User user = userMapper.collect(userID);
-        user.setSavedRental(JSON.parseArray(user.getSavedRentalJSON(), Integer.class));
-        List<Rental> rentalList = userMapper.getMyRentalSave(offset, limit, user.getSavedProduct());
-        for(Rental rental:rentalList){
-            rental.setImages(JSON.parseArray(rental.getImagesJSON(),String.class));
+    public Response getCollectList(CollectType collectType, String userID, Integer offset, Integer limit) {
+        if (collectType == CollectType.SECONDHAND) {
+            List<Product> result = userMapper.getProductCollectList(collectType, userID, offset, limit);
+            for(Product product: result) {
+                product.setImages(JSON.parseArray(product.getImagesJSON(), String.class));
+            }
+            return new Response(result);
+        } else if (collectType == CollectType.RENTAL) {
+            List<Rental> result = userMapper.getRentalCollectList(collectType, userID, offset, limit);
+            for(Rental rental :result){
+                rental.setImages((ArrayList<String>) JSON.parseArray(rental.getImagesJSON(),String.class));
+            }
+            return new Response(result);
+        } else {
+            return new Response(ReturnCode.INVALID_ENUM_TYPE);
         }
-        return new Response(rentalList);
+
     }
 }

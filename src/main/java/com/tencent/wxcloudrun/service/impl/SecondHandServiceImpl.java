@@ -10,11 +10,11 @@ import com.tencent.wxcloudrun.service.SecondHandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.JedisPooled;
+import redis.clients.jedis.search.RediSearchUtil;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -22,6 +22,8 @@ public class SecondHandServiceImpl implements SecondHandService {
 
     @Autowired
     SecondHandMapper secondHandMapper;
+    @Autowired
+    JedisPooled jedisPooled;
 
 
     @Override
@@ -57,25 +59,6 @@ public class SecondHandServiceImpl implements SecondHandService {
             secondHandMapper.saveContact(product.getUserID(), product.getContact());
         }
         return Response.builder().message("成功").status(100).build();
-    }
-    
-    @Override
-    public Response collect(Integer productID, String userID) {
-        User user = secondHandMapper.collect(userID);
-        List<Integer> productArrayList = JSON.parseArray(user.getSavedProductJSON(), Integer.class);
-        int i = 0;
-        if(!(productArrayList.contains(productID))){
-            i = 1;
-            productArrayList.add(productID);
-            String json = JSON.toJSONString(productArrayList);
-            user.setSavedProductJSON(json);
-           secondHandMapper.updateCollect(user);
-        }
-        if (i == 1) {
-            return Response.builder().data(null).status(101).build();
-        } else {
-            return Response.builder().data(null).status(100).build();
-        }
     }
 
 }

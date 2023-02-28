@@ -5,6 +5,7 @@ import com.tencent.wxcloudrun.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.JedisPooled;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -109,18 +110,24 @@ public class UserController {
         return userService.deleteMySecondHand(openid, productID);
     }
 
-    @RequestMapping(value = {"/getMyProductSave"}, method = {RequestMethod.GET})
-    public Response getMyProductSave(@RequestParam Integer offset, @RequestParam Integer limit,@RequestHeader("x-wx-openid") String openid){
-        return userService.getMyProductSave(openid,offset,limit);
+    /**
+     * 收藏或取消收藏
+     * @param userID user ID
+     * @param save true 为收藏, false 为取消
+     */
+    @RequestMapping(value= {"/collect"}, method = {RequestMethod.POST})
+    public Response collect(@RequestBody Collect collect, @RequestHeader("x-wx-openid") String userID, @RequestParam Boolean save){
+        collect.setUserID(userID);
+        return userService.collect(collect, save);
     }
 
-    @RequestMapping(value = {"/delMyProductSave"}, method = {RequestMethod.GET})
-    public Response delMyProductSave(@RequestParam Integer productID, @RequestHeader("x-wx-openid") String openid){
-        return userService.delMyProductSave(openid,productID);
+    @RequestMapping(value = {"/getCollectID"}, method = {RequestMethod.GET})
+    public Response getCollectID(@RequestParam CollectType collectType, @RequestHeader("x-wx-openid") String userID){
+        return userService.getCollectID(collectType, userID);
     }
 
-    @RequestMapping(value = {"/getMyRentalSave"}, method = {RequestMethod.GET})
-    public Response getMyRentalSave(@RequestParam Integer offset, @RequestParam Integer limit,@RequestHeader("x-wx-openid") String openid){
-        return userService.getMyRentalSave(openid,offset,limit);
+    @RequestMapping(value = {"/getCollectList"}, method = {RequestMethod.GET})
+    public Response getCollectList(@RequestParam CollectType collectType,@RequestParam Integer offset, @RequestParam Integer limit, @RequestHeader("x-wx-openid") String userID){
+        return userService.getCollectList(collectType, userID, offset, limit);
     }
 }
