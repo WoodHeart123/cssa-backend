@@ -23,7 +23,10 @@ public class AdminServiceInterceptor implements HandlerInterceptor {
             return true;
         }
         PrintWriter writer = null;
+        /*
         try{
+            System.out.println(request.getHeader("Authorization"));
+
             if(request.getHeader("Authorization") == null) {
                 logger.info("filter admin request to " + request.getRequestURI() + "because of no token");
                 response.setCharacterEncoding("utf-8");
@@ -39,6 +42,7 @@ public class AdminServiceInterceptor implements HandlerInterceptor {
                 writer.close();
             }
         }
+         */
         return true;
     }
 

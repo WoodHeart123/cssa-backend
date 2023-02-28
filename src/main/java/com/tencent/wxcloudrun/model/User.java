@@ -17,9 +17,11 @@ public class User {
     private String likedCommentJSON;
     private List<Integer> savedProduct;
     private String savedProductJSON;
+
+    private List<Integer> savedRental;
+    private String savedRentalJSON;
     private Boolean isStudent;
     private Integer avatar;
-    private String savedRentalJSON;
     private String wechatID;
     private Boolean subscribe;
 

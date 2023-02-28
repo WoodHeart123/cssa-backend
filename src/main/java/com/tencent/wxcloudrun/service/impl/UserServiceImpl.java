@@ -4,10 +4,7 @@ package com.tencent.wxcloudrun.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.dao.UserMapper;
 import com.tencent.wxcloudrun.event.AuthEvent;
-import com.tencent.wxcloudrun.model.Product;
-import com.tencent.wxcloudrun.model.Response;
-import com.tencent.wxcloudrun.model.ReturnCode;
-import com.tencent.wxcloudrun.model.User;
+import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -138,5 +135,29 @@ public class UserServiceImpl implements UserService {
         return new Response();
     }
 
+    @Override
+    public Response getMyProductSave(String userID, Integer offset, Integer limit){
+        User user = userMapper.collect(userID);
+        user.setSavedProduct(JSON.parseArray(user.getSavedProductJSON(), Integer.class));
+        List<Product> productList = userMapper.getMyProductSave(offset, limit, user.getSavedProduct());
+        for(Product product:productList){
+            product.setImages(JSON.parseArray(product.getImagesJSON(),String.class));
+        }
+        return new Response(productList);
+    }
 
+    @Override
+    public Response delMyProductSave(String userID, Integer productID){
+        return null;
+    }
+    @Override
+    public Response getMyRentalSave(String userID, Integer offset, Integer limit){
+        User user = userMapper.collect(userID);
+        user.setSavedRental(JSON.parseArray(user.getSavedRentalJSON(), Integer.class));
+        List<Rental> rentalList = userMapper.getMyRentalSave(offset, limit, user.getSavedProduct());
+        for(Rental rental:rentalList){
+            rental.setImages(JSON.parseArray(rental.getImagesJSON(),String.class));
+        }
+        return new Response(rentalList);
+    }
 }

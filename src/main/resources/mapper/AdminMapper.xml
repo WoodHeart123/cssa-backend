@@ -88,21 +88,18 @@
     </select>
 
     <select id="getDepartmentList" resultType="Department">
-        SELECT departmentID, department, departmentAbrev FROM department ORDER BY departmentID
+        SELECT
+            d.departmentID AS departmentID,
+            d.department AS department,
+            d.departmentAbrev AS departmentAbrev,
+            SUM(c.commentCount) AS commentNum
+        FROM
+            department d inner join course c ON d.departmentID = c.departmentID
+        GROUP BY d.departmentID
     </select>
 
     <select id="getCourseList" parameterType="Integer" resultType="Course">
         SELECT courseID, courseName, courseNum, commentCount FROM course WHERE departmentID = #{departmentID} ORDER BY courseNum
-    </select>
-
-    <select id="getCommentNum" parameterType="Integer" resultType="java.lang.Integer">
-        SELECT SUM(commentCount)
-        FROM course
-        WHERE departmentID in
-        <foreach item="departmentID" collection="departmentIDList" separator="," open="(" close=")" index="index">
-        #{departmentID}
-        </foreach>
-        GROUP BY departmentID
     </select>
 
     <select id="getCommentList" parameterType="Integer" resultType="Comment">

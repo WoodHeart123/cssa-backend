@@ -78,7 +78,7 @@ public class AdminController {
      * @return list of department
      */
     @RequestMapping(value={"getDepartmentList"}, method={RequestMethod.GET})
-    public Response getDepartmentList(){
+    public Response getDepartmentList(HttpServletRequest request){
         return adminService.getDepartmentList();
     }
 

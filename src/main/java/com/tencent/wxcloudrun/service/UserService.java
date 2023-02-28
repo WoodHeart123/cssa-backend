@@ -23,4 +23,10 @@ public interface UserService {
     Response getMySecondhand(String userID,Integer offset,Integer limit);
     Response updateMySecondHand(String userID, Product product);
     Response deleteMySecondHand(String userID, Integer productID);
+
+    Response getMyProductSave(String openid, Integer offset, Integer limit);
+
+    Response getMyRentalSave(String openid, Integer offset, Integer limit);
+
+    Response delMyProductSave(String openid, Integer productID);
 }
