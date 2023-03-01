@@ -31,7 +31,6 @@
     </update>
 
     <select id="getMyComment" parameterType="Map" resultType="Comment">
-        SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime,courseNum,courseName,departmentAbrev from comment INNER JOIN course WHERE comment.courseID = course.courseID AND commentID > #{offset} AND userID = #{userID} ORDER BY commentID LIMIT ${limit}
         SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime, courseNum,courseName,departmentAbrev
         from comment INNER JOIN course
         WHERE comment.courseID = course.courseID AND commentID > #{offset} AND userID = #{userID}
