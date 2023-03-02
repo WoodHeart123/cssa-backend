@@ -92,7 +92,7 @@
         UPDATE secondhand SET productTitle = #{product.productTitle}, productDescription = #{product.productDescription}, price = #{product.price}, productType = #{product.productType}, productCondition = #{product.productCondition}, time = #{product.time}, contact = #{product.contact}, imagesJSON = #{product.imagesJSON}, delivery = #{product.delivery}, time = CURRENT_TIMESTAMP WHERE userID = #{userID} AND productID = #{product.productID}
     </update>
 
-    <delete id="deleteMySecondHand">
+    <delete id="deleteMySecondHand" parameterType="Map">
         DELETE FROM secondhand WHERE userID = #{userID} AND productID = #{productID}
     </delete>
     

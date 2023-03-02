@@ -29,16 +29,16 @@ spring:
 
 
   mail:
-    host: smtp.163.com
+    host: smtpdm.aliyun.com
     port: 465
-    username: cssaatuwmadison@163.com
-    password: SGOUOBWZZZTEDIAB
+    username: noreply@cssaatuwmadison.com.cn
+    password: UXiwds9101
     protocol: smtps
     default-encoding: UTF-8
     properties.mail.smtp:
       auth: true
       starttls.enable: true
-      ssl.trust: smtp.163.com
+      ssl.trust: smtpdm.aliyun.com
 
 
 

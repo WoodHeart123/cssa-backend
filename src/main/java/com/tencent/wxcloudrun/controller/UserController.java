@@ -106,7 +106,7 @@ public class UserController {
         return userService.updateMySecondHand(openid, product);
     }
     @RequestMapping(value={"/deleteMySecondHand"},method={RequestMethod.POST})
-    public Response deleteMySecondHand(@RequestBody Integer productID, @RequestHeader("x-wx-openid") String openid){
+    public Response deleteMySecondHand(@RequestParam Integer productID, @RequestHeader("x-wx-openid") String openid){
         return userService.deleteMySecondHand(openid, productID);
     }
 
