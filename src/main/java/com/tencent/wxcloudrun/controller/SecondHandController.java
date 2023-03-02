@@ -59,12 +59,13 @@ public class SecondHandController {
     @RequestMapping(value= {"/saveProduct"}, method = {RequestMethod.POST})
         public Response saveProduct(@RequestParam Boolean save,@RequestBody Product product, @RequestHeader("x-wx-openid") String openid) {
         product.setUserID(openid);
+        secondHandService.saveProduct(product, save);
         Map<String, Object> fields = new HashMap<>();
         fields.put("productID", product.getProductID());
         fields.put("productName", product.getProductTitle());
         jedisPooled.hset("product:" + product.getProductID().toString(), RediSearchUtil.toStringMap(fields));
         jedisPooled.ftSugAdd("productName", product.getProductTitle(), 1.0);
-        return secondHandService.saveProduct(product, save);
+        return new Response();
     }
 
 }

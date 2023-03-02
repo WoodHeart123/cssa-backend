@@ -23,8 +23,8 @@
         LIMIT #{offset}, #{limit}
     </select>
     
-    <insert id="saveProduct" parameterType="Product">
-        INSERT INTO secondhand (productID,userID,productTitle,productDescription,productType,time,price,productCondition,contact,imagesJSON,delivery) VALUES (#{productID},#{userID},#{productTitle},#{productDescription},#{productType},#{time},#{price},#{productCondition}, #{contact}, #{imagesJSON}, #{delivery})
+    <insert id="saveProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="productID">
+        INSERT INTO secondhand (userID,productTitle,productDescription,productType,price,productCondition,contact,imagesJSON,delivery) VALUES (#{userID},#{productTitle},#{productDescription},#{productType},#{price},#{productCondition}, #{contact}, #{imagesJSON}, #{delivery})
     </insert>
     <select id="collect" resultType="boolean">
         SELECT savedProductJson,userID FROM user WHERE userID = #{userID}
