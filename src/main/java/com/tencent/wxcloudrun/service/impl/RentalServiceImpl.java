@@ -21,8 +21,6 @@ public class RentalServiceImpl implements RentalService {
 
     @Autowired
     RentalMapper rentalMapper;
-    @Autowired
-    JedisPooled jedisPooled;
 
 
     @Override
