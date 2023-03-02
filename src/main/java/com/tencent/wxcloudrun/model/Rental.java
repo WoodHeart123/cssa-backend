@@ -23,6 +23,7 @@ public class Rental {
     public String description;
     // 发布时间
     public Timestamp publishedTime;
+    public String UTCPublishedTime;
     // 转租开始日期
     public Timestamp rentalStartTime;
     // 转租结束日期

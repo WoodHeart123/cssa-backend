@@ -25,22 +25,16 @@ public class RentalServiceImpl implements RentalService {
     JedisPooled jedisPooled;
 
 
-
-    @Override
-    public Response getRental(ArrayList<String> rentalID) {
-        return Response.builder().data(rentalMapper.getRentalByID(rentalID)).status(100).build();
-    }
-
     @Override
     public Response getRentalList(Integer offset, Integer limit, Integer priceLimit, ArrayList<String> floorplanList, Timestamp startTime, Timestamp endTime) {
         ArrayList<Rental> rentalArrayList;
         if(!startTime.equals(new Timestamp(0))){
             rentalArrayList = rentalMapper.getRentalTimed(offset,limit,priceLimit, floorplanList, startTime, endTime);
-            // floorPlan
         }else{
             rentalArrayList = rentalMapper.getRental(offset,limit,priceLimit, floorplanList);
             for(Rental rental : rentalArrayList){
                 rental.setImages((ArrayList<String>) JSON.parseArray(rental.getImagesJSON(),String.class));
+                rental.setUTCPublishedTime(rental.getPublishedTime().toInstant().toString());
             }
         }
         return Response.builder().data(rentalArrayList).status(100).build();

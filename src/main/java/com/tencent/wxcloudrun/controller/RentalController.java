@@ -47,37 +47,6 @@ public class RentalController {
     }
 
     /**
-     * 搜索转租信息
-     *
-     * @param value 用户输入字符
-     * @return 匹配的转租信
-     */
-    @RequestMapping(value = {"/search"}, method = {RequestMethod.GET})
-    public Response search(@RequestParam String value) {
-        ArrayList<String> rentalIDList = new ArrayList<>();
-        Query q = new Query("*" + value + "*").setLanguage("chinese");
-        SearchResult sr = jedisPooled.ftSearch("rental-index", q);
-        for (Document document : sr.getDocuments()) {
-            rentalIDList.add(document.getString("rentalID"));
-        }
-        if (rentalIDList.size() == 0) {
-            return Response.builder().message("没有匹配结果").status(124).build();
-        }
-        return rentalService.getRental(rentalIDList);
-    }
-
-    /**
-     * 提供用户联想输入
-     *
-     * @param value 用户输入字符
-     * @return 字符串列表，包含10个联想词语
-     */
-    @RequestMapping(value = {"/suggest"}, method = {RequestMethod.GET})
-    public Response suggest(@RequestParam String value) {
-        return Response.builder().data(jedisPooled.ftSugGet("rentalLocation", value, true, 10)).status(100).build();
-    }
-
-    /**
      * 记录用户输入的转租信息
      *
      * @param rentalInfo 转租信息

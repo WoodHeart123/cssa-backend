@@ -31,6 +31,7 @@ public class SecondHandServiceImpl implements SecondHandService {
         ArrayList<Product> result = secondHandMapper.getProduct(productID);
         for(Product product: result){
             product.setImages(JSON.parseArray(product.getImagesJSON(),String.class));
+            product.setUTCtime(product.getTime().toInstant().toString());
         }
         return Response.builder().data(result).status(100).build();
     }
