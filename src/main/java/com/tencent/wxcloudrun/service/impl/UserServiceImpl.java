@@ -125,7 +125,9 @@ public class UserServiceImpl implements UserService {
         List<Product> productList = userMapper.getMySecondhand(userID,offset,limit);
         for(Product product:productList){
             product.setImages(JSON.parseArray(product.getImagesJSON(),String.class));
-            product.setUTCtime(product.getTime().toInstant().toString());
+            if(product.getTime() != null) {
+                product.setUTCtime(product.getTime().toInstant().toString());
+            }
         }
         return new Response(productList);
     }
@@ -147,7 +149,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Response setProductTime(Integer productID, String userID, Timestamp time) {
-        userMapper.setProductTime(productID, userID, time);
+        if(time.equals(new Timestamp(0))){
+            userMapper.clearProductTime(productID, userID);
+        }else {
+            userMapper.setProductTime(productID, userID, time);
+        }
         return new Response();
     }
 

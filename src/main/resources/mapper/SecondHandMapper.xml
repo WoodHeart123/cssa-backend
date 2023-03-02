@@ -7,7 +7,8 @@
                secondhand.productType,secondhand.time,secondhand.price,secondhand.productCondition,secondhand.contact,secondhand.imagesJSON,secondhand.delivery,
                user.avatar as sellerAvatar, user.nickname as sellerNickname
         FROM secondhand
-                 INNER JOIN user on secondhand.userID = user.userID
+        INNER JOIN user on secondhand.userID = user.userID
+        WHERE secondhand.time IS NOT NULL
         ORDER BY secondhand.time DESC
         LIMIT #{offset}, #{limit}
     </select>
@@ -18,7 +19,7 @@
                user.avatar as sellerAvatar, user.nickname as sellerNickname
         FROM secondhand
         INNER JOIN user on secondhand.userID = user.userID
-        WHERE productType = #{productType}
+        WHERE secondhand.time IS NOT NULL AND productType = #{productType}
         ORDER BY secondhand.time DESC
         LIMIT #{offset}, #{limit}
     </select>
@@ -42,7 +43,7 @@
             user.avatar as sellerAvatar, user.nickname as sellerNickname
         FROM secondhand
         INNER JOIN user on secondhand.userID = user.userID
-        WHERE secondhand.productID in
+        WHERE secondhand.time IS NOT NULL AND secondhand.productID in
         <foreach item="product" collection="productID" separator="," open="(" close=")" index="index">
             #{product}
         </foreach>

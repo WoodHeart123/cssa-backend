@@ -75,6 +75,7 @@ public interface UserMapper {
 
     void setProductTime(Integer productID, String userID, Timestamp time);
 
+    void clearProductTime(Integer productID, String userID);
     /**
      * 删除收藏
      * @param collect 收藏信息
