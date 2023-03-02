@@ -8,7 +8,7 @@ spring:
 #    url: jdbc:mysql://${MYSQL_ADDRESS}/cssa_mini?characterEncoding=utf-8&useUnicode=true&serverTimezone=US/Central
 #    username: ${MYSQL_USERNAME}
 #    password: ${MySQL_PASSWORD}
-    url: jdbc:mysql://sh-cynosdbmysql-grp-cmngutoy.sql.tencentcdb.com:23504/cssa_mini?characterEncoding=utf-8&useUnicode=true&serverTimezone=US/Central
+    url: jdbc:mysql://sh-cynosdbmysql-grp-cmngutoy.sql.tencentcdb.com:23504/cssa_mini?characterEncoding=utf-8&useUnicode=true
     username: root
     password: r7btwuTa
   redis:
