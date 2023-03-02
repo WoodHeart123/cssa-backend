@@ -70,20 +70,6 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
                 jedisPooled.ftSugAdd("productName", product.getProductTitle(), 1.0);
             }
 
-            try {
-                Schema sc = new Schema().addNumericField("rentalID").addTextField("rentalLocation", 1.0);
-                IndexDefinition def = new IndexDefinition().setPrefixes("rental:");
-                jedisPooled.ftCreate("rental-index", IndexOptions.defaultOptions().setDefinition(def), sc);
-            }catch(Exception ignored){}
-            ArrayList<Rental> rentalArrayList = rentalMapper.getAllRentalList(0, 5000);
-            for (Rental rental : rentalArrayList) {
-                Map<String, Object> fields = new HashMap<>();
-                fields.put("rentalID", rental.getRentalID());
-                fields.put("rentalLocation", rental.getLocation());
-                jedisPooled.hset("rental:" + rental.getRentalID().toString(), RediSearchUtil.toStringMap(fields));
-                jedisPooled.ftSugAdd("rentalLocation", rental.getLocation(), 1.0);
-            }
-
 
         }catch (JedisConnectionException ignored){}
 
