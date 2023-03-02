@@ -45,6 +45,7 @@ public class SecondHandServiceImpl implements SecondHandService {
         }
         for(Product product: productArrayList){
             product.setImages(JSON.parseArray(product.getImagesJSON(),String.class));
+            product.setUTCtime(product.getTime().toInstant().toString());
         }
         return Response.builder().data(productArrayList).status(100).build();
     }
@@ -52,7 +53,6 @@ public class SecondHandServiceImpl implements SecondHandService {
     @Override
     @Transactional
     public Response saveProduct(Product product,Boolean save) {
-        product.setTime(new Timestamp(new Date().getTime()));
         product.setImagesJSON(JSON.toJSONString(product.getImages()));
         secondHandMapper.saveProduct(product);
         if(save){

@@ -2,6 +2,7 @@ package com.tencent.wxcloudrun.model;
 
 import lombok.Data;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class Product {
     private ProductType productType;
     private Condition productCondition;
     private Timestamp time;
+    private String UTCtime;
     private String contact;
     private List<String> images;
     private String imagesJSON;
