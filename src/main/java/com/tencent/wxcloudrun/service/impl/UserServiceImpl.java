@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.JedisPooled;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -140,6 +141,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public Response deleteMySecondHand(String userID, Integer productID) {
         userMapper.deleteMySecondHand(userID,productID);
+        return new Response();
+    }
+
+    @Override
+    @Transactional
+    public Response setProductTime(Integer productID, String userID, Timestamp time) {
+        userMapper.setProductTime(productID, userID, time);
         return new Response();
     }
 

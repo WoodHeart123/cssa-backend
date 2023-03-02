@@ -4,6 +4,7 @@ import com.tencent.wxcloudrun.model.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -71,6 +72,8 @@ public interface UserMapper {
     void updateMySecondHand(String userID, Product product);
 
     void deleteMySecondHand(String userID, Integer productID);
+
+    void setProductTime(Integer productID, String userID, Timestamp time);
 
     /**
      * 删除收藏

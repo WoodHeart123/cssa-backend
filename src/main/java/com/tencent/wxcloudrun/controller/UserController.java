@@ -9,6 +9,8 @@ import redis.clients.jedis.JedisPooled;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
@@ -104,6 +106,11 @@ public class UserController {
     @RequestMapping(value={"/updateSecondHand"},method={RequestMethod.POST})
     public Response updateMySecondHand(@RequestBody Product product, @RequestHeader("x-wx-openid") String openid){
         return userService.updateMySecondHand(openid, product);
+    }
+
+    @RequestMapping(value={"/setProductTime"},method={RequestMethod.GET})
+    public Response setProductTime(@RequestParam Integer productID,@RequestParam String UTCtime, @RequestHeader("x-wx-openid") String userID){
+        return userService.setProductTime(productID, userID, new Timestamp(Instant.parse(UTCtime).toEpochMilli()));
     }
     @RequestMapping(value={"/deleteMySecondHand"},method={RequestMethod.POST})
     public Response deleteMySecondHand(@RequestParam Integer productID, @RequestHeader("x-wx-openid") String openid){
