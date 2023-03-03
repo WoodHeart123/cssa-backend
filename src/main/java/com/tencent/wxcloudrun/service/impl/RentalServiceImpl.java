@@ -33,6 +33,9 @@ public class RentalServiceImpl implements RentalService {
         }
         for(Rental rental : rentalArrayList){
             rental.setImages((ArrayList<String>) JSON.parseArray(rental.getImagesJSON(),String.class));
+            if(rental.getPublishedTime() == null){
+                rental.setPublishedTime(new Timestamp(0));
+            }
             rental.setUTCPublishedTime(rental.getPublishedTime().toInstant().toString());
         }
         return Response.builder().data(rentalArrayList).status(100).build();
