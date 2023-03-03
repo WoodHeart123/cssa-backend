@@ -30,10 +30,10 @@ public class RentalServiceImpl implements RentalService {
             rentalArrayList = rentalMapper.getRentalTimed(offset,limit,priceLimit, floorplanList, startTime, endTime);
         }else{
             rentalArrayList = rentalMapper.getRental(offset,limit,priceLimit, floorplanList);
-            for(Rental rental : rentalArrayList){
-                rental.setImages((ArrayList<String>) JSON.parseArray(rental.getImagesJSON(),String.class));
-                rental.setUTCPublishedTime(rental.getPublishedTime().toInstant().toString());
-            }
+        }
+        for(Rental rental : rentalArrayList){
+            rental.setImages((ArrayList<String>) JSON.parseArray(rental.getImagesJSON(),String.class));
+            rental.setUTCPublishedTime(rental.getPublishedTime().toInstant().toString());
         }
         return Response.builder().data(rentalArrayList).status(100).build();
     }
