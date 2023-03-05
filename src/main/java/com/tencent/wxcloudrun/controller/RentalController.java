@@ -54,11 +54,6 @@ public class RentalController {
     @RequestMapping(value = {"/postRentalInfo"}, method = {RequestMethod.POST})
     public Response postRentalInfo(@RequestBody Rental rentalInfo, @RequestParam Boolean save, @RequestHeader("x-wx-openid") String openid) {
         rentalInfo.setUserID(openid);
-        Map<String, Object> fields = new HashMap<>();
-        fields.put("rentalID", rentalInfo.getRentalID());
-        fields.put("rentalLocation", rentalInfo.getLocation());
-        jedisPooled.hset("rental:" + rentalInfo.getRentalID().toString(), RediSearchUtil.toStringMap(fields));
-        jedisPooled.ftSugAdd("rentalLocation", rentalInfo.getLocation(), 1.0);
         return rentalService.postRentalInfo(rentalInfo,save);
     }
 
