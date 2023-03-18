@@ -13,12 +13,10 @@ cursor = db.cursor()
     
 def insertDB(departmentID, courseName, credit, courseNum, departmentAbrev):
     try:
-        sql = '''insert into course (departmentID, courseName, credit, courseNum, departmentAbrev) values ("%s","%s","%s",%s,"%s")''' % (departmentID, courseName, credit, courseNum, departmentAbrev)
+        sql = '''insert into course (departmentID, courseName, credit, courseNum, departmentAbrev) values ("%s","%s","%s",%s,"%s") ON DUPLICATE KEY UPDATE credit = "%s"''' % (departmentID, courseName, credit, courseNum, departmentAbrev, credit)
         cursor.execute(sql)
-        db.commit()
     except Exception as e:
-        db.rollback()
-        print(sql)
+        print(e)
 
 if __name__ == "__main__":
 
@@ -40,8 +38,9 @@ if __name__ == "__main__":
                     continue
                 if courseNum < 800 and lastOpenYear >= 2021:
 	                courseName = courseText[1].strip().replace("\"","'").lower().title()
-	                credit = html.find("p", class_="courseblockcredits").text.replace(".","").replace("credits","").replace("credit","").strip()
+	                credit = courseblock.find("p", class_="courseblockcredits").text.replace(".","").replace("credits","").replace("credit","").strip()
 	                insertDB(departmentID, courseName, credit,courseNum,departmentAbrev)
             print(str(departmentID) + " finished")
         except Exception as e:
             print(e)
+    db.commit()
