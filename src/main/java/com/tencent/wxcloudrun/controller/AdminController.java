@@ -3,7 +3,6 @@ package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.service.AdminService;
-import com.tencent.wxcloudrun.util.AdminServiceInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +72,15 @@ public class AdminController {
     Response getMainPagePhotoList(){
         return adminService.getMainPagePhotoList();
     }
+
+    /**
+     * @return list of main page photo to mini-program
+     */
+    @RequestMapping(value={"getMainPagePhotos"},method={RequestMethod.GET})
+    Response getMainPagePhotos(){
+        return adminService.getMainPagePhotos();
+    }
+
 
     /**
      * @return list of department

@@ -34,6 +34,8 @@ public interface AdminService {
 
     Response getMainPagePhotoList();
 
+    Response getMainPagePhotos();
+
     Response getDepartmentList();
 
     Response getCourseList(Integer departmentID);

@@ -101,6 +101,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public Response getMainPagePhotos() {
+        List<MainPagePhoto> mainPagePhotoList = adminMapper.getMainPagePhotos();
+        return Response.builder().data(mainPagePhotoList).status(100).build();
+    }
+
+    @Override
     public Response getDepartmentList() {
         List<Department> departmentList = adminMapper.getDepartmentList();
         return Response.builder().data(departmentList).status(100).message("成功").build();

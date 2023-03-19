@@ -87,6 +87,14 @@
         ORDER BY photoID DESC
     </select>
 
+    <select id="getMainPagePhotos" resultType="MainPagePhoto">
+        SELECT
+            photoID, startDate,endDate,smallPhoto,largePhoto
+        FROM mainpage_photo
+        WHERE endDate > NOW() AND startDate <![CDATA[<]]>NOW()
+        ORDER BY photoID DESC
+    </select>
+
     <select id="getDepartmentList" resultType="Department">
         SELECT
             d.departmentID AS departmentID,
