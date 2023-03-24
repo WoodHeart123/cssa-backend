@@ -16,7 +16,9 @@ public enum ReturnCode {
     INTEGER_OUT_OF_RANGE(108,"整型超过范围"),
     EMPTY_STRING(109,"空字符串"),
     INVALID_ADMIN_TOKEN(301,"管理者信息无效"),
-    INVALID_ENUM_TYPE(110, "无法识别枚举类型")
+    INVALID_ENUM_TYPE(110, "无法识别枚举类型"),
+    UNKNOWN_SERVICE(111,"无法识别服务项目"),
+    INVALID_TYPE(112, "类型错误")
     ;
 
     private final Integer code;
