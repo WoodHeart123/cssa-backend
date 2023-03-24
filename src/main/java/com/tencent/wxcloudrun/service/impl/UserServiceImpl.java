@@ -75,13 +75,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Response getLikedCommentList(String userID) {
-        User user = userMapper.getLikedCommentList(userID);
-        user.setLikedComment(JSON.parseArray(user.getLikedCommentJSON(), Integer.class));
-        return new Response(user.getLikedComment());
-    }
-
-    @Override
     public Response updateAvatar(String userID,Integer avatar){
         userMapper.updateAvatar(userID,avatar);
         return new Response();
@@ -104,6 +97,11 @@ public class UserServiceImpl implements UserService {
     public Response deleteComment(String userID, Integer commentID) {
         userMapper.deleteComment(userID,commentID);
         return new Response();
+    }
+
+    @Override
+    public Response setRentalTime(Integer rentalID, String userID, Timestamp time) {
+        return null;
     }
 
     @Override
