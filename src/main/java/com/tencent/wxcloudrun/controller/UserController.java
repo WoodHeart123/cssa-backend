@@ -3,11 +3,8 @@ package com.tencent.wxcloudrun.controller;
 import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
-import redis.clients.jedis.JedisPooled;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -50,24 +47,6 @@ public class UserController {
         return userService.login(nickname, openid);
     }
 
-    @RequestMapping(value={"/updateEmail"}, method={RequestMethod.GET})
-    public Response updateEmail(@RequestParam String email,@RequestParam Boolean subscribe, @RequestHeader("x-wx-openid") String openid){
-        return userService.updateEmail(email, subscribe, openid);
-    }
-
-    @RequestMapping(value={"/updateAvatar"}, method={RequestMethod.GET})
-    public Response updateAvatar(@RequestParam Integer avatar, @RequestHeader("x-wx-openid") String openid){
-        if(avatar < 1 || avatar > 12){
-            return new Response(ReturnCode.INTEGER_OUT_OF_RANGE);
-        }
-        return userService.updateAvatar(openid,avatar);
-    }
-
-    @RequestMapping(value={"/getZanList"}, method={RequestMethod.GET})
-    public Response getZanList(@RequestHeader("x-wx-openid") String openid){
-        return userService.getLikedCommentList(openid);
-    }
-
     @RequestMapping(value={"/getMyComment"}, method={RequestMethod.GET})
     public Response getMyComment(@RequestParam Integer offset, @RequestParam Integer limit,@RequestHeader("x-wx-openid") String openid){
         return userService.getMyComment(openid,offset,limit);
@@ -89,18 +68,34 @@ public class UserController {
     public Response deleteComment(@RequestBody Integer commentID, @RequestHeader("x-wx-openid") String openid){
         return userService.deleteComment(openid, commentID);
     }
-
-    @RequestMapping(value={"/updateNickname"},method={RequestMethod.GET})
-    public Response updateNickname(@RequestParam String nickname,@RequestHeader("x-wx-openid") String openid){
-        if(nickname.length() == 0) {
-            return new Response(ReturnCode.EMPTY_STRING);
+    @RequestMapping(value={"/updateProfile"}, method={RequestMethod.PATCH})
+    public Response updateProfile(@RequestParam String item, @RequestParam String str,@RequestParam Optional<Boolean> subscribe, @RequestHeader("x-wx-openid") String openid){
+        switch (item.toLowerCase()){
+            case "wechatid":
+                return userService.updateWechatID(str, openid);
+            case "nickname":
+                if(str.length() == 0) {
+                    return new Response(ReturnCode.EMPTY_STRING);
+                }
+                return userService.updateNickname(openid,str);
+            case "avatar":
+                try{
+                    int avatar = Integer.parseInt(str);
+                    if(avatar < 1 || avatar > 12){
+                        return new Response(ReturnCode.INTEGER_OUT_OF_RANGE);
+                    }
+                    return userService.updateAvatar(openid,avatar);
+                } catch(NumberFormatException e){
+                    return new Response(ReturnCode.INVALID_TYPE);
+                }
+            case "email":
+                if(subscribe.isEmpty()){
+                    return new Response(ReturnCode.LACK_PARAM);
+                }
+                return userService.updateEmail(str, subscribe.get(), openid);
+            default:
+                return new Response(ReturnCode.UNKNOWN_SERVICE);
         }
-        return userService.updateNickname(openid,nickname);
-    }
-
-    @RequestMapping(value={"/updateWechatID"}, method={RequestMethod.GET})
-    public Response updateWechatID(@RequestParam String wechatID, @RequestHeader("x-wx-openid") String openid){
-        return userService.updateWechatID(wechatID, openid);
     }
 
     @RequestMapping(value={"/updateSecondHand"},method={RequestMethod.POST})
@@ -108,9 +103,15 @@ public class UserController {
         return userService.updateMySecondHand(openid, product);
     }
 
-    @RequestMapping(value={"/setProductTime"},method={RequestMethod.GET})
-    public Response setProductTime(@RequestParam Integer productID,@RequestParam String UTCtime, @RequestHeader("x-wx-openid") String userID){
-        return userService.setProductTime(productID, userID, new Timestamp(Instant.parse(UTCtime).toEpochMilli()));
+    @RequestMapping(value={"/setTime"},method={RequestMethod.GET})
+    public Response setProductTime(@RequestParam String service, @RequestParam Integer itemID,@RequestParam String UTCtime, @RequestHeader("x-wx-openid") String userID){
+        Timestamp time = new Timestamp(Instant.parse(UTCtime).toEpochMilli());
+        if(service.equalsIgnoreCase("product")){
+            return userService.setProductTime(itemID, userID, time);
+        }else if(service.equalsIgnoreCase("rental")){
+            return userService.setRentalTime(itemID,userID, time);
+        }
+        return new Response(ReturnCode.UNKNOWN_SERVICE);
     }
     @RequestMapping(value={"/deleteMySecondHand"},method={RequestMethod.POST})
     public Response deleteMySecondHand(@RequestParam Integer productID, @RequestHeader("x-wx-openid") String openid){
