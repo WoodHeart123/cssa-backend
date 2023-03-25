@@ -4,7 +4,7 @@ package com.tencent.wxcloudrun.controller;
 import com.tencent.wxcloudrun.model.ProductType;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.Product;
-import com.tencent.wxcloudrun.service.SecondHandService;
+import com.tencent.wxcloudrun.service.SecondhandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.JedisPooled;
@@ -22,10 +22,10 @@ import java.util.Map;
 @RestController
 @CrossOrigin
 @RequestMapping({"/secondhand"})
-public class SecondHandController {
+public class SecondhandController {
 
     @Autowired
-    SecondHandService secondHandService;
+    SecondhandService secondHandService;
 
     @Autowired
     private JedisPooled jedisPooled;
@@ -67,5 +67,12 @@ public class SecondHandController {
         jedisPooled.ftSugAdd("productName", product.getProductTitle(), 1.0);
         return new Response();
     }
+
+    @RequestMapping(value={"/updateSecondHand"},method={RequestMethod.POST})
+    public Response updateSecondHand(@RequestBody Product product, @RequestHeader("x-wx-openid") String openid){
+        return secondHandService.updateSecondHand(openid, product);
+    }
+
+
 
 }

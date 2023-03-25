@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.tencent.wxcloudrun.dao.SecondHandMapper">
+<mapper namespace="com.tencent.wxcloudrun.dao.SecondhandMapper">
 
     <select id="getAllProductList" resultType="Product">
         SELECT secondhand.productID, secondhand.productTitle,secondhand.productDescription,
@@ -25,17 +25,24 @@
     </select>
     
     <insert id="saveProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="productID">
-        INSERT INTO secondhand (userID,productTitle,productDescription,productType,price,productCondition,contact,imagesJSON,delivery) VALUES (#{userID},#{productTitle},#{productDescription},#{productType},#{price},#{productCondition}, #{contact}, #{imagesJSON}, #{delivery})
+        INSERT INTO secondhand (userID,productTitle,productDescription,productType,price,productCondition,contact,imagesJSON,delivery)
+        VALUES (#{userID},#{productTitle},#{productDescription},#{productType},#{price},#{productCondition}, #{contact}, #{imagesJSON}, #{delivery})
     </insert>
     <select id="collect" resultType="boolean">
         SELECT savedProductJson,userID FROM user WHERE userID = #{userID}
     </select>
-    
-    <update id="updateCollect">
-        UPDATE user 
-        SET savedProductJSON = #{savedProductJSON}
-        WHERE userID = #{userID}
+
+    <update id="updateSecondHand" parameterType="Map">
+        UPDATE secondhand
+        SET productTitle = #{product.productTitle},
+                              productDescription = #{product.productDescription},
+                              price = #{product.price}, productType = #{product.productType},
+                              productCondition = #{product.productCondition}, time = #{product.time},
+                              contact = #{product.contact}, imagesJSON = #{product.imagesJSON},
+                              delivery = #{product.delivery}, time = CURRENT_TIMESTAMP
+        WHERE userID = #{userID} AND productID = #{product.productID}
     </update>
+
 
     <select id="getProduct" resultType="Product">
         SELECT secondhand.productID, secondhand.productTitle,secondhand.productDescription,

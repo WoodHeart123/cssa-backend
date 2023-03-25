@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 @Service
-public interface SecondHandService {
+public interface SecondhandService {
 
     /**
      * @param productType product type
@@ -21,5 +21,7 @@ public interface SecondHandService {
     Response saveProduct(Product product,Boolean save);
 
     Response getProduct(ArrayList<String> productID);
+    Response updateSecondHand(String userID, Product product);
+
     
 }

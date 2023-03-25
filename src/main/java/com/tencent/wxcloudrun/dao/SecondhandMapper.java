@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.ArrayList;
 
 @Mapper
-public interface SecondHandMapper {
+public interface SecondhandMapper {
 
     ArrayList<Product> getProductList(String productType, Integer offset, Integer limit);
 
@@ -17,8 +17,8 @@ public interface SecondHandMapper {
     ArrayList<Product> getAllProductList(Integer offset, Integer limit);
     
     User collect(String userID);
-    void updateCollect(User user);
     void saveProduct(Product product);
-
     void saveContact(String userID,String contact);
+    void updateSecondHand(String userID, Product product);
+
 }

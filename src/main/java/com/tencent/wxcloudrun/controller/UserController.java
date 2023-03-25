@@ -81,10 +81,7 @@ public class UserController {
         }
         return userService.updateComment(openid,comment.getCommentID(),comment.getComment());
     }
-    @RequestMapping(value={"/deleteComment"},method={RequestMethod.POST})
-    public Response deleteComment(@RequestBody Integer commentID, @RequestHeader("x-wx-openid") String openid){
-        return userService.deleteComment(openid, commentID);
-    }
+
     @Deprecated
     @RequestMapping(value={"/updateEmail"}, method={RequestMethod.GET})
     public Response updateEmail(@RequestParam String email,@RequestParam Boolean subscribe, @RequestHeader("x-wx-openid") String openid){
@@ -136,8 +133,9 @@ public class UserController {
         }
     }
 
+    @Deprecated
     @RequestMapping(value={"/updateSecondHand"},method={RequestMethod.POST})
-    public Response updateMySecondHand(@RequestBody Product product, @RequestHeader("x-wx-openid") String openid){
+    public Response updateSecondHand(@RequestBody Product product, @RequestHeader("x-wx-openid") String openid){
         return userService.updateMySecondHand(openid, product);
     }
 
@@ -158,10 +156,31 @@ public class UserController {
     public Response setProductTime(@RequestParam Integer productID,@RequestParam String UTCtime, @RequestHeader("x-wx-openid") String userID) {
         return userService.setProductTime(productID, userID, new Timestamp(Instant.parse(UTCtime).toEpochMilli()));
     }
+    @Deprecated
     @RequestMapping(value={"/deleteMySecondHand"},method={RequestMethod.POST})
     public Response deleteMySecondHand(@RequestParam Integer productID, @RequestHeader("x-wx-openid") String openid){
         return userService.deleteMySecondHand(openid, productID);
     }
+    @Deprecated
+    @RequestMapping(value={"/deleteComment"},method={RequestMethod.POST})
+    public Response deleteComment(@RequestBody Integer commentID, @RequestHeader("x-wx-openid") String openid){
+        return userService.deleteComment(openid, commentID);
+    }
+
+    @RequestMapping(value = {"deleteMyItem"}, method = RequestMethod.DELETE)
+    public Response deleteMyItem(@RequestParam String service, @RequestParam Integer itemID, @RequestHeader("x-wx-openid") String openid){
+        switch (service.toLowerCase()){
+            case "comment":
+                return userService.deleteComment(openid, itemID);
+            case "secondhand":
+                return userService.deleteMySecondHand(openid, itemID);
+            case "rental":
+                return userService.deleteMyRental(openid, itemID);
+            default:
+                return new Response(ReturnCode.UNKNOWN_SERVICE);
+        }
+    }
+
 
     /**
      * 收藏或取消收藏

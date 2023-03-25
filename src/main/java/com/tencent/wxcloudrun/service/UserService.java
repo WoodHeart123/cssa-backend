@@ -72,6 +72,13 @@ public interface UserService {
     Response getMySecondhand(String userID,Integer offset,Integer limit);
     Response updateMySecondHand(String userID, Product product);
     Response deleteMySecondHand(String userID, Integer productID);
+
+    /**
+     * 删除转租
+      * @param userID 微信 openid
+     * @param rentalID 唯一转租id
+     */
+    Response deleteMyRental(String userID, Integer rentalID);
     Response setProductTime(Integer productID, String userID, Timestamp time);
     Response collect(Collect collect, Boolean save);
     Response getCollectID(CollectType collectType,String userID);

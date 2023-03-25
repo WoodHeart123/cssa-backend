@@ -65,9 +65,9 @@ public interface UserMapper {
 
     List<Product> getMySecondhand(@Param("userID")String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
-    void updateMySecondHand(String userID, Product product);
+    void updateSecondHand(String userID, Product product);
 
-    void deleteMySecondHand(String userID, Integer productID);
+    void deleteSecondHand(String userID, Integer productID);
 
     void setProductTime(Integer productID, String userID, Timestamp time);
 
@@ -76,6 +76,8 @@ public interface UserMapper {
     void setRentalTime(Integer rentalID, String userID, Timestamp time);
 
     void clearRentalTime(Integer rentalID, String userID);
+
+    void deleteRental(String userID, Integer rentalID);
 
     ArrayList<Rental> getMyRental(String userID, Integer offset, Integer limit);
     /**

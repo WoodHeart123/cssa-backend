@@ -1,11 +1,10 @@
 package com.tencent.wxcloudrun.util;
 
 import com.tencent.wxcloudrun.dao.CourseMapper;
-import com.tencent.wxcloudrun.dao.SecondHandMapper;
+import com.tencent.wxcloudrun.dao.SecondhandMapper;
 import com.tencent.wxcloudrun.dao.RentalMapper;
 import com.tencent.wxcloudrun.model.Course;
 import com.tencent.wxcloudrun.model.Product;
-import com.tencent.wxcloudrun.model.Rental;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -27,7 +26,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     CourseMapper courseMapper;
 
     @Autowired
-    SecondHandMapper secondHandMapper;
+    SecondhandMapper secondHandMapper;
 
     @Autowired
     RentalMapper rentalMapper;

@@ -88,12 +88,16 @@
         LIMIT ${limit}
     </select>
 
-    <update id="updateMySecondHand" parameterType="Map">
+    <update id="updateSecondHand" parameterType="Map">
         UPDATE secondhand SET productTitle = #{product.productTitle}, productDescription = #{product.productDescription}, price = #{product.price}, productType = #{product.productType}, productCondition = #{product.productCondition}, time = #{product.time}, contact = #{product.contact}, imagesJSON = #{product.imagesJSON}, delivery = #{product.delivery}, time = CURRENT_TIMESTAMP WHERE userID = #{userID} AND productID = #{product.productID}
     </update>
 
-    <delete id="deleteMySecondHand" parameterType="Map">
-        DELETE FROM secondhand WHERE userID = #{userID} AND productID = #{productID}
+    <delete id="deleteSecondHand" parameterType="Map">
+        DELETE FROM secondhand WHERE productID = #{productID} AND userID = #{userID}
+    </delete>
+
+    <delete id="deleteRental" parameterType="Map">
+        DELETE FROM rental WHERE rentalID = #{rentalID} AND userID = #{userID}
     </delete>
 
     <update id="setProductTime" parameterType="Map">
