@@ -59,8 +59,8 @@ public class UserController {
         return userService.getMySecondhand(openid,offset,limit);
     }
 
-    @RequestMapping(value={"/getMySecondhand"}, method={RequestMethod.GET})
-    public Response getMySecondhand(@RequestParam String service, @RequestParam Integer offset, @RequestParam Integer limit,@RequestHeader("x-wx-openid") String openid){
+    @RequestMapping(value={"/getMyList"}, method={RequestMethod.GET})
+    public Response getMyList(@RequestParam String service, @RequestParam Integer offset, @RequestParam Integer limit,@RequestHeader("x-wx-openid") String openid){
         switch (service.toLowerCase()){
             case "comment":
                 return userService.getMyComment(openid,offset,limit);
@@ -142,7 +142,7 @@ public class UserController {
     }
 
     @RequestMapping(value={"/setTime"},method={RequestMethod.GET})
-    public Response setProductTime(@RequestParam String service, @RequestParam Integer itemID,@RequestParam String UTCtime, @RequestHeader("x-wx-openid") String userID){
+    public Response setTime(@RequestParam String service, @RequestParam Integer itemID,@RequestParam String UTCtime, @RequestHeader("x-wx-openid") String userID){
         Timestamp time = new Timestamp(Instant.parse(UTCtime).toEpochMilli());
         switch (service.toLowerCase()){
             case "product":
