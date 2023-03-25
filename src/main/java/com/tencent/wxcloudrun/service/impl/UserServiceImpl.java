@@ -101,7 +101,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response setRentalTime(Integer rentalID, String userID, Timestamp time) {
-        return null;
+        if(time.equals(new Timestamp(0))){
+            userMapper.clearProductTime(rentalID, userID);
+        }else {
+            userMapper.setProductTime(rentalID, userID, time);
+        }
+        return new Response();
+    }
+
+    @Override
+    public Response getMyRental(String userID, Integer offset, Integer limit) {
+        ArrayList<Rental> rentalList = userMapper.getMyRental(userID, offset,limit);
+        for(Rental rental: rentalList){
+            rental.setImages((ArrayList<String>) JSON.parseArray(rental.getImagesJSON(),String.class));
+            if(rental.getPublishedTime() == null){
+                rental.setPublishedTime(new Timestamp(0));
+            }
+            rental.setUTCPublishedTime(rental.getPublishedTime().toInstant().toString());
+        }
+        return new Response(rentalList);
     }
 
     @Override

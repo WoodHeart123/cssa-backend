@@ -59,6 +59,14 @@ public interface UserService {
      * @param time 时间
      */
     Response setRentalTime(Integer rentalID, String userID, Timestamp time);
+
+    /**
+     * 获取对应用户id的转租
+     * @param userID 微信 openid
+     * @param offset id偏移
+     * @param limit 限制条数
+     */
+    Response getMyRental(String userID,Integer offset,Integer limit);
     Response updateWechatID(String wechatID, String userID);
     Response updateNickname(String userID, String nickname);
     Response getMySecondhand(String userID,Integer offset,Integer limit);

@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper
@@ -40,11 +41,6 @@ public interface UserMapper {
      */
     void updateWechatID(String wechatID, String userID);
 
-    /**
-     * @param userID user ID given by WeChat
-     * @return a user object that only has likedComment field
-     */
-    User getLikedCommentList(String userID);
 
     /**
      * update user's avatar
@@ -76,6 +72,12 @@ public interface UserMapper {
     void setProductTime(Integer productID, String userID, Timestamp time);
 
     void clearProductTime(Integer productID, String userID);
+
+    void setRentalTime(Integer rentalID, String userID, Timestamp time);
+
+    void clearRentalTime(Integer rentalID, String userID);
+
+    ArrayList<Rental> getMyRental(String userID, Integer offset, Integer limit);
     /**
      * 删除收藏
      * @param collect 收藏信息

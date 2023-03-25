@@ -47,14 +47,31 @@ public class UserController {
         return userService.login(nickname, openid);
     }
 
+    @Deprecated
     @RequestMapping(value={"/getMyComment"}, method={RequestMethod.GET})
     public Response getMyComment(@RequestParam Integer offset, @RequestParam Integer limit,@RequestHeader("x-wx-openid") String openid){
         return userService.getMyComment(openid,offset,limit);
     }
 
+    @Deprecated
     @RequestMapping(value={"/getMySecondhand"}, method={RequestMethod.GET})
     public Response getMySecondhand(@RequestParam Integer offset, @RequestParam Integer limit,@RequestHeader("x-wx-openid") String openid){
         return userService.getMySecondhand(openid,offset,limit);
+    }
+
+    @RequestMapping(value={"/getMySecondhand"}, method={RequestMethod.GET})
+    public Response getMySecondhand(@RequestParam String service, @RequestParam Integer offset, @RequestParam Integer limit,@RequestHeader("x-wx-openid") String openid){
+        switch (service.toLowerCase()){
+            case "comment":
+                return userService.getMyComment(openid,offset,limit);
+            case "secondhand":
+                return userService.getMySecondhand(openid,offset,limit);
+            case "rental":
+                return userService.getMyRental(openid,offset,limit);
+            default:
+                return new Response(ReturnCode.UNKNOWN_SERVICE);
+        }
+
     }
 
     @RequestMapping(value={"/updateComment"},method={RequestMethod.POST})
@@ -127,12 +144,14 @@ public class UserController {
     @RequestMapping(value={"/setTime"},method={RequestMethod.GET})
     public Response setProductTime(@RequestParam String service, @RequestParam Integer itemID,@RequestParam String UTCtime, @RequestHeader("x-wx-openid") String userID){
         Timestamp time = new Timestamp(Instant.parse(UTCtime).toEpochMilli());
-        if(service.equalsIgnoreCase("product")){
-            return userService.setProductTime(itemID, userID, time);
-        }else if(service.equalsIgnoreCase("rental")){
-            return userService.setRentalTime(itemID,userID, time);
+        switch (service.toLowerCase()){
+            case "product":
+                return userService.setProductTime(itemID, userID, time);
+            case "rental":
+                return userService.setRentalTime(itemID,userID, time);
+            default:
+                return new Response(ReturnCode.UNKNOWN_SERVICE);
         }
-        return new Response(ReturnCode.UNKNOWN_SERVICE);
     }
     @Deprecated
     @RequestMapping(value={"/setProductTime"},method={RequestMethod.GET})
