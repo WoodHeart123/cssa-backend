@@ -68,9 +68,30 @@ public class UserController {
     public Response deleteComment(@RequestBody Integer commentID, @RequestHeader("x-wx-openid") String openid){
         return userService.deleteComment(openid, commentID);
     }
-    @RequestMapping(value={"/updateProfile"}, method={RequestMethod.PATCH})
-    public Response updateProfile(@RequestParam String item, @RequestParam String str,@RequestParam Optional<Boolean> subscribe, @RequestHeader("x-wx-openid") String openid){
-        switch (item.toLowerCase()){
+    @Deprecated
+    @RequestMapping(value={"/updateEmail"}, method={RequestMethod.GET})
+    public Response updateEmail(@RequestParam String email,@RequestParam Boolean subscribe, @RequestHeader("x-wx-openid") String openid){
+        return userService.updateEmail(email, subscribe, openid);
+    }
+    @Deprecated
+    @RequestMapping(value={"/updateAvatar"}, method={RequestMethod.GET})
+    public Response updateAvatar(@RequestParam Integer avatar, @RequestHeader("x-wx-openid") String openid){
+        if(avatar < 1 || avatar > 12){
+            return new Response(ReturnCode.INTEGER_OUT_OF_RANGE);
+        }
+        return userService.updateAvatar(openid,avatar);
+    }
+    @Deprecated
+    @RequestMapping(value={"/updateNickname"},method={RequestMethod.GET})
+    public Response updateNickname(@RequestParam String nickname,@RequestHeader("x-wx-openid") String openid) {
+        if (nickname.length() == 0) {
+            return new Response(ReturnCode.EMPTY_STRING);
+        }
+        return userService.updateNickname(openid, nickname);
+    }
+    @RequestMapping(value={"/updateProfile"}, method={RequestMethod.GET})
+    public Response updateProfile(@RequestParam String service, @RequestParam String str,@RequestParam Optional<Boolean> subscribe, @RequestHeader("x-wx-openid") String openid){
+        switch (service.toLowerCase()){
             case "wechatid":
                 return userService.updateWechatID(str, openid);
             case "nickname":
@@ -112,6 +133,11 @@ public class UserController {
             return userService.setRentalTime(itemID,userID, time);
         }
         return new Response(ReturnCode.UNKNOWN_SERVICE);
+    }
+    @Deprecated
+    @RequestMapping(value={"/setProductTime"},method={RequestMethod.GET})
+    public Response setProductTime(@RequestParam Integer productID,@RequestParam String UTCtime, @RequestHeader("x-wx-openid") String userID) {
+        return userService.setProductTime(productID, userID, new Timestamp(Instant.parse(UTCtime).toEpochMilli()));
     }
     @RequestMapping(value={"/deleteMySecondHand"},method={RequestMethod.POST})
     public Response deleteMySecondHand(@RequestParam Integer productID, @RequestHeader("x-wx-openid") String openid){
