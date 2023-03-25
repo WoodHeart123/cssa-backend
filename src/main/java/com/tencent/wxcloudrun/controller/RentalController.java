@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.controller;
 
 
+import com.tencent.wxcloudrun.model.Product;
 import com.tencent.wxcloudrun.model.Rental;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.service.RentalService;
@@ -56,6 +57,11 @@ public class RentalController {
         rentalInfo.setUserID(openid);
         return rentalService.postRentalInfo(rentalInfo,save);
     }
+    @RequestMapping(value={"/updateRental"},method={RequestMethod.POST})
+    public Response updateRental(@RequestBody Rental rental, @RequestHeader("x-wx-openid") String openid){
+        return rentalService.updateRental(openid, rental);
+    }
+
 
 
 }

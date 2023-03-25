@@ -18,5 +18,7 @@ public interface RentalMapper {
     void postRentalInfo(Rental rental);
     void saveContact(String userID,String contact);
 
+    void updateRental(String userID, Rental rental);
+
 
 }

@@ -40,6 +40,13 @@ public class RentalServiceImpl implements RentalService {
         }
         return Response.builder().data(rentalArrayList).status(100).build();
     }
+
+    @Override
+    public Response updateRental(String userID, Rental rentalInfo) {
+        rentalMapper.updateRental(userID, rentalInfo);
+        return new Response();
+    }
+
     @Override
     @Transactional
     public Response postRentalInfo(Rental rentalInfo, Boolean save){

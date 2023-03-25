@@ -13,4 +13,6 @@ public interface RentalService {
 
     Response postRentalInfo(Rental rentalInfo, Boolean save);
     Response getRentalList(Integer offset, Integer limit, Integer priceLimit, ArrayList<String> floorplanList, Timestamp startTime, Timestamp endTime);
+
+    Response updateRental(String userID,Rental rentalInfo);
 }
