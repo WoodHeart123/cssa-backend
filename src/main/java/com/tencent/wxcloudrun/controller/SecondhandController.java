@@ -25,7 +25,7 @@ import java.util.Map;
 public class SecondhandController {
 
     @Autowired
-    SecondhandService secondHandService;
+    SecondhandService secondhandService;
 
     @Autowired
     private JedisPooled jedisPooled;
@@ -47,19 +47,19 @@ public class SecondhandController {
         if(productIDList.size() == 0){
             return Response.builder().message("没有匹配结果").status(124).build();
         }
-        return secondHandService.getProduct(productIDList);
+        return secondhandService.getProduct(productIDList);
 
     }
 
     @RequestMapping(value= {"/getProductList"}, method = {RequestMethod.GET})
     public Response getProductList(@RequestParam ProductType productType, @RequestParam Integer offset, @RequestParam Integer limit){
-        return secondHandService.getProductList(productType,offset,limit);
+        return secondhandService.getProductList(productType,offset,limit);
     }
     
     @RequestMapping(value= {"/saveProduct"}, method = {RequestMethod.POST})
         public Response saveProduct(@RequestParam Boolean save,@RequestBody Product product, @RequestHeader("x-wx-openid") String openid) {
         product.setUserID(openid);
-        secondHandService.saveProduct(product, save);
+        secondhandService.saveProduct(product, save);
         Map<String, Object> fields = new HashMap<>();
         fields.put("productID", product.getProductID());
         fields.put("productName", product.getProductTitle());
@@ -70,7 +70,7 @@ public class SecondhandController {
 
     @RequestMapping(value={"/updateSecondHand"},method={RequestMethod.POST})
     public Response updateSecondHand(@RequestBody Product product, @RequestHeader("x-wx-openid") String openid){
-        return secondHandService.updateSecondHand(openid, product);
+        return secondhandService.updateSecondHand(openid, product);
     }
 
 
