@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -26,31 +25,31 @@ public class CourseServiceImpl implements CourseService {
 
     /**
      * Service to do what postComment controller want to request
-     * @param comment the comment
+     * @param courseComment the comment
      * @return success Response information if everything is recorded in Database correctly
      */
     @Override
     @Transactional
-    public Response postComment(Comment comment) {
-        if(comment.getUserAvatar() == null){
+    public Response postComment(CourseComment courseComment) {
+        if(courseComment.getUserAvatar() == null){
             Random random = new Random();
-            comment.setUserAvatar(random.nextInt(10) + 1);
+            courseComment.setUserAvatar(random.nextInt(10) + 1);
         }
         // to check if there is already two comments
-        Integer count = courseMapper.getPostCommentCount(comment.getUserID(),comment.getCourseID());
+        Integer count = courseMapper.getPostCommentCount(courseComment.getUserID(), courseComment.getCourseID());
         if(count >= 2){
             return Response.builder().status(110).message("评论数超过两个").build();
         }
         // save the comment
-        comment.setCommentTime(new Timestamp(new Date().getTime()));
-        courseMapper.saveComment(comment);
+        courseComment.setCommentTime(new Timestamp(new Date().getTime()));
+        courseMapper.saveComment(courseComment);
         // update course stats
         ArrayList<String> courseIDList = new ArrayList<>(1);
-        courseIDList.add(comment.getCourseID().toString());
+        courseIDList.add(courseComment.getCourseID().toString());
         List<Course> courseList = courseMapper.getCourse(courseIDList);
         Course course = courseList.get(0);
-        course.setAvgDifficulty((course.getAvgDifficulty() * course.getCommentCount() + comment.getDifficulty())/(course.getCommentCount() + 1));
-        course.setAvgPrefer((course.getAvgPrefer() * course.getCommentCount() + comment.getPrefer())/(course.getCommentCount() + 1));
+        course.setAvgDifficulty((course.getAvgDifficulty() * course.getCommentCount() + courseComment.getDifficulty())/(course.getCommentCount() + 1));
+        course.setAvgPrefer((course.getAvgPrefer() * course.getCommentCount() + courseComment.getPrefer())/(course.getCommentCount() + 1));
         course.setCommentCount(course.getCommentCount() + 1);
         courseMapper.updateCourse(course);
         return Response.builder().message("成功").status(100).build();
@@ -111,16 +110,16 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public Response report(Integer commentID, String report) {
-        Comment comment = courseMapper.getComment(commentID);
-        if(comment.getReportListJSON() == null){
-            comment.setReportList(new ArrayList<>());
+        CourseComment courseComment = courseMapper.getComment(commentID);
+        if(courseComment.getReportListJSON() == null){
+            courseComment.setReportList(new ArrayList<>());
         }else{
-            comment.setReportList(JSON.parseArray(comment.getReportListJSON(), String.class));
+            courseComment.setReportList(JSON.parseArray(courseComment.getReportListJSON(), String.class));
         }
-        comment.getReportList().add(report);
-        comment.setReportListJSON(JSON.toJSONString(comment.getReportList()));
-        courseMapper.addReportList(comment);
-        if(comment.getReportList().size() == 10) {
+        courseComment.getReportList().add(report);
+        courseComment.setReportListJSON(JSON.toJSONString(courseComment.getReportList()));
+        courseMapper.addReportList(courseComment);
+        if(courseComment.getReportList().size() == 10) {
             courseMapper.hideComment(commentID);
         }
         return Response.builder().status(100).message("成功").build();
@@ -133,9 +132,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Response getCommentList(Integer courseID, Integer offset, Integer limit, SortType sortType) {
-        List<Comment> commentList;
-        commentList = courseMapper.getCommentList(courseID, offset, limit, sortType.getField());
-        return Response.builder().data(commentList).status(100).message("成功").build();
+        List<CourseComment> courseCommentList;
+        courseCommentList = courseMapper.getCommentList(courseID, offset, limit, sortType.getField());
+        return Response.builder().data(courseCommentList).status(100).message("成功").build();
     }
 
     @Override

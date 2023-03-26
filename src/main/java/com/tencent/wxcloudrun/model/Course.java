@@ -15,5 +15,5 @@ public class Course {
     private String credit;
     private Double avgPrefer;
     private Double commentCount;
-    private List<Comment> commentList;
+    private List<CourseComment> courseCommentList;
 }

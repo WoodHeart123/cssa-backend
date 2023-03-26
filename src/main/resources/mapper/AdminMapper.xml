@@ -51,7 +51,7 @@
     </update>
 
     <delete id="deleteComment" parameterType="Integer">
-        DELETE FROM comment WHERE commentID = #{commentID}
+        DELETE FROM courseComment WHERE commentID = #{commentID}
     </delete>
 
     <select id="getActivitySignup" parameterType="String" resultType="SignupInfo">
@@ -111,7 +111,7 @@
     </select>
 
     <select id="getCommentList" parameterType="Integer" resultType="Comment">
-        SELECT professor, courseTime, difficulty, prefer, comment, likeCount From comment WHERE courseID = #{courseID}
+        SELECT professor, courseTime, difficulty, prefer, courseComment, likeCount From courseComment WHERE courseID = #{courseID}
     </select>
 
 </mapper>

@@ -75,11 +75,11 @@ public class UserController {
     }
 
     @RequestMapping(value={"/updateComment"},method={RequestMethod.POST})
-    public Response updateComment(@RequestBody Comment comment, @RequestHeader("x-wx-openid") String openid){
-        if(comment.getComment().length() > 300){
+    public Response updateComment(@RequestBody CourseComment courseComment, @RequestHeader("x-wx-openid") String openid){
+        if(courseComment.getComment().length() > 300){
             return new Response(ReturnCode.EXCEED_LENGTH_LIMIT);
         }
-        return userService.updateComment(openid,comment.getCommentID(),comment.getComment());
+        return userService.updateComment(openid, courseComment.getCommentID(), courseComment.getComment());
     }
 
     @Deprecated

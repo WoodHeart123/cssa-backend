@@ -1,6 +1,6 @@
 package com.tencent.wxcloudrun.controller;
 
-import com.tencent.wxcloudrun.model.Comment;
+import com.tencent.wxcloudrun.model.CourseComment;
 import com.tencent.wxcloudrun.model.SortType;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.service.CourseService;
@@ -11,7 +11,6 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.search.Document;
 import redis.clients.jedis.search.SearchResult;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -48,17 +47,17 @@ public class CourseController {
     }
     /**
      * Add a newly posted comment to database
-     * @param comment comment which is posted
+     * @param courseComment comment which is posted
      * @param request Header of this Request
      * @return Add comment content and related information to database
      */
     @PostMapping(value = "/postcomment")
-    public Response save(@RequestBody Comment comment, @RequestHeader("x-wx-openid") String openid) {
-        if(comment.getComment().length() > 300){
+    public Response save(@RequestBody CourseComment courseComment, @RequestHeader("x-wx-openid") String openid) {
+        if(courseComment.getComment().length() > 300){
             return Response.builder().status(103).message("超过字数限制").build();
         }
-        comment.setUserID(openid);
-        return courseService.postComment(comment);
+        courseComment.setUserID(openid);
+        return courseService.postComment(courseComment);
 
     }
 
@@ -99,11 +98,11 @@ public class CourseController {
 
     /**
      * Report a bad comment, and record the number of reports of this comment
-     * @param comment comment which is reported
+     * @param courseComment comment which is reported
      * @return Response information and data
      */
     @RequestMapping(value = {"/report"}, method = {RequestMethod.POST})
-    public Response Post(@RequestBody Comment comment, @RequestHeader("x-wx-openid") String openid){
-        return courseService.report(comment.getCommentID(), comment.getReportList().get(0));
+    public Response Post(@RequestBody CourseComment courseComment, @RequestHeader("x-wx-openid") String openid){
+        return courseService.report(courseComment.getCommentID(), courseComment.getReportList().get(0));
     }
 }

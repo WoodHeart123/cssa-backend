@@ -31,19 +31,19 @@
     </update>
 
     <select id="getMyComment" parameterType="Map" resultType="Comment">
-        SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime, courseNum,courseName,departmentAbrev
-        from comment INNER JOIN course
-        WHERE comment.courseID = course.courseID AND commentID > #{offset} AND userID = #{userID}
+        SELECT commentID, professor, courseTime, difficulty, prefer, courseComment, likeCount, commentTime, courseNum,courseName,departmentAbrev
+        from courseComment INNER JOIN course
+        WHERE courseComment.courseID = course.courseID AND commentID > #{offset} AND userID = #{userID}
         ORDER BY commentID
         LIMIT ${limit}
     </select>
 
     <update id="updateComment" parameterType="Map">
-        UPDATE comment SET comment = #{comment} WHERE userID = #{userID} AND commentID = #{commentID}
+        UPDATE courseComment SET courseComment = #{courseComment} WHERE userID = #{userID} AND commentID = #{commentID}
     </update>
 
     <delete id="deleteComment">
-        DELETE FROM comment WHERE userID = #{userID} AND commentID = #{commentID}
+        DELETE FROM courseComment WHERE userID = #{userID} AND commentID = #{commentID}
     </delete>
 
     <update id="updateNickname" parameterType="String">
