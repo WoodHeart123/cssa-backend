@@ -102,9 +102,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public Response setRentalTime(Integer rentalID, String userID, Timestamp time) {
         if(time.equals(new Timestamp(0))){
-            userMapper.clearProductTime(rentalID, userID);
+            userMapper.clearRentalTime(rentalID, userID);
         }else {
-            userMapper.setProductTime(rentalID, userID, time);
+            userMapper.setRentalTime(rentalID, userID, time);
         }
         return new Response();
     }
