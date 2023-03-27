@@ -202,4 +202,12 @@ public class UserController {
     public Response getCollectList(@RequestParam CollectType collectType,@RequestParam Integer offset, @RequestParam Integer limit, @RequestHeader("x-wx-openid") String userID){
         return userService.getCollectList(collectType, userID, offset, limit);
     }
+
+    /**
+     * @return list of main page photo to mini-program
+     */
+    @RequestMapping(value={"getMainPagePhotos"},method={RequestMethod.GET})
+    Response getMainPagePhotos(){
+        return userService.getMainPagePhotos();
+    }
 }

@@ -102,6 +102,7 @@ public interface UserMapper {
     List<Product> getProductCollectList(CollectType collectType,String userID,Integer offset, Integer limit);
     List<Rental> getRentalCollectList(CollectType collectType,String userID,Integer offset, Integer limit);
 
+    List<MainPagePhoto> getMainPagePhotos();
 
 
 }

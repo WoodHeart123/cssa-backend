@@ -73,14 +73,6 @@ public class AdminController {
         return adminService.getMainPagePhotoList();
     }
 
-    /**
-     * @return list of main page photo to mini-program
-     */
-    @RequestMapping(value={"getMainPagePhotos"},method={RequestMethod.GET})
-    Response getMainPagePhotos(){
-        return adminService.getMainPagePhotos();
-    }
-
 
     /**
      * @return list of department

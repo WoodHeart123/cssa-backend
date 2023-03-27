@@ -59,8 +59,6 @@ public interface AdminMapper {
 
     List<MainPagePhoto> getMainPagePhotoList();
 
-    List<MainPagePhoto> getMainPagePhotos();
-
     List<Department> getDepartmentList();
 
     List<Course> getCourseList(Integer departmentID);
