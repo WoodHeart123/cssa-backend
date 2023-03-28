@@ -5,9 +5,9 @@
     <select id="getAllProductList" resultType="Product">
         SELECT secondhand.productID, secondhand.productTitle,secondhand.productDescription,
                secondhand.productType,secondhand.time,secondhand.price,secondhand.productCondition,secondhand.contact,secondhand.imagesJSON,secondhand.delivery,
-               user.avatar as sellerAvatar, user.nickname as sellerNickname
+               COALESCE(user.avatar, 1) as sellerAvatar, COALESCE(user.nickname,"微信用户") as sellerNickname
         FROM secondhand
-        INNER JOIN user on secondhand.userID = user.userID
+        LEFT JOIN user on secondhand.userID = user.userID
         WHERE secondhand.time IS NOT NULL
         ORDER BY secondhand.time DESC
         LIMIT #{offset}, #{limit}
@@ -16,9 +16,9 @@
     <select id="getProductList" resultType="Product">
         SELECT secondhand.productID, secondhand.productTitle,secondhand.productDescription,
                secondhand.productType,secondhand.time,secondhand.price,secondhand.productCondition,secondhand.contact,secondhand.imagesJSON,secondhand.delivery,
-               user.avatar as sellerAvatar, user.nickname as sellerNickname
+               COALESCE(user.avatar, 1) as sellerAvatar, COALESCE(user.nickname,"微信用户") as sellerNickname
         FROM secondhand
-        INNER JOIN user on secondhand.userID = user.userID
+        LEFT JOIN user on secondhand.userID = user.userID
         WHERE secondhand.time IS NOT NULL AND productType = #{productType}
         ORDER BY secondhand.time DESC
         LIMIT #{offset}, #{limit}
