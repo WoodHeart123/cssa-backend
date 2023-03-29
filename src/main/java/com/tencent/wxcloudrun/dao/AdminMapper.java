@@ -59,11 +59,9 @@ public interface AdminMapper {
 
     List<MainPagePhoto> getMainPagePhotoList();
 
-    List<MainPagePhoto> getMainPagePhotos();
-
     List<Department> getDepartmentList();
 
     List<Course> getCourseList(Integer departmentID);
 
-    List<Comment> getCommentList(Integer courseID);
+    List<CourseComment> getCommentList(Integer courseID);
 }

@@ -84,5 +84,7 @@ public interface UserService {
     Response getCollectID(CollectType collectType,String userID);
     Response getCollectList(CollectType collectType,String userID,Integer offset,Integer limit);
 
+    Response getMainPagePhotos();
+
 
 }

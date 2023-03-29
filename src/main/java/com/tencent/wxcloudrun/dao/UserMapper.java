@@ -55,7 +55,7 @@ public interface UserMapper {
      * @param limit number of comments
      * @return list of comment with limit size
      */
-    List<Comment> getMyComment(@Param("userID")String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
+    List<CourseComment> getMyComment(@Param("userID")String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
     void updateComment(String userID, Integer commentID, String comment);
 
@@ -102,6 +102,7 @@ public interface UserMapper {
     List<Product> getProductCollectList(CollectType collectType,String userID,Integer offset, Integer limit);
     List<Rental> getRentalCollectList(CollectType collectType,String userID,Integer offset, Integer limit);
 
+    List<MainPagePhoto> getMainPagePhotos();
 
 
 }

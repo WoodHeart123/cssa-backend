@@ -215,4 +215,11 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+
+    @Override
+    public Response getMainPagePhotos() {
+        List<MainPagePhoto> mainPagePhotoList = userMapper.getMainPagePhotos();
+        return Response.builder().data(mainPagePhotoList).status(100).build();
+    }
+
 }

@@ -12,7 +12,7 @@ import java.util.List;
  * 评论类
  */
 @Data
-public class Comment {
+public class CourseComment {
 
     private String userID;
     private Integer userAvatar;

@@ -3,8 +3,8 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.CourseMapper">
 
     <insert id="saveComment" parameterType="Comment">
-        INSERT INTO comment (userID,courseID,professor,courseTime,difficulty,prefer,comment,commentTime)
-        VALUES (#{userID},#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{comment},#{commentTime})
+        INSERT INTO courseComment (userID,courseID,professor,courseTime,difficulty,prefer,courseComment,commentTime)
+        VALUES (#{userID},#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{courseComment},#{commentTime})
     </insert>
 
     <select id="getAllCourseList"  resultType="Course">
@@ -27,7 +27,7 @@
     </select>
 
     <update id="incrementCount" parameterType="Integer">
-        UPDATE comment SET likeCount = likeCount + 1 WHERE commentID = #{commentID};
+        UPDATE courseComment SET likeCount = likeCount + 1 WHERE commentID = #{commentID};
     </update>
 
     <update id="setLikeList">
@@ -39,7 +39,7 @@
     </select>
 
     <update id="hideComment" parameterType="Integer">
-        UPDATE comment SET commentTime = '1000-01-01 00:00:00' WHERE commentID = #{commentID}
+        UPDATE courseComment SET commentTime = '1000-01-01 00:00:00' WHERE commentID = #{commentID}
     </update>
 
     <select id="getDepartmentList" resultType="Department">
@@ -47,12 +47,12 @@
     </select>
 
     <select id="getCommentList" resultType="Comment">
-        SELECT comment.commentID, comment.professor, comment.courseTime,comment.difficulty,comment.prefer,comment.comment,comment.likeCount, comment.commentTime, user.avatar AS userAvatar
-        FROM comment JOIN user ON comment.userID = user.userID WHERE courseID = #{courseID} ORDER BY ${orderField} DESC LIMIT #{offset}, #{limit}
+        SELECT courseComment.commentID, courseComment.professor, courseComment.courseTime,courseComment.difficulty,courseComment.prefer,courseComment.courseComment,courseComment.likeCount, courseComment.commentTime, user.avatar AS userAvatar
+        FROM courseComment JOIN user ON courseComment.userID = user.userID WHERE courseID = #{courseID} ORDER BY ${orderField} DESC LIMIT #{offset}, #{limit}
     </select>
 
     <select id="getPostCommentCount" parameterType="Map" resultType="Integer">
-        SELECT COUNT(commentID) from comment WHERE courseID = #{courseID} AND userID = #{userID}
+        SELECT COUNT(commentID) from courseComment WHERE courseID = #{courseID} AND userID = #{userID}
     </select>
 
     <select id="searchCourse" parameterType="String" resultType="Course">

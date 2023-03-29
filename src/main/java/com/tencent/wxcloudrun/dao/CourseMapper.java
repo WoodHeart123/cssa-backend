@@ -1,6 +1,6 @@
 package com.tencent.wxcloudrun.dao;
 
-import com.tencent.wxcloudrun.model.Comment;
+import com.tencent.wxcloudrun.model.CourseComment;
 import com.tencent.wxcloudrun.model.Course;
 import com.tencent.wxcloudrun.model.Department;
 import com.tencent.wxcloudrun.model.User;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Mapper
 public interface CourseMapper{
-    void saveComment(Comment comment);
+    void saveComment(CourseComment courseComment);
 
     void updateCourse(Course course);
 
@@ -75,13 +75,13 @@ public interface CourseMapper{
      * @param commentID ID of comment
      * @return comment information
      */
-    Comment getComment(Integer commentID);
+    CourseComment getComment(Integer commentID);
 
     /**
      * Add report list into a comment
-     * @param comment comment information
+     * @param courseComment comment information
      */
-    void addReportList(Comment comment);
+    void addReportList(CourseComment courseComment);
 
     /**
      * hide a comment
@@ -89,7 +89,7 @@ public interface CourseMapper{
      */
     void hideComment(Integer commentID);
 
-    List<Comment> getCommentList(@Param("courseID")Integer courseID,@Param("offset") Integer offset,@Param("limit") Integer limit,@Param("orderField")String orderField);
+    List<CourseComment> getCommentList(@Param("courseID")Integer courseID, @Param("offset") Integer offset, @Param("limit") Integer limit, @Param("orderField")String orderField);
 
     Integer getPostCommentCount(String userID, Integer courseID);
 

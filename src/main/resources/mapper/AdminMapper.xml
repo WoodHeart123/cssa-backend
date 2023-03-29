@@ -51,7 +51,7 @@
     </update>
 
     <delete id="deleteComment" parameterType="Integer">
-        DELETE FROM comment WHERE commentID = #{commentID}
+        DELETE FROM courseComment WHERE commentID = #{commentID}
     </delete>
 
     <select id="getActivitySignup" parameterType="String" resultType="SignupInfo">
@@ -87,14 +87,6 @@
         ORDER BY photoID DESC
     </select>
 
-    <select id="getMainPagePhotos" resultType="MainPagePhoto">
-        SELECT
-            photoID, startDate,endDate,smallPhoto,largePhoto
-        FROM mainpage_photo
-        WHERE endDate > NOW() AND startDate <![CDATA[<]]>NOW()
-        ORDER BY photoID DESC
-    </select>
-
     <select id="getDepartmentList" resultType="Department">
         SELECT
             d.departmentID AS departmentID,
@@ -111,7 +103,7 @@
     </select>
 
     <select id="getCommentList" parameterType="Integer" resultType="Comment">
-        SELECT professor, courseTime, difficulty, prefer, comment, likeCount From comment WHERE courseID = #{courseID}
+        SELECT professor, courseTime, difficulty, prefer, courseComment, likeCount From courseComment WHERE courseID = #{courseID}
     </select>
 
 </mapper>
