@@ -1,5 +1,8 @@
 package com.tencent.wxcloudrun.model;
 
+import lombok.Data;
+
+@Data
 public class Restaurant {
     private Integer restaurantID;
     private String name;
@@ -7,4 +10,6 @@ public class Restaurant {
     private Float avgRating;
     private Integer avgPrice;
     private Integer commentCount;
+    private Float latitude;
+    private Float longitude;
 }

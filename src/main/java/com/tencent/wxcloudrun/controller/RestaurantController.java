@@ -2,6 +2,8 @@ package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.RestaurantComment;
+import com.tencent.wxcloudrun.service.RestaurantService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -11,6 +13,9 @@ import java.util.Optional;
 @RequestMapping({"/restaurant"})
 public class RestaurantController {
 
+
+    @Autowired
+    RestaurantService restaurantService;
     /**
      * 获取商家列表
       * @param aboveRating 只返回大于rating的数据
@@ -20,7 +25,7 @@ public class RestaurantController {
      */
     @RequestMapping(value = {"/getRestaurantList"}, method = {RequestMethod.GET})
     public Response getRestaurantList(@RequestParam Optional<Integer> aboveRating,@RequestParam Optional<Integer> priceLimit, @RequestParam Integer offset, @RequestParam Integer limit){
-        return null;
+        return restaurantService.getRestaurantList(aboveRating.orElse(0), priceLimit.orElse(10000),offset, limit);
     }
 
     /**
