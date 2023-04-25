@@ -60,11 +60,11 @@ public class CourseServiceImpl implements CourseService {
      * @return list of course matched given department
      */
     @Override
-    public Response getCourseList(Integer departmentID, Integer offset, Integer limit, SortType sortType) {
+    public Response getCourseList(Integer departmentID, Integer offset, Integer limit, SortType sortType, Boolean isGrad) {
         if(departmentID.equals(0)){
-            return Response.builder().data(courseMapper.getAllCourseList(offset,limit, sortType.getField(), sortType.getOrder(),sortType.getCommentCount())).status(100).message("成功").build();
+            return Response.builder().data(courseMapper.getAllCourseList(offset,limit, sortType.getField(), sortType.getOrder(),sortType.getCommentCount(), isGrad)).status(100).message("成功").build();
         }
-        return Response.builder().data(courseMapper.getCourseList(departmentID, sortType.getField(), sortType.getOrder())).status(100).message("成功").build();
+        return Response.builder().data(courseMapper.getCourseList(departmentID, sortType.getField(), sortType.getOrder(), isGrad)).status(100).message("成功").build();
     }
 
     /**

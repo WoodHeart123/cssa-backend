@@ -31,7 +31,7 @@ public class RedisDataLoaderScheduler {
             IndexDefinition def = new IndexDefinition().setPrefixes("course:");
             jedisPooled.ftCreate("course-index", IndexOptions.defaultOptions().setDefinition(def), sc);
         }catch(Exception ignored){}
-        ArrayList<Course> courseArrayList = (ArrayList<Course>) courseMapper.getAllCourseList(0, 10000, "courseNum", "ASC", 0);
+        ArrayList<Course> courseArrayList = (ArrayList<Course>) courseMapper.getAllCourseList(0, 10000, "courseNum", "ASC", 0, false);
         for (Course course : courseArrayList) {
             Map<String, Object> fields = new HashMap<>();
             fields.put("courseID", course.getCourseID());

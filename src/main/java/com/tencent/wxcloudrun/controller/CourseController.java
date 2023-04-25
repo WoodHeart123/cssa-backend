@@ -67,17 +67,14 @@ public class CourseController {
     }
     
     @RequestMapping(value={"/courselist"}, method = {RequestMethod.GET})
-    public Response getCourseList(@RequestParam Optional<Integer> departmentID, @RequestParam Optional<Integer> offset, @RequestParam Optional<Integer> limit, @RequestParam Optional<SortType> orderType) {
+    public Response getCourseList(@RequestParam Optional<Integer> departmentID, @RequestParam Optional<Integer> offset, @RequestParam Optional<Integer> limit, @RequestParam Optional<SortType> orderType, @RequestParam Optional<Boolean> isGrad) {
         if (departmentID.isEmpty()) {
             return Response.builder().message("部门ID为空").status(104).build();
         }
-        if (departmentID.get().equals(0) && (offset.isEmpty() || limit.isEmpty() || orderType.isEmpty())){
+        if (departmentID.get().equals(0) && (offset.isEmpty() || limit.isEmpty())){
             return Response.builder().message("缺少参数").status(105).build();
         }
-        if(orderType.isEmpty()){
-            return Response.builder().message("缺少参数").status(105).build();
-        }
-        return courseService.getCourseList(departmentID.get(),offset.get(),limit.get(),orderType.get());
+        return courseService.getCourseList(departmentID.get(),offset.get(),limit.get(),orderType.orElse(SortType.SORT_BY_COURSE_NUM), isGrad.orElse(false));
     }
     
     @RequestMapping(value={ "/departmentlist"}, method = {RequestMethod.GET})

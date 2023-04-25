@@ -11,7 +11,7 @@ import java.util.ArrayList;
 @Service
 public interface CourseService {
     Response postComment(CourseComment courseComment);
-    Response getCourseList(Integer departmentID, Integer offset, Integer limit, SortType sortType);
+    Response getCourseList(Integer departmentID, Integer offset, Integer limit, SortType sortType, Boolean isGrad);
     Response getDepartmentList();
     Response zan(String userID, Integer commentID);
     Response report(Integer commentID, String report);

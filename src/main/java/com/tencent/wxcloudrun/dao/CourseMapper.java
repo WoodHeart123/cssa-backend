@@ -24,7 +24,10 @@ public interface CourseMapper{
      * @param order
      * @return
      */
-    List<Course> getAllCourseList(@Param("offset") Integer offset,@Param("limit") Integer limit,@Param("field")String field, @Param("order") String order, @Param("commentCount") Integer commentCount);
+    List<Course> getAllCourseList(@Param("offset") Integer offset,@Param("limit") Integer limit,
+                                  @Param("field")String field, @Param("order") String order,
+                                  @Param("commentCount") Integer commentCount, @Param("isGrad") Boolean isGrad);
+
 
 
     /**
@@ -34,7 +37,8 @@ public interface CourseMapper{
      * @param order ASC/DESC
      * @return list of course under department with given order
      */
-    List<Course> getCourseList(@Param("departmentID")Integer departmentID,@Param("field")String field, @Param("order") String order);
+    List<Course> getCourseList(@Param("departmentID")Integer departmentID,@Param("field")String field,
+                               @Param("order") String order, @Param("isGrad") Boolean isGrad);
 
     /**
      * get list of course provided by search db
