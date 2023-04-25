@@ -2,6 +2,7 @@ package com.tencent.wxcloudrun.service;
 
 
 import com.tencent.wxcloudrun.model.CourseComment;
+import com.tencent.wxcloudrun.model.CourseFile;
 import com.tencent.wxcloudrun.model.SortType;
 import com.tencent.wxcloudrun.model.Response;
 import org.springframework.stereotype.Service;
@@ -18,4 +19,6 @@ public interface CourseService {
     Response getCourse(ArrayList<String> courseID);
     Response getCommentList(Integer courseID, Integer offset, Integer limit, SortType sortType);
     Response searchCourse(String query);
+
+    Response postFile(CourseFile courseFile);
 }

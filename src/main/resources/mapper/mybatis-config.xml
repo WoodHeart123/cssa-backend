@@ -16,5 +16,6 @@
         <typeAlias alias="MainPagePhoto" type="com.tencent.wxcloudrun.model.MainPagePhoto" />
         <typeAlias alias="Collect" type="com.tencent.wxcloudrun.model.Collect" />
         <typeAlias alias="Restaurant" type="com.tencent.wxcloudrun.model.Restaurant" />
+        <typeAlias alias="CourseFile" type="com.tencent.wxcloudrun.model.CourseFile"/>
     </typeAliases>
 </configuration>

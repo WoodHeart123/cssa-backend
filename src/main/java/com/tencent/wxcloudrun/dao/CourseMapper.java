@@ -1,9 +1,6 @@
 package com.tencent.wxcloudrun.dao;
 
-import com.tencent.wxcloudrun.model.CourseComment;
-import com.tencent.wxcloudrun.model.Course;
-import com.tencent.wxcloudrun.model.Department;
-import com.tencent.wxcloudrun.model.User;
+import com.tencent.wxcloudrun.model.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -96,6 +93,8 @@ public interface CourseMapper{
     List<CourseComment> getCommentList(@Param("courseID")Integer courseID, @Param("offset") Integer offset, @Param("limit") Integer limit, @Param("orderField")String orderField);
 
     Integer getPostCommentCount(String userID, Integer courseID);
+
+    void postFile(CourseFile courseFile);
 
 
 }

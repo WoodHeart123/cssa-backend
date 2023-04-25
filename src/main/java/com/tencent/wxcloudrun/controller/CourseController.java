@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.model.CourseComment;
+import com.tencent.wxcloudrun.model.CourseFile;
 import com.tencent.wxcloudrun.model.SortType;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.service.CourseService;
@@ -99,7 +100,13 @@ public class CourseController {
      * @return Response information and data
      */
     @RequestMapping(value = {"/report"}, method = {RequestMethod.POST})
-    public Response Post(@RequestBody CourseComment courseComment, @RequestHeader("x-wx-openid") String openid){
+    public Response report(@RequestBody CourseComment courseComment, @RequestHeader("x-wx-openid") String openid){
         return courseService.report(courseComment.getCommentID(), courseComment.getReportList().get(0));
+    }
+
+    @RequestMapping(value={"/postFile"}, method = {RequestMethod.POST})
+    public Response postFile(@RequestBody CourseFile courseFile, @RequestHeader("x-wx-openid") String openid){
+        courseFile.setUserID(openid);
+        return courseService.postFile(courseFile);
     }
 }

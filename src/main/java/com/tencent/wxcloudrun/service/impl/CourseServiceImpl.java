@@ -18,8 +18,6 @@ import java.util.Random;
 @Service
 public class CourseServiceImpl implements CourseService {
 
-
-
     @Autowired
     private CourseMapper courseMapper;
 
@@ -146,5 +144,12 @@ public class CourseServiceImpl implements CourseService {
             }
         }
         return Response.builder().data(courseMapper.searchCourse(query.substring(0,i) + "%",  query.substring(i) + "%")).build();
+    }
+
+    @Override
+    @Transactional
+    public Response postFile(CourseFile courseFile) {
+        courseMapper.postFile(courseFile);
+        return new Response();
     }
 }
