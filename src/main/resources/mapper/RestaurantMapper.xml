@@ -3,7 +3,7 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.RestaurantMapper">
 
     <select id="getRestaurantList" parameterType="Integer" resultType="Restaurant">
-        SELECT restaurantID, name, location, avgRating, avgPrice, ST_X(geoLocation) as longitude, ST_Y(geoLocation) AS latitude
+        SELECT restaurantID, name, location, avgRating, commentCount, avgPrice, ST_X(geoLocation) as longitude, ST_Y(geoLocation) AS latitude
         FROM restaurant
         WHERE avgRating &gt;= #{aboveRating} AND avgPrice &lt; #{priceLimit} AND restaurantID &gt; #{offset} LIMIT #{limit}
     </select>
