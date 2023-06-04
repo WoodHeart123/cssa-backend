@@ -1,6 +1,13 @@
 server:
   port: 80
 
+cssa:
+  wxcloudrun:
+    swagger:
+      enable: true
+      title: CSSA-Backend
+      description: 小程序后端接口文档
+      base-package: com.tencent.wxcloudrun.controller
 
 spring:
   datasource:

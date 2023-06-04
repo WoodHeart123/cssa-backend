@@ -12,7 +12,7 @@
     <artifactId>springboot-wxcloudrun</artifactId>
     <version>1.0</version>
     <name>springboot-wxcloudrun</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Backend for CSSA UW-madison miniprogram</description>
     <properties>
         <java.version>11</java.version>
         <maven.test.skip>true</maven.test.skip>
@@ -22,6 +22,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
