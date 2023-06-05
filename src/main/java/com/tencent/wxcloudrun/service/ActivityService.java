@@ -17,7 +17,7 @@ public interface ActivityService {
      */
     Response checkSignup(Integer actID, String userID,Long date);
 
-    Response getActivityList(Timestamp current, String userID);
+    Response getActivityList(String userID);
 
     /**
      * sign up for an activity
