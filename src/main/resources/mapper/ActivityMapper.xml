@@ -4,68 +4,74 @@
 
 
     <select id="checkSignup" resultType="SignupInfo">
-        SELECT signup_activity.actID, response, payment FROM signup_activity,activity where userID = #{userID} and signup_activity.actID = activity.actID and activity.startDate &gt; #{date}
+        SELECT signup_activity.actID, response, payment
+        FROM signup_activity,
+             activity
+        where userID = #{userID}
+          and signup_activity.actID = activity.actID
+          and activity.startDate &gt; #{date}
     </select>
 
-    <select id="getActivityList" parameterType="java.sql.Timestamp" resultType="Activity">
-        SELECT
-            activity.actID,
-            COUNT(userID) as userJoinedNum,
-            title,
-            startDate,
-            endDate,
-            location,
-            price,
-            capacity,
-            imgs,
-            additionalInfoJSON,
-            description
-        FROM
-            signup_activity
-                RIGHT JOIN activity ON activity.actID = signup_activity.actID
+    <select id="getActivityList" resultType="Activity">
+        SELECT activity.actID,
+               COUNT(userID) as userJoinedNum,
+               title,
+               startDate,
+               endDate,
+               location,
+               price,
+               capacity,
+               imgs,
+               additionalInfoJSON,
+               description
+        FROM signup_activity
+                 RIGHT JOIN activity ON activity.actID = signup_activity.actID
         WHERE activity.endDate &gt; CURRENT_TIMESTAMP
-        GROUP BY
-            activity.actID,
-            title,
-            startDate,
-            endDate,
-            location,
-            price,
-            capacity,
-            imgs,
-            additionalInfoJSON,
-            description
+        GROUP BY activity.actID,
+                 title,
+                 startDate,
+                 endDate,
+                 location,
+                 price,
+                 capacity,
+                 imgs,
+                 additionalInfoJSON,
+                 description
         ORDER BY activity.actID ASC
     </select>
 
     <select id="getRegisterList" parameterType="String" resultType="Activity">
-        SELECT
-            activity.actID,
-            title,
-            startDate,
-            location,
-            payment as price,
-            capacity,
-            imgs,
-            additionalInfoJSON,
-            description
-        FROM
-            signup_activity
-                RIGHT JOIN activity ON activity.actID = signup_activity.actID
-        WHERE signup_activity.userId = #{userID} AND activity.startDate &gt; 19700101010000
+        SELECT activity.actID,
+               title,
+               startDate,
+               location,
+               payment as price,
+               capacity,
+               imgs,
+               additionalInfoJSON,
+               description
+        FROM signup_activity
+                 RIGHT JOIN activity ON activity.actID = signup_activity.actID
+        WHERE signup_activity.userId = #{userID}
+          AND activity.startDate &gt; 19700101010000
         ORDER BY activity.actID ASC
     </select>
 
     <update id="updateActivity" parameterType="Activity">
-        UPDATE activity SET userJoinedNum=#{userJoinedNum} WHERE actID =#{actID}
+        UPDATE activity
+        SET userJoinedNum=#{userJoinedNum}
+        WHERE actID = #{actID}
     </update>
 
     <insert id="recordResponse" parameterType="SignupInfo">
-        INSERT INTO signup_activity (userID,actID,response,payment) values (#{userID},#{actID},#{responseJSON},#{payment})
+        INSERT INTO signup_activity (userID, actID, response, payment)
+        values (#{userID}, #{actID}, #{responseJSON}, #{payment})
     </insert>
 
     <select id="findActivity" parameterType="Integer" resultType="Activity">
-        SELECT startDate,userJoinedNum,capacity FROM activity where actID = #{actID}
+        SELECT startDate, userJoinedNum, capacity
+        FROM activity
+        where actID = #{actID}
     </select>
 
 </mapper>

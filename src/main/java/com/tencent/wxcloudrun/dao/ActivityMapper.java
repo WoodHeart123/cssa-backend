@@ -15,10 +15,9 @@ public interface ActivityMapper {
     ArrayList<SignupInfo> checkSignup(String userID, Long date);
 
     /**
-     * @param current current time stamp
      * @return list of activity that is available to user
      */
-    List<Activity> getActivityList(Timestamp current);
+    List<Activity> getActivityList();
 
     /**
      * @param actID activity actID

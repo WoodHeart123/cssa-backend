@@ -39,8 +39,8 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public Response getActivityList(Timestamp current, String userID) {
-        List<Activity> activityList = activityMapper.getActivityList(current);
+    public Response getActivityList(String userID) {
+        List<Activity> activityList = activityMapper.getActivityList();
         List<Activity> joinList = activityMapper.getRegisterList(userID);
         int i = 0,j = 0;
         while(i < activityList.size() && j < joinList.size()){
