@@ -28,7 +28,7 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     @Transactional
-    public Response postComment(CourseComment courseComment) {
+    public Response<Object> postComment(CourseComment courseComment) {
         if(courseComment.getUserAvatar() == null){
             Random random = new Random();
             courseComment.setUserAvatar(random.nextInt(10) + 1);
@@ -58,19 +58,19 @@ public class CourseServiceImpl implements CourseService {
      * @return list of course matched given department
      */
     @Override
-    public Response getCourseList(Integer departmentID, Integer offset, Integer limit, SortType sortType, Boolean isGrad) {
+    public Response<List<Course>> getCourseList(Integer departmentID, Integer offset, Integer limit, SortType sortType, Boolean isGrad) {
         if(departmentID.equals(0)){
-            return Response.builder().data(courseMapper.getAllCourseList(offset,limit, sortType.getField(), sortType.getOrder(),sortType.getCommentCount(), isGrad)).status(100).message("成功").build();
+            return new Response<>(courseMapper.getAllCourseList(offset,limit, sortType.getField(), sortType.getOrder(),sortType.getCommentCount(), isGrad));
         }
-        return Response.builder().data(courseMapper.getCourseList(departmentID, sortType.getField(), sortType.getOrder(), isGrad)).status(100).message("成功").build();
+        return new Response<>(courseMapper.getCourseList(departmentID, sortType.getField(), sortType.getOrder(), isGrad));
     }
 
     /**
      * @return list of department
      */
     @Override
-    public Response getDepartmentList() {
-        return Response.builder().data(courseMapper.getDepartmentList()).status(100).message("成功").build();
+    public Response<List<Department>> getDepartmentList() {
+        return new Response<>(courseMapper.getDepartmentList());
     }
 
     /**
@@ -82,7 +82,7 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     @Transactional
-    public Response zan(String userID, Integer commentID) {
+    public Response<Object> zan(String userID, Integer commentID) {
         User user = courseMapper.getUser(userID);
         if(user.getLikedCommentJSON() == null){
             user.setLikedComment(new ArrayList<>());
@@ -99,56 +99,32 @@ public class CourseServiceImpl implements CourseService {
         return Response.builder().status(100).message("成功").build();
     }
 
-    /**
-     * Service to do what Post controller want to request
-     * @param commentID ID of comment
-     * @param report Feedback of this comment
-     * @return success Response information if report is recorded in Database correctly
-     */
+
     @Override
-    @Transactional
-    public Response report(Integer commentID, String report) {
-        CourseComment courseComment = courseMapper.getComment(commentID);
-        if(courseComment.getReportListJSON() == null){
-            courseComment.setReportList(new ArrayList<>());
-        }else{
-            courseComment.setReportList(JSON.parseArray(courseComment.getReportListJSON(), String.class));
-        }
-        courseComment.getReportList().add(report);
-        courseComment.setReportListJSON(JSON.toJSONString(courseComment.getReportList()));
-        courseMapper.addReportList(courseComment);
-        if(courseComment.getReportList().size() == 10) {
-            courseMapper.hideComment(commentID);
-        }
-        return Response.builder().status(100).message("成功").build();
+    public Response<List<Course>> getCourse(ArrayList<String> courseID) {
+        return new Response<>(courseMapper.getCourse(courseID));
     }
 
     @Override
-    public Response getCourse(ArrayList<String> courseID) {
-        return Response.builder().data(courseMapper.getCourse(courseID)).status(100).build();
+    public Response<List<CourseComment>> getCommentList(Integer courseID, Integer offset, Integer limit, SortType sortType) {
+        List<CourseComment> courseCommentList = courseMapper.getCommentList(courseID, offset, limit, sortType.getField());
+        return new Response<>(courseCommentList);
     }
 
     @Override
-    public Response getCommentList(Integer courseID, Integer offset, Integer limit, SortType sortType) {
-        List<CourseComment> courseCommentList;
-        courseCommentList = courseMapper.getCommentList(courseID, offset, limit, sortType.getField());
-        return Response.builder().data(courseCommentList).status(100).message("成功").build();
-    }
-
-    @Override
-    public Response searchCourse(String query) {
+    public Response<List<Course>> searchCourse(String query) {
         int i;
         for(i = 0;i < query.length();i++){
             if(query.charAt(i) >= '0' && query.charAt(i) <= '9'){
                 break;
             }
         }
-        return Response.builder().data(courseMapper.searchCourse(query.substring(0,i) + "%",  query.substring(i) + "%")).build();
+        return new Response<>(courseMapper.searchCourse(query.substring(0,i) + "%",  query.substring(i) + "%"));
     }
 
     @Override
     @Transactional
-    public Response postFile(CourseFile courseFile) {
+    public Response<Object> postFile(CourseFile courseFile) {
         courseMapper.postFile(courseFile);
         return new Response();
     }

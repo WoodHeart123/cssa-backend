@@ -6,7 +6,7 @@ import com.google.common.cache.CacheBuilder;
 import java.util.concurrent.TimeUnit;
 
 public class CacheStore<T>{
-    private Cache<String,T> cache;
+    private final Cache<String,T> cache;
 
     public CacheStore(int expiry){
         cache = CacheBuilder.newBuilder().expireAfterWrite(expiry, TimeUnit.SECONDS).concurrencyLevel(Runtime.getRuntime().availableProcessors()).build();

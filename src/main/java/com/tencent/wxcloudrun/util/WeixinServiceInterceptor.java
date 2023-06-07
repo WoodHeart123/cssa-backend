@@ -20,16 +20,15 @@ import java.io.PrintWriter;
 public class WeixinServiceInterceptor implements HandlerInterceptor {
     private final Logger logger = LoggerFactory.getLogger(WeixinServiceInterceptor.class);
     @Override
-    public boolean preHandle(HttpServletRequest request,  HttpServletResponse response, Object handler) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         PrintWriter writer = null;
-
         try{
             if(request.getHeader("x-wx-openid") == null) {
                 logger.info("filter user request to " + request.getRequestURI() + " because of no wx-openid");
                 response.setCharacterEncoding("utf-8");
                 response.setContentType("application/json;charset:utf-8");
                 writer = response.getWriter();
-                writer.print(JSON.toJSON(new Response(ReturnCode.INVALID_USER_TOKEN)));
+                writer.print(JSON.toJSON(new Response<>(ReturnCode.INVALID_USER_TOKEN)));
                 return false;
             }
         }catch (IOException ignored){
