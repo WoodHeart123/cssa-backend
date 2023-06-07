@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Service
 public interface ActivityService {
@@ -15,21 +16,20 @@ public interface ActivityService {
      * check whether user has signed up for the activity
      * @return
      */
-    Response checkSignup(Integer actID, String userID,Long date);
+    Response<SignupInfo> checkSignup(Integer actID, String userID,Long date);
 
-    Response getActivityList(String userID);
+    Response<List<Activity>> getActivityList(String userID);
 
     /**
      * sign up for an activity
-     * @return
      */
-    Response registerActivity(SignupInfo info);
+    Response<Object> registerActivity(SignupInfo info);
 
     /**
      * @param userID open id
      * @return a list of activity user registered
      */
-    Response getRegisterList(String userID);
+    Response<List<Activity>> getRegisterList(String userID);
 
 
 }

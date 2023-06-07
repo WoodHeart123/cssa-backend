@@ -1,42 +1,42 @@
 package com.tencent.wxcloudrun.service;
 
 
-import com.tencent.wxcloudrun.model.Activity;
-import com.tencent.wxcloudrun.model.Admin;
-import com.tencent.wxcloudrun.model.MainPagePhoto;
-import com.tencent.wxcloudrun.model.Response;
+import com.tencent.wxcloudrun.model.*;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public interface AdminService {
 
-    Response getActivityList();
+    Response<List<Activity>> getActivityList();
 
     /**
      * create a new activity
      * @param activity all attributes needed to describe activity
      */
-    Response createActivity(Activity activity);
+    Response<Object> createActivity(Activity activity);
 
-    Response getActivitySignup(String actID);
+    Response<List<SignupInfo>> getActivitySignup(String actID);
 
-    Response login(Admin admin);
+    Response<Admin> login(Admin admin);
 
-    Response register(Admin admin);
+    Response<Object> register(Admin admin);
 
-    Response deleteActivity(String actID);
+    Response<Object> deleteActivity(String actID);
 
-    Response deleteComment(Integer commentID);
+    Response<Object> deleteComment(Integer commentID);
 
-    Response postMainPagePhoto(MainPagePhoto mainPagePhoto);
+    Response<Object> postMainPagePhoto(MainPagePhoto mainPagePhoto);
 
-    Response deleteMainPagePhoto(String photoID);
+    Response<Object> deleteMainPagePhoto(String photoID);
 
-    Response getMainPagePhotoList();
+    Response<List<MainPagePhoto>> getMainPagePhotoList();
 
-    Response getDepartmentList();
+    Response<List<Department>> getDepartmentList();
 
-    Response getCourseList(Integer departmentID);
+    Response<List<Course>> getCourseList(Integer departmentID);
 
-    Response getCommentList(Integer courseID);
+    Response<List<CourseComment>> getCommentList(Integer courseID);
 }
