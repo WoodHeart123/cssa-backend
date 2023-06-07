@@ -23,22 +23,23 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     Jwtutil jwtutil;
 
-    public Response register(Admin admin){
+    public Response<Object> register(Admin admin) {
         admin.setPassword(DigestUtils.md5DigestAsHex(admin.getPassword().getBytes()));
         adminMapper.register(admin);
-        return new Response(ReturnCode.SUCCESS);
-    }
-    @Override
-    public Response getActivityList() {
-        List<Activity> activityList = adminMapper.getActivityList();
-        for(Activity activity: activityList){
-            activity.setAdditionalInfo(JSON.parseArray(activity.getAdditionalInfoJSON(),Info.class));
-        }
-        return Response.builder().data(activityList).status(100).build();
+        return new Response<>(ReturnCode.SUCCESS);
     }
 
     @Override
-    public Response createActivity(Activity activity) {
+    public Response<List<Activity>> getActivityList() {
+        List<Activity> activityList = adminMapper.getActivityList();
+        for (Activity activity : activityList) {
+            activity.setAdditionalInfo(JSON.parseArray(activity.getAdditionalInfoJSON(), Info.class));
+        }
+        return new Response<>(activityList);
+    }
+
+    @Override
+    public Response<Object> createActivity(Activity activity) {
         try {
             if (activity.getAdditionalInfo() == null) {
                 activity.setAdditionalInfo(new ArrayList<>());
@@ -46,78 +47,78 @@ public class AdminServiceImpl implements AdminService {
             activity.setAdditionalInfoJSON(JSON.toJSONString(activity.getAdditionalInfo()));
             adminMapper.createActivity(activity);
             return Response.builder().status(100).message("成功").build();
-        }catch(Exception exception){
+        } catch (Exception exception) {
             return Response.builder().status(101).message(exception.getMessage()).build();
         }
     }
 
     @Override
-    public Response getActivitySignup(String actID) {
+    public Response<List<SignupInfo>> getActivitySignup(String actID) {
         ArrayList<SignupInfo> list = adminMapper.getActivitySignup(actID);
         for (SignupInfo signupInfo : list) {
-            if(signupInfo.getResponseJSON() != null){
-                signupInfo.setResponse(JSON.parseArray(signupInfo.getResponseJSON(),String.class));
+            if (signupInfo.getResponseJSON() != null) {
+                signupInfo.setResponse(JSON.parseArray(signupInfo.getResponseJSON(), String.class));
             }
         }
-        return Response.builder().status(100).data(list).build();
+        return new Response<>(list);
     }
 
     @Override
-    public Response login(Admin admin) {
+    public Response<Admin> login(Admin admin) {
         admin.setPassword(DigestUtils.md5DigestAsHex(admin.getPassword().getBytes()));
         Admin result = this.adminMapper.login(admin);
-        if(result != null){
+        if (result != null) {
             admin.setToken(jwtutil.generateToken(admin.getUsername()));
-            return Response.builder().data(admin).status(100).build();
-        }else{
-            return Response.builder().status(301).message("用户名密码错误").build();
+            return new Response<>(admin);
+        } else {
+            return new Response<>(ReturnCode.INVALID_ADMIN_INFO);
         }
     }
 
     @Override
     @Transactional
-    public Response deleteActivity(String actID) {
+    public Response<Object> deleteActivity(String actID) {
         this.adminMapper.deleteActivity(actID, new Timestamp(0));
         return Response.builder().status(100).build();
     }
 
     @Override
-    public Response postMainPagePhoto(MainPagePhoto mainPagePhoto) {
+    public Response<Object> postMainPagePhoto(MainPagePhoto mainPagePhoto) {
         adminMapper.postMainPagePhoto(mainPagePhoto);
         return Response.builder().status(100).message("成功").build();
     }
 
     @Override
     @Transactional
-    public Response deleteMainPagePhoto(String photoID) {
+    public Response<Object> deleteMainPagePhoto(String photoID) {
         this.adminMapper.deleteMainPagePhoto(photoID, new Timestamp(0));
         return Response.builder().status(100).build();
     }
 
     @Override
-    public Response getMainPagePhotoList() {
+    public Response<List<MainPagePhoto>> getMainPagePhotoList() {
         List<MainPagePhoto> mainPagePhotoList = adminMapper.getMainPagePhotoList();
-        return Response.builder().data(mainPagePhotoList).status(100).build();
+        return new Response<>(mainPagePhotoList);
     }
 
     @Override
-    public Response getDepartmentList() {
+    public Response<List<Department>> getDepartmentList() {
         List<Department> departmentList = adminMapper.getDepartmentList();
-        return Response.builder().data(departmentList).status(100).message("成功").build();
+        return new Response<>(departmentList);
     }
 
     @Override
-    public Response getCourseList(Integer departmentID) {
-        return Response.builder().data(adminMapper.getCourseList(departmentID)).status(100).message("成功").build();
+    public Response<List<Course>> getCourseList(Integer departmentID) {
+        return new Response<>(adminMapper.getCourseList(departmentID));
     }
 
     @Override
-    public Response getCommentList(Integer courseID) {
-        return Response.builder().data(adminMapper.getCommentList(courseID)).status(100).message("成功").build();
+    public Response<List<CourseComment>> getCommentList(Integer courseID) {
+        return new Response<>(adminMapper.getCommentList(courseID));
     }
 
     @Override
-    public Response deleteComment(Integer commentID) {
+    public Response<Object> deleteComment(Integer commentID) {
         adminMapper.deleteComment(commentID);
         return Response.builder().status(100).message("success").build();
     }

@@ -1,7 +1,6 @@
 package com.tencent.wxcloudrun.model;
 
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.List;
 
 @Data
 public class User {
-    
+
     private String userID;
     private String email;
     private String nickname;
@@ -29,13 +28,15 @@ public class User {
     /**
      * a no argument constructor for mybatis injection
      */
-    public User(){}
+    public User() {
+    }
 
     /**
      * constructor for new user
+     *
      * @param nickname nickname of user;
      */
-    public User(String nickname){
+    public User(String nickname) {
         this.nickname = nickname;
         this.email = null;
         this.likedComment = new ArrayList<>();

@@ -7,9 +7,9 @@ import org.springframework.context.ApplicationEvent;
 @Getter
 public class SignupEvent extends ApplicationEvent {
 
-    private SignupInfo signupInfo;
+    private final SignupInfo signupInfo;
 
-    public SignupEvent(Object source, SignupInfo signupInfo){
+    public SignupEvent(Object source, SignupInfo signupInfo) {
         super(source);
         this.signupInfo = signupInfo;
     }

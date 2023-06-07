@@ -15,6 +15,7 @@ public interface UserMapper {
 
     /**
      * get user's info
+     *
      * @param userID user ID
      * @return email, nickname
      */
@@ -22,21 +23,23 @@ public interface UserMapper {
 
     /**
      * user register
+     *
      * @param nickname WeChat nickname
-     * @param userID user ID
+     * @param userID   user ID
      */
     void register(String nickname, String userID);
 
     /**
      * update user email
-     * @param email email
+     *
+     * @param email  email
      * @param userID userID
      */
     void updateEmail(String email, Boolean subscribe, String userID);
 
     /**
      * update user wechatID
-     * @param email email
+     *
      * @param userID userID
      */
     void updateWechatID(String wechatID, String userID);
@@ -44,18 +47,18 @@ public interface UserMapper {
 
     /**
      * update user's avatar
+     *
      * @param avatar a number ranged from 1 to 12
      */
-    void updateAvatar(String userID,Integer avatar);
+    void updateAvatar(String userID, Integer avatar);
 
     /**
-     *
      * @param userID user ID
      * @param offset the starting commentID
-     * @param limit number of comments
+     * @param limit  number of comments
      * @return list of comment with limit size
      */
-    List<CourseComment> getMyComment(@Param("userID")String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
+    List<CourseComment> getMyComment(@Param("userID") String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
     void updateComment(String userID, Integer commentID, String comment);
 
@@ -63,7 +66,7 @@ public interface UserMapper {
 
     void updateNickname(String nickname, String userID);
 
-    List<Product> getMySecondhand(@Param("userID")String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
+    List<Product> getMySecondhand(@Param("userID") String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
     void updateSecondHand(String userID, Product product);
 
@@ -80,27 +83,6 @@ public interface UserMapper {
     void deleteRental(String userID, Integer rentalID);
 
     ArrayList<Rental> getMyRental(String userID, Integer offset, Integer limit);
-    /**
-     * 删除收藏
-     * @param collect 收藏信息
-     */
-    void deleteCollect(Collect collect);
-
-    /**
-     * 添加收藏
-     * @param collect 收藏信息
-     */
-    void addCollect(Collect collect);
-
-    /**
-     *  获取用户收藏内容
-     * @param collectType 收藏类型
-     * @param userID 用户ID
-     */
-    List<Integer> getCollectID(@Param("collectType")CollectType collectType,@Param("userID")String userID);
-
-    List<Product> getProductCollectList(CollectType collectType,String userID,Integer offset, Integer limit);
-    List<Rental> getRentalCollectList(CollectType collectType,String userID,Integer offset, Integer limit);
 
     List<MainPagePhoto> getMainPagePhotos();
 

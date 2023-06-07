@@ -1,23 +1,15 @@
 package com.tencent.wxcloudrun.controller;
 
 
-import com.tencent.wxcloudrun.model.Product;
 import com.tencent.wxcloudrun.model.Rental;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.service.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.JedisPooled;
-import redis.clients.jedis.search.Document;
-import redis.clients.jedis.search.Query;
-import redis.clients.jedis.search.RediSearchUtil;
-import redis.clients.jedis.search.SearchResult;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -42,7 +34,7 @@ public class RentalController {
      * @return 转租信息列表
      */
     @RequestMapping(value = {"/getRentalList"}, method = {RequestMethod.GET})
-    public Response getRentalList(@RequestParam Integer offset, @RequestParam Integer limit, @RequestParam Integer priceLimit, @RequestParam ArrayList<String> floorPlanList,@RequestParam ArrayList<Long> time) {
+    public Response getRentalList(@RequestParam Integer offset, @RequestParam Integer limit, @RequestParam Integer priceLimit, @RequestParam ArrayList<String> floorPlanList, @RequestParam ArrayList<Long> time) {
         return rentalService.getRentalList(offset, limit, priceLimit,
                 floorPlanList, new Timestamp(time.get(0)), new Timestamp(time.get(1)));
     }
@@ -55,13 +47,13 @@ public class RentalController {
     @RequestMapping(value = {"/postRentalInfo"}, method = {RequestMethod.POST})
     public Response postRentalInfo(@RequestBody Rental rentalInfo, @RequestParam Boolean save, @RequestHeader("x-wx-openid") String openid) {
         rentalInfo.setUserID(openid);
-        return rentalService.postRentalInfo(rentalInfo,save);
-    }
-    @RequestMapping(value={"/updateRental"},method={RequestMethod.POST})
-    public Response updateRental(@RequestBody Rental rental, @RequestHeader("x-wx-openid") String openid){
-        return rentalService.updateRental(openid, rental);
+        return rentalService.postRentalInfo(rentalInfo, save);
     }
 
+    @RequestMapping(value = {"/updateRental"}, method = {RequestMethod.POST})
+    public Response updateRental(@RequestBody Rental rental, @RequestHeader("x-wx-openid") String openid) {
+        return rentalService.updateRental(openid, rental);
+    }
 
 
 }
