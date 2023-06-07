@@ -10,7 +10,7 @@ public class AuthEvent extends ApplicationEvent {
 
     private final String email;
 
-    public AuthEvent(Object source,String email, Integer authCode){
+    public AuthEvent(Object source, String email, Integer authCode) {
         super(source);
         this.authCode = authCode;
         this.email = email;

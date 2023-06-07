@@ -16,25 +16,29 @@ public class Response<T> {
     public String message;
     public T data;
 
-    public Response(){
+    public Response() {
         this.message = ReturnCode.SUCCESS.getMessage();
         this.status = ReturnCode.SUCCESS.getCode();
     }
-    public Response(int status,String message,T data){
+
+    public Response(int status, String message, T data) {
         this.status = status;
         this.message = message;
         this.data = data;
     }
-    public Response(T data){
+
+    public Response(T data) {
         this.data = data;
         this.message = ReturnCode.SUCCESS.getMessage();
         this.status = ReturnCode.SUCCESS.getCode();
     }
-    public Response(ReturnCode rc){
+
+    public Response(ReturnCode rc) {
         this.message = rc.getMessage();
         this.status = rc.getCode();
     }
-    public Response(ReturnCode rc,T data){
+
+    public Response(ReturnCode rc, T data) {
         this(rc);
         this.data = data;
     }

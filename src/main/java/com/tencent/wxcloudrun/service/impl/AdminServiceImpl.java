@@ -23,16 +23,17 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     Jwtutil jwtutil;
 
-    public Response<Object> register(Admin admin){
+    public Response<Object> register(Admin admin) {
         admin.setPassword(DigestUtils.md5DigestAsHex(admin.getPassword().getBytes()));
         adminMapper.register(admin);
         return new Response<>(ReturnCode.SUCCESS);
     }
+
     @Override
     public Response<List<Activity>> getActivityList() {
         List<Activity> activityList = adminMapper.getActivityList();
-        for(Activity activity: activityList){
-            activity.setAdditionalInfo(JSON.parseArray(activity.getAdditionalInfoJSON(),Info.class));
+        for (Activity activity : activityList) {
+            activity.setAdditionalInfo(JSON.parseArray(activity.getAdditionalInfoJSON(), Info.class));
         }
         return new Response<>(activityList);
     }
@@ -46,7 +47,7 @@ public class AdminServiceImpl implements AdminService {
             activity.setAdditionalInfoJSON(JSON.toJSONString(activity.getAdditionalInfo()));
             adminMapper.createActivity(activity);
             return Response.builder().status(100).message("成功").build();
-        }catch(Exception exception){
+        } catch (Exception exception) {
             return Response.builder().status(101).message(exception.getMessage()).build();
         }
     }
@@ -55,8 +56,8 @@ public class AdminServiceImpl implements AdminService {
     public Response<List<SignupInfo>> getActivitySignup(String actID) {
         ArrayList<SignupInfo> list = adminMapper.getActivitySignup(actID);
         for (SignupInfo signupInfo : list) {
-            if(signupInfo.getResponseJSON() != null){
-                signupInfo.setResponse(JSON.parseArray(signupInfo.getResponseJSON(),String.class));
+            if (signupInfo.getResponseJSON() != null) {
+                signupInfo.setResponse(JSON.parseArray(signupInfo.getResponseJSON(), String.class));
             }
         }
         return new Response<>(list);
@@ -66,10 +67,10 @@ public class AdminServiceImpl implements AdminService {
     public Response<Admin> login(Admin admin) {
         admin.setPassword(DigestUtils.md5DigestAsHex(admin.getPassword().getBytes()));
         Admin result = this.adminMapper.login(admin);
-        if(result != null){
+        if (result != null) {
             admin.setToken(jwtutil.generateToken(admin.getUsername()));
             return new Response<>(admin);
-        }else{
+        } else {
             return new Response<>(ReturnCode.INVALID_ADMIN_INFO);
         }
     }

@@ -2,7 +2,6 @@ package com.tencent.wxcloudrun.model;
 
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data

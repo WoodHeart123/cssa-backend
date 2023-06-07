@@ -3,7 +3,6 @@ package com.tencent.wxcloudrun.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import lombok.Generated;
 
 import java.sql.Timestamp;
 import java.util.List;

@@ -5,7 +5,6 @@ import com.tencent.wxcloudrun.model.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public interface AdminService {
@@ -14,6 +13,7 @@ public interface AdminService {
 
     /**
      * create a new activity
+     *
      * @param activity all attributes needed to describe activity
      */
     Response<Object> createActivity(Activity activity);

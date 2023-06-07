@@ -23,19 +23,20 @@ public class CourseServiceImpl implements CourseService {
 
     /**
      * Service to do what postComment controller want to request
+     *
      * @param courseComment the comment
      * @return success Response information if everything is recorded in Database correctly
      */
     @Override
     @Transactional
     public Response<Object> postComment(CourseComment courseComment) {
-        if(courseComment.getUserAvatar() == null){
+        if (courseComment.getUserAvatar() == null) {
             Random random = new Random();
             courseComment.setUserAvatar(random.nextInt(10) + 1);
         }
         // to check if there is already two comments
         Integer count = courseMapper.getPostCommentCount(courseComment.getUserID(), courseComment.getCourseID());
-        if(count >= 2){
+        if (count >= 2) {
             return Response.builder().status(110).message("评论数超过两个").build();
         }
         // save the comment
@@ -46,8 +47,8 @@ public class CourseServiceImpl implements CourseService {
         courseIDList.add(courseComment.getCourseID().toString());
         List<Course> courseList = courseMapper.getCourse(courseIDList);
         Course course = courseList.get(0);
-        course.setAvgDifficulty((course.getAvgDifficulty() * course.getCommentCount() + courseComment.getDifficulty())/(course.getCommentCount() + 1));
-        course.setAvgPrefer((course.getAvgPrefer() * course.getCommentCount() + courseComment.getPrefer())/(course.getCommentCount() + 1));
+        course.setAvgDifficulty((course.getAvgDifficulty() * course.getCommentCount() + courseComment.getDifficulty()) / (course.getCommentCount() + 1));
+        course.setAvgPrefer((course.getAvgPrefer() * course.getCommentCount() + courseComment.getPrefer()) / (course.getCommentCount() + 1));
         course.setCommentCount(course.getCommentCount() + 1);
         courseMapper.updateCourse(course);
         return Response.builder().message("成功").status(100).build();
@@ -59,8 +60,8 @@ public class CourseServiceImpl implements CourseService {
      */
     @Override
     public Response<List<Course>> getCourseList(Integer departmentID, Integer offset, Integer limit, SortType sortType, Boolean isGrad) {
-        if(departmentID.equals(0)){
-            return new Response<>(courseMapper.getAllCourseList(offset,limit, sortType.getField(), sortType.getOrder(),sortType.getCommentCount(), isGrad));
+        if (departmentID.equals(0)) {
+            return new Response<>(courseMapper.getAllCourseList(offset, limit, sortType.getField(), sortType.getOrder(), sortType.getCommentCount(), isGrad));
         }
         return new Response<>(courseMapper.getCourseList(departmentID, sortType.getField(), sortType.getOrder(), isGrad));
     }
@@ -75,7 +76,8 @@ public class CourseServiceImpl implements CourseService {
 
     /**
      * Service to do what Zan controller want to request
-     * @param userID wx-openid
+     *
+     * @param userID    wx-openid
      * @param commentID ID of comment
      * @return success Response information if everything is recorded in Database correctly
      * else error Response or 已点赞
@@ -84,12 +86,12 @@ public class CourseServiceImpl implements CourseService {
     @Transactional
     public Response<Object> zan(String userID, Integer commentID) {
         User user = courseMapper.getUser(userID);
-        if(user.getLikedCommentJSON() == null){
+        if (user.getLikedCommentJSON() == null) {
             user.setLikedComment(new ArrayList<>());
-        }else{
+        } else {
             user.setLikedComment(JSON.parseArray(user.getLikedCommentJSON(), Integer.class));
         }
-        if(user.getLikedComment().contains(commentID)){
+        if (user.getLikedComment().contains(commentID)) {
             return Response.builder().status(107).message("已点赞").build();
         }
         user.getLikedComment().add(commentID);
@@ -114,12 +116,12 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Response<List<Course>> searchCourse(String query) {
         int i;
-        for(i = 0;i < query.length();i++){
-            if(query.charAt(i) >= '0' && query.charAt(i) <= '9'){
+        for (i = 0; i < query.length(); i++) {
+            if (query.charAt(i) >= '0' && query.charAt(i) <= '9') {
                 break;
             }
         }
-        return new Response<>(courseMapper.searchCourse(query.substring(0,i) + "%",  query.substring(i) + "%"));
+        return new Response<>(courseMapper.searchCourse(query.substring(0, i) + "%", query.substring(i) + "%"));
     }
 
     @Override

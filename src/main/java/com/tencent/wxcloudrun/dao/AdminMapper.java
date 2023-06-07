@@ -14,6 +14,7 @@ public interface AdminMapper {
 
     /**
      * create activity with provided info
+     *
      * @param activity all activity info
      */
     void createActivity(Activity activity);
@@ -25,6 +26,7 @@ public interface AdminMapper {
 
     /**
      * login method for admin
+     *
      * @param admin password and username
      * @return 0 for mismatch, 1 for success
      */
@@ -36,26 +38,29 @@ public interface AdminMapper {
 
     /**
      * delete the activity by setting timestamp to zero
-     * @param actID actID
+     *
+     * @param actID     actID
      * @param timestamp timestamp(0)
      */
-    void deleteActivity(@Param("actID") String actID,@Param("timestamp") Timestamp timestamp);
+    void deleteActivity(@Param("actID") String actID, @Param("timestamp") Timestamp timestamp);
 
     /**
      * get all user list that register the activity
+     *
      * @param actID actID
      */
     ArrayList<SignupInfo> getActivitySignup(String actID);
 
     /**
      * delete the comment by comment ID
+     *
      * @param commentID
      */
     void deleteComment(Integer commentID);
 
     void postMainPagePhoto(MainPagePhoto mainPagePhoto);
 
-    void deleteMainPagePhoto(@Param("photoID") String actID,@Param("timestamp") Timestamp timestamp);
+    void deleteMainPagePhoto(@Param("photoID") String actID, @Param("timestamp") Timestamp timestamp);
 
     List<MainPagePhoto> getMainPagePhotoList();
 

@@ -33,22 +33,22 @@ public class UserEventListener {
 
     @EventListener
     @Async
-    public void register(SignupEvent signupEvent){
+    public void register(SignupEvent signupEvent) {
         SignupInfo signupInfo = signupEvent.getSignupInfo();
         User user = userMapper.login(signupInfo.getUserID());
-        Activity activity= activityMapper.findActivity(signupInfo.getActID());
-        if(user.getEmail() == null) {
+        Activity activity = activityMapper.findActivity(signupInfo.getActID());
+        if (user.getEmail() == null) {
             return;
         }
         Context context = new Context();
-        context.setVariable("title",activity.getTitle());
-        context.setVariable("location",activity.getLocation());
-        context.setVariable("startDate",activity.getStartDate().toString());
+        context.setVariable("title", activity.getTitle());
+        context.setVariable("location", activity.getLocation());
+        context.setVariable("startDate", activity.getStartDate().toString());
         EmailDetail emailDetail = new EmailDetail();
-        emailDetail.setMessage(templateEngine.process("ActivityConfirmation",context));
+        emailDetail.setMessage(templateEngine.process("ActivityConfirmation", context));
         emailDetail.setReceiver(user.getEmail());
         emailDetail.setSubject(activity.getTitle() + "报名");
-        try{
+        try {
             emailService.sendSimpleMail(emailDetail);
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -57,16 +57,16 @@ public class UserEventListener {
 
     @EventListener
     @Async
-    public void getAuthCode(AuthEvent authEvent){
+    public void getAuthCode(AuthEvent authEvent) {
         Integer authCode = authEvent.getAuthCode();
         String email = authEvent.getEmail();
         Context context = new Context();
-        context.setVariable("authCode",authCode);
+        context.setVariable("authCode", authCode);
         EmailDetail emailDetail = new EmailDetail();
-        emailDetail.setMessage(templateEngine.process("SendAuthCode",context));
+        emailDetail.setMessage(templateEngine.process("SendAuthCode", context));
         emailDetail.setReceiver(email);
         emailDetail.setSubject("验证码");
-        try{
+        try {
             emailService.sendSimpleMail(emailDetail);
         } catch (MessagingException e) {
             e.printStackTrace();

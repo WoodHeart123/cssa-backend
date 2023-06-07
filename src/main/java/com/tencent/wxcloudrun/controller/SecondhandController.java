@@ -1,9 +1,9 @@
 package com.tencent.wxcloudrun.controller;
 
 
+import com.tencent.wxcloudrun.model.Product;
 import com.tencent.wxcloudrun.model.ProductType;
 import com.tencent.wxcloudrun.model.Response;
-import com.tencent.wxcloudrun.model.Product;
 import com.tencent.wxcloudrun.service.SecondhandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,33 +31,33 @@ public class SecondhandController {
     private JedisPooled jedisPooled;
 
 
-    @RequestMapping(value={ "/suggest"}, method = {RequestMethod.GET})
+    @RequestMapping(value = {"/suggest"}, method = {RequestMethod.GET})
     public Response suggest(@RequestParam String value, HttpServletRequest request) throws IOException {
         return Response.builder().data(jedisPooled.ftSugGet("productName", value, true, 50)).status(100).build();
     }
 
-    @RequestMapping(value={ "/search"}, method = {RequestMethod.GET})
+    @RequestMapping(value = {"/search"}, method = {RequestMethod.GET})
     public Response search(@RequestParam String value, @RequestParam Integer limit, @RequestParam Integer offset) throws IOException {
         ArrayList<String> productIDList = new ArrayList<>();
         Query q = new Query("*" + value + "*").setLanguage("chinese").limit(offset, limit);
-        SearchResult sr = jedisPooled.ftSearch("product-index",q);
-        for(Document document: sr.getDocuments()){
-           productIDList.add(document.getString("productID"));
+        SearchResult sr = jedisPooled.ftSearch("product-index", q);
+        for (Document document : sr.getDocuments()) {
+            productIDList.add(document.getString("productID"));
         }
-        if(productIDList.size() == 0){
+        if (productIDList.size() == 0) {
             return Response.builder().message("没有匹配结果").status(124).build();
         }
         return secondhandService.getProduct(productIDList);
 
     }
 
-    @RequestMapping(value= {"/getProductList"}, method = {RequestMethod.GET})
-    public Response getProductList(@RequestParam ProductType productType, @RequestParam Integer offset, @RequestParam Integer limit){
-        return secondhandService.getProductList(productType,offset,limit);
+    @RequestMapping(value = {"/getProductList"}, method = {RequestMethod.GET})
+    public Response getProductList(@RequestParam ProductType productType, @RequestParam Integer offset, @RequestParam Integer limit) {
+        return secondhandService.getProductList(productType, offset, limit);
     }
-    
-    @RequestMapping(value= {"/saveProduct"}, method = {RequestMethod.POST})
-        public Response saveProduct(@RequestParam Boolean save,@RequestBody Product product, @RequestHeader("x-wx-openid") String openid) {
+
+    @RequestMapping(value = {"/saveProduct"}, method = {RequestMethod.POST})
+    public Response saveProduct(@RequestParam Boolean save, @RequestBody Product product, @RequestHeader("x-wx-openid") String openid) {
         product.setUserID(openid);
         secondhandService.saveProduct(product, save);
         Map<String, Object> fields = new HashMap<>();
@@ -68,11 +68,10 @@ public class SecondhandController {
         return new Response();
     }
 
-    @RequestMapping(value={"/updateSecondHand"},method={RequestMethod.POST})
-    public Response updateSecondHand(@RequestBody Product product, @RequestHeader("x-wx-openid") String openid){
+    @RequestMapping(value = {"/updateSecondHand"}, method = {RequestMethod.POST})
+    public Response updateSecondHand(@RequestBody Product product, @RequestHeader("x-wx-openid") String openid) {
         return secondhandService.updateSecondHand(openid, product);
     }
-
 
 
 }
