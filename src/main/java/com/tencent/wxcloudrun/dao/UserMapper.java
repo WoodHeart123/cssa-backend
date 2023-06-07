@@ -36,7 +36,6 @@ public interface UserMapper {
 
     /**
      * update user wechatID
-     * @param email email
      * @param userID userID
      */
     void updateWechatID(String wechatID, String userID);
