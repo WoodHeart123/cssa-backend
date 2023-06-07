@@ -69,14 +69,6 @@
         SELECT * FROM user WHERE userID = #{userID}
     </select>
 
-    <insert id="addCollect" parameterType="Collect">
-        INSERT INTO collect(userID, contentID, collectType) values (#{userID},#{contentID},#{collectType}) ON DUPLICATE KEY UPDATE createTime = CURRENT_TIMESTAMP
-    </insert>
-
-    <delete id="deleteCollect" parameterType="Collect">
-        DELETE FROM collect WHERE userID = #{userID} AND contentID = #{contentID} AND collectType = #{collectType}
-    </delete>
-
     <select id="getMyRentalSave" parameterType="Map" resultType="Rental">
         SELECT *
         FROM rental
