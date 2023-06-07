@@ -5,8 +5,6 @@ import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.SignupInfo;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -14,9 +12,10 @@ public interface ActivityService {
 
     /**
      * check whether user has signed up for the activity
+     *
      * @return
      */
-    Response<SignupInfo> checkSignup(Integer actID, String userID,Long date);
+    Response<SignupInfo> checkSignup(Integer actID, String userID, Long date);
 
     Response<List<Activity>> getActivityList(String userID);
 

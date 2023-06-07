@@ -15,10 +15,13 @@ public interface SecondhandMapper {
     ArrayList<Product> getProduct(ArrayList<String> productID);
 
     ArrayList<Product> getAllProductList(Integer offset, Integer limit);
-    
+
     User collect(String userID);
+
     void saveProduct(Product product);
-    void saveContact(String userID,String contact);
+
+    void saveContact(String userID, String contact);
+
     void updateSecondHand(String userID, Product product);
 
 }

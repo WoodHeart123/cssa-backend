@@ -2,12 +2,10 @@ package com.tencent.wxcloudrun.dao;
 
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.SignupInfo;
-import com.tencent.wxcloudrun.model.User;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.sql.Timestamp;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 @Mapper
 public interface ActivityMapper {
@@ -27,6 +25,7 @@ public interface ActivityMapper {
 
     /**
      * record all user's response for one activity
+     *
      * @param info information user provided
      */
     void recordResponse(SignupInfo info);

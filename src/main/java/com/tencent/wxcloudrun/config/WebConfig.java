@@ -12,8 +12,8 @@ import java.util.Arrays;
 public class WebConfig implements WebMvcConfigurer {
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry){
-        registry.addInterceptor(new WeixinServiceInterceptor()).addPathPatterns(Arrays.asList("/user/*","/activity/*","/rental/*","/course/*","/restaurant/*","/secondhand/*"));
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new WeixinServiceInterceptor()).addPathPatterns(Arrays.asList("/user/*", "/activity/*", "/rental/*", "/course/*", "/restaurant/*", "/secondhand/*"));
         registry.addInterceptor(new AdminServiceInterceptor()).addPathPatterns("/admin/*").excludePathPatterns("/admin/login").excludePathPatterns("/admin/register");
     }
 }

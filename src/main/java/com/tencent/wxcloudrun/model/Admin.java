@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class Admin {
-    public enum Division{
+    public enum Division {
         JISHU,
         WAILIAN,
         HUODONG,

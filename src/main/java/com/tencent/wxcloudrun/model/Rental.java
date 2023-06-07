@@ -5,7 +5,6 @@ import lombok.Data;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
 
 @Data
 public class Rental {
@@ -35,7 +34,6 @@ public class Rental {
     // 图片URL
     private ArrayList<String> images;
     private String imagesJSON;
-
 
 
 }

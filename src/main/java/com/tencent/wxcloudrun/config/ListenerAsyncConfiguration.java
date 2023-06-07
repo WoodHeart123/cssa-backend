@@ -10,8 +10,7 @@ import java.util.concurrent.Executor;
 
 @Configuration
 @EnableAsync
-public class ListenerAsyncConfiguration implements AsyncConfigurer
-{
+public class ListenerAsyncConfiguration implements AsyncConfigurer {
 
     @Override
     public Executor getAsyncExecutor() {

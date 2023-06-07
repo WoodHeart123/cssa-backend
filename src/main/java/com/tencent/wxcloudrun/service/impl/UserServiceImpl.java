@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.dao.UserMapper;
 import com.tencent.wxcloudrun.event.AuthEvent;
 import com.tencent.wxcloudrun.model.*;
-import com.tencent.wxcloudrun.service.RentalService;
 import com.tencent.wxcloudrun.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -16,9 +15,7 @@ import redis.clients.jedis.JedisPooled;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void getAuthCode(String email, Integer authCode) {
-        applicationContext.publishEvent(new AuthEvent(this,email,authCode));
+        applicationContext.publishEvent(new AuthEvent(this, email, authCode));
     }
 
     @Override
@@ -44,17 +41,18 @@ public class UserServiceImpl implements UserService {
         userMapper.authSuccess(userID);
         return new Response();
     }
+
     @Override
     public Response login(String nickname, String userID) throws UnsupportedEncodingException {
         User user = userMapper.login(userID);
-        if(user == null){
-            userMapper.register(nickname,userID);
+        if (user == null) {
+            userMapper.register(nickname, userID);
             user = new User(nickname);
             return Response.builder().data(user).status(103).message("新用户").build();
-        }else{
-            if(user.getLikedCommentJSON() == null){
+        } else {
+            if (user.getLikedCommentJSON() == null) {
                 user.setLikedComment(new ArrayList<>());
-            }else {
+            } else {
                 user.setLikedComment(JSON.parseArray(user.getLikedCommentJSON(), Integer.class));
             }
 
@@ -63,7 +61,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Response updateEmail(String email,Boolean subscribe, String userID){
+    public Response updateEmail(String email, Boolean subscribe, String userID) {
         String regex = "^([-a-zA-Z0-9_.]+)@([-a-zA-Z0-9_.]+).([a-zA-Z]{2,5})$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
@@ -75,35 +73,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Response updateAvatar(String userID,Integer avatar){
-        userMapper.updateAvatar(userID,avatar);
+    public Response updateAvatar(String userID, Integer avatar) {
+        userMapper.updateAvatar(userID, avatar);
         return new Response();
     }
 
     @Override
     public Response getMyComment(String userID, Integer offset, Integer limit) {
-        return new Response(userMapper.getMyComment(userID,offset,limit));
+        return new Response(userMapper.getMyComment(userID, offset, limit));
     }
 
     @Override
     @Transactional
     public Response updateComment(String userID, Integer commentID, String comment) {
-        userMapper.updateComment(userID,commentID,comment);
+        userMapper.updateComment(userID, commentID, comment);
         return new Response();
     }
 
     @Override
     @Transactional
     public Response deleteComment(String userID, Integer commentID) {
-        userMapper.deleteComment(userID,commentID);
+        userMapper.deleteComment(userID, commentID);
         return new Response();
     }
 
     @Override
     public Response setRentalTime(Integer rentalID, String userID, Timestamp time) {
-        if(time.equals(new Timestamp(0))){
+        if (time.equals(new Timestamp(0))) {
             userMapper.clearRentalTime(rentalID, userID);
-        }else {
+        } else {
             userMapper.setRentalTime(rentalID, userID, time);
         }
         return new Response();
@@ -111,10 +109,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response getMyRental(String userID, Integer offset, Integer limit) {
-        ArrayList<Rental> rentalList = userMapper.getMyRental(userID, offset,limit);
-        for(Rental rental: rentalList){
-            rental.setImages((ArrayList<String>) JSON.parseArray(rental.getImagesJSON(),String.class));
-            if(rental.getPublishedTime() == null){
+        ArrayList<Rental> rentalList = userMapper.getMyRental(userID, offset, limit);
+        for (Rental rental : rentalList) {
+            rental.setImages((ArrayList<String>) JSON.parseArray(rental.getImagesJSON(), String.class));
+            if (rental.getPublishedTime() == null) {
                 rental.setPublishedTime(new Timestamp(0));
             }
             rental.setUTCPublishedTime(rental.getPublishedTime().toInstant().toString());
@@ -125,23 +123,23 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Response updateNickname(String userID, String nickname) {
-        userMapper.updateNickname(nickname,userID);
+        userMapper.updateNickname(nickname, userID);
         return new Response();
     }
 
     @Override
     @Transactional
-    public Response updateWechatID(String wechatID, String userID){
+    public Response updateWechatID(String wechatID, String userID) {
         userMapper.updateWechatID(wechatID, userID);
         return new Response();
     }
 
     @Override
     public Response getMySecondhand(String userID, Integer offset, Integer limit) {
-        List<Product> productList = userMapper.getMySecondhand(userID,offset,limit);
-        for(Product product:productList){
-            product.setImages(JSON.parseArray(product.getImagesJSON(),String.class));
-            if(product.getTime() == null) {
+        List<Product> productList = userMapper.getMySecondhand(userID, offset, limit);
+        for (Product product : productList) {
+            product.setImages(JSON.parseArray(product.getImagesJSON(), String.class));
+            if (product.getTime() == null) {
                 product.setTime(new Timestamp(0));
             }
             product.setUTCtime(product.getTime().toInstant().toString());
@@ -159,22 +157,22 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Response deleteMySecondHand(String userID, Integer productID) {
-        userMapper.deleteSecondHand(userID,productID);
+        userMapper.deleteSecondHand(userID, productID);
         return new Response();
     }
 
     @Override
     public Response deleteMyRental(String userID, Integer rentalID) {
-        userMapper.deleteRental(userID,rentalID);
+        userMapper.deleteRental(userID, rentalID);
         return new Response();
     }
 
     @Override
     @Transactional
     public Response setProductTime(Integer productID, String userID, Timestamp time) {
-        if(time.equals(new Timestamp(0))){
+        if (time.equals(new Timestamp(0))) {
             userMapper.clearProductTime(productID, userID);
-        }else {
+        } else {
             userMapper.setProductTime(productID, userID, time);
         }
         return new Response();

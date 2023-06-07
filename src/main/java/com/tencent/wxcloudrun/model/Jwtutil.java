@@ -40,7 +40,7 @@ public class Jwtutil {
         Date created;
         try {
             Claims claims = getClaimsFromToken(token);
-            created = new Date(((Long)claims.get("created")).longValue());
+            created = new Date(((Long) claims.get("created")).longValue());
         } catch (Exception e) {
             created = null;
         }
@@ -96,7 +96,7 @@ public class Jwtutil {
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(generateExpirationDate())
-                .signWith(SignatureAlgorithm.HS512,this.secret)
+                .signWith(SignatureAlgorithm.HS512, this.secret)
                 .compact();
     }
 
