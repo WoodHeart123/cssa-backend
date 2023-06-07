@@ -23,23 +23,23 @@ public class ActivityServiceImpl implements ActivityService {
 
     Queue<Objects> q = new LinkedList<>();
     @Override
-    public Response checkSignup(Integer actID, String userID, Long Date) {
+    public Response<SignupInfo> checkSignup(Integer actID, String userID, Long Date) {
         ArrayList<SignupInfo> result = activityMapper.checkSignup(userID, Date);
         for (int i = 0; i < result.size(); i++) {
             if (result.get(i).getActID().equals(actID)) {
                 result.get(i).setDiscount(1 - (result.size() - 1) * 0.1);
                 result.get(i).setIfJoined(true);
-                return Response.builder().status(100).data(result.get(i)).build();
+                return new Response<>(result.get(i));
             }
         }
         SignupInfo temp = new SignupInfo();
         temp.setIfJoined(false);
         temp.setDiscount(1 - result.size() * 0.1);
-        return Response.builder().status(100).data(temp).build();
+        return new Response<>(temp);
     }
 
     @Override
-    public Response getActivityList(String userID) {
+    public Response<List<Activity>> getActivityList(String userID) {
         List<Activity> activityList = activityMapper.getActivityList();
         List<Activity> joinList = activityMapper.getRegisterList(userID);
         int i = 0,j = 0;
@@ -56,11 +56,11 @@ public class ActivityServiceImpl implements ActivityService {
         for(i = 0;i < activityList.size();i++){
             activityList.get(i).setAdditionalInfo(JSON.parseArray(activityList.get(i).getAdditionalInfoJSON(), Info.class));
         }
-        return Response.builder().status(100).message("成功").data(activityList).build();
+        return new Response<>(activityList);
     }
 
     @Override
-    public Response registerActivity(SignupInfo info) {
+    public Response<Object> registerActivity(SignupInfo info) {
         try {
             Activity activity = activityMapper.findActivity(info.getActID());
 
@@ -82,9 +82,9 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public Response getRegisterList(String userID){
+    public Response<List<Activity>> getRegisterList(String userID){
         List<Activity> activityList = activityMapper.getRegisterList(userID);
-        return Response.builder().status(100).data(activityList).message("成功").build();
+        return new Response<>(activityList);
     }
 
 
