@@ -80,27 +80,6 @@ public interface UserMapper {
     void deleteRental(String userID, Integer rentalID);
 
     ArrayList<Rental> getMyRental(String userID, Integer offset, Integer limit);
-    /**
-     * 删除收藏
-     * @param collect 收藏信息
-     */
-    void deleteCollect(Collect collect);
-
-    /**
-     * 添加收藏
-     * @param collect 收藏信息
-     */
-    void addCollect(Collect collect);
-
-    /**
-     *  获取用户收藏内容
-     * @param collectType 收藏类型
-     * @param userID 用户ID
-     */
-    List<Integer> getCollectID(@Param("collectType")CollectType collectType,@Param("userID")String userID);
-
-    List<Product> getProductCollectList(CollectType collectType,String userID,Integer offset, Integer limit);
-    List<Rental> getRentalCollectList(CollectType collectType,String userID,Integer offset, Integer limit);
 
     List<MainPagePhoto> getMainPagePhotos();
 
