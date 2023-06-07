@@ -181,42 +181,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public Response collect(Collect collect, Boolean save) {
-        if(save){
-            userMapper.addCollect(collect);
-        }else{
-            userMapper.deleteCollect(collect);
-        }
-        return new Response();
-    }
-
-    @Override
-    public Response getCollectID(CollectType collectType, String userID) {
-        return new Response(userMapper.getCollectID(collectType, userID));
-    }
-
-    @Override
-    public Response getCollectList(CollectType collectType, String userID, Integer offset, Integer limit) {
-        if (collectType == CollectType.SECONDHAND) {
-            List<Product> result = userMapper.getProductCollectList(collectType, userID, offset, limit);
-            for(Product product: result) {
-                product.setImages(JSON.parseArray(product.getImagesJSON(), String.class));
-            }
-            return new Response(result);
-        } else if (collectType == CollectType.RENTAL) {
-            List<Rental> result = userMapper.getRentalCollectList(collectType, userID, offset, limit);
-            for(Rental rental :result){
-                rental.setImages((ArrayList<String>) JSON.parseArray(rental.getImagesJSON(),String.class));
-            }
-            return new Response(result);
-        } else {
-            return new Response(ReturnCode.INVALID_ENUM_TYPE);
-        }
-
-    }
-
-    @Override
     public Response getMainPagePhotos() {
         List<MainPagePhoto> mainPagePhotoList = userMapper.getMainPagePhotos();
         return Response.builder().data(mainPagePhotoList).status(100).build();

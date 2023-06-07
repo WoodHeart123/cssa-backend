@@ -1,6 +1,6 @@
 package com.tencent.wxcloudrun.util;
 
-import com.tencent.wxcloudrun.model.CacheStore;
+import com.tencent.wxcloudrun.config.CacheStore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

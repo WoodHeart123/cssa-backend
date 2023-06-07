@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.controller;
 
+import com.tencent.wxcloudrun.config.CacheStore;
 import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,32 +105,32 @@ public class UserController {
         return userService.updateNickname(openid, nickname);
     }
     @RequestMapping(value={"/updateProfile"}, method={RequestMethod.GET})
-    public Response updateProfile(@RequestParam String service, @RequestParam String str,@RequestParam Optional<Boolean> subscribe, @RequestHeader("x-wx-openid") String openid){
+    public Response<Object> updateProfile(@RequestParam String service, @RequestParam String str,@RequestParam Optional<Boolean> subscribe, @RequestHeader("x-wx-openid") String openid){
         switch (service.toLowerCase()){
             case "wechatid":
                 return userService.updateWechatID(str, openid);
             case "nickname":
                 if(str.length() == 0) {
-                    return new Response(ReturnCode.EMPTY_STRING);
+                    return new Response<>(ReturnCode.EMPTY_STRING);
                 }
                 return userService.updateNickname(openid,str);
             case "avatar":
                 try{
                     int avatar = Integer.parseInt(str);
                     if(avatar < 1 || avatar > 12){
-                        return new Response(ReturnCode.INTEGER_OUT_OF_RANGE);
+                        return new Response<>(ReturnCode.INTEGER_OUT_OF_RANGE);
                     }
                     return userService.updateAvatar(openid,avatar);
                 } catch(NumberFormatException e){
-                    return new Response(ReturnCode.INVALID_TYPE);
+                    return new Response<>(ReturnCode.INVALID_TYPE);
                 }
             case "email":
                 if(subscribe.isEmpty()){
-                    return new Response(ReturnCode.LACK_PARAM);
+                    return new Response<>(ReturnCode.LACK_PARAM);
                 }
                 return userService.updateEmail(str, subscribe.get(), openid);
             default:
-                return new Response(ReturnCode.UNKNOWN_SERVICE);
+                return new Response<>(ReturnCode.UNKNOWN_SERVICE);
         }
     }
 
@@ -179,28 +180,6 @@ public class UserController {
             default:
                 return new Response(ReturnCode.UNKNOWN_SERVICE);
         }
-    }
-
-
-    /**
-     * 收藏或取消收藏
-     * @param userID user ID
-     * @param save true 为收藏, false 为取消
-     */
-    @RequestMapping(value= {"/collect"}, method = {RequestMethod.POST})
-    public Response collect(@RequestBody Collect collect, @RequestHeader("x-wx-openid") String userID, @RequestParam Boolean save){
-        collect.setUserID(userID);
-        return userService.collect(collect, save);
-    }
-
-    @RequestMapping(value = {"/getCollectID"}, method = {RequestMethod.GET})
-    public Response getCollectID(@RequestParam CollectType collectType, @RequestHeader("x-wx-openid") String userID){
-        return userService.getCollectID(collectType, userID);
-    }
-
-    @RequestMapping(value = {"/getCollectList"}, method = {RequestMethod.GET})
-    public Response getCollectList(@RequestParam CollectType collectType,@RequestParam Integer offset, @RequestParam Integer limit, @RequestHeader("x-wx-openid") String userID){
-        return userService.getCollectList(collectType, userID, offset, limit);
     }
 
     /**

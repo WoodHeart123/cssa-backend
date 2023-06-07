@@ -1,4 +1,4 @@
-package com.tencent.wxcloudrun.model;
+package com.tencent.wxcloudrun.config;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;

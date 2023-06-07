@@ -1,13 +1,9 @@
 package com.tencent.wxcloudrun.service;
 
 
-import com.tencent.wxcloudrun.model.Collect;
-import com.tencent.wxcloudrun.model.CollectType;
 import com.tencent.wxcloudrun.model.Product;
 import com.tencent.wxcloudrun.model.Response;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
@@ -80,10 +76,6 @@ public interface UserService {
      */
     Response deleteMyRental(String userID, Integer rentalID);
     Response setProductTime(Integer productID, String userID, Timestamp time);
-    Response collect(Collect collect, Boolean save);
-    Response getCollectID(CollectType collectType,String userID);
-    Response getCollectList(CollectType collectType,String userID,Integer offset,Integer limit);
-
     Response getMainPagePhotos();
 
 
