@@ -14,7 +14,6 @@
         <typeAlias alias="Product" type="com.tencent.wxcloudrun.model.Product" />
         <typeAlias alias="Rental" type="com.tencent.wxcloudrun.model.Rental"/>
         <typeAlias alias="MainPagePhoto" type="com.tencent.wxcloudrun.model.MainPagePhoto" />
-        <typeAlias alias="Restaurant" type="com.tencent.wxcloudrun.model.Restaurant" />
         <typeAlias alias="CourseFile" type="com.tencent.wxcloudrun.model.CourseFile"/>
     </typeAliases>
 </configuration>
