@@ -45,8 +45,6 @@ spring:
       ssl.trust: smtpdm.aliyun.com
 
 
-
-
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml
   config-location:  classpath:mapper/mybatis-config.xml
@@ -55,7 +53,6 @@ jwt:
   header: Authorization
   secret: cssauwmadisoncssauwmadisoncssauwmadisoncssauwmadisoncssauwmadisoncssauwmadisoncssauwmadisoncssauwmadison
   expiration: 31536000
-
 
 
 
