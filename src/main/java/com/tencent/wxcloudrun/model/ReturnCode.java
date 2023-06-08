@@ -19,6 +19,7 @@ public enum ReturnCode {
     INVALID_ENUM_TYPE(110, "无法识别枚举类型"),
     UNKNOWN_SERVICE(111, "无法识别服务项目"),
     INVALID_TYPE(112, "类型错误"),
+    NO_SEARCH_RESULT(113, "无搜索结果"),
 
     INVALID_ADMIN_INFO(301, "管理员登录信息错误");
 

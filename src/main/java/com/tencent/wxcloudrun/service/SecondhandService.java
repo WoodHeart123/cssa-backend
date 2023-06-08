@@ -6,6 +6,7 @@ import com.tencent.wxcloudrun.model.Response;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public interface SecondhandService {
@@ -16,13 +17,13 @@ public interface SecondhandService {
      * @param limit       limit of list size
      * @return list of product information
      */
-    Response getProductList(ProductType productType, Integer offset, Integer limit);
+    Response<List<Product>> getProductList(ProductType productType, Integer offset, Integer limit);
 
-    Response saveProduct(Product product, Boolean save);
+    Response<Object> saveProduct(Product product, Boolean save);
 
-    Response getProduct(ArrayList<String> productID);
+    Response<List<Product>> getProduct(ArrayList<String> productID);
 
-    Response updateSecondHand(String userID, Product product);
+    Response<Object> updateSecondHand(String userID, Product product);
 
 
 }

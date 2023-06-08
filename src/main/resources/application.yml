@@ -9,6 +9,7 @@ cssa:
       description: 小程序后端接口文档
       base-package: com.tencent.wxcloudrun.controller
 
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
