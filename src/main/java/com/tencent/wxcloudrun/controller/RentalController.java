@@ -4,23 +4,25 @@ package com.tencent.wxcloudrun.controller;
 import com.tencent.wxcloudrun.model.Rental;
 import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.service.RentalService;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.JedisPooled;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin
 @RequestMapping({"/rental"})
+@Api(tags = "Rental")
 public class RentalController {
 
     @Autowired
     RentalService rentalService;
-
-    @Autowired
-    private JedisPooled jedisPooled;
 
     /**
      * 获取转租信息
@@ -33,8 +35,13 @@ public class RentalController {
      *               "time":[开始时间，结束时间]
      * @return 转租信息列表
      */
-    @RequestMapping(value = {"/getRentalList"}, method = {RequestMethod.GET})
-    public Response getRentalList(@RequestParam Integer offset, @RequestParam Integer limit, @RequestParam Integer priceLimit, @RequestParam ArrayList<String> floorPlanList, @RequestParam ArrayList<Long> time) {
+    @RequestMapping(value = {"/getRentalList"}, method = {RequestMethod.GET}, produces = "application/json")
+    @Operation(summary = "获取转租信息", description = "获取转租信息")
+    public Response<List<Rental>> getRentalList(@Parameter(description = "") @RequestParam Integer offset,
+                                                @Parameter(description = "") @RequestParam Integer limit,
+                                                @Parameter(description = "最高价格限制") @RequestParam Integer priceLimit,
+                                                @Parameter(description = "接受的户型") @RequestParam ArrayList<String> floorPlanList,
+                                                @Parameter(description = "开始时间，结束时间") @RequestParam ArrayList<Long> time) {
         return rentalService.getRentalList(offset, limit, priceLimit,
                 floorPlanList, new Timestamp(time.get(0)), new Timestamp(time.get(1)));
     }
@@ -45,13 +52,18 @@ public class RentalController {
      * @param rentalInfo 转租信息
      */
     @RequestMapping(value = {"/postRentalInfo"}, method = {RequestMethod.POST})
-    public Response postRentalInfo(@RequestBody Rental rentalInfo, @RequestParam Boolean save, @RequestHeader("x-wx-openid") String openid) {
+    @Operation(summary = "记录用户输入的转租信息", description = "记录用户输入的转租信息")
+    public Response<Object> postRentalInfo(@Parameter(description = "转租信息")@RequestBody Rental rentalInfo,
+                                           @Parameter(description = "是否保存联系方式") @RequestParam Boolean save,
+                                           @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         rentalInfo.setUserID(openid);
         return rentalService.postRentalInfo(rentalInfo, save);
     }
 
     @RequestMapping(value = {"/updateRental"}, method = {RequestMethod.POST})
-    public Response updateRental(@RequestBody Rental rental, @RequestHeader("x-wx-openid") String openid) {
+    @Operation(summary = "更新转租信息", description = "更新转租信息")
+    public Response<Object> updateRental(@Parameter(description = "转租信息") @RequestBody Rental rental,
+                                         @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         return rentalService.updateRental(openid, rental);
     }
 

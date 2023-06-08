@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Data
 @Builder
-@ApiModel(description = "返回结构体")
 public class Response<T> {
 
     @Schema(description = "状态码", defaultValue = "100")
