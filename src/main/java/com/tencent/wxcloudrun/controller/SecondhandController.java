@@ -7,6 +7,8 @@ import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.ReturnCode;
 import com.tencent.wxcloudrun.service.SecondhandService;
 import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.JedisPooled;
@@ -35,13 +37,17 @@ public class SecondhandController {
     private JedisPooled jedisPooled;
 
 
-    @RequestMapping(value = {"/suggest"}, method = {RequestMethod.GET})
-    public Response<List<String>> suggest(@RequestParam String value, HttpServletRequest request) {
+    @RequestMapping(value = {"/suggest"}, method = {RequestMethod.GET}, produces = "application/json")
+    @Operation(summary = "搜索建议", description = "搜索建议")
+    public Response<List<String>> suggest(@Parameter(description = "用户输入字符") @RequestParam String value) {
         return new Response<>(jedisPooled.ftSugGet("productName", value, true, 50));
     }
 
-    @RequestMapping(value = {"/search"}, method = {RequestMethod.GET})
-    public Response<List<Product>> search(@RequestParam String value, @RequestParam Integer limit, @RequestParam Integer offset){
+    @RequestMapping(value = {"/search"}, method = {RequestMethod.GET}, produces = "application/json")
+    @Operation(summary = "搜索", description = "搜索")
+    public Response<List<Product>> search(@Parameter(description = "用户输入的搜索字符") @RequestParam String value,
+                                          @RequestParam Integer limit,
+                                          @RequestParam Integer offset){
         ArrayList<String> productIDList = new ArrayList<>();
         Query q = new Query("*" + value + "*").setLanguage("chinese").limit(offset, limit);
         SearchResult sr = jedisPooled.ftSearch("product-index", q);
@@ -56,12 +62,18 @@ public class SecondhandController {
     }
 
     @RequestMapping(value = {"/getProductList"}, method = {RequestMethod.GET})
-    public Response<List<Product>> getProductList(@RequestParam ProductType productType, @RequestParam Integer offset, @RequestParam Integer limit) {
+    @Operation(summary = "获取商品列表", description = "获取商品列表")
+    public Response<List<Product>> getProductList(@Parameter(description = "商品类型") @RequestParam ProductType productType,
+                                                  @RequestParam Integer offset,
+                                                  @RequestParam Integer limit) {
         return secondhandService.getProductList(productType, offset, limit);
     }
 
     @RequestMapping(value = {"/saveProduct"}, method = {RequestMethod.POST})
-    public Response<Object> saveProduct(@RequestParam Boolean save, @RequestBody Product product, @RequestHeader("x-wx-openid") String openid) {
+    @Operation(summary = "发布商品", description = "发布商品")
+    public Response<Object> saveProduct(@Parameter(description = "是否保存联系方式") @RequestParam Boolean save,
+                                        @Parameter(description = "商品信息") @RequestBody Product product,
+                                        @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         product.setUserID(openid);
         secondhandService.saveProduct(product, save);
         Map<String, Object> fields = new HashMap<>();
@@ -73,7 +85,9 @@ public class SecondhandController {
     }
 
     @RequestMapping(value = {"/updateSecondHand"}, method = {RequestMethod.POST})
-    public Response<Object> updateSecondHand(@RequestBody Product product, @RequestHeader("x-wx-openid") String openid) {
+    @Operation(summary = "更新商品", description = "更新商品")
+    public Response<Object> updateSecondHand(@Parameter(description = "商品信息") @RequestBody Product product,
+                                             @Parameter(description = "微信ID")  @RequestHeader("x-wx-openid") String openid) {
         return secondhandService.updateSecondHand(openid, product);
     }
 
