@@ -96,6 +96,7 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/updateComment"}, method = {RequestMethod.POST})
+    @Operation(summary = "更新评论", description = "更新评论")
     public Response<Object> updateComment(@RequestBody CourseComment courseComment,
                                           @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         if (courseComment.getComment().length() > 300) {
@@ -106,6 +107,7 @@ public class UserController {
 
     @Deprecated
     @RequestMapping(value = {"/updateEmail"}, method = {RequestMethod.GET})
+    @Operation(summary = "更新邮箱", description = "更新邮箱")
     public Response<Object> updateEmail(@RequestParam String email,
                                         @RequestParam Boolean subscribe,
                                         @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
@@ -114,6 +116,7 @@ public class UserController {
 
     @Deprecated
     @RequestMapping(value = {"/updateAvatar"}, method = {RequestMethod.GET})
+    @Operation(summary = "更新头像", description = "更新头像")
     public Response<Object> updateAvatar(@RequestParam Integer avatar,
                                          @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         if (avatar < 1 || avatar > 12) {
@@ -124,6 +127,7 @@ public class UserController {
 
     @Deprecated
     @RequestMapping(value = {"/updateNickname"}, method = {RequestMethod.GET})
+    @Operation(summary = "更新昵称", description = "更新昵称")
     public Response<Object> updateNickname(@RequestParam String nickname,
                                            @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         if (nickname.length() == 0) {
@@ -167,12 +171,14 @@ public class UserController {
 
     @Deprecated
     @RequestMapping(value = {"/updateSecondHand"}, method = {RequestMethod.POST})
+    @Operation(summary = "更新二手", description = "更新二手")
     public Response<Object> updateSecondHand(@RequestBody Product product,
                                              @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         return userService.updateMySecondHand(openid, product);
     }
 
     @RequestMapping(value = {"/setTime"}, method = {RequestMethod.GET})
+    @Operation(summary = "设置时间", description = "设置时间")
     public Response<Object> setTime(@RequestParam String service,
                                     @RequestParam Integer itemID,
                                     @RequestParam String UTCtime,
@@ -190,6 +196,7 @@ public class UserController {
 
     @Deprecated
     @RequestMapping(value = {"/setProductTime"}, method = {RequestMethod.GET})
+    @Operation(summary = "设置二手发布时间", description = "设置二手发布时间")
     public Response setProductTime(@RequestParam Integer productID,
                                    @RequestParam String UTCtime,
                                    @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String userID) {
@@ -198,6 +205,7 @@ public class UserController {
 
     @Deprecated
     @RequestMapping(value = {"/deleteMySecondHand"}, method = {RequestMethod.POST})
+    @Operation(summary = "删除二手", description = "删除二手")
     public Response deleteMySecondHand(@RequestParam Integer productID,
                                        @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         return userService.deleteMySecondHand(openid, productID);
@@ -205,6 +213,7 @@ public class UserController {
 
     @Deprecated
     @RequestMapping(value = {"/deleteComment"}, method = {RequestMethod.POST})
+    @Operation(summary = "删除评论", description = "删除评论")
     public Response deleteComment(@RequestBody Integer commentID,
                                   @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         return userService.deleteComment(openid, commentID);
@@ -230,6 +239,7 @@ public class UserController {
      * @return list of main page photo to mini-program
      */
     @RequestMapping(value = {"getMainPagePhotos"}, method = {RequestMethod.GET})
+    @Operation(summary = "获取主页图片", description = "获取主页图片")
     Response<List<MainPagePhoto>> getMainPagePhotos() {
         return userService.getMainPagePhotos();
     }

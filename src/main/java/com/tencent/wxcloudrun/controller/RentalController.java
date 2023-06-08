@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping({"/rental"})
-@Api(tags = "Rental")
+@Api(tags = "转租中心")
 public class RentalController {
 
     @Autowired
