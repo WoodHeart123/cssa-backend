@@ -4,7 +4,7 @@
 
     <insert id="saveComment" parameterType="CourseComment">
         INSERT INTO comment (userID,courseID,professor,courseTime,difficulty,prefer,comment,commentTime)
-        VALUES (#{userID},#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{courseComment},#{commentTime})
+        VALUES (#{userID},#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{comment},#{commentTime})
     </insert>
 
     <select id="getAllCourseList"  resultType="Course">
