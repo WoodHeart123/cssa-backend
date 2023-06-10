@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <typeAlias alias = "Activity" type = "com.tencent.wxcloudrun.model.Activity"/>
+        <typeAlias alias ="Activity" type = "com.tencent.wxcloudrun.model.Activity"/>
         <typeAlias alias= "SignupInfo" type = "com.tencent.wxcloudrun.model.SignupInfo"/>
         <typeAlias alias="User" type="com.tencent.wxcloudrun.model.User" />
         <typeAlias alias="Admin" type="com.tencent.wxcloudrun.model.Admin" />

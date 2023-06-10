@@ -102,7 +102,7 @@
         SELECT courseID, courseName, courseNum, commentCount FROM course WHERE departmentID = #{departmentID} ORDER BY courseNum
     </select>
 
-    <select id="getCommentList" parameterType="Integer" resultType="Comment">
+    <select id="getCommentList" parameterType="Integer" resultType="CourseComment">
         SELECT professor, courseTime, difficulty, prefer, courseComment, likeCount From courseComment WHERE courseID = #{courseID}
     </select>
 
