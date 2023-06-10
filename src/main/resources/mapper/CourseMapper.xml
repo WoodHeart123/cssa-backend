@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tencent.wxcloudrun.dao.CourseMapper">
 
-    <insert id="saveComment" parameterType="Comment">
+    <insert id="saveComment" parameterType="CourseComment">
         INSERT INTO comment (userID,courseID,professor,courseTime,difficulty,prefer,comment,commentTime)
         VALUES (#{userID},#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{courseComment},#{commentTime})
     </insert>
@@ -52,7 +52,7 @@
         SELECT departmentID, department, departmentAbrev FROM department ORDER BY departmentID
     </select>
 
-    <select id="getCommentList" resultType="Comment">
+    <select id="getCommentList" resultType="CourseComment">
         SELECT comment.commentID, comment.professor, comment.courseTime,comment.difficulty,comment.prefer,comment.comment, comment.likeCount, comment.commentTime, COALESCE(user.avatar, 1) AS userAvatar
         FROM comment LEFT JOIN user ON comment.userID = user.userID WHERE courseID = #{courseID} ORDER BY ${orderField} DESC LIMIT #{offset}, #{limit}
     </select>

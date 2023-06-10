@@ -30,7 +30,7 @@
         UPDATE user SET avatar = #{avatar} WHERE userID = #{userID}
     </update>
 
-    <select id="getMyComment" parameterType="Map" resultType="Comment">
+    <select id="getMyComment" parameterType="Map" resultType="CourseComment">
         SELECT commentID, professor, courseTime, difficulty, prefer, courseComment, likeCount, commentTime, courseNum,courseName,departmentAbrev
         from courseComment INNER JOIN course
         WHERE courseComment.courseID = course.courseID AND commentID > #{offset} AND userID = #{userID}

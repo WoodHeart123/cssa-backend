@@ -8,7 +8,7 @@
         <typeAlias alias= "SignupInfo" type = "com.tencent.wxcloudrun.model.SignupInfo"/>
         <typeAlias alias="User" type="com.tencent.wxcloudrun.model.User" />
         <typeAlias alias="Admin" type="com.tencent.wxcloudrun.model.Admin" />
-        <typeAlias alias="Comment" type="com.tencent.wxcloudrun.model.CourseComment" />
+        <typeAlias alias="CourseComment" type="com.tencent.wxcloudrun.model.CourseComment" />
         <typeAlias alias="Department" type="com.tencent.wxcloudrun.model.Department" />
         <typeAlias alias="Course" type="com.tencent.wxcloudrun.model.Course" />
         <typeAlias alias="Product" type="com.tencent.wxcloudrun.model.Product" />
