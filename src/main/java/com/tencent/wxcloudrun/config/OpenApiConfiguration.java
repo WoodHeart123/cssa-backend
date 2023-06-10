@@ -89,7 +89,7 @@ public class OpenApiConfiguration {
     private List<SecurityScheme> securitySchemes() {
         List<SecurityScheme> arrayList = new ArrayList<>();
         arrayList.add(new ApiKey(TOKEN, TOKEN, HEADER));
-        arrayList.add(new ApiKey("微信ID", WX_ID, HEADER));
+        arrayList.add(new ApiKey(WX_ID, WX_ID, HEADER));
         return arrayList;
     }
 
@@ -100,16 +100,16 @@ public class OpenApiConfiguration {
     }
 
     private List<SecurityContext> securityContexts() {
-        List<SecurityContext> securityContextsList = new ArrayList();
+        List<SecurityContext> securityContextsList = new ArrayList<>();
         securityContextsList.add(SecurityContext.builder()
                 .securityReferences(adminAuth())
                 .forPaths(PathSelectors.regex("/admin/.*"))
                 .build());
         securityContextsList.add(SecurityContext.builder().
-                securityReferences(userAuth()).
-                forPaths(PathSelectors.regex("/(?!admin$).*"))
-                .build()
-        );
+                securityReferences(userAuth())
+                .operationSelector(
+                        oc -> !oc.requestMappingPattern().matches("/admin/.*")
+                ).build());
         return securityContextsList;
     }
 

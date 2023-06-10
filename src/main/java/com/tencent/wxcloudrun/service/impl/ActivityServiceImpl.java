@@ -24,21 +24,17 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     ApplicationContext applicationContext;
 
-    Queue<Objects> q = new LinkedList<>();
-
     @Override
     public Response<SignupInfo> checkSignup(Integer actID, String userID, Long Date) {
         ArrayList<SignupInfo> result = activityMapper.checkSignup(userID, Date);
-        for (int i = 0; i < result.size(); i++) {
-            if (result.get(i).getActID().equals(actID)) {
-                result.get(i).setDiscount(1 - (result.size() - 1) * 0.1);
-                result.get(i).setIfJoined(true);
-                return new Response<>(result.get(i));
+        for (SignupInfo signupInfo : result) {
+            if (signupInfo.getActID().equals(actID)) {
+                signupInfo.setIfJoined(true);
+                return new Response<>(signupInfo);
             }
         }
         SignupInfo temp = new SignupInfo();
         temp.setIfJoined(false);
-        temp.setDiscount(1 - result.size() * 0.1);
         return new Response<>(temp);
     }
 

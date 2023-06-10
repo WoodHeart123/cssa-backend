@@ -1,11 +1,13 @@
 package com.tencent.wxcloudrun.model;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Data
 @Component
+@Hidden
 @ConfigurationProperties(prefix = "cssa.wxcloudrun.swagger")
 public class SwaggerProperties {
     /**

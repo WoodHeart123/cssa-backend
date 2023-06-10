@@ -2,11 +2,15 @@ package com.tencent.wxcloudrun.model;
 
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@Accessors(chain = true)
 public class User {
 
     private String userID;
@@ -24,12 +28,6 @@ public class User {
     private String wechatID;
     private Boolean subscribe;
 
-
-    /**
-     * a no argument constructor for mybatis injection
-     */
-    public User() {
-    }
 
     /**
      * constructor for new user

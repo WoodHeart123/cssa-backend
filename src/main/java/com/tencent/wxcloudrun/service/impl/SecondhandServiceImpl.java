@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.JedisPooled;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -19,22 +20,19 @@ public class SecondhandServiceImpl implements SecondhandService {
 
     @Autowired
     SecondhandMapper secondhandMapper;
-    @Autowired
-    JedisPooled jedisPooled;
-
 
     @Override
-    public Response getProduct(ArrayList<String> productID) {
+    public Response<List<Product>> getProduct(ArrayList<String> productID) {
         ArrayList<Product> result = secondhandMapper.getProduct(productID);
         for (Product product : result) {
             product.setImages(JSON.parseArray(product.getImagesJSON(), String.class));
             product.setUTCtime(product.getTime().toInstant().toString());
         }
-        return Response.builder().data(result).status(100).build();
+        return new Response<>(result);
     }
 
     @Override
-    public Response getProductList(ProductType productType, Integer offset, Integer limit) {
+    public Response<List<Product>> getProductList(ProductType productType, Integer offset, Integer limit) {
         ArrayList<Product> productArrayList;
         if (productType == ProductType.ALL) {
             productArrayList = secondhandMapper.getAllProductList(offset, limit);
@@ -45,25 +43,25 @@ public class SecondhandServiceImpl implements SecondhandService {
             product.setImages(JSON.parseArray(product.getImagesJSON(), String.class));
             product.setUTCtime(product.getTime().toInstant().toString());
         }
-        return Response.builder().data(productArrayList).status(100).build();
+        return new Response<>(productArrayList);
     }
 
     @Override
     @Transactional
-    public Response saveProduct(Product product, Boolean save) {
+    public Response<Object> saveProduct(Product product, Boolean save) {
         product.setImagesJSON(JSON.toJSONString(product.getImages()));
         secondhandMapper.saveProduct(product);
         if (save) {
             secondhandMapper.saveContact(product.getUserID(), product.getContact());
         }
-        return Response.builder().message("成功").status(100).build();
+        return new Response<>();
     }
 
     @Override
     @Transactional
-    public Response updateSecondHand(String userID, Product product) {
+    public Response<Object> updateSecondHand(String userID, Product product) {
         secondhandMapper.updateSecondHand(userID, product);
-        return new Response();
+        return new Response<>();
     }
 
 

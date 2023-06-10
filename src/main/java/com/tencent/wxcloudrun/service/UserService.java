@@ -1,12 +1,12 @@
 package com.tencent.wxcloudrun.service;
 
 
-import com.tencent.wxcloudrun.model.Product;
-import com.tencent.wxcloudrun.model.Response;
+import com.tencent.wxcloudrun.model.*;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Service
 public interface UserService {
@@ -23,7 +23,7 @@ public interface UserService {
      *
      * @param userID 微信 open id
      */
-    Response authSuccess(String userID);
+    Response<Object> authSuccess(String userID);
 
     /**
      * 用户登录。如第一次登录，将会设置用户昵称
@@ -31,7 +31,7 @@ public interface UserService {
      * @param nickname 用户昵称
      * @param userID   微信 openid
      */
-    Response login(String nickname, String userID) throws UnsupportedEncodingException;
+    Response<Object> login(String nickname, String userID) throws UnsupportedEncodingException;
 
     /**
      * 更新用户邮箱
@@ -40,7 +40,7 @@ public interface UserService {
      * @param subscribe 是否接受广告
      * @param userID    微信 openid
      */
-    Response updateEmail(String email, Boolean subscribe, String userID);
+    Response<Object> updateEmail(String email, Boolean subscribe, String userID);
 
     /**
      * 更新头像
@@ -48,20 +48,20 @@ public interface UserService {
      * @param userID 微信 openid
      * @param avatar 头像id
      */
-    Response updateAvatar(String userID, Integer avatar);
+    Response<Object> updateAvatar(String userID, Integer avatar);
 
-    Response getMyComment(String userID, Integer offset, Integer limit);
+    Response<List<CourseComment>> getMyComment(String userID, Integer offset, Integer limit);
 
-    Response updateComment(String userID, Integer commentID, String comment);
+    Response<Object> updateComment(String userID, Integer commentID, String comment);
 
-    Response deleteComment(String userID, Integer commentID);
+    Response<Object> deleteComment(String userID, Integer commentID);
 
     /**
      * @param rentalID 唯一转租ID
      * @param userID   微信 openid
      * @param time     时间
      */
-    Response setRentalTime(Integer rentalID, String userID, Timestamp time);
+    Response<Object> setRentalTime(Integer rentalID, String userID, Timestamp time);
 
     /**
      * 获取对应用户id的转租
@@ -70,17 +70,17 @@ public interface UserService {
      * @param offset id偏移
      * @param limit  限制条数
      */
-    Response getMyRental(String userID, Integer offset, Integer limit);
+    Response<List<Rental>> getMyRental(String userID, Integer offset, Integer limit);
 
-    Response updateWechatID(String wechatID, String userID);
+    Response<Object> updateWechatID(String wechatID, String userID);
 
-    Response updateNickname(String userID, String nickname);
+    Response<Object> updateNickname(String userID, String nickname);
 
-    Response getMySecondhand(String userID, Integer offset, Integer limit);
+    Response<List<Product>> getMySecondhand(String userID, Integer offset, Integer limit);
 
-    Response updateMySecondHand(String userID, Product product);
+    Response<Object> updateMySecondHand(String userID, Product product);
 
-    Response deleteMySecondHand(String userID, Integer productID);
+    Response<Object> deleteMySecondHand(String userID, Integer productID);
 
     /**
      * 删除转租
@@ -88,11 +88,11 @@ public interface UserService {
      * @param userID   微信 openid
      * @param rentalID 唯一转租id
      */
-    Response deleteMyRental(String userID, Integer rentalID);
+    Response<Object> deleteMyRental(String userID, Integer rentalID);
 
-    Response setProductTime(Integer productID, String userID, Timestamp time);
+    Response<Object> setProductTime(Integer productID, String userID, Timestamp time);
 
-    Response getMainPagePhotos();
+    Response<List<MainPagePhoto>> getMainPagePhotos();
 
 
 }

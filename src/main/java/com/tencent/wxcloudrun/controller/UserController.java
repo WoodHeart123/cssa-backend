@@ -1,17 +1,18 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.config.CacheStore;
-import com.tencent.wxcloudrun.model.CourseComment;
-import com.tencent.wxcloudrun.model.Product;
-import com.tencent.wxcloudrun.model.Response;
-import com.tencent.wxcloudrun.model.ReturnCode;
+import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
@@ -19,6 +20,7 @@ import java.util.Random;
 @RestController
 @CrossOrigin
 @RequestMapping({"/user"})
+@Api(tags = "用户中心")
 public class UserController {
 
     @Autowired
@@ -28,8 +30,10 @@ public class UserController {
     UserService userService;
 
 
-    @RequestMapping(value = {"/getAuthCode"}, method = {RequestMethod.GET})
-    public Response getAuthCode(@RequestParam String email, @RequestHeader("x-wx-openid") String openid) {
+    @RequestMapping(value = {"/getAuthCode"}, method = {RequestMethod.GET}, produces = "application/json")
+    @Operation(summary = "获取验证码", description = "获取验证码")
+    public Response<Object> getAuthCode(@Parameter(description = "邮箱") @RequestParam String email,
+                                        @RequestHeader("x-wx-openid") String openid) {
         Random ran = new Random();
         int authCode = ran.nextInt(1000000);
         authCodeCache.add(openid, authCode);
@@ -38,7 +42,9 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/verifyAuthCode"}, method = {RequestMethod.GET})
-    public Response verifyAuthCod(@RequestParam Integer authCode, @RequestHeader("x-wx-openid") String openid) {
+    @Operation(summary = "验证验证码", description = "验证验证码")
+    public Response<Object> verifyAuthCod(@Parameter(description = "验证码") @RequestParam Integer authCode,
+                                          @RequestHeader("x-wx-openid") String openid) {
         if (authCodeCache.get(openid) != null && Objects.equals(authCodeCache.get(openid), authCode)) {
             return userService.authSuccess(openid);
         } else {
@@ -47,72 +53,94 @@ public class UserController {
 
     }
 
-    @RequestMapping(value = {"/login"}, method = {RequestMethod.GET})
-    public Response login(@RequestParam String nickname, @RequestHeader("x-wx-openid") String openid) throws UnsupportedEncodingException {
+    @RequestMapping(value = {"/login"}, method = {RequestMethod.GET}, produces = "application/json")
+    @Operation(summary = "登录", description = "登录")
+    public Response<Object> login(@Parameter(description = "昵称，第一次登录需要") @RequestParam String nickname,
+                                  @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) throws UnsupportedEncodingException {
         return userService.login(nickname, openid);
     }
 
-    @Deprecated
-    @RequestMapping(value = {"/getMyComment"}, method = {RequestMethod.GET})
-    public Response getMyComment(@RequestParam Integer offset, @RequestParam Integer limit, @RequestHeader("x-wx-openid") String openid) {
+    @RequestMapping(value = {"/getMyComment"}, method = {RequestMethod.GET}, produces = "application/json")
+    @Operation(summary = "获取我的评论", description = "获取我的评论")
+    public Response<List<CourseComment>> getMyComment(@RequestParam Integer offset,
+                                                      @RequestParam Integer limit,
+                                                      @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         return userService.getMyComment(openid, offset, limit);
     }
 
-    @Deprecated
-    @RequestMapping(value = {"/getMySecondhand"}, method = {RequestMethod.GET})
-    public Response getMySecondhand(@RequestParam Integer offset, @RequestParam Integer limit, @RequestHeader("x-wx-openid") String openid) {
+    @RequestMapping(value = {"/getMySecondhand"}, method = {RequestMethod.GET}, produces = "application/json")
+    @Operation(summary = "获取我的二手", description = "获取我的二手")
+    public Response<List<Product>> getMySecondhand(@RequestParam Integer offset,
+                                                   @RequestParam Integer limit,
+                                                   @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         return userService.getMySecondhand(openid, offset, limit);
     }
-
-    @RequestMapping(value = {"/getMyList"}, method = {RequestMethod.GET})
-    public Response getMyList(@RequestParam String service, @RequestParam Integer offset, @RequestParam Integer limit, @RequestHeader("x-wx-openid") String openid) {
+    @Deprecated
+    @RequestMapping(value = {"/getMyList"}, method = {RequestMethod.GET}, produces = "application/json")
+    @Operation(summary = "获取我的列表", description = "获取我的列表，可选项为comment, secondhand, rental")
+    public Response<Object> getMyList(@RequestParam String service,
+                                      @RequestParam Integer offset,
+                                      @RequestParam Integer limit,
+                                      @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         switch (service.toLowerCase()) {
             case "comment":
-                return userService.getMyComment(openid, offset, limit);
+                return new Response<>(userService.getMyComment(openid, offset, limit).getData());
             case "secondhand":
-                return userService.getMySecondhand(openid, offset, limit);
+                return new Response<>(userService.getMySecondhand(openid, offset, limit).getData());
             case "rental":
-                return userService.getMyRental(openid, offset, limit);
+                return new Response<>(userService.getMyRental(openid, offset, limit).getData());
             default:
-                return new Response(ReturnCode.UNKNOWN_SERVICE);
+                return new Response<>(ReturnCode.UNKNOWN_SERVICE);
         }
 
     }
 
     @RequestMapping(value = {"/updateComment"}, method = {RequestMethod.POST})
-    public Response updateComment(@RequestBody CourseComment courseComment, @RequestHeader("x-wx-openid") String openid) {
+    @Operation(summary = "更新评论", description = "更新评论")
+    public Response<Object> updateComment(@RequestBody CourseComment courseComment,
+                                          @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         if (courseComment.getComment().length() > 300) {
-            return new Response(ReturnCode.EXCEED_LENGTH_LIMIT);
+            return new Response<>(ReturnCode.EXCEED_LENGTH_LIMIT);
         }
         return userService.updateComment(openid, courseComment.getCommentID(), courseComment.getComment());
     }
 
     @Deprecated
     @RequestMapping(value = {"/updateEmail"}, method = {RequestMethod.GET})
-    public Response updateEmail(@RequestParam String email, @RequestParam Boolean subscribe, @RequestHeader("x-wx-openid") String openid) {
+    @Operation(summary = "更新邮箱", description = "更新邮箱")
+    public Response<Object> updateEmail(@RequestParam String email,
+                                        @RequestParam Boolean subscribe,
+                                        @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         return userService.updateEmail(email, subscribe, openid);
     }
 
     @Deprecated
     @RequestMapping(value = {"/updateAvatar"}, method = {RequestMethod.GET})
-    public Response updateAvatar(@RequestParam Integer avatar, @RequestHeader("x-wx-openid") String openid) {
+    @Operation(summary = "更新头像", description = "更新头像")
+    public Response<Object> updateAvatar(@RequestParam Integer avatar,
+                                         @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         if (avatar < 1 || avatar > 12) {
-            return new Response(ReturnCode.INTEGER_OUT_OF_RANGE);
+            return new Response<>(ReturnCode.INTEGER_OUT_OF_RANGE);
         }
         return userService.updateAvatar(openid, avatar);
     }
 
     @Deprecated
     @RequestMapping(value = {"/updateNickname"}, method = {RequestMethod.GET})
-    public Response updateNickname(@RequestParam String nickname, @RequestHeader("x-wx-openid") String openid) {
+    @Operation(summary = "更新昵称", description = "更新昵称")
+    public Response<Object> updateNickname(@RequestParam String nickname,
+                                           @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         if (nickname.length() == 0) {
-            return new Response(ReturnCode.EMPTY_STRING);
+            return new Response<>(ReturnCode.EMPTY_STRING);
         }
         return userService.updateNickname(openid, nickname);
     }
 
     @RequestMapping(value = {"/updateProfile"}, method = {RequestMethod.GET})
-    public Response<Object> updateProfile(@RequestParam String service, @RequestParam String str, @RequestParam Optional<Boolean> subscribe, @RequestHeader("x-wx-openid") String openid) {
+    public Response<Object> updateProfile(@RequestParam String service,
+                                          @RequestParam String str,
+                                          @RequestParam Optional<Boolean> subscribe,
+                                          @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         switch (service.toLowerCase()) {
             case "wechatid":
                 return userService.updateWechatID(str, openid);
@@ -143,12 +171,18 @@ public class UserController {
 
     @Deprecated
     @RequestMapping(value = {"/updateSecondHand"}, method = {RequestMethod.POST})
-    public Response updateSecondHand(@RequestBody Product product, @RequestHeader("x-wx-openid") String openid) {
+    @Operation(summary = "更新二手", description = "更新二手")
+    public Response<Object> updateSecondHand(@RequestBody Product product,
+                                             @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         return userService.updateMySecondHand(openid, product);
     }
 
     @RequestMapping(value = {"/setTime"}, method = {RequestMethod.GET})
-    public Response setTime(@RequestParam String service, @RequestParam Integer itemID, @RequestParam String UTCtime, @RequestHeader("x-wx-openid") String userID) {
+    @Operation(summary = "设置时间", description = "设置时间")
+    public Response<Object> setTime(@RequestParam String service,
+                                    @RequestParam Integer itemID,
+                                    @RequestParam String UTCtime,
+                                    @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String userID) {
         Timestamp time = new Timestamp(Instant.parse(UTCtime).toEpochMilli());
         switch (service.toLowerCase()) {
             case "product":
@@ -156,30 +190,39 @@ public class UserController {
             case "rental":
                 return userService.setRentalTime(itemID, userID, time);
             default:
-                return new Response(ReturnCode.UNKNOWN_SERVICE);
+                return new Response<>(ReturnCode.UNKNOWN_SERVICE);
         }
     }
 
     @Deprecated
     @RequestMapping(value = {"/setProductTime"}, method = {RequestMethod.GET})
-    public Response setProductTime(@RequestParam Integer productID, @RequestParam String UTCtime, @RequestHeader("x-wx-openid") String userID) {
+    @Operation(summary = "设置二手发布时间", description = "设置二手发布时间")
+    public Response setProductTime(@RequestParam Integer productID,
+                                   @RequestParam String UTCtime,
+                                   @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String userID) {
         return userService.setProductTime(productID, userID, new Timestamp(Instant.parse(UTCtime).toEpochMilli()));
     }
 
     @Deprecated
     @RequestMapping(value = {"/deleteMySecondHand"}, method = {RequestMethod.POST})
-    public Response deleteMySecondHand(@RequestParam Integer productID, @RequestHeader("x-wx-openid") String openid) {
+    @Operation(summary = "删除二手", description = "删除二手")
+    public Response deleteMySecondHand(@RequestParam Integer productID,
+                                       @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         return userService.deleteMySecondHand(openid, productID);
     }
 
     @Deprecated
     @RequestMapping(value = {"/deleteComment"}, method = {RequestMethod.POST})
-    public Response deleteComment(@RequestBody Integer commentID, @RequestHeader("x-wx-openid") String openid) {
+    @Operation(summary = "删除评论", description = "删除评论")
+    public Response deleteComment(@RequestBody Integer commentID,
+                                  @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         return userService.deleteComment(openid, commentID);
     }
 
     @RequestMapping(value = {"deleteMyItem"}, method = RequestMethod.DELETE)
-    public Response deleteMyItem(@RequestParam String service, @RequestParam Integer itemID, @RequestHeader("x-wx-openid") String openid) {
+    public Response<Object> deleteMyItem(@RequestParam String service,
+                                         @RequestParam Integer itemID,
+                                         @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         switch (service.toLowerCase()) {
             case "comment":
                 return userService.deleteComment(openid, itemID);
@@ -188,7 +231,7 @@ public class UserController {
             case "rental":
                 return userService.deleteMyRental(openid, itemID);
             default:
-                return new Response(ReturnCode.UNKNOWN_SERVICE);
+                return new Response<>(ReturnCode.UNKNOWN_SERVICE);
         }
     }
 
@@ -196,7 +239,8 @@ public class UserController {
      * @return list of main page photo to mini-program
      */
     @RequestMapping(value = {"getMainPagePhotos"}, method = {RequestMethod.GET})
-    Response getMainPagePhotos() {
+    @Operation(summary = "获取主页图片", description = "获取主页图片")
+    Response<List<MainPagePhoto>> getMainPagePhotos() {
         return userService.getMainPagePhotos();
     }
 }

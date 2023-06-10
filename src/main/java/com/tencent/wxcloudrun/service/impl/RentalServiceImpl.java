@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -22,7 +23,7 @@ public class RentalServiceImpl implements RentalService {
 
 
     @Override
-    public Response getRentalList(Integer offset, Integer limit, Integer priceLimit, ArrayList<String> floorplanList, Timestamp startTime, Timestamp endTime) {
+    public Response<List<Rental>> getRentalList(Integer offset, Integer limit, Integer priceLimit, ArrayList<String> floorplanList, Timestamp startTime, Timestamp endTime) {
         ArrayList<Rental> rentalArrayList;
         if (!startTime.equals(new Timestamp(0))) {
             rentalArrayList = rentalMapper.getRentalTimed(offset, limit, priceLimit, floorplanList, startTime, endTime);
@@ -36,18 +37,18 @@ public class RentalServiceImpl implements RentalService {
             }
             rental.setUTCPublishedTime(rental.getPublishedTime().toInstant().toString());
         }
-        return Response.builder().data(rentalArrayList).status(100).build();
+        return new Response<>(rentalArrayList);
     }
 
     @Override
-    public Response updateRental(String userID, Rental rentalInfo) {
+    public Response<Object> updateRental(String userID, Rental rentalInfo) {
         rentalMapper.updateRental(userID, rentalInfo);
         return new Response();
     }
 
     @Override
     @Transactional
-    public Response postRentalInfo(Rental rentalInfo, Boolean save) {
+    public Response<Object> postRentalInfo(Rental rentalInfo, Boolean save) {
         rentalInfo.setPublishedTime(new Timestamp(new Date().getTime()));
         rentalInfo.setImagesJSON(JSON.toJSONString(rentalInfo.getImages()));
         rentalMapper.postRentalInfo(rentalInfo);
