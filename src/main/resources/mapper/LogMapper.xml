@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tencent.wxcloudrun.dao.LogMapper">
+
+    <insert id="createLog" parameterType="OperationLog">
+        INSERT INTO
+        operationlog (userID, resource, requestMethod, beanName, methodName, requestParams, requestData, responseData, createTime)
+        values (#{userID}, #{resource}, #{requestMethod}, #{beanName}, #{methodName}, #{requestParams}, #{requestData}, #{responseData}, #{createTime})
+    </insert>
+
+</mapper>

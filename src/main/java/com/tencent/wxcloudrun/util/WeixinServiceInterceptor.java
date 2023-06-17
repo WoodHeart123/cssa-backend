@@ -5,7 +5,9 @@ import com.tencent.wxcloudrun.model.Response;
 import com.tencent.wxcloudrun.model.ReturnCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNullApi;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,9 +21,10 @@ public class WeixinServiceInterceptor implements HandlerInterceptor {
     private final Logger logger = LoggerFactory.getLogger(WeixinServiceInterceptor.class);
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse  response, Object handler) {
         PrintWriter writer = null;
         try {
+
             if (request.getHeader("x-wx-openid") == null) {
                 logger.info("filter user request to " + request.getRequestURI() + " because of no wx-openid");
                 response.setCharacterEncoding("utf-8");

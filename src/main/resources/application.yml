@@ -13,7 +13,7 @@ cssa:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_ADDRESS}/cssa_mini?characterEncoding=utf-8&useUnicode=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DB}?characterEncoding=utf-8&useUnicode=true&serverTimezone=Asia/Shanghai
     username: ${MYSQL_USERNAME}
     password: ${MySQL_PASSWORD}
   redis:
