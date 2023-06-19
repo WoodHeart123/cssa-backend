@@ -1,3 +1,4 @@
+/*
 package com.tencent.wxcloudrun.event;
 
 import com.tencent.wxcloudrun.dao.ActivityMapper;
@@ -74,3 +75,4 @@ public class UserEventListener {
 
     }
 }
+*/

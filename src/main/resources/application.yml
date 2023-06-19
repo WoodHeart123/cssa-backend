@@ -45,6 +45,11 @@ spring:
       starttls.enable: true
       ssl.trust: smtpdm.aliyun.com
 
+  #用完删除
+  thymeleaf:
+    check-template: false
+    check-template-location: false
+
 
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml

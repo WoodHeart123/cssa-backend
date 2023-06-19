@@ -1,3 +1,4 @@
+/*
 package com.tencent.wxcloudrun.config;
 
 import org.springframework.context.annotation.Bean;
@@ -27,4 +28,4 @@ public class ThymeleafTemplateConfig {
         emailTemplateResolver.setCharacterEncoding(StandardCharsets.UTF_8.name());
         return emailTemplateResolver;
     }
-}
+}*/

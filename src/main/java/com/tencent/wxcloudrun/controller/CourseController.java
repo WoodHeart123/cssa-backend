@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,7 +94,7 @@ public class CourseController {
 
     @RequestMapping(value = {"/postFile"}, method = {RequestMethod.POST})
     @Operation(summary = "上传文件", description = "上传课程相关文件")
-    public Response<Object> postFile(@Parameter(description = "文件相关信息") @RequestBody CourseFile courseFile,
+    public Response<Object> postFile(@Parameter(description = "文件相关信息") @RequestBody @Valid CourseFile courseFile,
                                      @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         courseFile.setUserID(openid);
         return courseService.postFile(courseFile);
