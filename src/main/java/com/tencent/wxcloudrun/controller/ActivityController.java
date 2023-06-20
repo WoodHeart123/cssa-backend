@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -36,7 +37,7 @@ public class ActivityController {
 
     @Operation(summary = "报名活动", description = "根据提供的信息报名对应的活动")
     @RequestMapping(value = {"/register"}, method = {RequestMethod.POST})
-    public Response<Object> register(@ApiParam(value = "报名信息", required = true) @RequestBody SignupInfo info, @ApiParam(value = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
+    public Response<Object> register(@ApiParam(value = "报名信息", required = true) @RequestBody @Valid SignupInfo info, @ApiParam(value = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
         info.setUserID(openid);
         return activityService.registerActivity(info);
     }
