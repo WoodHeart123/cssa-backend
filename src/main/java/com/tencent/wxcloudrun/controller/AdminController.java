@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,13 +28,13 @@ public class AdminController {
 
     @RequestMapping(value = {"/login"}, method = {RequestMethod.POST})
     @Operation(summary = "管理员登录", description = "管理员登录")
-    public Response<Admin> login(@Parameter(description = "管理员的用户名和密码") @RequestBody Admin admin) {
+    public Response<Admin> login(@Parameter(description = "管理员的用户名和密码") @RequestBody @Valid Admin admin) {
         return adminService.login(admin);
     }
 
     @RequestMapping(value = {"/register"}, method = {RequestMethod.POST})
     @Operation(summary = "管理员注册", description = "管理员注册")
-    public Response<Object> register(@Parameter(description = "管理员注册密码和用户名") @RequestBody Admin admin) {
+    public Response<Object> register(@Parameter(description = "管理员注册密码和用户名") @RequestBody @Valid Admin admin) {
         return adminService.register(admin);
     }
 
@@ -45,7 +46,7 @@ public class AdminController {
 
     @RequestMapping(value = {"/createActivity"}, method = {RequestMethod.POST})
     @Operation(summary = "创建活动", description = "创建活动")
-    public Response<Object> createActivity(@Parameter(description = "活动信息") @RequestBody Activity activity) {
+    public Response<Object> createActivity(@Parameter(description = "活动信息") @RequestBody @Valid Activity activity) {
         return adminService.createActivity(activity);
     }
 

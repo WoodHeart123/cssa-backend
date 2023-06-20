@@ -3,14 +3,17 @@ package com.tencent.wxcloudrun.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.List;
 
 @Data
 public class Activity {
     // 活动ID
-    @NotBlank(message = "活动ID不能为空")
+    @NotNull(message = "活动ID不能为空")
     @Schema(description = "活动ID", example = "1")
     private Integer actID;
 
@@ -29,12 +32,14 @@ public class Activity {
     private String location;
 
     // 人数报名上限
-    @NotBlank(message = "人数报名上限不能为空")
+    @NotNull(message = "人数报名上限不能为空")
+    @Min(value = 1, message = "人数上限不能小于1")
     @Schema(description = "人数报名上限", example = "100")
     private int capacity;
 
     // 活动参加人数
-    @NotBlank(message = "活动参加人数不能为空")
+    @NotNull(message = "活动参加人数不能为空")
+    @Min(value = 0, message = "活动参加人数不能小于0")
     @Schema(description = "活动参加人数", example = "7", defaultValue = "0")
     private int userJoinedNum;
 
@@ -48,7 +53,8 @@ public class Activity {
     private String imgs;
 
     // 活动价格
-    @NotBlank(message = "活动价格不能为空")
+    @NotNull(message = "活动价格不能为空")
+    @Min(value = 0, message = "价格不能小于0")
     @Schema(description = "价格", example = "100")
     private Integer price;
 
@@ -64,6 +70,7 @@ public class Activity {
 
     // 活动额外填写信息
     @Schema(description = "活动额外填写信息")
-    private List<Info> additionalInfo;
+    @NotEmpty(message = "活动内容不能为空")
+    private List< @NotBlank(message = "活动内容不能为空") Info> additionalInfo;
 
 }
