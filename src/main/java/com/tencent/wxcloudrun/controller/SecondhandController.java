@@ -18,6 +18,7 @@ import redis.clients.jedis.search.RediSearchUtil;
 import redis.clients.jedis.search.SearchResult;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,7 +73,7 @@ public class SecondhandController {
     @RequestMapping(value = {"/saveProduct"}, method = {RequestMethod.POST})
     @Operation(summary = "发布商品", description = "发布商品")
     public Response<Object> saveProduct(@Parameter(description = "是否保存联系方式") @RequestParam Boolean save,
-                                        @Parameter(description = "商品信息") @RequestBody Product product,
+                                        @Parameter(description = "商品信息") @RequestBody @Valid Product product,
                                         @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         product.setUserID(openid);
         secondhandService.saveProduct(product, save);
@@ -86,7 +87,7 @@ public class SecondhandController {
 
     @RequestMapping(value = {"/updateSecondHand"}, method = {RequestMethod.POST})
     @Operation(summary = "更新商品", description = "更新商品")
-    public Response<Object> updateSecondHand(@Parameter(description = "商品信息") @RequestBody Product product,
+    public Response<Object> updateSecondHand(@Parameter(description = "商品信息") @RequestBody @Valid Product product,
                                              @Parameter(description = "微信ID")  @RequestHeader("x-wx-openid") String openid) {
         return secondhandService.updateSecondHand(openid, product);
     }

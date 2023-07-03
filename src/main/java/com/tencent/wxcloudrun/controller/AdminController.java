@@ -64,7 +64,7 @@ public class AdminController {
 
     @RequestMapping(value = {"/postMainPagePhoto"}, method = {RequestMethod.POST})
     @Operation(summary = "发布主页大图", description = "发布主页大图")
-    public Response<Object> postMainPagePhoto(@Parameter(description = "大图信息") @RequestBody MainPagePhoto mainPagePhoto) {
+    public Response<Object> postMainPagePhoto(@Parameter(description = "大图信息") @RequestBody @Valid MainPagePhoto mainPagePhoto) {
         return adminService.postMainPagePhoto(mainPagePhoto);
     }
 

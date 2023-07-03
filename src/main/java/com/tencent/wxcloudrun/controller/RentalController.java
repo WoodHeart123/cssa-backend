@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.JedisPooled;
 
+import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class RentalController {
      */
     @RequestMapping(value = {"/postRentalInfo"}, method = {RequestMethod.POST})
     @Operation(summary = "记录用户输入的转租信息", description = "记录用户输入的转租信息")
-    public Response<Object> postRentalInfo(@Parameter(description = "转租信息")@RequestBody Rental rentalInfo,
+    public Response<Object> postRentalInfo(@Parameter(description = "转租信息")@RequestBody @Valid Rental rentalInfo,
                                            @Parameter(description = "是否保存联系方式") @RequestParam Boolean save,
                                            @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         rentalInfo.setUserID(openid);
@@ -62,7 +63,7 @@ public class RentalController {
 
     @RequestMapping(value = {"/updateRental"}, method = {RequestMethod.POST})
     @Operation(summary = "更新转租信息", description = "更新转租信息")
-    public Response<Object> updateRental(@Parameter(description = "转租信息") @RequestBody Rental rental,
+    public Response<Object> updateRental(@Parameter(description = "转租信息") @RequestBody @Valid Rental rental,
                                          @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         return rentalService.updateRental(openid, rental);
     }

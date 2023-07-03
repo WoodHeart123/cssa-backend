@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -97,7 +98,7 @@ public class UserController {
 
     @RequestMapping(value = {"/updateComment"}, method = {RequestMethod.POST})
     @Operation(summary = "更新评论", description = "更新评论")
-    public Response<Object> updateComment(@RequestBody CourseComment courseComment,
+    public Response<Object> updateComment(@RequestBody @Valid CourseComment courseComment,
                                           @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         if (courseComment.getComment().length() > 300) {
             return new Response<>(ReturnCode.EXCEED_LENGTH_LIMIT);
@@ -172,7 +173,7 @@ public class UserController {
     @Deprecated
     @RequestMapping(value = {"/updateSecondHand"}, method = {RequestMethod.POST})
     @Operation(summary = "更新二手", description = "更新二手")
-    public Response<Object> updateSecondHand(@RequestBody Product product,
+    public Response<Object> updateSecondHand(@RequestBody @Valid Product product,
                                              @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         return userService.updateMySecondHand(openid, product);
     }

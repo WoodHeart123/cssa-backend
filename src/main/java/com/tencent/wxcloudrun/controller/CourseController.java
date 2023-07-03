@@ -37,7 +37,7 @@ public class CourseController {
      */
     @PostMapping(value = "/postcomment")
     @Operation(summary = "发表评论", description = "发表评论")
-    public Response<Object> save(@Parameter(description = "课程评价") @RequestBody CourseComment courseComment,
+    public Response<Object> save(@Parameter(description = "课程评价") @RequestBody @Valid CourseComment courseComment,
                                  @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         if (courseComment.getComment().length() > 300) {
             return Response.builder().status(103).message("超过字数限制").build();
