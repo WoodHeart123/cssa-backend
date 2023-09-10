@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tencent.wxcloudrun.dao.ActivityMapper">
+
+
+    <select id="checkSignup" resultType="SignupInfo">
+        SELECT signup_activity.actID, response, payment
+        FROM signup_activity,
+             activity
+        where userID = #{userID}
+          and signup_activity.actID = activity.actID
+          and activity.startDate &gt; #{date}
+    </select>
+
+    <select id="getActivityList" resultType="Activity">
+        SELECT activity.actID,
+               COUNT(userID) as userJoinedNum,
+               title,
+               startDate,
+               endDate,
+               location,
+               price,
+               capacity,
+               imgs,
+               additionalInfoJSON,
+               description
+        FROM signup_activity
+                 RIGHT JOIN activity ON activity.actID = signup_activity.actID
+        WHERE activity.endDate &gt; CURRENT_TIMESTAMP
+        GROUP BY activity.actID,
+                 title,
+                 startDate,
+                 endDate,
+                 location,
+                 price,
+                 capacity,
+                 imgs,
+                 additionalInfoJSON,
+                 description
+        ORDER BY activity.actID ASC
+    </select>
+
+    <select id="getRegisterList" parameterType="String" resultType="Activity">
+        SELECT activity.actID,
+               title,
+               startDate,
+               location,
+               payment as price,
+               capacity,
+               imgs,
+               additionalInfoJSON,
+               description
+        FROM signup_activity
+                 RIGHT JOIN activity ON activity.actID = signup_activity.actID
+        WHERE signup_activity.userId = #{userID}
+          AND activity.startDate &gt; 19700101010000
+        ORDER BY activity.actID ASC
+    </select>
+
+    <update id="updateActivity" parameterType="Activity">
+        UPDATE activity
+        SET userJoinedNum=#{userJoinedNum}
+        WHERE actID = #{actID}
+    </update>
+
+    <insert id="recordResponse" parameterType="SignupInfo">
+        INSERT INTO signup_activity (userID, actID, response, payment)
+        values (#{userID}, #{actID}, #{responseJSON}, #{payment})
+    </insert>
+
+    <select id="findActivity" parameterType="Integer" resultType="Activity">
+        SELECT startDate, userJoinedNum, capacity
+        FROM activity
+        where actID = #{actID}
+    </select>
+
+</mapper>

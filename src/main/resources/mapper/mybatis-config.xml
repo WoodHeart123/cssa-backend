@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias alias ="Activity" type = "com.tencent.wxcloudrun.model.Activity"/>
+        <typeAlias alias= "SignupInfo" type = "com.tencent.wxcloudrun.model.SignupInfo"/>
+        <typeAlias alias="User" type="com.tencent.wxcloudrun.model.User" />
+        <typeAlias alias="Admin" type="com.tencent.wxcloudrun.model.Admin" />
+        <typeAlias alias="CourseComment" type="com.tencent.wxcloudrun.model.CourseComment" />
+        <typeAlias alias="Department" type="com.tencent.wxcloudrun.model.Department" />
+        <typeAlias alias="Course" type="com.tencent.wxcloudrun.model.Course" />
+        <typeAlias alias="Product" type="com.tencent.wxcloudrun.model.Product" />
+        <typeAlias alias="Rental" type="com.tencent.wxcloudrun.model.Rental"/>
+        <typeAlias alias="MainPagePhoto" type="com.tencent.wxcloudrun.model.MainPagePhoto" />
+        <typeAlias alias="CourseFile" type="com.tencent.wxcloudrun.model.CourseFile"/>
+        <typeAlias alias="OperationLog" type="com.tencent.wxcloudrun.model.OperationLog"/>
+    </typeAliases>
+</configuration>

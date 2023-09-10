@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tencent.wxcloudrun.dao.AdminMapper">
+
+<!--    <select id="getActivityList" resultType="Activity">-->
+<!--        SELECT-->
+<!--            activity.actID,-->
+<!--            COUNT(userID) as userJoinedNum,-->
+<!--            title,-->
+<!--            startDate,-->
+<!--            endDate,-->
+<!--            location,-->
+<!--            price,-->
+<!--            capacity,-->
+<!--            imgs,-->
+<!--            additionalInfoJSON,-->
+<!--            description,-->
+<!--            imgs-->
+<!--        FROM-->
+<!--            signup_activity-->
+<!--                RIGHT JOIN activity ON activity.actID = signup_activity.actID-->
+<!--        WHERE activity.startDate &gt; 19700101010000-->
+<!--        GROUP BY-->
+<!--            activity.actID,-->
+<!--            title,-->
+<!--            startDate,-->
+<!--            endDate,-->
+<!--            location,-->
+<!--            price,-->
+<!--            capacity,-->
+<!--            imgs,-->
+<!--            additionalInfoJSON,-->
+<!--            description-->
+<!--        ORDER BY activity.actID DESC-->
+<!--    </select>-->
+
+    <insert id="createActivity" parameterType="Activity">
+        INSERT INTO activity (title,startDate,endDate,location,price,capacity,imgs,additionalInfoJSON,description) values (#{title},#{startDate},#{endDate},#{location},#{price},#{capacity},#{imgs},#{additionalInfoJSON},#{description})
+    </insert>
+
+    <select id="login" parameterType="Admin" resultType="Admin">
+        SELECT username,adminType FROM admin WHERE username = #{username} AND password = #{password} AND validity = 1
+    </select>
+
+    <insert id="register" parameterType="Admin">
+        INSERT INTO admin(username, password, department) values(#{username},#{password},#{department})
+    </insert>
+
+    <update id="deleteActivity" parameterType="map">
+        UPDATE activity SET startDate = #{timestamp}, endDate = #{timestamp} WHERE actID = #{actID}
+    </update>
+
+    <delete id="deleteComment" parameterType="Integer">
+        DELETE FROM courseComment WHERE commentID = #{commentID}
+    </delete>
+
+    <select id="getActivitySignup" parameterType="String" resultType="SignupInfo">
+        SELECT
+            signup_activity.response as responseJSON,
+            signup_activity.payment,
+            user.nickname
+        FROM
+            signup_activity
+                right join user ON user.userID = signup_activity.userID
+        WHERE
+            signup_activity.actID = #{actID}
+    </select>
+
+    <select id="getActivity" parameterType="String" resultType="Activity">
+        SELECT title,startDate,location FROM activity WHERE  actID = #{actID}
+    </select>
+
+    <insert id="postMainPagePhoto" parameterType="MainPagePhoto">
+        INSERT INTO mainpage_photo (startDate,endDate,smallPhoto,largePhoto) values (#{startDate},#{endDate},#{smallPhoto},#{largePhoto})
+    </insert>
+
+    <update id="deleteMainPagePhoto" parameterType="map">
+        UPDATE mainpage_photo SET startDate = #{timestamp}, endDate = #{timestamp} WHERE photoID = #{photoID}
+    </update>
+
+
+    <select id="getMainPagePhotoList" resultType="MainPagePhoto">
+        SELECT
+            photoID, startDate,endDate,smallPhoto,largePhoto
+        FROM
+            mainpage_photo
+        ORDER BY photoID DESC
+    </select>
+
+    <select id="getDepartmentList" resultType="Department">
+        SELECT
+            d.departmentID AS departmentID,
+            d.department AS department,
+            d.departmentAbrev AS departmentAbrev,
+            SUM(c.commentCount) AS commentNum
+        FROM
+            department d inner join course c ON d.departmentID = c.departmentID
+        GROUP BY d.departmentID
+    </select>
+
+    <select id="getCourseList" parameterType="Integer" resultType="Course">
+        SELECT courseID, courseName, courseNum, commentCount FROM course WHERE departmentID = #{departmentID} ORDER BY courseNum
+    </select>
+
+    <select id="getCommentList" parameterType="Integer" resultType="CourseComment">
+        SELECT professor, courseTime, difficulty, prefer, courseComment, likeCount From courseComment WHERE courseID = #{courseID}
+    </select>
+
+</mapper>
