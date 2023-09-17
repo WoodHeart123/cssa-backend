@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping({"/activity"})
 @Api(tags = "活动中心")
 public class ActivityController {
-
+//yeliu
     @Autowired
     ActivityService activityService;
 
