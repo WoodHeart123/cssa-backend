@@ -92,7 +92,5 @@ public interface UserService {
 
     Response<Object> setProductTime(Integer productID, String userID, Timestamp time);
 
-    Response<List<MainPagePhoto>> getMainPagePhotos();
-
 
 }

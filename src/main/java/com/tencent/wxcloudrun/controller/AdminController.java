@@ -19,7 +19,6 @@ import java.util.List;
 @Api(tags = "管理员接口")
 public class AdminController {
 
-    private final Logger logger = LoggerFactory.getLogger(AdminController.class);
     @Autowired
     AdminService adminService;
     @Autowired
@@ -59,24 +58,6 @@ public class AdminController {
     @Operation(summary = "删除活动", description = "删除活动")
     public Response<Object> deleteActivity(@Parameter(description = "活动ID") @RequestParam String actID) {
         return adminService.deleteActivity(actID);
-    }
-
-    @RequestMapping(value = {"/postMainPagePhoto"}, method = {RequestMethod.POST})
-    @Operation(summary = "发布主页大图", description = "发布主页大图")
-    public Response<Object> postMainPagePhoto(@Parameter(description = "大图信息") @RequestBody MainPagePhoto mainPagePhoto) {
-        return adminService.postMainPagePhoto(mainPagePhoto);
-    }
-
-    @RequestMapping(value = {"deleteMainPagePhoto"}, method = {RequestMethod.GET}, produces = "application/json")
-    @Operation(summary = "删除主页大图", description = "删除主页大图")
-    public Response<Object> deleteMainPagePhoto(@Parameter(description = "主页大图ID") @RequestParam String photoID) {
-        return adminService.deleteMainPagePhoto(photoID);
-    }
-
-    @RequestMapping(value = {"getMainPagePhotoList"}, method = {RequestMethod.GET}, produces = "application/json")
-    @Operation(summary = "获取主页大图列表", description = "获取主页大图列表")
-    public Response<List<MainPagePhoto>> getMainPagePhotoList() {
-        return adminService.getMainPagePhotoList();
     }
 
     @RequestMapping(value = {"getDepartmentList"}, method = {RequestMethod.GET}, produces = "application/json")

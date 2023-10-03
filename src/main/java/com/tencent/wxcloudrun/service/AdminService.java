@@ -28,12 +28,6 @@ public interface AdminService {
 
     Response<Object> deleteComment(Integer commentID);
 
-    Response<Object> postMainPagePhoto(MainPagePhoto mainPagePhoto);
-
-    Response<Object> deleteMainPagePhoto(String photoID);
-
-    Response<List<MainPagePhoto>> getMainPagePhotoList();
-
     Response<List<Department>> getDepartmentList();
 
     Response<List<Course>> getCourseList(Integer departmentID);
