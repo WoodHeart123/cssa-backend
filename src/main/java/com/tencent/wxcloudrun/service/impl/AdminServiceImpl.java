@@ -32,19 +32,16 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Response<List<Activity>> getActivityList() {
         List<Activity> activityList = adminMapper.getActivityList();
-        for (Activity activity : activityList) {
-            activity.setAdditionalInfo(JSON.parseArray(activity.getAdditionalInfoJSON(), Info.class));
-        }
         return new Response<>(activityList);
     }
 
     @Override
     public Response<Object> createActivity(Activity activity) {
         try {
-            if (activity.getAdditionalInfo() == null) {
-                activity.setAdditionalInfo(new ArrayList<>());
+            if (activity.getAdditionalInfoJSON() == null) {
+                activity.setAdditionalInfoJSON("{}");
             }
-            activity.setAdditionalInfoJSON(JSON.toJSONString(activity.getAdditionalInfo()));
+            activity.setAdditionalInfoJSON(JSON.toJSONString(activity.getAdditionalInfoJSON()));
             adminMapper.createActivity(activity);
             return Response.builder().status(100).message("成功").build();
         } catch (Exception exception) {
@@ -55,11 +52,6 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Response<List<SignupInfo>> getActivitySignup(String actID) {
         ArrayList<SignupInfo> list = adminMapper.getActivitySignup(actID);
-        for (SignupInfo signupInfo : list) {
-            if (signupInfo.getResponseJSON() != null) {
-                signupInfo.setResponse(JSON.parseArray(signupInfo.getResponseJSON(), String.class));
-            }
-        }
         return new Response<>(list);
     }
 
@@ -82,24 +74,6 @@ public class AdminServiceImpl implements AdminService {
         return Response.builder().status(100).build();
     }
 
-    @Override
-    public Response<Object> postMainPagePhoto(MainPagePhoto mainPagePhoto) {
-        adminMapper.postMainPagePhoto(mainPagePhoto);
-        return Response.builder().status(100).message("成功").build();
-    }
-
-    @Override
-    @Transactional
-    public Response<Object> deleteMainPagePhoto(String photoID) {
-        this.adminMapper.deleteMainPagePhoto(photoID, new Timestamp(0));
-        return Response.builder().status(100).build();
-    }
-
-    @Override
-    public Response<List<MainPagePhoto>> getMainPagePhotoList() {
-        List<MainPagePhoto> mainPagePhotoList = adminMapper.getMainPagePhotoList();
-        return new Response<>(mainPagePhotoList);
-    }
 
     @Override
     public Response<List<Department>> getDepartmentList() {

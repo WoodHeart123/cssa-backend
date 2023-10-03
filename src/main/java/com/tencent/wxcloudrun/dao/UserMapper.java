@@ -84,7 +84,6 @@ public interface UserMapper {
 
     ArrayList<Rental> getMyRental(String userID, Integer offset, Integer limit);
 
-    List<MainPagePhoto> getMainPagePhotos();
 
 
 }

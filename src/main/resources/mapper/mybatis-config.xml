@@ -13,7 +13,6 @@
         <typeAlias alias="Course" type="com.tencent.wxcloudrun.model.Course" />
         <typeAlias alias="Product" type="com.tencent.wxcloudrun.model.Product" />
         <typeAlias alias="Rental" type="com.tencent.wxcloudrun.model.Rental"/>
-        <typeAlias alias="MainPagePhoto" type="com.tencent.wxcloudrun.model.MainPagePhoto" />
         <typeAlias alias="CourseFile" type="com.tencent.wxcloudrun.model.CourseFile"/>
         <typeAlias alias="OperationLog" type="com.tencent.wxcloudrun.model.OperationLog"/>
     </typeAliases>
