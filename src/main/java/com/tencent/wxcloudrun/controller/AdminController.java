@@ -60,12 +60,6 @@ public class AdminController {
         return adminService.deleteActivity(actID);
     }
 
-    @RequestMapping(value = {"deleteMainPagePhoto"}, method = {RequestMethod.GET}, produces = "application/json")
-    @Operation(summary = "删除主页大图", description = "删除主页大图")
-    public Response<Object> deleteMainPagePhoto(@Parameter(description = "主页大图ID") @RequestParam String photoID) {
-        return adminService.deleteMainPagePhoto(photoID);
-    }
-
     @RequestMapping(value = {"getDepartmentList"}, method = {RequestMethod.GET}, produces = "application/json")
     @Operation(summary = "获取院系列表", description = "获取院系列表")
     public Response<List<Department>> getDepartmentList() {
