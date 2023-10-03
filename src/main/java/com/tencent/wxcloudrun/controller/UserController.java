@@ -235,12 +235,4 @@ public class UserController {
         }
     }
 
-    /**
-     * @return list of main page photo to mini-program
-     */
-    @RequestMapping(value = {"getMainPagePhotos"}, method = {RequestMethod.GET})
-    @Operation(summary = "获取主页图片", description = "获取主页图片")
-    Response<List<MainPagePhoto>> getMainPagePhotos() {
-        return userService.getMainPagePhotos();
-    }
 }

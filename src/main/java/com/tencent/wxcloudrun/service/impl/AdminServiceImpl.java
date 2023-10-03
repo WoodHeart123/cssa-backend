@@ -74,24 +74,6 @@ public class AdminServiceImpl implements AdminService {
         return Response.builder().status(100).build();
     }
 
-    @Override
-    public Response<Object> postMainPagePhoto(MainPagePhoto mainPagePhoto) {
-        adminMapper.postMainPagePhoto(mainPagePhoto);
-        return Response.builder().status(100).message("成功").build();
-    }
-
-    @Override
-    @Transactional
-    public Response<Object> deleteMainPagePhoto(String photoID) {
-        this.adminMapper.deleteMainPagePhoto(photoID, new Timestamp(0));
-        return Response.builder().status(100).build();
-    }
-
-    @Override
-    public Response<List<MainPagePhoto>> getMainPagePhotoList() {
-        List<MainPagePhoto> mainPagePhotoList = adminMapper.getMainPagePhotoList();
-        return new Response<>(mainPagePhotoList);
-    }
 
     @Override
     public Response<List<Department>> getDepartmentList() {

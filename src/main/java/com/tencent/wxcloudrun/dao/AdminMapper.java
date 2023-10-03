@@ -58,12 +58,6 @@ public interface AdminMapper {
      */
     void deleteComment(Integer commentID);
 
-    void postMainPagePhoto(MainPagePhoto mainPagePhoto);
-
-    void deleteMainPagePhoto(@Param("photoID") String actID, @Param("timestamp") Timestamp timestamp);
-
-    List<MainPagePhoto> getMainPagePhotoList();
-
     List<Department> getDepartmentList();
 
     List<Course> getCourseList(Integer departmentID);

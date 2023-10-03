@@ -178,10 +178,5 @@ public class UserServiceImpl implements UserService {
         return new Response<>();
     }
 
-    @Override
-    public Response<List<MainPagePhoto>> getMainPagePhotos() {
-        List<MainPagePhoto> mainPagePhotoList = userMapper.getMainPagePhotos();
-        return new Response<>(mainPagePhotoList);
-    }
 
 }
