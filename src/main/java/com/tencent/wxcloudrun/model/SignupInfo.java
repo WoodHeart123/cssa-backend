@@ -3,9 +3,6 @@ package com.tencent.wxcloudrun.model;
 import com.alibaba.fastjson.annotation.JSONField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-
-import java.util.List;
-
 @Data
 public class SignupInfo {
     @Schema(description = "用户ID", example = "oXv1-5Q0Z1QY1QY1QY1QY1QY1QY1")

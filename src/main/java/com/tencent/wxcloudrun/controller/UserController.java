@@ -197,7 +197,7 @@ public class UserController {
     @Deprecated
     @RequestMapping(value = {"/setProductTime"}, method = {RequestMethod.GET})
     @Operation(summary = "设置二手发布时间", description = "设置二手发布时间")
-    public Response setProductTime(@RequestParam Integer productID,
+    public Response<Object> setProductTime(@RequestParam Integer productID,
                                    @RequestParam String UTCtime,
                                    @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String userID) {
         return userService.setProductTime(productID, userID, new Timestamp(Instant.parse(UTCtime).toEpochMilli()));
@@ -206,7 +206,7 @@ public class UserController {
     @Deprecated
     @RequestMapping(value = {"/deleteMySecondHand"}, method = {RequestMethod.POST})
     @Operation(summary = "删除二手", description = "删除二手")
-    public Response deleteMySecondHand(@RequestParam Integer productID,
+    public Response<Object> deleteMySecondHand(@RequestParam Integer productID,
                                        @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         return userService.deleteMySecondHand(openid, productID);
     }
@@ -214,7 +214,7 @@ public class UserController {
     @Deprecated
     @RequestMapping(value = {"/deleteComment"}, method = {RequestMethod.POST})
     @Operation(summary = "删除评论", description = "删除评论")
-    public Response deleteComment(@RequestBody Integer commentID,
+    public Response<Object> deleteComment(@RequestBody Integer commentID,
                                   @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         return userService.deleteComment(openid, commentID);
     }
