@@ -19,7 +19,6 @@ import java.util.List;
 @Api(tags = "管理员接口")
 public class AdminController {
 
-    private final Logger logger = LoggerFactory.getLogger(AdminController.class);
     @Autowired
     AdminService adminService;
     @Autowired

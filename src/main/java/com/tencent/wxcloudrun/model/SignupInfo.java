@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -11,10 +12,11 @@ public class SignupInfo {
     private String userID;
     @Schema(description = "活动ID", example = "1")
     private Integer actID;
-    @Schema(description = "用户回答")
-    private List<String> response;
-    @Schema(hidden = true)
+
+    @Schema(description = "活动回复", example = "中秋节赏月")
+    @JSONField(name = "response")
     private String responseJSON;
+
     @Schema(description = "是否已经参加", example = "true")
     private Boolean ifJoined;
     @Schema(description = "支付金额", example = "100")

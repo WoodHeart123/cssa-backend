@@ -27,24 +27,17 @@ public class ActivityController {
     EmailService emailService;
 
     @Operation(summary = "查看用户报名信息", description = "查看用户报名信息")
-    @RequestMapping(value = {"/checksignup"}, method = {RequestMethod.GET}, produces = "application/json")
-    public Response<SignupInfo> checkSignup(@ApiParam(value = "活动ID", required = true) @RequestParam(name = "actID") Integer actID,
+    @RequestMapping(value = {"/events/signup/{id}"}, method = {RequestMethod.GET}, produces = "application/json")
+    public Response<SignupInfo> checkSignup(@ApiParam(value = "活动ID", required = true) @PathVariable(name = "id") Integer id,
                                             @ApiParam(value = "时间", required = true) @RequestParam(name = "date") Long date, @ApiParam(value = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
-        return activityService.checkSignup(actID, openid, date);
+        return activityService.checkSignup(id, openid, date);
     }
 
-
-    @Operation(summary = "报名活动", description = "根据提供的信息报名对应的活动")
-    @RequestMapping(value = {"/register"}, method = {RequestMethod.POST})
-    public Response<Object> register(@ApiParam(value = "报名信息", required = true) @RequestBody SignupInfo info, @ApiParam(value = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
-        info.setUserID(openid);
-        return activityService.registerActivity(info);
-    }
 
     @Operation(summary = "获取活动列表", description = "获取正在进行的活动列表。活动开始日期大于现在时间。")
-    @RequestMapping(value = {"/activityList"}, method = {RequestMethod.GET}, produces = "application/json")
-    public Response<List<Activity>> getActivityList(@Parameter(description = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
-        return activityService.getActivityList(openid);
+    @RequestMapping(value = {"/events"}, method = {RequestMethod.GET}, produces = "application/json")
+    public Response<List<Activity>> getActivityList() {
+        return activityService.getActivityList();
     }
 
 

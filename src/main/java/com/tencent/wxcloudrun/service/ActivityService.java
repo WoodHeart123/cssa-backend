@@ -17,12 +17,7 @@ public interface ActivityService {
      */
     Response<SignupInfo> checkSignup(Integer actID, String userID, Long date);
 
-    Response<List<Activity>> getActivityList(String userID);
-
-    /**
-     * sign up for an activity
-     */
-    Response<Object> registerActivity(SignupInfo info);
+    Response<List<Activity>> getActivityList();
 
     /**
      * @param userID open id

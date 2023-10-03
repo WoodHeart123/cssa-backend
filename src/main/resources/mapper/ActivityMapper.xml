@@ -2,76 +2,79 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tencent.wxcloudrun.dao.ActivityMapper">
 
+    <resultMap id="ActivityMap" type="Activity">
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+        <result property="deletedAt" column="deleted_at" />
+        <result property="additionalInfoJSON" column="additional_info" />
+        <result property="startDate" column="start_date" />
+        <result property="endDate" column="end_date" />
+        <result property="imagesJSON" column="images"/>
+        <result property="paymentJSON" column="payment"/>
+    </resultMap>
 
-    <select id="checkSignup" resultType="SignupInfo">
-        SELECT signup_activity.actID, response, payment
-        FROM signup_activity,
-             activity
-        where userID = #{userID}
-          and signup_activity.actID = activity.actID
-          and activity.startDate &gt; #{date}
+    <select id="getActivityList" resultMap="ActivityMap">
+        SELECT
+            activity.id as id,
+            COUNT(user_id) as userJoinedNum,
+            title,
+            start_date,
+            end_date,
+            deadline,
+            location,
+            price,
+            capacity,
+            images,
+            additional_info,
+            description,
+            payment,
+            activity.created_at
+        FROM
+            activity
+                LEFT JOIN activity_responses ON activity.id = activity_responses.id
+        WHERE
+            activity.deadline >= CURRENT_TIMESTAMP
+          AND activity.deleted_at IS null
+        GROUP BY
+            activity.id,
+            title,
+            start_date,
+            end_date,
+            deadline,
+            location,
+            price,
+            capacity,
+            images,
+            additional_info,
+            description,
+            payment,
+            activity.created_at
+        ORDER BY
+            activity.id
     </select>
 
-    <select id="getActivityList" resultType="Activity">
-        SELECT activity.actID,
-               COUNT(userID) as userJoinedNum,
+    <select id="getRegisterList" parameterType="String" resultMap="ActivityMap">
+        SELECT activity.id,
                title,
-               startDate,
-               endDate,
+               start_date,
+               end_date,
                location,
                price,
                capacity,
-               imgs,
-               additionalInfoJSON,
-               description
-        FROM signup_activity
-                 RIGHT JOIN activity ON activity.actID = signup_activity.actID
-        WHERE activity.endDate &gt; CURRENT_TIMESTAMP
-        GROUP BY activity.actID,
-                 title,
-                 startDate,
-                 endDate,
-                 location,
-                 price,
-                 capacity,
-                 imgs,
-                 additionalInfoJSON,
-                 description
-        ORDER BY activity.actID ASC
+               images,
+               additional_info,
+               description,
+               payment,
+               activity.created_at
+        FROM activity_responses
+                 RIGHT JOIN activity ON activity.id = activity_responses.id
+        WHERE activity_responses.user_id = #{userID}
+          AND activity.start_date &gt; CURRENT_TIMESTAMP
+          AND activity.deleted_at IS NULL
+          AND activity_responses.deleted_at IS NULL
+        ORDER BY activity.id
     </select>
 
-    <select id="getRegisterList" parameterType="String" resultType="Activity">
-        SELECT activity.actID,
-               title,
-               startDate,
-               location,
-               payment as price,
-               capacity,
-               imgs,
-               additionalInfoJSON,
-               description
-        FROM signup_activity
-                 RIGHT JOIN activity ON activity.actID = signup_activity.actID
-        WHERE signup_activity.userId = #{userID}
-          AND activity.startDate &gt; 19700101010000
-        ORDER BY activity.actID ASC
-    </select>
 
-    <update id="updateActivity" parameterType="Activity">
-        UPDATE activity
-        SET userJoinedNum=#{userJoinedNum}
-        WHERE actID = #{actID}
-    </update>
-
-    <insert id="recordResponse" parameterType="SignupInfo">
-        INSERT INTO signup_activity (userID, actID, response, payment)
-        values (#{userID}, #{actID}, #{responseJSON}, #{payment})
-    </insert>
-
-    <select id="findActivity" parameterType="Integer" resultType="Activity">
-        SELECT startDate, userJoinedNum, capacity
-        FROM activity
-        where actID = #{actID}
-    </select>
 
 </mapper>
