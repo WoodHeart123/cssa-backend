@@ -139,12 +139,5 @@
         LIMIT #{limit}
     </select>
 
-    <select id="getMainPagePhotos" resultType="MainPagePhoto">
-        SELECT
-            photoID, startDate,endDate,smallPhoto,largePhoto
-        FROM mainpage_photo
-        WHERE endDate > NOW() AND startDate <![CDATA[<]]>NOW()
-        ORDER BY photoID DESC
-    </select>
 
 </mapper>
