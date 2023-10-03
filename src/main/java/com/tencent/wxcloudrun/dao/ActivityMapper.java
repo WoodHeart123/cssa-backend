@@ -10,25 +10,12 @@ import java.util.List;
 @Mapper
 public interface ActivityMapper {
 
-    ArrayList<SignupInfo> checkSignup(String userID, Long date);
+    SignupInfo checkSignup(String userID, Integer actID);
 
     /**
      * @return list of activity that is available to user
      */
     List<Activity> getActivityList();
-
-    /**
-     * @param actID activity actID
-     * @return an activity with matched actID, NULL when not found
-     */
-    Activity findActivity(Integer actID);
-
-    /**
-     * record all user's response for one activity
-     *
-     * @param info information user provided
-     */
-    void recordResponse(SignupInfo info);
 
     /**
      * @param userID user ID

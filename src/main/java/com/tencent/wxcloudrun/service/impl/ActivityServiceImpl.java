@@ -24,13 +24,13 @@ public class ActivityServiceImpl implements ActivityService {
     ApplicationContext applicationContext;
 
     @Override
-    public Response<SignupInfo> checkSignup(Integer actID, String userID, Long Date) {
-        ArrayList<SignupInfo> result = activityMapper.checkSignup(userID, Date);
-        for (SignupInfo signupInfo : result) {
-            if (signupInfo.getActID().equals(actID)) {
-                signupInfo.setIfJoined(true);
-                return new Response<>(signupInfo);
-            }
+    public Response<SignupInfo> checkSignup(String userID, Integer actID) {
+        SignupInfo result = activityMapper.checkSignup(userID, actID);
+        if (result == null) {
+            result = new SignupInfo();
+            result.setIfJoined(false);
+        }else{
+            result.setIfJoined(true);
         }
         SignupInfo temp = new SignupInfo();
         temp.setIfJoined(false);

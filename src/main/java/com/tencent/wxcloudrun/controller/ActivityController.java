@@ -27,10 +27,10 @@ public class ActivityController {
     EmailService emailService;
 
     @Operation(summary = "查看用户报名信息", description = "查看用户报名信息")
-    @RequestMapping(value = {"/events/signup/{id}"}, method = {RequestMethod.GET}, produces = "application/json")
-    public Response<SignupInfo> checkSignup(@ApiParam(value = "活动ID", required = true) @PathVariable(name = "id") Integer id,
-                                            @ApiParam(value = "时间", required = true) @RequestParam(name = "date") Long date, @ApiParam(value = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
-        return activityService.checkSignup(id, openid, date);
+    @RequestMapping(value = {"/events/signup/{act_id}"}, method = {RequestMethod.GET}, produces = "application/json")
+    public Response<SignupInfo> checkSignup(@ApiParam(value = "活动ID", required = true) @PathVariable(name = "act_id") Integer actID
+                                            , @ApiParam(value = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
+        return activityService.checkSignup(openid, actID);
     }
 
 

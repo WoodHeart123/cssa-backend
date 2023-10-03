@@ -15,7 +15,7 @@ public interface ActivityService {
      *
      * @return
      */
-    Response<SignupInfo> checkSignup(Integer actID, String userID, Long date);
+    Response<SignupInfo> checkSignup(String userID, Integer actID);
 
     Response<List<Activity>> getActivityList();
 

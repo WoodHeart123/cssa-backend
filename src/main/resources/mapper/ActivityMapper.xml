@@ -12,6 +12,16 @@
         <result property="imagesJSON" column="images"/>
         <result property="paymentJSON" column="payment"/>
     </resultMap>
+    
+    <resultMap id="SignupInfoMap" type="SignupInfo">
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+        <result property="deletedAt" column="deleted_at" />
+        <result property="actID" column="act_id" />
+        <result property="userID" column="user_id" />
+        <result property="isPaid" column="is_paid" />
+        <result property="responseJSON" column="response" />
+    </resultMap>
 
     <select id="getActivityList" resultMap="ActivityMap">
         SELECT
@@ -51,6 +61,18 @@
             activity.created_at
         ORDER BY
             activity.id
+    </select>
+    
+    <select id="checkRegistration" resultMap="SignupInfoMap">
+        SELECT
+            *
+        FROM
+            activity_responses
+        WHERE
+            user_id = #{userID}
+            AND act_id = #{actID}
+            AND deleted_at IS NULL
+        LIMIT 1
     </select>
 
     <select id="getRegisterList" parameterType="String" resultMap="ActivityMap">
