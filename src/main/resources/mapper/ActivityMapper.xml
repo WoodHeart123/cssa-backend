@@ -62,7 +62,17 @@
         ORDER BY
             activity.id
     </select>
-    
+
+    <select id="findActivity" resultMap="Activity">
+        SELECT
+            *
+        FROM
+            activity
+        WHERE
+            id = #{id}
+            AND deleted_at IS NULL
+    </select>
+
     <select id="checkRegistration" resultMap="SignupInfoMap">
         SELECT
             *

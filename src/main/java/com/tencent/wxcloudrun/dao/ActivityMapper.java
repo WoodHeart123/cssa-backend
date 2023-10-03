@@ -12,6 +12,8 @@ public interface ActivityMapper {
 
     SignupInfo checkSignup(String userID, Integer actID);
 
+    Activity findActivity(Integer actID);
+
     /**
      * @return list of activity that is available to user
      */
