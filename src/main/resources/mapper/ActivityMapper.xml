@@ -63,7 +63,7 @@
             activity.id
     </select>
 
-    <select id="findActivity" resultMap="Activity">
+    <select id="findActivity" resultType="Activity">
         SELECT
             *
         FROM
