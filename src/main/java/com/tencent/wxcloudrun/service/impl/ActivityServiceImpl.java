@@ -32,9 +32,7 @@ public class ActivityServiceImpl implements ActivityService {
         }else{
             result.setIfJoined(true);
         }
-        SignupInfo temp = new SignupInfo();
-        temp.setIfJoined(false);
-        return new Response<>(temp);
+        return new Response<>(result);
     }
 
     @Override

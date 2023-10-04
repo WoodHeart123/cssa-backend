@@ -1,8 +1,11 @@
 package com.tencent.wxcloudrun.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.annotation.JSONField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+
+import java.sql.Timestamp;
+
 @Data
 public class SignupInfo {
     @Schema(description = "报名ID", example = "1")
@@ -28,4 +31,16 @@ public class SignupInfo {
 
     @Schema(description = "用户昵称", example = "张三")
     private String nickname;
+
+    @Schema(description = "活动创建时间", example = "1")
+    @JSONField(name = "created_at")
+    private Timestamp createdAt;
+
+    @Schema(description = "活动更新时间", example = "1")
+    @JSONField(name = "updated_at")
+    private Timestamp updatedAt;
+
+    @Schema(description = "活动删除时间", example = "1")
+    @JSONField(name = "deleted_at")
+    private Timestamp deletedAt;
 }
