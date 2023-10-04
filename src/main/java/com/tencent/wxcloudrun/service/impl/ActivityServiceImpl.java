@@ -35,6 +35,8 @@ public class ActivityServiceImpl implements ActivityService {
         return new Response<>(result);
     }
 
+
+
     @Override
     public Response<List<Activity>> getActivityList() {
         List<Activity> activityList = activityMapper.getActivityList();
@@ -48,6 +50,12 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public Response<Object> registerActivity(SignupInfo signupInfo) {
         activityMapper.registerActivity(signupInfo);
+        return new Response<>();
+    }
+
+    @Override
+    public Response<Object> cancelRegister(String userID, Integer actID) {
+        activityMapper.cancelRegister(userID, actID);
         return new Response<>();
     }
 

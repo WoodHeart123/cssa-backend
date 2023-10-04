@@ -111,6 +111,13 @@
         VALUES (#{actID}, #{userID}, #{responseJSON}) ON DUPLICATE KEY UPDATE response = #{responseJSON}, deleted_at = NULL
     </insert>
 
+    <update id="cancelRegister">
+        UPDATE activity_responses
+        SET deleted_at = CURRENT_TIMESTAMP
+        WHERE act_id = #{actID}
+          AND user_id = #{userID}
+    </update>
+
 
 
 </mapper>

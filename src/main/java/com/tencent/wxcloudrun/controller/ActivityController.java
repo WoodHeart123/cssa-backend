@@ -48,6 +48,13 @@ public class ActivityController {
         return activityService.registerActivity(signupInfo);
     }
 
+    @Operation(summary = "取消报名", description = "取消用户的报名信息")
+    @RequestMapping(value = {"/register/{act_id}"}, method = {RequestMethod.DELETE}, produces = "application/json")
+    public Response<Object> cancelRegister(@ApiParam(value = "活动ID", required = true) @PathVariable(name = "act_id") Integer actID,
+                                           @Parameter(description = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
+        return activityService.cancelRegister(openid, actID);
+    }
+
 
     @Operation(summary = "获取报名列表", description = "获得用户所有报名活动列表")
     @RequestMapping(value = {"/register"}, method = {RequestMethod.GET}, produces = "application/json")

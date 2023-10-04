@@ -14,6 +14,8 @@ public interface ActivityMapper {
 
     Activity findActivity(Integer actID);
 
+    void cancelRegister(String userID, Integer actID);
+
     /**
      * @return list of activity that is available to user
      */
