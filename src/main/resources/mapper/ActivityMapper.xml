@@ -109,7 +109,7 @@
 
     <insert id="registerActivity" parameterType="SignupInfo">
         INSERT INTO activity_responses (act_id, user_id, response)
-        VALUES (#{actID}, #{userID}, #{responseJSON})
+        VALUES (#{actID}, #{userID}, #{responseJSON}) ON DUPLICATE KEY UPDATE response = #{responseJSON}, deleted_at = NULL
     </insert>
 
 
