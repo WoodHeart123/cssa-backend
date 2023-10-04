@@ -41,7 +41,7 @@
             activity.created_at
         FROM
             activity
-                LEFT JOIN activity_responses ON activity.id = activity_responses.id
+                LEFT JOIN activity_responses ON activity.id = activity_responses.act_id
         WHERE
             activity.deadline >= CURRENT_TIMESTAMP
           AND activity.deleted_at IS null
@@ -99,9 +99,8 @@
                payment,
                activity.created_at
         FROM activity_responses
-                 RIGHT JOIN activity ON activity.id = activity_responses.id
+                 RIGHT JOIN activity ON activity.id = activity_responses.act_id
         WHERE activity_responses.user_id = #{userID}
-          AND activity.start_date &gt; CURRENT_TIMESTAMP
           AND activity.deleted_at IS NULL
           AND activity_responses.deleted_at IS NULL
         ORDER BY activity.id
