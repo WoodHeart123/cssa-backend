@@ -25,7 +25,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Response<SignupInfo> checkSignup(String userID, Integer actID) {
-        SignupInfo result = activityMapper.checkSignup(userID, actID);
+        SignupInfo result = activityMapper.checkRegistration(userID, actID);
         if (result == null) {
             result = new SignupInfo();
             result.setIfJoined(false);
@@ -45,6 +45,12 @@ public class ActivityServiceImpl implements ActivityService {
             activity.setImages((ArrayList<String>) JSON.parseArray(activity.getImagesJSON(), String.class));
         }
         return new Response<>(activityList);
+    }
+
+    @Override
+    public Response<Object> registerActivity(SignupInfo signupInfo) {
+        activityMapper.registerActivity(signupInfo);
+        return new Response<>();
     }
 
     @Override

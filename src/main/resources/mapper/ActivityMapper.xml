@@ -107,6 +107,11 @@
         ORDER BY activity.id
     </select>
 
+    <insert id="registerActivity" parameterType="SignupInfo">
+        INSERT INTO activity_responses (act_id, user_id, response)
+        VALUES (#{actID}, #{userID}, #{responseJSON})
+    </insert>
+
 
 
 </mapper>
