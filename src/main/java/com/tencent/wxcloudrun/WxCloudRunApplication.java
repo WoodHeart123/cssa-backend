@@ -1,12 +1,8 @@
 package com.tencent.wxcloudrun;
 
-import com.alibaba.fastjson2.support.spring.http.converter.FastJsonHttpMessageConverter;
-import com.tencent.wxcloudrun.config.FastJsonConfig;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
-import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 

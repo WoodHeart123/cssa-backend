@@ -1,6 +1,6 @@
 package com.tencent.wxcloudrun.model;
 
-import com.alibaba.fastjson2.annotation.JSONField;
+import com.alibaba.fastjson.annotation.JSONField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -28,7 +28,7 @@ public class Activity {
 
     // 报名截止时间
     @Schema(description = "活动结束时间", example = "2020-12-31 23:59:59")
-    @JSONField(name = "end_date")
+    //@JSONField(name = "end_date")
     private Timestamp endDate;
 
     // 报名截至时间
@@ -50,7 +50,7 @@ public class Activity {
 
     // 数据库存储JSON, 无需对外暴露
     @Schema(hidden = true)
-    @JSONField(serialize = false, deserialize = false)
+    //@JSONField(serialize = false, deserialize = false)
     private String paymentJSON;
 
     @Schema(description = "付款信息")
@@ -59,7 +59,7 @@ public class Activity {
 
     // 数据库存储JSON, 无需对外暴露
     @Schema(hidden = true)
-    @JSONField(serialize = false, deserialize = false)
+    //@JSONField(serialize = false, deserialize = false)
     private String imagesJSON;
 
     // 活动价格
@@ -71,15 +71,15 @@ public class Activity {
 
 
     @Schema(description = "活动创建时间", example = "1")
-    @JSONField(name = "created_at")
+    //@JSONField(name = "created_at")
     private Timestamp createdAt;
 
     @Schema(description = "活动更新时间", example = "1")
-    @JSONField(name = "updated_at")
+    //@JSONField(name = "updated_at")
     private Timestamp updatedAt;
 
     @Schema(description = "活动删除时间", example = "1")
-    @JSONField(name = "deleted_at")
+    //@JSONField(name = "deleted_at")
     private Timestamp deletedAt;
 
     // 数据库存储JSON, 无需对外暴露
