@@ -1,6 +1,6 @@
 package com.tencent.wxcloudrun.service.impl;
 
-import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.dao.ActivityMapper;
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.PaymentOption;

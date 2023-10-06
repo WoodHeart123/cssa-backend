@@ -6,8 +6,6 @@ import com.alibaba.fastjson.serializer.ToStringSerializer;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.tencent.wxcloudrun.util.AdminServiceInterceptor;
 import com.tencent.wxcloudrun.util.WeixinServiceInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
