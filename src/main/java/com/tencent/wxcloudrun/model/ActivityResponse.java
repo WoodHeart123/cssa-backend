@@ -15,7 +15,7 @@ public class ActivityResponse {
 
     // 用户ID
     @Schema(description = "用户ID", example = "1")
-    private Integer userID;
+    private String userID;
 
     // 报名信息
     @Schema(description = "报名回复信息", example = "收到")
@@ -23,7 +23,7 @@ public class ActivityResponse {
 
     // 是否付款
     @Schema(description = "是否付款", example = "1")
-    private Integer isPaid;
+    private Boolean isPaid;
 
     // 创建时间
     @Schema(description = "创建时间", example = "2020-12-31 23:59:59")
