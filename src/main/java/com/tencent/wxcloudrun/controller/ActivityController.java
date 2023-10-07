@@ -53,4 +53,5 @@ public class ActivityController {
     public Response<List<Activity>> getRegisterList(@Parameter(description = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
         return activityService.getRegisterList(openid);
     }
+
 }
