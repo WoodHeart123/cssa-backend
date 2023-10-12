@@ -26,6 +26,7 @@ public class Product {
     @Schema(description = "商品类型")
     private ProductType productType;
     @Schema(description = "商品成色")
+    @JSONField
     private Condition productCondition;
     @Schema(description = "商品发布时间", example = "2021-01-01 00:00:00")
     private Timestamp time;
