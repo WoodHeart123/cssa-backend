@@ -2,6 +2,7 @@ package com.tencent.wxcloudrun.service.impl;
 
 
 import com.alibaba.fastjson.JSON;
+import com.tencent.wxcloudrun.dao.ActivityResponseMapper;
 import com.tencent.wxcloudrun.dao.AdminMapper;
 import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.service.AdminService;
@@ -121,5 +122,16 @@ public class AdminServiceImpl implements AdminService {
     public Response<Object> deleteComment(Integer commentID) {
         adminMapper.deleteComment(commentID);
         return Response.builder().status(100).message("success").build();
+    }
+
+    // 放到admin
+    @Override
+    public Response<List<String>> selectResponseList(Integer activityId) {
+        List<String> lists = adminMapper.selectResponseList(activityId);
+        if(lists != null){
+            return new Response<>(lists);
+        } else {
+            return new Response<>(ReturnCode.NO_SEARCH_RESULT);
+        }
     }
 }

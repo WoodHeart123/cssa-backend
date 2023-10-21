@@ -106,4 +106,10 @@
         SELECT professor, courseTime, difficulty, prefer, courseComment, likeCount From courseComment WHERE courseID = #{courseID}
     </select>
 
+    <!-- 获得报名列表 -->
+    <select id="selectResponseList" parameterType="int" resultType="java.lang.String">
+        SELECT user_id
+        FROM activity_responses WHERE act_id = #{activityId} AND deleted_at IS NULL
+    </select>
+
 </mapper>

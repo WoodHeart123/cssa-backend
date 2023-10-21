@@ -1,18 +1,13 @@
 package com.tencent.wxcloudrun.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.tencent.wxcloudrun.dao.ActivityMapper;
 import com.tencent.wxcloudrun.dao.ActivityResponseMapper;
-import com.tencent.wxcloudrun.event.SignupEvent;
-import com.tencent.wxcloudrun.model.*;
+import com.tencent.wxcloudrun.model.ActivityResponse;
+import com.tencent.wxcloudrun.model.Response;
+import com.tencent.wxcloudrun.model.ReturnCode;
 import com.tencent.wxcloudrun.service.ActivityResponseService;
-import com.tencent.wxcloudrun.service.ActivityService;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
+import java.util.List;
 
 @Service
 public class ActivityResponseServiceImpl implements ActivityResponseService {
@@ -21,27 +16,40 @@ public class ActivityResponseServiceImpl implements ActivityResponseService {
     private ActivityResponseMapper activityResponseMapper;
 
     @Override
-    public void createResponse(Integer ID, ActivityResponse activityResponse) {
+    public Response<ReturnCode> createResponse(ActivityResponse activityResponse) {
+        // 如果id已经存在了则update, 否则为create
+        if (activityResponse.getUserID() != null) {
+            int res = activityResponseMapper.updateResponse(activityResponse);
+            if(res > 0){
+                return new Response<>(ReturnCode.SUCCESS);
+            }
+        } else {
+            int res = activityResponseMapper.createResponse(activityResponse);
+            if(res > 0){
+                return new Response<>(ReturnCode.SUCCESS);
+            }
+        }
+        return new Response<>(ReturnCode.UNKNOWN_SERVICE);
+    }
 
+
+    @Override
+    public Response<ActivityResponse> selectResponseContent(String userID, Integer activityID) {
+        ActivityResponse contents = activityResponseMapper.selectResponseContent(userID, activityID);
+        if(contents != null) {
+            return new Response<>(contents);
+        } else {
+            return new Response<>(ReturnCode.NO_SEARCH_RESULT);
+        }
     }
 
     @Override
-    public List<ActivityResponse> selectResponseList(Integer activityId) {
-        return null;
-    }
-
-    @Override
-    public ActivityResponse selectResponseContent(Integer activityID) {
-        return null;
-    }
-
-    @Override
-    public void updateResponse(ActivityResponse activityResponse) {
-
-    }
-
-    @Override
-    public void deleteResponse(Integer activityID) {
-
+    public Response<ReturnCode> deleteResponse(Integer id) {
+        int res = activityResponseMapper.deleteResponse(id);
+        if(res > 0) {
+            return new Response<>(ReturnCode.SUCCESS);
+        } else {
+            return new Response<>(ReturnCode.NO_SEARCH_RESULT);
+        }
     }
 }

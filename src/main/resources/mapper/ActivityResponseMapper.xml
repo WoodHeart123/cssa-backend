@@ -1,5 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.tencent.wxcloudrun.dao.ActivityResponseMapper">
+    <resultMap id="activityResponseMap" type="com.tencent.wxcloudrun.model.ActivityResponse">
+        <result property="activityID" column="act_id" />
+        <result property="userID" column="user_id" />
+        <result property="isPaid" column="is_paid" />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+        <result property="deletedAt" column="deleted_at" />
+    </resultMap>
+    <!-- 创建活动响应的SQL -->
+    <insert id="createResponse" parameterType="com.tencent.wxcloudrun.model.ActivityResponse">
+        INSERT INTO activity_responses (act_id, user_id, response, is_paid)
+        VALUES (#{activityID}, #{userID}, #{response}, #{isPaid})
+    </insert>
+    <!-- 更新活动响应的SQL -->
+    <update id="updateResponse" parameterType="com.tencent.wxcloudrun.model.ActivityResponse">
+        UPDATE activity_responses
+        <set>
+            <if test="activityID != null">
+                act_id = #{activityID},
+            </if>
+            <if test="response != null">
+                response = #{response},
+            </if>
+            <if test="isPaid != null">
+                is_paid = #{isPaid}
+            </if>
+        </set>
+        <where>
+            user_id = #{userID} AND deleted_at IS NULL
+        </where>
+    </update>
 
+    <!-- 获得报名具体内容 -->
+    <select id="selectResponseContent" resultType="com.tencent.wxcloudrun.model.ActivityResponse" resultMap="activityResponseMap">
+        SELECT *
+        FROM activity_responses WHERE user_id = #{userID} AND act_id = #{activityID} AND deleted_at IS NULL
+    </select>
+    <!-- 删除该报名 -->
+    <update id="deleteResponse" parameterType="int">
+        UPDATE activity_responses SET deleted_at = CURRENT_TIMESTAMP WHERE id = #{id} AND deleted_at IS NULL
+    </update>
 </mapper>

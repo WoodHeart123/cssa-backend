@@ -19,7 +19,7 @@ public class ActivityResponse {
 
     // 报名信息
     @Schema(description = "报名回复信息", example = "收到")
-    private String response;  // 存储json
+    private String response;
 
     // 是否付款
     @Schema(description = "是否付款", example = "1")

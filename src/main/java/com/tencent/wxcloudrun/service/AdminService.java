@@ -39,4 +39,10 @@ public interface AdminService {
     Response<List<Course>> getCourseList(Integer departmentID);
 
     Response<List<CourseComment>> getCommentList(Integer courseID);
+
+    /**
+     * @return a list of responded users
+     * @param activityId the id of the selected activity
+     */
+    Response<List<String>> selectResponseList(Integer activityId);
 }

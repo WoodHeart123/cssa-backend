@@ -1,5 +1,4 @@
 package com.tencent.wxcloudrun.service.impl;
-
 import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.dao.ActivityMapper;
 import com.tencent.wxcloudrun.event.SignupEvent;

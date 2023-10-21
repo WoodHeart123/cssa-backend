@@ -22,7 +22,7 @@ public interface AdminMapper {
     /**
      * get all activity list
      */
-    List<Activity> getActivityList();
+     List<Activity> getActivityList();
 
     /**
      * login method for admin
@@ -69,4 +69,10 @@ public interface AdminMapper {
     List<Course> getCourseList(Integer departmentID);
 
     List<CourseComment> getCommentList(Integer courseID);
+
+    /**
+     * @return a list of responded users
+     * @param activityId the id of the selected activity
+     */
+    List<String> selectResponseList(Integer activityId); // 放到admin
 }

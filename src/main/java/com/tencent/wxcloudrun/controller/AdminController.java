@@ -4,6 +4,7 @@ package com.tencent.wxcloudrun.controller;
 import com.tencent.wxcloudrun.model.*;
 import com.tencent.wxcloudrun.service.AdminService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.slf4j.Logger;
@@ -49,10 +50,18 @@ public class AdminController {
         return adminService.createActivity(activity);
     }
 
-    @RequestMapping(value = {"/activitySignup"}, method = {RequestMethod.GET}, produces = "application/json")
-    @Operation(summary = "获取报名信息", description = "获取所有用户当前活动的报名信息")
-    public Response<List<SignupInfo>> getActivitySignup(@Parameter(description = "活动ID") @RequestParam String actID) {
-        return adminService.getActivitySignup(actID);
+//    @RequestMapping(value = {"/activitySignup"}, method = {RequestMethod.GET}, produces = "application/json")
+//    @Operation(summary = "获取报名信息", description = "获取所有用户当前活动的报名信息")
+//    public Response<List<SignupInfo>> getActivitySignup(@Parameter(description = "活动ID") @RequestParam String actID) {
+//        return adminService.getActivitySignup(actID);
+//    }
+
+    // 更新: 获取活动报名用户列表
+    @Operation(summary = "获取报名列表", description = "获得用户所有报名列表")
+    @GetMapping("/selectResponseList/{activityID}")
+    public Response<List<String>> selectResponseList(@ApiParam(value = "活动ID", required = true)
+                                                     @PathVariable("activityID") Integer activityID){
+        return adminService.selectResponseList(activityID);
     }
 
     @RequestMapping(value = {"/deleteActivity"}, method = {RequestMethod.GET}, produces = "application/json")
