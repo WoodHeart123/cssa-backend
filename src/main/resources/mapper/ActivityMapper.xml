@@ -118,6 +118,35 @@
           AND user_id = #{userID}
     </update>
 
+    <select id="getActivityDetails" resultMap="ActivityMap" parameterType="Integer">
+        SELECT * FROM activity WHERE id = #{actID} AND deleted_at IS NULL
+    </select>
+
+    <update id="updateFullActivity" >
+        UPDATE activity
+        SET
+        title = #{activity.title},
+        description = #{activity.description},
+        start_date = #{activity.startDate},
+        end_date = #{activity.endDate},
+        deadline = #{activity.deadline},
+        location = #{activity.location},
+        capacity = #{activity.capacity},
+        images = #{activity.imagesJSON},
+        payment = #{activity.paymentJSON},
+        price = #{activity.price},
+        created_at = #{activity.createdAt},
+        updated_at = CURRENT_TIMESTAMP,
+        deleted_at = #{activity.deletedAt},
+        additional_info = #{activity.additionalInfoJSON}
+        WHERE id = #{actID}
+    </update>
+
+    <update id="deleteActivity" parameterType="Integer">
+        UPDATE activity
+        SET deleted_at = CURRENT_TIMESTAMP
+        WHERE id = #{id}
+    </update>
 
 
 </mapper>

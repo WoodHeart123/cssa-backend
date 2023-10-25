@@ -29,7 +29,7 @@ public class ActivityController {
     @Operation(summary = "查看用户报名信息", description = "查看用户报名信息")
     @RequestMapping(value = {"/events/signup/{act_id}"}, method = {RequestMethod.GET}, produces = "application/json")
     public Response<SignupInfo> checkSignup(@ApiParam(value = "活动ID", required = true) @PathVariable(name = "act_id") Integer actID
-                                            , @ApiParam(value = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
+            , @ApiParam(value = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
         return activityService.checkSignup(openid, actID);
     }
 
@@ -40,25 +40,32 @@ public class ActivityController {
         return activityService.getActivityList();
     }
 
-    @Operation(summary = "报名活动", description = "记录用户的报名信息")
-    @RequestMapping(value = {"/register"}, method = {RequestMethod.POST}, produces = "application/json")
-    public Response<Object> registerActivity(@RequestBody SignupInfo signupInfo,
-                                                    @Parameter(description = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
-        signupInfo.setUserID(openid);
-        return activityService.registerActivity(signupInfo);
-    }
-
-    @Operation(summary = "取消报名", description = "取消用户的报名信息")
-    @RequestMapping(value = {"/register/{act_id}"}, method = {RequestMethod.DELETE}, produces = "application/json")
-    public Response<Object> cancelRegister(@ApiParam(value = "活动ID", required = true) @PathVariable(name = "act_id") Integer actID,
-                                           @Parameter(description = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
-        return activityService.cancelRegister(openid, actID);
-    }
-
 
     @Operation(summary = "获取报名列表", description = "获得用户所有报名活动列表")
-    @RequestMapping(value = {"/register"}, method = {RequestMethod.GET}, produces = "application/json")
+    @RequestMapping(value = {"/registerList"}, method = {RequestMethod.GET}, produces = "application/json")
     public Response<List<Activity>> getRegisterList(@Parameter(description = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
         return activityService.getRegisterList(openid);
+    }
+
+    @Operation(summary = "获取活动详情", description = "根据给定的event_id获取具体的活动详情。")
+    @GetMapping("/activityList/{event_id}")
+    public Response<Activity> getActivityDetails(
+            @Parameter(description = "活动ID", required = true) @PathVariable(name="event_id") Integer eventId) {
+        return activityService.getActivityDetails(eventId);
+    }
+
+    @Operation(summary = "更新活动", description = "更新给定event_id的活动信息。")
+    @PutMapping("/activityList/{event_id}")
+    public Response<String> updateActivity(
+            @Parameter(description = "活动ID", required = true) @PathVariable(name="event_id") Integer eventId,
+            @RequestBody Activity updatedActivity) {
+        return activityService.updateFullActivity(eventId, updatedActivity);
+    }
+
+    @Operation(summary = "删除活动", description = "删除给定event_id的活动。")
+    @DeleteMapping("/activityList/{event_id}")
+    public Response<String> deleteActivity(
+            @Parameter(description = "活动ID", required = true) @PathVariable(name="event_id") Integer eventId) {
+        return activityService.deleteActivity(eventId);
     }
 }

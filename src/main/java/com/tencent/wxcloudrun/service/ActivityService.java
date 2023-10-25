@@ -29,5 +29,14 @@ public interface ActivityService {
      */
     Response<List<Activity>> getRegisterList(String userID);
 
+    /**
+     *
+     * @param actID an id of an activity to search
+     * @return
+     */
+    Response<Activity> getActivityDetails(Integer actID);
 
+    Response<String> updateFullActivity(Integer actID, Activity updatedActivity);
+
+    Response<String> deleteActivity(Integer actID);
 }

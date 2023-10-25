@@ -65,5 +65,30 @@ public class ActivityServiceImpl implements ActivityService {
         return new Response<>(activityList);
     }
 
+    @Override
+    public Response<Activity> getActivityDetails(Integer actID) {
+        System.out.println(actID);
+        Activity activity = activityMapper.getActivityDetails(actID);
+        if (activity != null) {
+            return new Response<>(activity);
+        } else {
+            return new Response<>();
+        }
+    }
+
+    @Override
+    public Response<String> updateFullActivity(Integer actID, Activity updatedActivity) {
+        if (updatedActivity.getImages() == null || updatedActivity.getImages().isEmpty()) {
+            updatedActivity.setImagesJSON("{}");
+        }
+        activityMapper.updateFullActivity(actID, updatedActivity);
+        return new Response<>("活动更新成功");
+    }
+
+    @Override
+    public Response<String> deleteActivity(Integer actID) {
+        activityMapper.deleteActivity(actID);
+        return new Response<>("活动删除成功");
+    }
 
 }
