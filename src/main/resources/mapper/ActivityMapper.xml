@@ -137,7 +137,7 @@
         price = #{activity.price},
         created_at = #{activity.createdAt},
         updated_at = CURRENT_TIMESTAMP,
-        deleted_at = #{activity.deletedAt},
+        deleted_at = NULL,
         additional_info = #{activity.additionalInfoJSON}
         WHERE id = #{actID}
     </update>
