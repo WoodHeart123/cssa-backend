@@ -20,7 +20,8 @@ public class User {
     private String likedCommentJSON;
     private List<Integer> savedProduct;
     private String savedProductJSON;
-
+    private List<Integer> savedMate;
+    private String savedMateJSON;
     private List<Integer> savedRental;
     private String savedRentalJSON;
     private Boolean isStudent;
