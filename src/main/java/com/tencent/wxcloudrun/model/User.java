@@ -29,7 +29,6 @@ public class User {
     private String wechatID;
     private Boolean subscribe;
 
-
     /**
      * constructor for new user
      *
