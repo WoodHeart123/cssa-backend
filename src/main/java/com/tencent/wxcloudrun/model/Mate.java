@@ -18,10 +18,10 @@ public class Mate {
 
     @Schema(description = "发布时间", example = "2020-12-31 23:59:59")
     private Timestamp postDate;
-
-    // 活动地点
-    @Schema(description = "活动地点", example = "腾讯大厦")
-    private String location;
+    
+    // 发布者联系方式
+    @Schema(description = "发布者联系方式", example = "1")
+    private String contact;
 
     // 活动标题
     @Schema(description = "活动标题", example = "中秋节赏月")
