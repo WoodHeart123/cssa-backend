@@ -18,7 +18,7 @@
         SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit, commentCount
         FROM course
         WHERE departmentID = #{departmentID} AND isGrad = #{isGrad}
-        ORDER BY ${field} ${order}
+        ORDER BY ${field} ${order}, courseNum ASC
     </select>
 
     <update id="updateCourse" parameterType="Course">
