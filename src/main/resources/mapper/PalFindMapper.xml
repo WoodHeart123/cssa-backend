@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tencent.wxcloudrun.dao.palFindMapper">
+
+    <select id="getPal" parameterType="Map" resultType="PalFind">
+        SELECT palFind.userID, palFind.postID, palFind.title, palFind.label, palFind.content,
+        palFind.content, palFind.eventStartTime, palFind.eventEndTime, palFind.createdAt,
+        palFind.contact, palFind.imagesJSON,
+        user.avatar as userAvatar, user.nickname as userNickname
+        FROM palFind
+        INNER JOIN user on palFind.userID = user.userID
+        AND palFind.createdAt IS NOT NULL
+        ORDER BY palFind.createdAt DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="getPalByLabel" parameterType="Map" resultType="PalFind">
+        SELECT palFind.userID, palFind.postID, palFind.title, palFind.label, palFind.content,
+        palFind.content, palFind.eventStartTime, palFind.eventEndTime, palFind.createdAt,
+        palFind.contact, palFind.imagesJSON,
+        user.avatar as userAvatar, user.nickname as userNickname
+        FROM palFind
+        INNER JOIN user on palFind.userID = user.userID
+        AND palFind.createdAt IS NOT NULL
+        AND palFind.label in
+        <foreach item="label" collection="labelList" separator="," open="(" close=")" index="index">
+            #{label}
+        </foreach>
+        ORDER BY palFind.createdAt DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="getPalByLabel" parameterType="Map" resultType="PalFind">
+        SELECT palFind.userID, palFind.postID, palFind.title, palFind.label, palFind.content,
+        palFind.content, palFind.eventStartTime, palFind.eventEndTime, palFind.createdAt,
+        palFind.contact, palFind.imagesJSON,
+        user.avatar as userAvatar, user.nickname as userNickname
+        FROM palFind
+        INNER JOIN user on palFind.userID = user.userID
+        AND palFind.createdAt IS NOT NULL
+        AND payFind.eventStartTime &lt;= #{eventStartTime}
+        AND palFind.eventEndTime >= #{eventEndTime})
+        ORDER BY palFind.createdAt DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+
+    <insert id="postPalFindInfo" parameterType="palFind">
+        INSERT INTO palFind (userID,postID,title,label,content,createdAt,eventStartTime,eventEndTime,contact,imagesJSON)
+        VALUES (#{userID},#{postID},#{title},#{label},#{content},#{createdAt},#{eventStartTime},#{eventEndTime}, #{contact}, #{imagesJSON})
+    </insert>
+
+
+    <update id="updatePalFindInfo" parameterType="Map">
+        UPDATE palFind
+        SET eventStartTime = #{palFind.eventStartTime},
+            eventEndTime = #{palFind.eventEndTime},
+            content = #{palFind.content},
+            label = #{palFind.label},
+            title = #{palFind.title},
+            contact = #{palFind.contact},
+            createdAt = CURRENT_TIMESTAMP
+        WHERE palFindID = #{palFind.postID} AND userID = #{userID}
+    </update>
+
+    <update id="deletePalFindInfo" parameterType="Map">
+        UPDATE palFind
+        SET deletedAt = CURRENT_TIMESTAMP
+        WHERE postID = #{postID}
+    </update>
+
+
+<!--    <update id="updatepalFindSavedList" parameterType="User">-->
+<!--        UPDATE user-->
+<!--        SET savedpalFindJSON = #{savedpalFindJSON}-->
+<!--        WHERE userID = #{userID}-->
+<!--    </update>-->
+
+    <update id="saveContact">
+        UPDATE user SET wechatID = #{contact} WHERE userID = #{userID}
+    </update>
+
+<!--    <select id="getpalFindSavedList" resultType="User">-->
+<!--        SELECT userID, savedpalFindJSON FROM user WHERE userID = #{userID}-->
+<!--    </select>-->
+
+</mapper>
