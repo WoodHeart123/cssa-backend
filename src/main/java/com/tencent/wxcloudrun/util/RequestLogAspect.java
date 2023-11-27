@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.event.LogEvent;
 import com.tencent.wxcloudrun.model.Jwtutil;
 import com.tencent.wxcloudrun.model.OperationLog;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;

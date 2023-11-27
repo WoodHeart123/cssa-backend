@@ -1,6 +1,6 @@
 package com.tencent.wxcloudrun.model;
 
-import com.alibaba.fastjson2.annotation.JSONField;
+import com.alibaba.fastjson.annotation.JSONField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -23,12 +23,12 @@ public class Activity {
     private String description;
 
     @Schema(description = "活动开始时间", example = "2020-12-31 23:59:59")
-    @JSONField(name = "start_date")
+    //@JSONField(name = "start_date")
     private Timestamp startDate;
 
     // 报名截止时间
     @Schema(description = "活动结束时间", example = "2020-12-31 23:59:59")
-    @JSONField(name = "end_date")
+    //@JSONField(name = "end_date")
     private Timestamp endDate;
 
     // 报名截至时间
@@ -50,7 +50,7 @@ public class Activity {
 
     // 数据库存储JSON, 无需对外暴露
     @Schema(hidden = true)
-    @JSONField(serialize = false, deserialize = false)
+    //@JSONField(serialize = false, deserialize = false)
     private String paymentJSON;
 
     @Schema(description = "付款信息")
@@ -59,7 +59,7 @@ public class Activity {
 
     // 数据库存储JSON, 无需对外暴露
     @Schema(hidden = true)
-    @JSONField(serialize = false, deserialize = false)
+    //@JSONField(serialize = false, deserialize = false)
     private String imagesJSON;
 
     // 活动价格
@@ -84,7 +84,6 @@ public class Activity {
 
     // 数据库存储JSON, 无需对外暴露
     @Schema(hidden = true)
-    @JSONField(serialize = false, deserialize = false)
     private String additionalInfoJSON;
 
 

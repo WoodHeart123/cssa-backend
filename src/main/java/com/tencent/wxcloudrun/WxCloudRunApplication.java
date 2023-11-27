@@ -17,5 +17,4 @@ public class WxCloudRunApplication {
         SpringApplication.run(WxCloudRunApplication.class, args);
     }
 
-
 }

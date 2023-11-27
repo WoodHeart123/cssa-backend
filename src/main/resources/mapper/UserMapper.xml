@@ -31,19 +31,19 @@
     </update>
 
     <select id="getMyComment" parameterType="Map" resultType="CourseComment">
-        SELECT commentID, professor, courseTime, difficulty, prefer, courseComment, likeCount, commentTime, courseNum,courseName,departmentAbrev
-        from courseComment INNER JOIN course
-        WHERE courseComment.courseID = course.courseID AND commentID > #{offset} AND userID = #{userID}
+        SELECT commentID, professor, courseTime, difficulty, prefer, comment, likeCount, commentTime, courseNum,courseName,departmentAbrev
+        from comment INNER JOIN course
+        WHERE comment.courseID = course.courseID AND commentID > #{offset} AND userID = #{userID}
         ORDER BY commentID
         LIMIT ${limit}
     </select>
 
     <update id="updateComment" parameterType="Map">
-        UPDATE courseComment SET courseComment = #{courseComment} WHERE userID = #{userID} AND commentID = #{commentID}
+        UPDATE comment SET comment = #{courseComment} WHERE userID = #{userID} AND commentID = #{commentID}
     </update>
 
     <delete id="deleteComment">
-        DELETE FROM courseComment WHERE userID = #{userID} AND commentID = #{commentID}
+        DELETE FROM comment WHERE userID = #{userID} AND commentID = #{commentID}
     </delete>
 
     <update id="updateNickname" parameterType="String">
@@ -139,12 +139,5 @@
         LIMIT #{limit}
     </select>
 
-    <select id="getMainPagePhotos" resultType="MainPagePhoto">
-        SELECT
-            photoID, startDate,endDate,smallPhoto,largePhoto
-        FROM mainpage_photo
-        WHERE endDate > NOW() AND startDate <![CDATA[<]]>NOW()
-        ORDER BY photoID DESC
-    </select>
 
 </mapper>

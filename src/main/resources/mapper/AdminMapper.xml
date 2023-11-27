@@ -70,22 +70,6 @@
         SELECT title,startDate,location FROM activity WHERE  actID = #{actID}
     </select>
 
-    <insert id="postMainPagePhoto" parameterType="MainPagePhoto">
-        INSERT INTO mainpage_photo (startDate,endDate,smallPhoto,largePhoto) values (#{startDate},#{endDate},#{smallPhoto},#{largePhoto})
-    </insert>
-
-    <update id="deleteMainPagePhoto" parameterType="map">
-        UPDATE mainpage_photo SET startDate = #{timestamp}, endDate = #{timestamp} WHERE photoID = #{photoID}
-    </update>
-
-
-    <select id="getMainPagePhotoList" resultType="MainPagePhoto">
-        SELECT
-            photoID, startDate,endDate,smallPhoto,largePhoto
-        FROM
-            mainpage_photo
-        ORDER BY photoID DESC
-    </select>
 
     <select id="getDepartmentList" resultType="Department">
         SELECT

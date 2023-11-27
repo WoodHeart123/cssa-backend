@@ -10,12 +10,18 @@ import java.util.List;
 @Mapper
 public interface ActivityMapper {
 
-    SignupInfo checkSignup(String userID, Integer actID);
+    SignupInfo checkRegistration(String userID, Integer actID);
+
+    Activity findActivity(Integer actID);
+
+    void cancelRegister(String userID, Integer actID);
 
     /**
      * @return list of activity that is available to user
      */
     List<Activity> getActivityList();
+
+    void registerActivity(SignupInfo signupInfo);
 
     /**
      * @param userID user ID

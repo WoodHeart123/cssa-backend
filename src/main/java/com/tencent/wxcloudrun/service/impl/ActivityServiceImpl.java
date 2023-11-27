@@ -1,6 +1,6 @@
 package com.tencent.wxcloudrun.service.impl;
 
-import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson.JSON;
 import com.tencent.wxcloudrun.dao.ActivityMapper;
 import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.PaymentOption;
@@ -25,17 +25,17 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Response<SignupInfo> checkSignup(String userID, Integer actID) {
-        SignupInfo result = activityMapper.checkSignup(userID, actID);
+        SignupInfo result = activityMapper.checkRegistration(userID, actID);
         if (result == null) {
             result = new SignupInfo();
             result.setIfJoined(false);
         }else{
             result.setIfJoined(true);
         }
-        SignupInfo temp = new SignupInfo();
-        temp.setIfJoined(false);
-        return new Response<>(temp);
+        return new Response<>(result);
     }
+
+
 
     @Override
     public Response<List<Activity>> getActivityList() {
@@ -45,6 +45,18 @@ public class ActivityServiceImpl implements ActivityService {
             activity.setImages((ArrayList<String>) JSON.parseArray(activity.getImagesJSON(), String.class));
         }
         return new Response<>(activityList);
+    }
+
+    @Override
+    public Response<Object> registerActivity(SignupInfo signupInfo) {
+        activityMapper.registerActivity(signupInfo);
+        return new Response<>();
+    }
+
+    @Override
+    public Response<Object> cancelRegister(String userID, Integer actID) {
+        activityMapper.cancelRegister(userID, actID);
+        return new Response<>();
     }
 
     @Override

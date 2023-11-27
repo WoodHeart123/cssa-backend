@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -29,6 +30,7 @@ public class Product {
     @Schema(description = "商品发布时间", example = "2021-01-01 00:00:00")
     private Timestamp time;
     @Schema(description = "商品发布时间(UTC)", example = "2021-01-01 00:00:00")
+    @JSONField(name = "UTCtime")
     private String UTCtime;
     @Schema(description = "联系方式（微信号）", example = "sunboy41")
     private String contact;
