@@ -50,4 +50,7 @@ public class Mate {
     // 数据库存储JSON, 无需对外暴露
     @Schema(hidden = true)
     private String additionalInfoJSON;
+
+    @Schema(description = "图片URL")
+    private List<String> images;
 }

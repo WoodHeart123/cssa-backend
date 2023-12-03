@@ -10,5 +10,12 @@ import java.util.List;
 
 @Service
 public interface FindMateService {
+    /**
+     * @param productType product type
+     * @param offset      offset in sql
+     * @param limit       limit of list size
+     * @return list of product information
+     */
+    Response<Object> saveMate(Mate mate, Boolean save);
 
 }

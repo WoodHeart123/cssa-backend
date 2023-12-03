@@ -17,6 +17,17 @@ import java.util.List;
 
 @Service
 public class FindMateImpl implements FindMateService {
+    @Autowired
+    FindMateMapper FindMateMapper;
 
-
+    @Override
+    @Transactional
+    public Response<Object> saveProduct(Mate mate, Boolean save) {
+        mate.setImagesJSON(JSON.toJSONString(mate.getImages()));
+        FindMateMapper.saveProduct(mate);
+        if (save) {
+            FindMateMapper.saveContact(mate.getUserID(), mate.getContact());
+        }
+        return new Response<>();
+    }
 }
