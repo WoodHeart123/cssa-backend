@@ -118,9 +118,19 @@
           AND user_id = #{userID}
     </update>
 
+    <select id="findDeletedActivity" resultMap="ActivityMap" parameterType="Integer">
+        SELECT * FROM activity WHERE id = #{actID} AND deleted_at IS NOT NULL
+    </select>
+
     <select id="getActivityDetails" resultMap="ActivityMap" parameterType="Integer">
         SELECT * FROM activity WHERE id = #{actID} AND deleted_at IS NULL
     </select>
+
+    <select id="getOngoingActivities" resultMap="ActivityMap">
+        SELECT * FROM activity WHERE end_date > CURRENT_TIMESTAMP AND deleted_at IS NULL
+        ORDER BY end_date
+    </select>
+
 
     <update id="updateFullActivity" >
         UPDATE activity

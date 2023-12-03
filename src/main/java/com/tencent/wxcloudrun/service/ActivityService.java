@@ -30,13 +30,38 @@ public interface ActivityService {
     Response<List<Activity>> getRegisterList(String userID);
 
     /**
-     *
+     * Helper function that find a deleted activity given its id.
+     * @param actID id of a deleted activity.
+     * @return  a deleted activity
+     */
+    Response<Activity> findDeletedActivity(Integer actID);
+
+    /**
+     * Get each piece of information of an activity.
      * @param actID an id of an activity to search
-     * @return
+     * @return an activity containing details.
      */
     Response<Activity> getActivityDetails(Integer actID);
 
+    /**
+     * Get details of all ongoing activities.
+     * @return a list containing details of all ongoing activities.
+     */
+    Response<List<Activity>> getOngoingActivities();
+
+    /**
+     * Update each piece of information of a soft-deleted activity; if there is no update for a piece of information,
+     * use the old value of that activity. Then make restore the activity.
+     * @param actID an id of a soft-deleted activity to search.
+     * @param updatedActivity an activity with updated details.
+     * @return a string indicating that activity is successfully updated.
+     */
     Response<String> updateFullActivity(Integer actID, Activity updatedActivity);
 
+    /**
+     * Soft-delete an activity.
+     * @param actID an id of an activity to soft-delete.
+     * @return a string indicating that activity is successfully soft-deleted.
+     */
     Response<String> deleteActivity(Integer actID);
 }

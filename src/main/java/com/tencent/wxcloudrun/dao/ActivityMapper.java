@@ -4,8 +4,6 @@ import com.tencent.wxcloudrun.model.Activity;
 import com.tencent.wxcloudrun.model.SignupInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Mapper
@@ -31,11 +29,24 @@ public interface ActivityMapper {
     List<Activity> getRegisterList(String userID);
 
     /**
-     * 获取活动详情
+     * 寻找已删除的活动
+     * @param actID 活动ID
+     * @return 活动详情
+     */
+    Activity findDeletedActivity(Integer actID);
+
+    /**
+     * 获取给定活动ID的活动详情
      * @param actID 活动ID
      * @return 活动详情
      */
     Activity getActivityDetails(Integer actID);
+
+    /**
+     * 获取所有还未结束的活动
+     * @return 未结束活动的列表
+     */
+    List<Activity> getOngoingActivities();
 
     /**
      * Update all details of an activity given its id.

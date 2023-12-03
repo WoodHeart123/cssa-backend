@@ -47,11 +47,17 @@ public class ActivityController {
         return activityService.getRegisterList(openid);
     }
 
-    @Operation(summary = "获取活动详情", description = "根据给定的event_id获取具体的活动详情。")
+    @Operation(summary = "获取单个活动详情", description = "根据给定的event_id获取具体的活动详情。")
     @GetMapping("/activityList/{event_id}")
     public Response<Activity> getActivityDetails(
             @Parameter(description = "活动ID", required = true) @PathVariable(name="event_id") Integer eventId) {
         return activityService.getActivityDetails(eventId);
+    }
+
+    @Operation(summary = "获取所有未结束的活动详情", description = "获取所有结束日期大于当前日期的活动详情")
+    @GetMapping("/ongoingActivities")
+    public Response<List<Activity>> getOngoingActivities() {
+        return activityService.getOngoingActivities();
     }
 
     @Operation(summary = "更新活动", description = "更新给定event_id的活动信息。")
