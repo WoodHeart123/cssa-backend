@@ -42,7 +42,7 @@ public class RentalController {
                                                 @Parameter(description = "最高价格限制") @RequestParam Integer priceLimit,
                                                 @Parameter(description = "接受的户型") @RequestParam ArrayList<String> floorPlanList,
                                                 @Parameter(description = "开始时间，结束时间") @RequestParam ArrayList<Long> time) {
-        if(offset <= 20){
+        if(offset <= 1){
             offset = 0;
         }
         return rentalService.getRentalList(offset, limit, priceLimit,
