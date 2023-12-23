@@ -23,5 +23,4 @@ public interface CourseService {
 
     Response<List<Course>> searchCourse(String query);
 
-    Response<Object> postFile(CourseFile courseFile);
 }
