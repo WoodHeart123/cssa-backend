@@ -10,7 +10,7 @@ import java.util.ArrayList;
 @Mapper
 public interface SecondhandMapper {
 
-    ArrayList<Product> getProductList(String productType, Integer offset, Integer limit);
+    ArrayList<Product> getProductList(Integer offset, Integer limit);
 
     ArrayList<Product> getProduct(ArrayList<String> productID);
 

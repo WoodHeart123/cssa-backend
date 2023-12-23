@@ -51,7 +51,11 @@
     </update>
 
     <select id="getMySecondhand" parameterType="Map" resultType="Product">
-        SELECT productID, userID, productTitle, productDescription, price, productType, productCondition, time, contact, imagesJSON, delivery from secondhand WHERE userID = #{userID} ORDER BY time DESC LIMIT ${offset}, ${limit}
+        SELECT *
+        from secondhand
+        WHERE userID = #{userID}
+        ORDER BY time DESC
+        LIMIT ${offset}, ${limit}
     </select>
 
     <select id="getMyProductSave" parameterType="Map" resultType="Product">
@@ -81,7 +85,18 @@
     </select>
 
     <update id="updateSecondHand" parameterType="Map">
-        UPDATE secondhand SET productTitle = #{product.productTitle}, productDescription = #{product.productDescription}, price = #{product.price}, productType = #{product.productType}, productCondition = #{product.productCondition}, time = #{product.time}, contact = #{product.contact}, imagesJSON = #{product.imagesJSON}, delivery = #{product.delivery}, time = CURRENT_TIMESTAMP WHERE userID = #{userID} AND productID = #{product.productID}
+        UPDATE secondhand
+        SET productTitle       = #{product.productTitle},
+            productDescription = #{product.productDescription},
+            price              = #{product.price},
+            productCondition   = #{product.productCondition},
+            time               = #{product.time},
+            contact            = #{product.contact},
+            imagesJSON         = #{product.imagesJSON},
+            delivery           = #{product.delivery},
+            time               = CURRENT_TIMESTAMP
+        WHERE userID = #{userID}
+          AND productID = #{product.productID}
     </update>
 
     <delete id="deleteSecondHand" parameterType="Map">
@@ -121,9 +136,16 @@
     </select>
 
     <select id="getProductCollectList" resultType="Product">
-        SELECT secondhand.productID, secondhand.productTitle,secondhand.productDescription,
-               secondhand.productType,secondhand.time,secondhand.price,secondhand.productCondition,secondhand.contact,secondhand.imagesJSON,secondhand.delivery,
-               user.avatar as sellerAvatar, user.nickname as sellerNickname
+        SELECT secondhand.productID,
+               secondhand.productTitle,
+               secondhand.productDescription,
+               secondhand.time,
+               secondhand.price,
+               secondhand.productCondition,
+               secondhand.contact,
+               secondhand.imagesJSON,
+               secondhand.delivery,
+               user.avatar as sellerAvatar,user.nickname as sellerNickname
         FROM secondhand, user, collect
         WHERE secondhand.userID = user.userID AND collect.contentID = secondhand.productID AND collect.collectType = #{collectType} AND collect.collectID > #{offset} AND collect.userID = #{userID}
         LIMIT #{limit}

@@ -1,7 +1,6 @@
 package com.tencent.wxcloudrun.service;
 
 import com.tencent.wxcloudrun.model.Product;
-import com.tencent.wxcloudrun.model.ProductType;
 import com.tencent.wxcloudrun.model.Response;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ public interface SecondhandService {
      * @param limit       limit of list size
      * @return list of product information
      */
-    Response<List<Product>> getProductList(ProductType productType, Integer offset, Integer limit);
+    Response<List<Product>> getProductList(Integer offset, Integer limit);
 
     Response<Object> saveProduct(Product product, Boolean save);
 

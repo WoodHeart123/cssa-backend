@@ -3,9 +3,15 @@
 <mapper namespace="com.tencent.wxcloudrun.dao.SecondhandMapper">
 
     <select id="getAllProductList" resultType="Product">
-        SELECT secondhand.productID, secondhand.productTitle,secondhand.productDescription,
-               secondhand.productType,secondhand.time,secondhand.price,secondhand.productCondition,secondhand.contact,secondhand.imagesJSON,secondhand.delivery,
-               COALESCE(user.avatar, 1) as sellerAvatar, COALESCE(user.nickname,"微信用户") as sellerNickname
+        SELECT secondhand.productID,secondhand.productTitle,
+               secondhand.productDescription,
+               secondhand.time,
+               secondhand.price,
+               secondhand.productCondition,
+               secondhand.contact,
+               secondhand.imagesJSON,
+               secondhand.delivery,
+               COALESCE(user.avatar, 1) as sellerAvatar,COALESCE(user.nickname,"微信用户") as sellerNickname
         FROM secondhand
         LEFT JOIN user on secondhand.userID = user.userID
         WHERE secondhand.time IS NOT NULL
@@ -14,19 +20,29 @@
     </select>
 
     <select id="getProductList" resultType="Product">
-        SELECT secondhand.productID, secondhand.productTitle,secondhand.productDescription,
-               secondhand.productType,secondhand.time,secondhand.price,secondhand.productCondition,secondhand.contact,secondhand.imagesJSON,secondhand.delivery,
-               COALESCE(user.avatar, 1) as sellerAvatar, COALESCE(user.nickname,"微信用户") as sellerNickname
+        SELECT secondhand.productID,
+               secondhand.productTitle,
+               secondhand.productDescription,
+               secondhand.time,
+               secondhand.price,
+               secondhand.productCondition,
+               secondhand.contact,
+               secondhand.imagesJSON,
+               secondhand.delivery,
+               COALESCE(user.avatar, 1)            as sellerAvatar,
+               COALESCE(user.nickname, "微信用户") as sellerNickname
         FROM secondhand
-        LEFT JOIN user on secondhand.userID = user.userID
-        WHERE secondhand.time IS NOT NULL AND productType = #{productType}
+                 LEFT JOIN user on secondhand.userID = user.userID
+        WHERE secondhand.time IS NOT NULL
         ORDER BY secondhand.time DESC
         LIMIT #{offset}, #{limit}
     </select>
     
     <insert id="saveProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="productID">
-        INSERT INTO secondhand (userID,productTitle,productDescription,productType,price,productCondition,contact,imagesJSON,delivery)
-        VALUES (#{userID},#{productTitle},#{productDescription},#{productType},#{price},#{productCondition}, #{contact}, #{imagesJSON}, #{delivery})
+        INSERT INTO secondhand (userID, productTitle, productDescription, price, productCondition, contact, imagesJSON,
+                                delivery)
+        VALUES (#{userID}, #{productTitle}, #{productDescription}, #{price}, #{productCondition}, #{contact},
+                #{imagesJSON}, #{delivery})
     </insert>
     <select id="collect" resultType="boolean">
         SELECT savedProductJson,userID FROM user WHERE userID = #{userID}
@@ -34,20 +50,23 @@
 
     <update id="updateSecondHand" parameterType="Map">
         UPDATE secondhand
-        SET productTitle = #{product.productTitle},
-                              productDescription = #{product.productDescription},
-                              price = #{product.price}, productType = #{product.productType},
-                              productCondition = #{product.productCondition}, time = #{product.time},
-                              contact = #{product.contact},
-                              delivery = #{product.delivery}, time = CURRENT_TIMESTAMP
-        WHERE userID = #{userID} AND productID = #{product.productID}
+        SET productTitle       = #{product.productTitle},
+            productDescription = #{product.productDescription},
+            price              = #{product.price},
+            productCondition   = #{product.productCondition},
+            time               = #{product.time},
+            contact            = #{product.contact},
+            delivery           = #{product.delivery},
+            time               = CURRENT_TIMESTAMP
+        WHERE userID = #{userID}
+          AND productID = #{product.productID}
     </update>
 
 
     <select id="getProduct" resultType="Product">
         SELECT secondhand.productID, secondhand.productTitle,secondhand.productDescription,
-            secondhand.productType,secondhand.time,secondhand.price,secondhand.productCondition,secondhand.contact,secondhand.imagesJSON,secondhand.delivery,
-            user.avatar as sellerAvatar, user.nickname as sellerNickname
+        secondhand.time,secondhand.price,secondhand.productCondition,secondhand.contact,secondhand.imagesJSON,secondhand.delivery,
+        user.avatar as sellerAvatar, user.nickname as sellerNickname
         FROM secondhand
         INNER JOIN user on secondhand.userID = user.userID
         WHERE secondhand.time IS NOT NULL AND secondhand.productID in

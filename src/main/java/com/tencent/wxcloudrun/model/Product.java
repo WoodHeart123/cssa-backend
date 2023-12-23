@@ -23,8 +23,6 @@ public class Product {
     private String productDescription;
     @Schema(description = "商品价格", example = "6000")
     private Integer price;
-    @Schema(description = "商品类型")
-    private ProductType productType;
     @Schema(description = "商品成色")
     private Condition productCondition;
     @Schema(description = "商品发布时间", example = "2021-01-01 00:00:00")
