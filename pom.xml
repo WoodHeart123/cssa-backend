@@ -8,10 +8,10 @@
         <version>2.7.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.tencent</groupId>
-    <artifactId>springboot-wxcloudrun</artifactId>
+    <groupId>org.cssa</groupId>
+    <artifactId>cssa-wxcloud-backend</artifactId>
     <version>1.0</version>
-    <name>springboot-wxcloudrun</name>
+    <name>cssa-wxcloud-backend</name>
     <description>Backend for CSSA UW-madison miniprogram</description>
     <properties>
         <java.version>11</java.version>

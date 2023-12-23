@@ -4,16 +4,16 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <typeAliases>
-        <typeAlias alias ="Activity" type = "com.tencent.wxcloudrun.model.Activity"/>
-        <typeAlias alias= "SignupInfo" type = "com.tencent.wxcloudrun.model.SignupInfo"/>
-        <typeAlias alias="User" type="com.tencent.wxcloudrun.model.User" />
-        <typeAlias alias="Admin" type="com.tencent.wxcloudrun.model.Admin" />
-        <typeAlias alias="CourseComment" type="com.tencent.wxcloudrun.model.CourseComment" />
-        <typeAlias alias="Department" type="com.tencent.wxcloudrun.model.Department" />
-        <typeAlias alias="Course" type="com.tencent.wxcloudrun.model.Course" />
-        <typeAlias alias="Product" type="com.tencent.wxcloudrun.model.Product" />
-        <typeAlias alias="Rental" type="com.tencent.wxcloudrun.model.Rental"/>
-        <typeAlias alias="CourseFile" type="com.tencent.wxcloudrun.model.CourseFile"/>
-        <typeAlias alias="OperationLog" type="com.tencent.wxcloudrun.model.OperationLog"/>
+        <typeAlias alias="Activity" type="org.cssa.wxcloudrun.model.Activity"/>
+        <typeAlias alias="SignupInfo" type="org.cssa.wxcloudrun.model.SignupInfo"/>
+        <typeAlias alias="User" type="org.cssa.wxcloudrun.model.User"/>
+        <typeAlias alias="Admin" type="org.cssa.wxcloudrun.model.Admin"/>
+        <typeAlias alias="CourseComment" type="org.cssa.wxcloudrun.model.CourseComment"/>
+        <typeAlias alias="Department" type="org.cssa.wxcloudrun.model.Department"/>
+        <typeAlias alias="Course" type="org.cssa.wxcloudrun.model.Course"/>
+        <typeAlias alias="Product" type="org.cssa.wxcloudrun.model.Product"/>
+        <typeAlias alias="Rental" type="org.cssa.wxcloudrun.model.Rental"/>
+        <typeAlias alias="OperationLog" type="org.cssa.wxcloudrun.model.OperationLog"/>
+        <typeAlias alias="FriendPost" type="org.cssa.wxcloudrun.model.FriendPost"/>
     </typeAliases>
 </configuration>

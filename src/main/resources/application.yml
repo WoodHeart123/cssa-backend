@@ -7,7 +7,7 @@ cssa:
       enable: true
       title: CSSA-Backend
       description: 小程序后端接口文档
-      base-package: com.tencent.wxcloudrun.controller
+      base-package: org.cssa.wxcloudrun.controller
 
 
 spring:
@@ -52,7 +52,7 @@ spring:
 
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml
-  config-location:  classpath:mapper/mybatis-config.xml
+  config-location: classpath:mapper/mybatis-config.xml
 
 jwt:
   header: Authorization

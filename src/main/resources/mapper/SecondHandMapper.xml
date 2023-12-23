@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.tencent.wxcloudrun.dao.SecondhandMapper">
+<mapper namespace="org.cssa.wxcloudrun.dao.SecondhandMapper">
 
     <select id="getAllProductList" resultType="Product">
-        SELECT secondhand.productID,secondhand.productTitle,
+        SELECT secondhand.productID,
+               secondhand.productTitle,
                secondhand.productDescription,
                secondhand.time,
                secondhand.price,
@@ -11,9 +12,10 @@
                secondhand.contact,
                secondhand.imagesJSON,
                secondhand.delivery,
-               COALESCE(user.avatar, 1) as sellerAvatar,COALESCE(user.nickname,"微信用户") as sellerNickname
+               COALESCE(user.avatar, 1)            as sellerAvatar,
+               COALESCE(user.nickname, "微信用户") as sellerNickname
         FROM secondhand
-        LEFT JOIN user on secondhand.userID = user.userID
+                 LEFT JOIN user on secondhand.userID = user.userID
         WHERE secondhand.time IS NOT NULL
         ORDER BY secondhand.time DESC
         LIMIT #{offset}, #{limit}
@@ -37,7 +39,7 @@
         ORDER BY secondhand.time DESC
         LIMIT #{offset}, #{limit}
     </select>
-    
+
     <insert id="saveProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="productID">
         INSERT INTO secondhand (userID, productTitle, productDescription, price, productCondition, contact, imagesJSON,
                                 delivery)
@@ -45,7 +47,9 @@
                 #{imagesJSON}, #{delivery})
     </insert>
     <select id="collect" resultType="boolean">
-        SELECT savedProductJson,userID FROM user WHERE userID = #{userID}
+        SELECT savedProductJson, userID
+        FROM user
+        WHERE userID = #{userID}
     </select>
 
     <update id="updateSecondHand" parameterType="Map">
@@ -76,7 +80,9 @@
     </select>
 
     <update id="saveContact">
-        UPDATE user SET wechatID = #{contact} WHERE userID = #{userID}
+        UPDATE user
+        SET wechatID = #{contact}
+        WHERE userID = #{userID}
     </update>
 
 </mapper>
