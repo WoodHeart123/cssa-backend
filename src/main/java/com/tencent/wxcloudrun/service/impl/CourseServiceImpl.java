@@ -124,10 +124,4 @@ public class CourseServiceImpl implements CourseService {
         return new Response<>(courseMapper.searchCourse(query.substring(0, i) + "%", query.substring(i) + "%"));
     }
 
-    @Override
-    @Transactional
-    public Response<Object> postFile(CourseFile courseFile) {
-        courseMapper.postFile(courseFile);
-        return new Response();
-    }
 }
