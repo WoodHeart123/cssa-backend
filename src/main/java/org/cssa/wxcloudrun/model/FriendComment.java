@@ -17,6 +17,14 @@ public class FriendComment {
     @JSONField(name = "user_id")
     private String userID;
 
+    // 用户头像
+    @Schema(description = "用户头像", example = "1", maximum = "12", minimum = "1")
+    private Integer userAvatar;
+
+    // 用户昵称
+    @Schema(description = "用户昵称", example = "张三")
+    private String userNickname;
+
     @Schema(description = "帖子id", example = "1")
     @JSONField(name = "post_id")
     private Integer postID;

@@ -18,6 +18,15 @@ public class FriendPost {
     @Schema(description = "用户ID", example = "f3sd-21ad")
     private String userID;
 
+    // 用户头像
+    @Schema(description = "用户头像", example = "1", maximum = "12", minimum = "1")
+    private Integer userAvatar;
+
+    // 用户昵称
+    @Schema(description = "用户昵称", example = "张三")
+    private String userNickname;
+
+
     // 活动标题
     @Schema(description = "标题", example = "中秋节赏月")
     private String title;
@@ -36,14 +45,11 @@ public class FriendPost {
     private String description;
 
     @Schema(description = "创建时间", example = "1")
-    @JSONField(name = "created_at")
     private Timestamp createdAt;
 
     @Schema(description = "更新时间", example = "1")
-    @JSONField(name = "updated_at")
     private Timestamp updatedAt;
 
     @Schema(description = "删除时间", example = "1")
-    @JSONField(name = "deleted_at")
     private Timestamp deletedAt;
 }

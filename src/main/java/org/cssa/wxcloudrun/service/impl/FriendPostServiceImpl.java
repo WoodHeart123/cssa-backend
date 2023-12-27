@@ -9,6 +9,7 @@ import org.cssa.wxcloudrun.service.FriendPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,7 +28,11 @@ public class FriendPostServiceImpl implements FriendPostService {
 
     @Override
     public Response<List<FriendPost>> getFriendPostList(Integer offset, Integer limit) {
-        return null;
+        List<FriendPost> friendPostList = friendPostMapper.getFriendPostList(offset, limit);
+        for (FriendPost friendPost : friendPostList) {
+            friendPost.setImages((ArrayList<String>) JSON.parseArray(friendPost.getImagesJSON(), String.class));
+        }
+        return new Response<>(friendPostList);
     }
 
     @Override
