@@ -35,7 +35,14 @@ public class ActivityServiceImpl implements ActivityService {
         return new Response<>(result);
     }
 
-
+    @Override
+    @Transactional
+    public Response<Object> postActivityInfo(Activity activityInfo) {
+        activityInfo.setStartDate(new Timestamp(new Date().getTime()));
+        activityInfo.setImagesJSON(JSON.toJSONString(activityInfo.getImages()));
+        activityMapper.postActivityInfo(activityInfo);
+        return Response.builder().message("成功").status(100).build();
+    }
 
     @Override
     public Response<List<Activity>> getActivityList() {

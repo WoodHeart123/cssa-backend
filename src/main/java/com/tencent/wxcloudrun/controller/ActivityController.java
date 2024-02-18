@@ -33,6 +33,13 @@ public class ActivityController {
         return activityService.checkSignup(openid, actID);
     }
 
+    @RequestMapping(value = {"/postActivityInfo"}, method = {RequestMethod.POST})
+    @Operation(summary = "记录用户输入的活动信息", description = "记录用户输入的活动信息")
+    public Response<Object> postActivityInfo(@Parameter(description = "活动信息")@RequestBody Activity activityInfo,
+                                           @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
+        activityInfo.setUserID(id);
+        return ActivityService.postActivityInfo(activityInfo);
+    }
 
     @Operation(summary = "获取活动列表", description = "获取正在进行的活动列表。活动开始日期大于现在时间。")
     @RequestMapping(value = {"/events"}, method = {RequestMethod.GET}, produces = "application/json")

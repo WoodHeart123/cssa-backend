@@ -21,6 +21,8 @@ public interface ActivityMapper {
      */
     List<Activity> getActivityList();
 
+    void postActivityInfo(Activity activity);
+
     void registerActivity(SignupInfo signupInfo);
 
     /**

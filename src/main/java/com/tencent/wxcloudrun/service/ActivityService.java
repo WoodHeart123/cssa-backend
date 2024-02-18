@@ -17,6 +17,8 @@ public interface ActivityService {
      */
     Response<SignupInfo> checkSignup(String userID, Integer actID);
 
+    Response<Object> postActivityInfo(Activity activityInfo);
+
     Response<List<Activity>> getActivityList();
 
     Response<Object> registerActivity(SignupInfo signupInfo);
