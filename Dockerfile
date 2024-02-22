@@ -13,12 +13,12 @@ COPY settings.xml pom.xml /app/
 
 # 执行代码编译命令
 # 自定义settings.xml, 选用国内镜像源以提高下载速度
-#RUN mvn -s /app/settings.xml -f /app/pom.xml clean
-RUN mvn -f /app/pom.xml clean package
+RUN mvn -s /app/settings.xml -f /app/pom.xml clean
+#RUN mvn -f /app/pom.xml clean package
 
 FROM amazoncorretto:17-alpine3.19-jdk
 
-# RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositories
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositories
 
 RUN apk add tzdata && cp /usr/share/zoneinfo/US/Central /etc/localtime && echo US/Central  > /etc/timezone
 
