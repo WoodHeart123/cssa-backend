@@ -1,11 +1,12 @@
 package org.cssa.wxcloudrun.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.annotation.JSONField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 @Data
 public class Activity {
@@ -23,18 +24,16 @@ public class Activity {
     private String description;
 
     @Schema(description = "活动开始时间", example = "2020-12-31 23:59:59")
-    //@JSONField(name = "start_date")
-    private Timestamp startDate;
+    private Date startDate;
 
     // 报名截止时间
     @Schema(description = "活动结束时间", example = "2020-12-31 23:59:59")
-    //@JSONField(name = "end_date")
-    private Timestamp endDate;
+    private Date endDate;
 
     // 报名截至时间
     @Schema(description = "报名截至时间", example = "2020-12-31 23:59:59")
     @JSONField(name = "deadline")
-    private Timestamp deadline;
+    private Date deadline;
 
     // 活动地点
     @Schema(description = "活动地点", example = "腾讯大厦")

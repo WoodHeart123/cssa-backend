@@ -12,6 +12,8 @@ public interface FriendPostService {
 
     Response<Object> createFriendPost(FriendPost friendPost);
 
+    Response<Object> createFriendComment(FriendComment friendComment);
+
     Response<List<FriendPost>> getFriendPostList(Integer offset, Integer limit);
 
     Response<List<FriendComment>> getFriendCommentList(Integer offset, Integer limit, Integer postID);

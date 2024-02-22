@@ -1,9 +1,8 @@
 package org.cssa.wxcloudrun.service;
 
 import org.cssa.wxcloudrun.model.EmailDetail;
+import jakarta.mail.MessagingException;
 import org.springframework.stereotype.Service;
-
-import javax.mail.MessagingException;
 
 @Service
 public interface EmailService {

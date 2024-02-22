@@ -1,9 +1,8 @@
 package org.cssa.wxcloudrun.controller;
 
-
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.cssa.wxcloudrun.model.Product;
 import org.cssa.wxcloudrun.model.Response;
 import org.cssa.wxcloudrun.service.SecondhandService;
@@ -15,7 +14,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping({"/secondhand"})
-@Api(tags = "二手中心")
+@Tag(name = "二手中心")
 public class SecondhandController {
 
     @Autowired

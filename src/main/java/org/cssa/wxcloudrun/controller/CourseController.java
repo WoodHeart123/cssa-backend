@@ -1,11 +1,11 @@
 package org.cssa.wxcloudrun.controller;
 
 import io.micrometer.core.annotation.Timed;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.cssa.wxcloudrun.model.*;
 import org.cssa.wxcloudrun.service.CourseService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +16,7 @@ import java.util.Optional;
 @RestController
 @CrossOrigin
 @RequestMapping({"/course"})
-@Api(tags = "课程中心")
+@Tag(name = "课程中心")
 public class CourseController {
 
     @Autowired

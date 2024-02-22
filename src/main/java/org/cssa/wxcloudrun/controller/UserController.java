@@ -1,6 +1,5 @@
 package org.cssa.wxcloudrun.controller;
 
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.cssa.wxcloudrun.config.CacheStore;
@@ -9,6 +8,7 @@ import org.cssa.wxcloudrun.model.Product;
 import org.cssa.wxcloudrun.model.Response;
 import org.cssa.wxcloudrun.model.ReturnCode;
 import org.cssa.wxcloudrun.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +23,7 @@ import java.util.Random;
 @RestController
 @CrossOrigin
 @RequestMapping({"/user"})
-@Api(tags = "用户中心")
+@Tag(name = "用户中心")
 public class UserController {
 
     @Autowired
@@ -86,16 +86,12 @@ public class UserController {
                                       @RequestParam Integer offset,
                                       @RequestParam Integer limit,
                                       @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
-        switch (service.toLowerCase()) {
-            case "comment":
-                return new Response<>(userService.getMyComment(openid, offset, limit).getData());
-            case "secondhand":
-                return new Response<>(userService.getMySecondhand(openid, offset, limit).getData());
-            case "rental":
-                return new Response<>(userService.getMyRental(openid, offset, limit).getData());
-            default:
-                return new Response<>(ReturnCode.UNKNOWN_SERVICE);
-        }
+        return switch (service.toLowerCase()) {
+            case "comment" -> new Response<>(userService.getMyComment(openid, offset, limit).getData());
+            case "secondhand" -> new Response<>(userService.getMySecondhand(openid, offset, limit).getData());
+            case "rental" -> new Response<>(userService.getMyRental(openid, offset, limit).getData());
+            default -> new Response<>(ReturnCode.UNKNOWN_SERVICE);
+        };
 
     }
 
@@ -134,7 +130,7 @@ public class UserController {
     @Operation(summary = "更新昵称", description = "更新昵称")
     public Response<Object> updateNickname(@RequestParam String nickname,
                                            @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
-        if (nickname.length() == 0) {
+        if (nickname.isEmpty()) {
             return new Response<>(ReturnCode.EMPTY_STRING);
         }
         return userService.updateNickname(openid, nickname);
@@ -149,7 +145,7 @@ public class UserController {
             case "wechatid":
                 return userService.updateWechatID(str, openid);
             case "nickname":
-                if (str.length() == 0) {
+                if (str.isEmpty()) {
                     return new Response<>(ReturnCode.EMPTY_STRING);
                 }
                 return userService.updateNickname(openid, str);

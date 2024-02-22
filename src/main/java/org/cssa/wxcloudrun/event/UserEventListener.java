@@ -7,14 +7,13 @@ import org.cssa.wxcloudrun.model.EmailDetail;
 import org.cssa.wxcloudrun.model.SignupInfo;
 import org.cssa.wxcloudrun.model.User;
 import org.cssa.wxcloudrun.service.EmailService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-
-import javax.mail.MessagingException;
 
 @Component
 public class UserEventListener {

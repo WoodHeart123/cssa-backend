@@ -1,10 +1,10 @@
 package org.cssa.wxcloudrun.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import org.cssa.wxcloudrun.dao.SecondhandMapper;
 import org.cssa.wxcloudrun.model.Product;
 import org.cssa.wxcloudrun.model.Response;
 import org.cssa.wxcloudrun.service.SecondhandService;
+import com.alibaba.fastjson2.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
