@@ -36,4 +36,5 @@ COPY --from=build /app/target/*.jar .
 
 EXPOSE 80
 
-CMD ["java", "-jar", "/app/cssa-wxcloud-backend-1.0.jar"]
+CMD ["java", "-Xmx512M", "-Xms512M" ,"-jar", "/app/cssa-wxcloud-backend-1.0.jar"]
+
