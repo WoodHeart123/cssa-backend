@@ -28,9 +28,9 @@ public class ActivityController {
 
     @Operation(summary = "查看用户报名信息", description = "查看用户报名信息")
     @RequestMapping(value = {"/events/signup/{act_id}"}, method = {RequestMethod.GET}, produces = "application/json")
-    public Response<SignupInfo> checkSignup(@Parameter(name = "活动ID", required = true)
+    public Response<SignupInfo> checkSignup(@Parameter(description = "活动ID", required = true)
                                                 @PathVariable(name = "act_id") Integer actID,
-                                                @Parameter(name = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
+                                                @Parameter(description = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
         return activityService.checkSignup(openid, actID);
     }
 

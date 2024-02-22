@@ -14,5 +14,6 @@
         <typeAlias alias="Rental" type="org.cssa.wxcloudrun.model.Rental"/>
         <typeAlias alias="OperationLog" type="org.cssa.wxcloudrun.model.OperationLog"/>
         <typeAlias alias="FriendPost" type="org.cssa.wxcloudrun.model.FriendPost"/>
+        <typeAlias alias="FriendComment" type="org.cssa.wxcloudrun.model.FriendComment"/>
     </typeAliases>
 </configuration>

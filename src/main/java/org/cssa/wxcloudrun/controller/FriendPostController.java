@@ -34,7 +34,7 @@ public class FriendPostController {
     public Response<Object> createFriendComment(@Parameter(description = "帖子评论") @RequestBody FriendComment friendComment,
                                              @Parameter(description = "wx open id") @RequestHeader("x-wx-openid") String openid) {
         friendComment.setUserID(openid);
-        return null;
+        return friendPostService.createFriendComment(friendComment);
     }
 
     @RequestMapping(value = {"/get"}, method = {RequestMethod.GET}, produces = "application/json")
@@ -50,6 +50,6 @@ public class FriendPostController {
     public Response<List<FriendComment>> getFriendComment(@Parameter(description = "从第几位开始") @RequestParam Integer offset,
                                                           @Parameter(description = "返回数量限制") @RequestParam Integer limit,
                                                           @Parameter(description = "帖子ID") @RequestParam() Integer postID) {
-        return null;
+        return friendPostService.getFriendCommentList(offset, limit, postID);
     }
 }
