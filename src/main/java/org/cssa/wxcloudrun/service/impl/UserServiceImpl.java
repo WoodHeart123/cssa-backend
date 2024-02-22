@@ -1,11 +1,10 @@
 package org.cssa.wxcloudrun.service.impl;
 
-
-import com.alibaba.fastjson.JSON;
 import org.cssa.wxcloudrun.dao.UserMapper;
 import org.cssa.wxcloudrun.event.AuthEvent;
 import org.cssa.wxcloudrun.model.*;
 import org.cssa.wxcloudrun.service.UserService;
+import com.alibaba.fastjson2.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;

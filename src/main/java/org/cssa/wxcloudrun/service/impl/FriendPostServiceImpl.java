@@ -1,6 +1,6 @@
 package org.cssa.wxcloudrun.service.impl;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import org.cssa.wxcloudrun.dao.FriendPostMapper;
 import org.cssa.wxcloudrun.model.FriendComment;
 import org.cssa.wxcloudrun.model.FriendPost;
@@ -27,6 +27,12 @@ public class FriendPostServiceImpl implements FriendPostService {
     }
 
     @Override
+    public Response<Object> createFriendComment(FriendComment friendComment) {
+        friendPostMapper.createFriendComment(friendComment);
+        return new Response<>();
+    }
+
+    @Override
     public Response<List<FriendPost>> getFriendPostList(Integer offset, Integer limit) {
         List<FriendPost> friendPostList = friendPostMapper.getFriendPostList(offset, limit);
         for (FriendPost friendPost : friendPostList) {
@@ -37,6 +43,6 @@ public class FriendPostServiceImpl implements FriendPostService {
 
     @Override
     public Response<List<FriendComment>> getFriendCommentList(Integer offset, Integer limit, Integer postID) {
-        return null;
+        return new Response<>(friendPostMapper.getFriendCommentList(offset,limit, postID));
     }
 }

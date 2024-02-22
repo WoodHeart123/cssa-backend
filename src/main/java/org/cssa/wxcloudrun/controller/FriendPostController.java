@@ -1,8 +1,8 @@
 package org.cssa.wxcloudrun.controller;
 
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.cssa.wxcloudrun.model.FriendComment;
 import org.cssa.wxcloudrun.model.FriendPost;
 import org.cssa.wxcloudrun.model.Response;
@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping({"/friendpost"})
-@Api(tags = "麦屯圈中心")
+@Tag(name = "麦屯圈中心")
 public class FriendPostController {
 
     @Autowired
@@ -34,7 +34,7 @@ public class FriendPostController {
     public Response<Object> createFriendComment(@Parameter(description = "帖子评论") @RequestBody FriendComment friendComment,
                                              @Parameter(description = "wx open id") @RequestHeader("x-wx-openid") String openid) {
         friendComment.setUserID(openid);
-        return null;
+        return friendPostService.createFriendComment(friendComment);
     }
 
     @RequestMapping(value = {"/get"}, method = {RequestMethod.GET}, produces = "application/json")
@@ -50,6 +50,6 @@ public class FriendPostController {
     public Response<List<FriendComment>> getFriendComment(@Parameter(description = "从第几位开始") @RequestParam Integer offset,
                                                           @Parameter(description = "返回数量限制") @RequestParam Integer limit,
                                                           @Parameter(description = "帖子ID") @RequestParam() Integer postID) {
-        return null;
+        return friendPostService.getFriendCommentList(offset, limit, postID);
     }
 }
