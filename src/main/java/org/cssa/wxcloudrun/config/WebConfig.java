@@ -19,7 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new WeixinServiceInterceptor()).addPathPatterns(List.of("/*"));
+        registry.addInterceptor(new WeixinServiceInterceptor()).addPathPatterns(List.of("/*")).excludePathPatterns("/doc/*");
     }
 
     @Override
@@ -50,12 +50,14 @@ public class WebConfig implements WebMvcConfigurer {
                 JSONWriter.Feature.WriteNullListAsEmpty,
                 JSONWriter.Feature.PrettyFormat,
                 JSONWriter.Feature.WriteMapNullValue,
+                JSONWriter.Feature.WriteLongAsString,
                 JSONWriter.Feature.WriteNullBooleanAsFalse,
                 JSONWriter.Feature.WriteNullListAsEmpty,
                 JSONWriter.Feature.WriteNullNumberAsZero,
                 JSONWriter.Feature.WriteNullStringAsEmpty,
                 JSONWriter.Feature.MapSortField
         );
+        fastJsonConfig.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
         converters.add(0, fastJsonHttpMessageConverter);
     }
