@@ -1,12 +1,12 @@
 package org.cssa.wxcloudrun.controller;
 
 
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.cssa.wxcloudrun.model.Rental;
 import org.cssa.wxcloudrun.model.Response;
 import org.cssa.wxcloudrun.service.RentalService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping({"/rental"})
-@Api(tags = "转租中心")
+@Tag(name = "转租中心")
 public class RentalController {
 
     @Autowired

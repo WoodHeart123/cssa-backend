@@ -1,7 +1,6 @@
 package org.cssa.wxcloudrun.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.cssa.wxcloudrun.model.Activity;
@@ -9,6 +8,7 @@ import org.cssa.wxcloudrun.model.Response;
 import org.cssa.wxcloudrun.model.SignupInfo;
 import org.cssa.wxcloudrun.service.ActivityService;
 import org.cssa.wxcloudrun.service.EmailService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping({"/activity"})
-@Api(tags = "活动中心")
+@Tag(name = "活动中心")
 public class ActivityController {
 
     @Autowired
@@ -28,8 +28,9 @@ public class ActivityController {
 
     @Operation(summary = "查看用户报名信息", description = "查看用户报名信息")
     @RequestMapping(value = {"/events/signup/{act_id}"}, method = {RequestMethod.GET}, produces = "application/json")
-    public Response<SignupInfo> checkSignup(@ApiParam(value = "活动ID", required = true) @PathVariable(name = "act_id") Integer actID
-            , @ApiParam(value = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
+    public Response<SignupInfo> checkSignup(@Parameter(name = "活动ID", required = true)
+                                                @PathVariable(name = "act_id") Integer actID,
+                                                @Parameter(name = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
         return activityService.checkSignup(openid, actID);
     }
 
@@ -50,7 +51,7 @@ public class ActivityController {
 
     @Operation(summary = "取消报名", description = "取消用户的报名信息")
     @RequestMapping(value = {"/register/{act_id}"}, method = {RequestMethod.DELETE}, produces = "application/json")
-    public Response<Object> cancelRegister(@ApiParam(value = "活动ID", required = true) @PathVariable(name = "act_id") Integer actID,
+    public Response<Object> cancelRegister(@Parameter(name = "活动ID", required = true) @PathVariable(name = "act_id") Integer actID,
                                            @Parameter(description = "微信ID", required = true) @RequestHeader("x-wx-openid") String openid) {
         return activityService.cancelRegister(openid, actID);
     }

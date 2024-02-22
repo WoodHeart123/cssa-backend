@@ -78,4 +78,9 @@ management:
     tags:
       application: CSSA-Backend
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  packages-to-scan: org.cssa.wxcloudrun.controller
+  paths-to-match: /**
 

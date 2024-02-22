@@ -1,6 +1,6 @@
 package org.cssa.wxcloudrun.service.impl;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import org.cssa.wxcloudrun.dao.ActivityMapper;
 import org.cssa.wxcloudrun.model.Activity;
 import org.cssa.wxcloudrun.model.PaymentOption;

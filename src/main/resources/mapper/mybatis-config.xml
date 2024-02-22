@@ -7,7 +7,6 @@
         <typeAlias alias="Activity" type="org.cssa.wxcloudrun.model.Activity"/>
         <typeAlias alias="SignupInfo" type="org.cssa.wxcloudrun.model.SignupInfo"/>
         <typeAlias alias="User" type="org.cssa.wxcloudrun.model.User"/>
-        <typeAlias alias="Admin" type="org.cssa.wxcloudrun.model.Admin"/>
         <typeAlias alias="CourseComment" type="org.cssa.wxcloudrun.model.CourseComment"/>
         <typeAlias alias="Department" type="org.cssa.wxcloudrun.model.Department"/>
         <typeAlias alias="Course" type="org.cssa.wxcloudrun.model.Course"/>

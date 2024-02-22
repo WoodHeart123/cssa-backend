@@ -1,8 +1,8 @@
 package org.cssa.wxcloudrun.controller;
 
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.cssa.wxcloudrun.model.FriendComment;
 import org.cssa.wxcloudrun.model.FriendPost;
 import org.cssa.wxcloudrun.model.Response;
@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping({"/friendpost"})
-@Api(tags = "麦屯圈中心")
+@Tag(name = "麦屯圈中心")
 public class FriendPostController {
 
     @Autowired
