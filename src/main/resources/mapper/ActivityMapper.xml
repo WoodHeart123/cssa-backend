@@ -25,7 +25,7 @@
 
     <select id="getActivityList" resultMap="ActivityMap">
         SELECT activity.id    as id,
-               COUNT(user_id) as userJoinedNum,
+               COUNT(if(activity_responses.deleted_at is NULL, user_id, NULL)) as userJoinedNum
                title,
                start_date,
                end_date,
@@ -59,10 +59,12 @@
     </select>
 
     <select id="findActivity" resultType="Activity">
-        SELECT *
+        SELECT activity.*,
+               COUNT(if(activity_responses.deleted_at is NULL, user_id, NULL)) as userJoinedNum
         FROM activity
-        WHERE id = #{id}
-          AND deleted_at IS NULL
+        	LEFT JOIN activity_responses ON activity.id = activity_responses.act_id
+        WHERE activity.id = #{id}
+          AND activity.deleted_at IS NULL
     </select>
 
     <select id="checkRegistration" resultMap="SignupInfoMap">

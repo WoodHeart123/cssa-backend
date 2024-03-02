@@ -59,8 +59,15 @@ public class ActivityServiceImpl implements ActivityService {
             return new Response<>(ReturnCode.DEADLINE_PASSED);
         }
         activityMapper.registerActivity(signupInfo);
+        act = activityMapper.findActivity(signupInfo.getActID());
+        if (act.getUserJoinedNum() > act.getCapacity()) {
+            // Rollback
+            activityMapper.cancelRegister(signupInfo.getUserID(), act.getId());
+            return new Response<>(ReturnCode.CAPACITY_LIMIT_EXCEED);
+        }
         return new Response<>();
     }
+
 
     @Override
     public Response<Object> cancelRegister(String userID, Integer actID) {
@@ -74,5 +81,5 @@ public class ActivityServiceImpl implements ActivityService {
         return new Response<>(activityList);
     }
 
-	
+
 }
