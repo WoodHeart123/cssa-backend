@@ -9,8 +9,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 
 @RestController
@@ -100,4 +102,17 @@ public class CourseController {
         courseFile.setUserID(openid);
         return courseService.postFile(courseFile);
     }
+
+
+    // 根据提供的course_id, 返回这个course所有terms的行，返还给前端（以JSON格式）
+    @RequestMapping(value = {"/getAllTerms"}, method = {RequestMethod.GET})
+    @Operation(summary = "获取课程数据",description = "获取某节课所有学期的数据")
+    // RequestParam 是跟在http后面的
+    public Response<List<Course>> getCourse(@Parameter(description = "课程ID")@RequestParam ArrayList<String> course_id){
+
+        return courseService.getCourse(course_id);
+
+    }
+
+
 }

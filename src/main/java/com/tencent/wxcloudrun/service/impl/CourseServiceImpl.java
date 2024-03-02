@@ -101,9 +101,17 @@ public class CourseServiceImpl implements CourseService {
         return Response.builder().status(100).message("成功").build();
     }
 
-
+    /**
+     *  Service to do what Course Controller wants to request
+     * @param courseID The array list of course ID string
+     * @return
+     */
     @Override
     public Response<List<Course>> getCourse(ArrayList<String> courseID) {
+        if(courseID == null){
+            return null;
+        }
+        // courseMapper is a SQL request
         return new Response<>(courseMapper.getCourse(courseID));
     }
 
