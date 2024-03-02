@@ -1,87 +1,76 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.tencent.wxcloudrun.dao.ActivityMapper">
+<mapper namespace="org.cssa.wxcloudrun.dao.ActivityMapper">
 
     <resultMap id="ActivityMap" type="Activity">
-        <result property="createdAt" column="created_at" />
-        <result property="updatedAt" column="updated_at" />
-        <result property="deletedAt" column="deleted_at" />
-        <result property="additionalInfoJSON" column="additional_info" />
-        <result property="startDate" column="start_date" />
-        <result property="endDate" column="end_date" />
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="deletedAt" column="deleted_at"/>
+        <result property="additionalInfoJSON" column="additional_info"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
         <result property="imagesJSON" column="images"/>
         <result property="paymentJSON" column="payment"/>
     </resultMap>
-    
+
     <resultMap id="SignupInfoMap" type="SignupInfo">
-        <result property="createdAt" column="created_at" />
-        <result property="updatedAt" column="updated_at" />
-        <result property="deletedAt" column="deleted_at" />
-        <result property="actID" column="act_id" />
-        <result property="userID" column="user_id" />
-        <result property="isPaid" column="is_paid" />
-        <result property="responseJSON" column="response" />
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="deletedAt" column="deleted_at"/>
+        <result property="actID" column="act_id"/>
+        <result property="userID" column="user_id"/>
+        <result property="isPaid" column="is_paid"/>
+        <result property="responseJSON" column="response"/>
     </resultMap>
 
     <select id="getActivityList" resultMap="ActivityMap">
-        SELECT
-            activity.id as id,
-            COUNT(user_id) as userJoinedNum,
-            title,
-            start_date,
-            end_date,
-            deadline,
-            location,
-            price,
-            capacity,
-            images,
-            additional_info,
-            description,
-            payment,
-            activity.created_at
-        FROM
-            activity
-                LEFT JOIN activity_responses ON activity.id = activity_responses.act_id
-        WHERE
-            activity.deadline >= CURRENT_TIMESTAMP
+        SELECT activity.id    as id,
+               COUNT(user_id) as userJoinedNum,
+               title,
+               start_date,
+               end_date,
+               deadline,
+               location,
+               price,
+               capacity,
+               images,
+               additional_info,
+               description,
+               payment,
+               activity.created_at
+        FROM activity
+                 LEFT JOIN activity_responses ON activity.id = activity_responses.act_id
+        WHERE activity.deadline >= CURRENT_TIMESTAMP
           AND activity.deleted_at IS null
-        GROUP BY
-            activity.id,
-            title,
-            start_date,
-            end_date,
-            deadline,
-            location,
-            price,
-            capacity,
-            images,
-            additional_info,
-            description,
-            payment,
-            activity.created_at
-        ORDER BY
-            activity.id
+        GROUP BY activity.id,
+                 title,
+                 start_date,
+                 end_date,
+                 deadline,
+                 location,
+                 price,
+                 capacity,
+                 images,
+                 additional_info,
+                 description,
+                 payment,
+                 activity.created_at
+        ORDER BY activity.id
     </select>
 
     <select id="findActivity" resultType="Activity">
-        SELECT
-            *
-        FROM
-            activity
-        WHERE
-            id = #{id}
-            AND deleted_at IS NULL
+        SELECT *
+        FROM activity
+        WHERE id = #{id}
+          AND deleted_at IS NULL
     </select>
 
     <select id="checkRegistration" resultMap="SignupInfoMap">
-        SELECT
-            *
-        FROM
-            activity_responses
-        WHERE
-            user_id = #{userID}
-            AND act_id = #{actID}
-            AND deleted_at IS NULL
+        SELECT *
+        FROM activity_responses
+        WHERE user_id = #{userID}
+          AND act_id = #{actID}
+          AND deleted_at IS NULL
         LIMIT 1
     </select>
 
@@ -108,7 +97,9 @@
 
     <insert id="registerActivity" parameterType="SignupInfo">
         INSERT INTO activity_responses (act_id, user_id, response)
-        VALUES (#{actID}, #{userID}, #{responseJSON}) ON DUPLICATE KEY UPDATE response = #{responseJSON}, deleted_at = NULL
+        VALUES (#{actID}, #{userID}, #{responseJSON})
+        ON DUPLICATE KEY UPDATE response   = #{responseJSON},
+                                deleted_at = NULL
     </insert>
 
     <update id="cancelRegister">
@@ -118,44 +109,5 @@
           AND user_id = #{userID}
     </update>
 
-    <select id="findDeletedActivity" resultMap="ActivityMap" parameterType="Integer">
-        SELECT * FROM activity WHERE id = #{actID} AND deleted_at IS NOT NULL
-    </select>
-
-    <select id="getActivityDetails" resultMap="ActivityMap" parameterType="Integer">
-        SELECT * FROM activity WHERE id = #{actID} AND deleted_at IS NULL
-    </select>
-
-    <select id="getOngoingActivities" resultMap="ActivityMap">
-        SELECT * FROM activity WHERE end_date > CURRENT_TIMESTAMP AND deleted_at IS NULL
-        ORDER BY end_date
-    </select>
-
-
-    <update id="updateFullActivity" >
-        UPDATE activity
-        SET
-        title = #{activity.title},
-        description = #{activity.description},
-        start_date = #{activity.startDate},
-        end_date = #{activity.endDate},
-        deadline = #{activity.deadline},
-        location = #{activity.location},
-        capacity = #{activity.capacity},
-        images = #{activity.imagesJSON},
-        payment = #{activity.paymentJSON},
-        price = #{activity.price},
-        created_at = #{activity.createdAt},
-        updated_at = CURRENT_TIMESTAMP,
-        deleted_at = NULL,
-        additional_info = #{activity.additionalInfoJSON}
-        WHERE id = #{actID}
-    </update>
-
-    <update id="deleteActivity" parameterType="Integer">
-        UPDATE activity
-        SET deleted_at = CURRENT_TIMESTAMP
-        WHERE id = #{id}
-    </update>
 
 </mapper>

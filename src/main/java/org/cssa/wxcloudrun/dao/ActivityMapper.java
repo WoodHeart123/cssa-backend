@@ -1,9 +1,8 @@
-package com.tencent.wxcloudrun.dao;
-
-import com.tencent.wxcloudrun.model.Activity;
-import com.tencent.wxcloudrun.model.SignupInfo;
+package org.cssa.wxcloudrun.dao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.cssa.wxcloudrun.model.Activity;
+import org.cssa.wxcloudrun.model.SignupInfo;
 import java.util.List;
 
 @Mapper
