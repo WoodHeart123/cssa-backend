@@ -5,12 +5,14 @@ import org.cssa.wxcloudrun.dao.ActivityMapper;
 import org.cssa.wxcloudrun.model.Activity;
 import org.cssa.wxcloudrun.model.PaymentOption;
 import org.cssa.wxcloudrun.model.Response;
+import org.cssa.wxcloudrun.model.ReturnCode;
 import org.cssa.wxcloudrun.model.SignupInfo;
 import org.cssa.wxcloudrun.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +51,13 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public Response<Object> registerActivity(SignupInfo signupInfo) {
+        Activity act = activityMapper.findActivity(signupInfo.getActID());
+        if (act == null) {
+            return new Response<>(ReturnCode.ACTIVITY_NOT_EXIST);
+        }
+        if (act.getDeadline().before(new Timestamp(System.currentTimeMillis()))) {
+            return new Response<>(ReturnCode.DEADLINE_PASSED);
+        }
         activityMapper.registerActivity(signupInfo);
         return new Response<>();
     }
@@ -65,5 +74,5 @@ public class ActivityServiceImpl implements ActivityService {
         return new Response<>(activityList);
     }
 
-
+	
 }
