@@ -111,10 +111,10 @@
         VALUES (#{actID}, #{userID}, #{responseJSON}) ON DUPLICATE KEY UPDATE response = #{responseJSON}, deleted_at = NULL
     </insert>
 
-    <!-- <insert id="postActivityInfo" parameterType="Activity">
-        INSERT INTO activity (userID,rentalID,sexConstraint,floorPlan,description,publishedTime,rentalStartTime,rentalEndTime,price,location,contact,imagesJSON)
-        VALUES (#{userID},#{rentalID},#{sexConstraint},#{floorPlan},#{description},#{publishedTime},#{rentalStartTime},#{rentalEndTime}, #{price}, #{location}, #{contact}, #{imagesJSON})
-    </insert> -->
+    <insert id="postActivityInfo" parameterType="Activity">
+        INSERT INTO activity (id,title,description,start_date,end_date,deadline,location,capacity,images,payment,price,created_at,updated_at,deleted_at,additional_info)
+        VALUES (#{id},#{title},#{description},#{start_date},#{end_date},#{deadline},#{location},#{capacity},#{images}, #{price}, #{payment}, #{created_at}, #{updated_at}, #{deleted_at}, #{additional_info})
+    </insert>
 
     <update id="cancelRegister">
         UPDATE activity_responses
