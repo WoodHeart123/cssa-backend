@@ -95,53 +95,6 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         if (updatedActivity.getPayment() == null) updatedActivity.setPaymentJSON("{}");
-
-        Activity deletedActivity = activityMapper.findDeletedActivity(actID);
-        if (deletedActivity != null) {
-            if (updatedActivity.getTitle() == null || updatedActivity.getTitle().isEmpty()) {
-                updatedActivity.setTitle(deletedActivity.getTitle());
-            }
-
-            if (updatedActivity.getDescription() == null || updatedActivity.getDescription().isEmpty()) {
-                updatedActivity.setDescription(deletedActivity.getDescription());
-            }
-
-            if (updatedActivity.getStartDate() == null) {
-                updatedActivity.setStartDate(deletedActivity.getStartDate());
-            }
-
-            if (updatedActivity.getEndDate() == null) {
-                updatedActivity.setEndDate(deletedActivity.getEndDate());
-            }
-
-            if (updatedActivity.getDeadline() == null) {
-                updatedActivity.setDeadline(deletedActivity.getDeadline());
-            }
-
-            if (updatedActivity.getLocation() == null || updatedActivity.getLocation().isEmpty()) {
-                updatedActivity.setLocation(deletedActivity.getLocation());
-            }
-
-            if (updatedActivity.getImages() == null || updatedActivity.getImages().isEmpty()) {
-                if (deletedActivity.getImages() != null && !deletedActivity.getImages().isEmpty()) {
-                    updatedActivity.setImages(deletedActivity.getImages());
-                    updatedActivity.setImagesJSON(JSON.toJSONString(updatedActivity.getImages()));
-                }
-            }
-
-            if (updatedActivity.getPayment() == null && deletedActivity.getPayment() != null) {
-                updatedActivity.setPayment(deletedActivity.getPayment());
-                updatedActivity.setPaymentJSON(JSON.toJSONString(updatedActivity.getPayment()));
-            }
-
-            if (updatedActivity.getPrice() == null) updatedActivity.setPrice(deletedActivity.getPrice());
-
-            if (updatedActivity.getAdditionalInfoJSON() == null || updatedActivity.getAdditionalInfoJSON().isBlank()) {
-                updatedActivity.setAdditionalInfoJSON(deletedActivity.getAdditionalInfoJSON());
-            }
-        } else {
-            return new Response<>();
-        }
         activityMapper.updateFullActivity(actID, updatedActivity);
 
         return new Response<>("活动更新成功");
