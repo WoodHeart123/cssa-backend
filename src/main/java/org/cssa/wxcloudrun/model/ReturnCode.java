@@ -20,6 +20,8 @@ public enum ReturnCode {
     UNKNOWN_SERVICE(111, "无法识别服务项目"),
     INVALID_TYPE(112, "类型错误"),
     NO_SEARCH_RESULT(113, "无搜索结果"),
+    CAPACITY_LIMIT_EXCEED(114, "超出人数限制"),
+    DEADLINE_PASSED(115, "超过活动报名截止日期"),
 
     INVALID_ADMIN_INFO(301, "管理员登录信息错误");
 
