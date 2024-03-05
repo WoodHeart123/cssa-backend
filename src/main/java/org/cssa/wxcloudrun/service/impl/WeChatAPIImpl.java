@@ -26,6 +26,6 @@ public class WeChatAPIImpl implements WeChatAPI {
 
         HttpEntity<String> request =
                 new HttpEntity<>(requestObject.toString(), headers);
-        return REST_TEMPLATE.postForObject("https://api.weixin.qq.com/wxa/msg_sec_check", request, WechatResponse.class);
+        return REST_TEMPLATE.postForObject("http://api.weixin.qq.com/wxa/msg_sec_check", request, WechatResponse.class);
     }
 }
