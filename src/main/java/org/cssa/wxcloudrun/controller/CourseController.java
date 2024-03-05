@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import org.cssa.wxcloudrun.model.*;
 import org.cssa.wxcloudrun.service.CourseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.cssa.wxcloudrun.service.WeChatAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,9 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    WeChatAPI weChatAPI;
 
 
     @RequestMapping(value = {"/search"}, method = {RequestMethod.GET}, produces = "application/json")
@@ -42,6 +46,11 @@ public class CourseController {
                                  @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         if (courseComment.getComment().length() > 300) {
             return Response.builder().status(103).message("超过字数限制").build();
+        }
+
+        WechatResponse wechatResponse = weChatAPI.MsgCheck(courseComment.getComment(), openid, 3);
+        if(wechatResponse.getResult().getLabel() >= 20000){
+            return new Response<>(ReturnCode.CENSORED_UGC_CONTENT);
         }
         courseComment.setUserID(openid);
         return courseService.postComment(courseComment);
