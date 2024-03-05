@@ -38,8 +38,8 @@ public class SecondhandController {
     public Response<Object> saveProduct(@Parameter(description = "是否保存联系方式") @RequestParam Boolean save,
                                         @Parameter(description = "商品信息") @RequestBody Product product,
                                         @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
-        WechatResponse wechatResponse = weChatAPI.MsgCheck(product.getProductTitle(), openid, 3);
-        if(wechatResponse.getResult().getLabel() != 100){
+        WechatResponse wechatResponse = weChatAPI.MsgCheck(product.getProductTitle() + ";" + product.getProductDescription(), openid, 3);
+        if(wechatResponse.getResult().getLabel() >= 20000){
             return new Response<>(ReturnCode.CENSORED_UGC_CONTENT);
         }
         product.setUserID(openid);

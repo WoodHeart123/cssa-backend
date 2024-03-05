@@ -5,8 +5,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.cssa.wxcloudrun.model.Rental;
 import org.cssa.wxcloudrun.model.Response;
+import org.cssa.wxcloudrun.model.ReturnCode;
+import org.cssa.wxcloudrun.model.WechatResponse;
 import org.cssa.wxcloudrun.service.RentalService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.cssa.wxcloudrun.service.WeChatAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +25,9 @@ public class RentalController {
 
     @Autowired
     RentalService rentalService;
+
+    @Autowired
+    WeChatAPI weChatAPI;
 
     /**
      * 获取转租信息
@@ -58,6 +64,10 @@ public class RentalController {
     public Response<Object> postRentalInfo(@Parameter(description = "转租信息") @RequestBody Rental rentalInfo,
                                            @Parameter(description = "是否保存联系方式") @RequestParam Boolean save,
                                            @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
+        WechatResponse wechatResponse = weChatAPI.MsgCheck(rentalInfo.getDescription() + ";" + rentalInfo.getLocation(), openid, 3);
+        if(wechatResponse.getResult().getLabel() >= 20000){
+            return new Response<>(ReturnCode.CENSORED_UGC_CONTENT);
+        }
         rentalInfo.setUserID(openid);
         return rentalService.postRentalInfo(rentalInfo, save);
     }

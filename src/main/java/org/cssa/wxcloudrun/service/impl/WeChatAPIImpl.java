@@ -1,5 +1,6 @@
 package org.cssa.wxcloudrun.service.impl;
 
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import org.cssa.wxcloudrun.model.WechatResponse;
 import org.cssa.wxcloudrun.service.WeChatAPI;
@@ -26,6 +27,7 @@ public class WeChatAPIImpl implements WeChatAPI {
 
         HttpEntity<String> request =
                 new HttpEntity<>(requestObject.toString(), headers);
-        return REST_TEMPLATE.postForObject("http://api.weixin.qq.com/wxa/msg_sec_check", request, WechatResponse.class);
+        String response = REST_TEMPLATE.postForObject("http://api.weixin.qq.com/wxa/msg_sec_check", request, String.class);
+        return JSON.parseObject(response, WechatResponse.class);
     }
 }
