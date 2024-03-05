@@ -1,71 +1,131 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.tencent.wxcloudrun.dao.CourseMapper">
+<mapper namespace="org.cssa.wxcloudrun.dao.CourseMapper">
 
     <insert id="saveComment" parameterType="CourseComment">
-        INSERT INTO comment (userID,courseID,professor,courseTime,difficulty,prefer,comment,commentTime)
-        VALUES (#{userID},#{courseID},#{professor},#{courseTime},#{difficulty},#{prefer},#{comment},#{commentTime})
+        INSERT INTO comment (userID, courseID, professor, courseTime, difficulty, prefer, comment, commentTime)
+        VALUES (#{userID}, #{courseID}, #{professor}, #{courseTime}, #{difficulty}, #{prefer}, #{comment},
+                #{commentTime})
     </insert>
 
-    <select id="getAllCourseList"  resultType="Course">
-        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit, commentCount
+    <select id="getAllCourseList" resultType="Course">
+        SELECT courseID,
+               departmentID,
+               courseName,
+               departmentAbrev,
+               courseNum,
+               avgDifficulty,
+               avgPrefer,
+               credit,
+               commentCount
         FROM course
-        WHERE commentCount &gt;= #{commentCount} AND isGrad = #{isGrad}
-        ORDER BY ${field} ${order}, courseID ASC LIMIT #{offset}, #{limit}
+        WHERE commentCount &gt;= #{commentCount}
+          AND isGrad = #{isGrad}
+        ORDER BY ${field} ${order}, courseID ASC
+        LIMIT #{offset}, #{limit}
     </select>
 
     <select id="getCourseList" resultType="Course">
-        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit, commentCount
+        SELECT courseID,
+               departmentID,
+               courseName,
+               departmentAbrev,
+               courseNum,
+               avgDifficulty,
+               avgPrefer,
+               credit,
+               commentCount
         FROM course
-        WHERE departmentID = #{departmentID} AND isGrad = #{isGrad}
-        ORDER BY ${field} ${order}
+        WHERE departmentID = #{departmentID}
+          AND isGrad = #{isGrad}
+        ORDER BY ${field} ${order}, courseNum ASC
     </select>
 
     <update id="updateCourse" parameterType="Course">
-        UPDATE course SET avgDifficulty = #{avgDifficulty}, avgPrefer = #{avgPrefer}, commentCount = #{commentCount} WHERE courseID = #{courseID}
+        UPDATE course
+        SET avgDifficulty = #{avgDifficulty},
+            avgPrefer     = #{avgPrefer},
+            commentCount  = #{commentCount}
+        WHERE courseID = #{courseID}
     </update>
 
     <select id="getCourse" resultType="Course">
-        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit, commentCount FROM course WHERE courseID in
+        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit,
+        commentCount FROM course WHERE courseID in
         <foreach item="course" collection="courseID" separator="," open="(" close=")" index="index">
             #{course}
         </foreach>
     </select>
 
     <update id="incrementCount" parameterType="Integer">
-        UPDATE comment SET likeCount = likeCount + 1 WHERE commentID = #{commentID};
+        UPDATE comment
+        SET likeCount = likeCount + 1
+        WHERE commentID = #{commentID};
     </update>
 
     <update id="setLikeList">
-        UPDATE user SET likedCommentJSON= #{likedCommentJSON} WHERE userID= #{userID};
+        UPDATE user
+        SET likedCommentJSON= #{likedCommentJSON}
+        WHERE userID = #{userID};
     </update>
 
     <select id="getUser" parameterType="String" resultType="User">
-        SELECT * FROM user WHERE userID = #{userID}
+        SELECT *
+        FROM user
+        WHERE userID = #{userID}
     </select>
 
     <update id="hideComment" parameterType="Integer">
-        UPDATE comment SET commentTime = '1000-01-01 00:00:00' WHERE commentID = #{commentID}
+        UPDATE comment
+        SET commentTime = '1000-01-01 00:00:00'
+        WHERE commentID = #{commentID}
     </update>
 
     <select id="getDepartmentList" resultType="Department">
-        SELECT departmentID, department, departmentAbrev FROM department ORDER BY departmentID
+        SELECT departmentID, department, departmentAbrev
+        FROM department
+        ORDER BY departmentID
     </select>
 
     <select id="getCommentList" resultType="CourseComment">
-        SELECT comment.commentID, comment.professor, comment.courseTime,comment.difficulty,comment.prefer,comment.comment, comment.likeCount, comment.commentTime, COALESCE(user.avatar, 1) AS userAvatar
-        FROM comment LEFT JOIN user ON comment.userID = user.userID WHERE courseID = #{courseID} ORDER BY ${orderField} DESC LIMIT #{offset}, #{limit}
+        SELECT comment.commentID,
+               comment.professor,
+               comment.courseTime,
+               comment.difficulty,
+               comment.prefer,
+               comment.comment,
+               comment.likeCount,
+               comment.commentTime,
+               COALESCE(user.avatar, 1) AS userAvatar
+        FROM comment
+                 LEFT JOIN user ON comment.userID = user.userID
+        WHERE courseID = #{courseID}
+        ORDER BY ${orderField} DESC
+        LIMIT #{offset}, #{limit}
     </select>
 
     <select id="getPostCommentCount" parameterType="Map" resultType="Integer">
-        SELECT COUNT(commentID) from comment WHERE courseID = #{courseID} AND userID = #{userID}
+        SELECT COUNT(commentID)
+        from comment
+        WHERE courseID = #{courseID}
+          AND userID = #{userID}
     </select>
 
     <select id="searchCourse" parameterType="String" resultType="Course">
-        SELECT courseID, departmentID, courseName, departmentAbrev, courseNum, avgDifficulty, avgPrefer, credit, commentCount, REPLACE(departmentAbrev,' ','') AS strname FROM course HAVING strname LIKE #{departmentAbrev} AND courseNum LIKE #{courseNum} limit 10
+        SELECT courseID,
+               departmentID,
+               courseName,
+               departmentAbrev,
+               courseNum,
+               avgDifficulty,
+               avgPrefer,
+               credit,
+               commentCount,
+               REPLACE(departmentAbrev, ' ', '') AS strname
+        FROM course
+        HAVING strname LIKE #{departmentAbrev}
+           AND courseNum LIKE #{courseNum}
+        limit 10
     </select>
 
-    <insert id="postFile" parameterType="CourseFile">
-        INSERT INTO course_file(courseID,userID, name, path, size) VALUE(#{courseID},#{userID},#{name},#{path},#{size})
-    </insert>
 </mapper>

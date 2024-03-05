@@ -1,79 +1,127 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.tencent.wxcloudrun.dao.UserMapper">
+<mapper namespace="org.cssa.wxcloudrun.dao.UserMapper">
 
     <update id="authSuccess" parameterType="String">
-        UPDATE user SET isStudent = 1 WHERE userID = #{userID}
+        UPDATE user
+        SET isStudent = 1
+        WHERE userID = #{userID}
     </update>
 
     <select id="login" parameterType="String" resultType="User">
-        SELECT email,nickname, isStudent,wechatID, avatar, likedCommentJSON, savedProductJSON, subscribe FROM user WHERE userID = #{userID}
+        SELECT email,
+               nickname,
+               isStudent,
+               wechatID,
+               avatar,
+               likedCommentJSON,
+               savedProductJSON,
+               subscribe
+        FROM user
+        WHERE userID = #{userID}
     </select>
 
     <insert id="register" parameterType="String">
-        INSERT INTO user (userID,nickname) VALUES (#{userID},#{nickname})
+        INSERT INTO user (userID, nickname)
+        VALUES (#{userID}, #{nickname})
     </insert>
 
     <update id="updateEmail" parameterType="Map">
-        UPDATE user SET email = #{email}, subscribe = #{subscribe} WHERE userID = #{userID}
+        UPDATE user
+        SET email     = #{email},
+            subscribe = #{subscribe}
+        WHERE userID = #{userID}
     </update>
 
     <update id="updateWechatID" parameterType="String">
-        UPDATE user SET wechatID = #{wechatID} WHERE userID = #{userID}
+        UPDATE user
+        SET wechatID = #{wechatID}
+        WHERE userID = #{userID}
     </update>
-    
+
     <select id="getLikedCommentList" parameterType="String" resultType="User">
-        select userID,likedCommentJSON from user WHERE userID = #{userID}
+        select userID, likedCommentJSON
+        from user
+        WHERE userID = #{userID}
     </select>
 
     <update id="updateAvatar">
-        UPDATE user SET avatar = #{avatar} WHERE userID = #{userID}
+        UPDATE user
+        SET avatar = #{avatar}
+        WHERE userID = #{userID}
     </update>
 
     <select id="getMyComment" parameterType="Map" resultType="CourseComment">
-        SELECT commentID, professor, courseTime, difficulty, prefer, courseComment, likeCount, commentTime, courseNum,courseName,departmentAbrev
-        from courseComment INNER JOIN course
-        WHERE courseComment.courseID = course.courseID AND commentID > #{offset} AND userID = #{userID}
+        SELECT commentID,
+               professor,
+               courseTime,
+               difficulty,
+               prefer,
+               comment,
+               likeCount,
+               commentTime,
+               courseNum,
+               courseName,
+               departmentAbrev
+        from comment
+                 INNER JOIN course
+        WHERE comment.courseID = course.courseID
+          AND commentID > #{offset}
+          AND userID = #{userID}
         ORDER BY commentID
         LIMIT ${limit}
     </select>
 
     <update id="updateComment" parameterType="Map">
-        UPDATE courseComment SET courseComment = #{courseComment} WHERE userID = #{userID} AND commentID = #{commentID}
+        UPDATE comment
+        SET comment = #{courseComment}
+        WHERE userID = #{userID}
+          AND commentID = #{commentID}
     </update>
 
     <delete id="deleteComment">
-        DELETE FROM courseComment WHERE userID = #{userID} AND commentID = #{commentID}
+        DELETE
+        FROM comment
+        WHERE userID = #{userID}
+          AND commentID = #{commentID}
     </delete>
 
     <update id="updateNickname" parameterType="String">
-        update user SET nickname = #{nickname} WHERE userID = #{userID}
+        update user
+        SET nickname = #{nickname}
+        WHERE userID = #{userID}
     </update>
 
     <select id="getMySecondhand" parameterType="Map" resultType="Product">
-        SELECT productID, userID, productTitle, productDescription, price, productType, productCondition, time, contact, imagesJSON, delivery from secondhand WHERE userID = #{userID} ORDER BY time DESC LIMIT ${offset}, ${limit}
+        SELECT *
+        from secondhand
+        WHERE userID = #{userID}
+        ORDER BY time DESC
+        LIMIT ${offset}, ${limit}
     </select>
 
     <select id="getMyProductSave" parameterType="Map" resultType="Product">
         SELECT *
         FROM secondhand
         WHERE productID in
-            <foreach collection="productList" item="item" open="(" separator="," close=")" >
-                #{item}
-            </foreach>
+        <foreach collection="productList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
         ORDER BY productID
         LIMIT ${limit}
     </select>
 
     <select id="collect" parameterType="String" resultType="User">
-        SELECT * FROM user WHERE userID = #{userID}
+        SELECT *
+        FROM user
+        WHERE userID = #{userID}
     </select>
 
     <select id="getMyRentalSave" parameterType="Map" resultType="Rental">
         SELECT *
         FROM rental
         WHERE rentalID in
-        <foreach collection="rentalList" item="item" open="(" separator="," close=")" >
+        <foreach collection="rentalList" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
         ORDER BY rentalID
@@ -81,70 +129,136 @@
     </select>
 
     <update id="updateSecondHand" parameterType="Map">
-        UPDATE secondhand SET productTitle = #{product.productTitle}, productDescription = #{product.productDescription}, price = #{product.price}, productType = #{product.productType}, productCondition = #{product.productCondition}, time = #{product.time}, contact = #{product.contact}, imagesJSON = #{product.imagesJSON}, delivery = #{product.delivery}, time = CURRENT_TIMESTAMP WHERE userID = #{userID} AND productID = #{product.productID}
+        UPDATE secondhand
+        SET productTitle       = #{product.productTitle},
+            productDescription = #{product.productDescription},
+            price              = #{product.price},
+            productCondition   = #{product.productCondition},
+            time               = #{product.time},
+            contact            = #{product.contact},
+            imagesJSON         = #{product.imagesJSON},
+            delivery           = #{product.delivery},
+            time               = CURRENT_TIMESTAMP
+        WHERE userID = #{userID}
+          AND productID = #{product.productID}
     </update>
 
     <delete id="deleteSecondHand" parameterType="Map">
-        DELETE FROM secondhand WHERE productID = #{productID} AND userID = #{userID}
+        DELETE
+        FROM secondhand
+        WHERE productID = #{productID}
+          AND userID = #{userID}
     </delete>
 
     <delete id="deleteRental" parameterType="Map">
-        DELETE FROM rental WHERE rentalID = #{rentalID} AND userID = #{userID}
+        DELETE
+        FROM rental
+        WHERE rentalID = #{rentalID}
+          AND userID = #{userID}
     </delete>
 
     <update id="setProductTime" parameterType="Map">
-        UPDATE secondhand SET time = #{time} WHERE userID = #{userID} AND productID = #{productID}
+        UPDATE secondhand
+        SET time = #{time}
+        WHERE userID = #{userID}
+          AND productID = #{productID}
     </update>
 
     <update id="clearProductTime" parameterType="Map">
-        UPDATE secondhand SET time = NULL WHERE userID = #{userID} AND productID = #{productID}
+        UPDATE secondhand
+        SET time = NULL
+        WHERE userID = #{userID}
+          AND productID = #{productID}
     </update>
 
     <update id="setRentalTime" parameterType="Map">
-        UPDATE rental SET publishedTime = #{time} WHERE userID = #{userID} AND rentalID = #{rentalID}
+        UPDATE rental
+        SET publishedTime = #{time}
+        WHERE userID = #{userID}
+          AND rentalID = #{rentalID}
     </update>
 
     <update id="clearRentalTime" parameterType="Map">
-        UPDATE rental SET publishedTime = NULL WHERE userID = #{userID} AND rentalID = #{rentalID}
+        UPDATE rental
+        SET publishedTime = NULL
+        WHERE userID = #{userID}
+          AND rentalID = #{rentalID}
     </update>
 
     <select id="getMyRental" resultType="Rental">
-        SELECT rental.userID, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
-        rental.publishedTime, rental.rentalStartTime, rental.rentalEndTime, rental.price,
-        rental.location, rental.contact, rental.imagesJSON
+        SELECT rental.userID,
+               rental.rentalID,
+               rental.sexConstraint,
+               rental.floorPlan,
+               rental.description,
+               rental.publishedTime,
+               rental.rentalStartTime,
+               rental.rentalEndTime,
+               rental.price,
+               rental.location,
+               rental.contact,
+               rental.imagesJSON
         FROM rental
-        WHERE userID = #{userID} ORDER BY rental.publishedTime DESC LIMIT ${offset}, ${limit}
+        WHERE userID = #{userID}
+        ORDER BY rental.publishedTime DESC
+        LIMIT ${offset}, ${limit}
     </select>
 
     <select id="getCollectID" parameterType="Map" resultType="Integer">
-        SELECT contentID from collect WHERE collectType = #{collectType} AND userID = #{userID}
+        SELECT contentID
+        from collect
+        WHERE collectType = #{collectType}
+          AND userID = #{userID}
     </select>
 
     <select id="getProductCollectList" resultType="Product">
-        SELECT secondhand.productID, secondhand.productTitle,secondhand.productDescription,
-               secondhand.productType,secondhand.time,secondhand.price,secondhand.productCondition,secondhand.contact,secondhand.imagesJSON,secondhand.delivery,
-               user.avatar as sellerAvatar, user.nickname as sellerNickname
-        FROM secondhand, user, collect
-        WHERE secondhand.userID = user.userID AND collect.contentID = secondhand.productID AND collect.collectType = #{collectType} AND collect.collectID > #{offset} AND collect.userID = #{userID}
-        LIMIT #{limit}
-    </select>
-    
-    <select id="getRentalCollectList" resultType="Rental">
-        SELECT rental.userID, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
-               rental.publishedTime, rental.rentalStartTime, rental.rentalEndTime, rental.price,
-               rental.location, rental.contact, rental.imagesJSON,
-               user.avatar as sellerAvatar, user.nickname as sellerNickname
-        FROM rental, collect, user
-        WHERE rental.userID = user.userID AND collect.contentID = rental.rentalID AND collect.collectType = #{collectType} AND collect.collectID > #{offset} AND collect.userID = #{userID}
+        SELECT secondhand.productID,
+               secondhand.productTitle,
+               secondhand.productDescription,
+               secondhand.time,
+               secondhand.price,
+               secondhand.productCondition,
+               secondhand.contact,
+               secondhand.imagesJSON,
+               secondhand.delivery,
+               user.avatar   as sellerAvatar,
+               user.nickname as sellerNickname
+        FROM secondhand,
+             user,
+             collect
+        WHERE secondhand.userID = user.userID
+          AND collect.contentID = secondhand.productID
+          AND collect.collectType = #{collectType}
+          AND collect.collectID > #{offset}
+          AND collect.userID = #{userID}
         LIMIT #{limit}
     </select>
 
-    <select id="getMainPagePhotos" resultType="MainPagePhoto">
-        SELECT
-            photoID, startDate,endDate,smallPhoto,largePhoto
-        FROM mainpage_photo
-        WHERE endDate > NOW() AND startDate <![CDATA[<]]>NOW()
-        ORDER BY photoID DESC
+    <select id="getRentalCollectList" resultType="Rental">
+        SELECT rental.userID,
+               rental.rentalID,
+               rental.sexConstraint,
+               rental.floorPlan,
+               rental.description,
+               rental.publishedTime,
+               rental.rentalStartTime,
+               rental.rentalEndTime,
+               rental.price,
+               rental.location,
+               rental.contact,
+               rental.imagesJSON,
+               user.avatar   as sellerAvatar,
+               user.nickname as sellerNickname
+        FROM rental,
+             collect,
+             user
+        WHERE rental.userID = user.userID
+          AND collect.contentID = rental.rentalID
+          AND collect.collectType = #{collectType}
+          AND collect.collectID > #{offset}
+          AND collect.userID = #{userID}
+        LIMIT #{limit}
     </select>
+
 
 </mapper>

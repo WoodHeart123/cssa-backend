@@ -1,4 +1,5 @@
 # 目录结构说明
+
 ~~~
 .
 ├── Dockerfile                      Dockerfile 文件
@@ -15,9 +16,10 @@
         └── resources               资源文件目录
 ~~~
 
-
 # 接口说明
-https://console-docs.apipost.cn/preview/18482575436c6299/056f7badf917b0f7?target_id=70a49f8b-9f8d-41a1-96a9-2d7640a7a76c
+
+https://springboot-cssa-test-26137-6-1312104819.sh.run.tcloudbase.com/doc/swagger-ui.html
+
 # License
 
 [MIT](./LICENSE)
