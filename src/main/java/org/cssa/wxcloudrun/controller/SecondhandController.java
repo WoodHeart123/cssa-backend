@@ -5,7 +5,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.cssa.wxcloudrun.model.Product;
 import org.cssa.wxcloudrun.model.Response;
+import org.cssa.wxcloudrun.model.ReturnCode;
+import org.cssa.wxcloudrun.model.WechatResponse;
 import org.cssa.wxcloudrun.service.SecondhandService;
+import org.cssa.wxcloudrun.service.WeChatAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +23,9 @@ public class SecondhandController {
     @Autowired
     SecondhandService secondhandService;
 
+    @Autowired
+    WeChatAPI weChatAPI;
+
     @RequestMapping(value = {"/getProductList"}, method = {RequestMethod.GET})
     @Operation(summary = "获取商品列表", description = "获取商品列表")
     public Response<List<Product>> getProductList(@RequestParam Integer offset,
@@ -32,6 +38,10 @@ public class SecondhandController {
     public Response<Object> saveProduct(@Parameter(description = "是否保存联系方式") @RequestParam Boolean save,
                                         @Parameter(description = "商品信息") @RequestBody Product product,
                                         @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
+        WechatResponse wechatResponse = weChatAPI.MsgCheck(product.getProductTitle(), openid, 3);
+        if(wechatResponse.getResult().getLabel() != 100){
+            return new Response<>(ReturnCode.CENSORED_UGC_CONTENT);
+        }
         product.setUserID(openid);
         secondhandService.saveProduct(product, save);
         return new Response<>();

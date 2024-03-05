@@ -15,13 +15,14 @@ public enum ReturnCode {
     REPEATED_ZAN(107, "已点赞"),
     INTEGER_OUT_OF_RANGE(108, "整型超过范围"),
     EMPTY_STRING(109, "空字符串"),
-    INVALID_ADMIN_TOKEN(301, "管理者信息无效"),
     INVALID_ENUM_TYPE(110, "无法识别枚举类型"),
     UNKNOWN_SERVICE(111, "无法识别服务项目"),
     INVALID_TYPE(112, "类型错误"),
     NO_SEARCH_RESULT(113, "无搜索结果"),
+    CENSORED_UGC_CONTENT(201, "内容被审核"),
 
     INVALID_ADMIN_INFO(301, "管理员登录信息错误");
+
 
     private final Integer code;
     private final String message;
