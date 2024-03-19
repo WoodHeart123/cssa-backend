@@ -32,7 +32,7 @@ public class RequestLogAspect {
     Jwtutil jwtutil;
 
     //拦截web下所有方法
-    @Pointcut("execution(* org.cssa.wxcloudrun.*.*(..))")
+    @Pointcut("execution(* org.cssa.wxcloudrun.controller.*.*(..))")
     public void pointcut() {
     }
 
@@ -52,13 +52,7 @@ public class RequestLogAspect {
 
         String beanName = joinPoint.getSignature().getDeclaringTypeName();
         String uri = request.getRequestURI();
-        String userID;
-        //获取ID
-        if (uri.contains("admin")) {
-            userID = jwtutil.getUidFromToken(request.getHeader("Authorization"));
-        } else {
-            userID = request.getHeader("x-wx-openid");
-        }
+        String userID = request.getHeader("x-wx-openid");;
 
         //请求参数
         Object[] paramsArray = joinPoint.getArgs();
