@@ -40,6 +40,26 @@
         LIMIT #{offset}, #{limit}
     </select>
 
+    <select id="getModifiedProducts" resultType="Product">
+        SELECT secondhand.productID,
+               secondhand.productTitle,
+               secondhand.productDescription,
+               secondhand.time,
+               secondhand.price,
+               secondhand.productCondition,
+               secondhand.contact,
+               secondhand.imagesJSON,
+               secondhand.delivery,
+               COALESCE(user.avatar, 1)            as sellerAvatar,
+               COALESCE(user.nickname, "微信用户") as sellerNickname
+        FROM secondhand
+                 LEFT JOIN user on secondhand.userID = user.userID
+        WHERE secondhand.time IS NOT NULL
+        AND secondhand.time &gt;= #{startTime}
+        ORDER BY secondhand.time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
     <insert id="saveProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="productID">
         INSERT INTO secondhand (userID, productTitle, productDescription, price, productCondition, contact, imagesJSON,
                                 delivery)

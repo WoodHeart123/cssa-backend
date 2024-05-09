@@ -6,6 +6,7 @@ import org.cssa.wxcloudrun.model.Response;
 import org.cssa.wxcloudrun.service.SecondhandService;
 import com.alibaba.fastjson2.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,9 @@ public class SecondhandServiceImpl implements SecondhandService {
 
     @Autowired
     SecondhandMapper secondhandMapper;
+
+    @Autowired
+    private ElasticsearchOperations elasticsearchOperations;
 
     @Override
     public Response<List<Product>> getProduct(ArrayList<String> productID) {
@@ -48,6 +52,8 @@ public class SecondhandServiceImpl implements SecondhandService {
         if (save) {
             secondhandMapper.saveContact(product.getUserID(), product.getContact());
         }
+        product.setVersion(System.currentTimeMillis());
+        elasticsearchOperations.save(product);
         return new Response<>();
     }
 
@@ -55,6 +61,8 @@ public class SecondhandServiceImpl implements SecondhandService {
     @Transactional
     public Response<Object> updateSecondHand(String userID, Product product) {
         secondhandMapper.updateSecondHand(userID, product);
+        product.setVersion(System.currentTimeMillis());
+        elasticsearchOperations.save(product);
         return new Response<>();
     }
 
