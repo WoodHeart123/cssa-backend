@@ -15,7 +15,7 @@ public interface SecondhandMapper {
 
     ArrayList<Product> getModifiedProducts(Timestamp startTime);
 
-    ArrayList<Product> getProduct(ArrayList<String> productID);
+    Product getProduct(Integer productID);
 
     ArrayList<Product> getAllProductList(Integer offset, Integer limit);
 

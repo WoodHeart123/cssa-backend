@@ -27,11 +27,6 @@ spring:
         min-idle: 2
         max-idle: 8
 
-  data:
-    elasticsearch:
-      repositories:
-        enabled: true
-
   mvc:
     view:
       suffix: .html

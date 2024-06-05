@@ -3,20 +3,13 @@ package org.cssa.wxcloudrun.model;
 import com.alibaba.fastjson2.annotation.JSONField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Version;
-import org.springframework.data.elasticsearch.annotations.CompletionField;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.core.suggest.Completion;
 
 import java.sql.Timestamp;
 import java.util.List;
 
 @Data
-@Document(indexName = "products", createIndex = true)
 public class Product {
 
-    @Id
     @Schema(description = "商品ID", example = "1")
     private Integer productID;
 
@@ -34,9 +27,6 @@ public class Product {
 
     @Schema(description = "商品描述", example = "iPhone 12 128G 白色")
     private String productDescription;
-
-    @CompletionField(analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
-    private Completion suggest;
 
     @Schema(description = "商品价格", example = "6000")
     private Integer price;
@@ -56,7 +46,5 @@ public class Product {
     @Schema(description = "商品交易方式", example = "自提")
     private String delivery;
 
-    @Version
-    private Long version;
 
 }

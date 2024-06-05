@@ -33,6 +33,12 @@ public class SecondhandController {
         return secondhandService.getProductList(offset, limit);
     }
 
+    @RequestMapping(value = {"/getProduct"}, method = {RequestMethod.GET})
+    @Operation(summary = "获取特定商品信息", description = "获取特定商品信息")
+    public Response<Product> getProduct(@RequestParam Integer productID) {
+        return secondhandService.getProduct(productID);
+    }
+
     @RequestMapping(value = {"/saveProduct"}, method = {RequestMethod.POST})
     @Operation(summary = "发布商品", description = "发布商品")
     public Response<Object> saveProduct(@Parameter(description = "是否保存联系方式") @RequestParam Boolean save,

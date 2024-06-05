@@ -54,6 +54,12 @@ public class RentalController {
                 floorPlanList, new Timestamp(time.get(0)), new Timestamp(time.get(1)));
     }
 
+    @RequestMapping(value = {"/getRental"}, method = {RequestMethod.GET}, produces = "application/json")
+    @Operation(summary = "获取特定转租信息", description = "获取特定转租信息")
+    public Response<Rental> getRental(@Parameter(description = "") @RequestParam Integer rentalID) {
+        return rentalService.getRental(rentalID);
+    }
+
     /**
      * 记录用户输入的转租信息
      *

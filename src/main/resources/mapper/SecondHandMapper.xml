@@ -93,10 +93,8 @@
         user.avatar as sellerAvatar, user.nickname as sellerNickname
         FROM secondhand
         INNER JOIN user on secondhand.userID = user.userID
-        WHERE secondhand.time IS NOT NULL AND secondhand.productID in
-        <foreach item="product" collection="productID" separator="," open="(" close=")" index="index">
-            #{product}
-        </foreach>
+        WHERE secondhand.time IS NOT NULL AND secondhand.productID = #{productID}
+        LIMIT 1
     </select>
 
     <update id="saveContact">

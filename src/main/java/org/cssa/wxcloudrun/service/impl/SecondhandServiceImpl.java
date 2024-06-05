@@ -3,10 +3,10 @@ package org.cssa.wxcloudrun.service.impl;
 import org.cssa.wxcloudrun.dao.SecondhandMapper;
 import org.cssa.wxcloudrun.model.Product;
 import org.cssa.wxcloudrun.model.Response;
+import org.cssa.wxcloudrun.model.ReturnCode;
 import org.cssa.wxcloudrun.service.SecondhandService;
 import com.alibaba.fastjson2.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,19 +20,6 @@ public class SecondhandServiceImpl implements SecondhandService {
     @Autowired
     SecondhandMapper secondhandMapper;
 
-    @Autowired
-    private ElasticsearchOperations elasticsearchOperations;
-
-    @Override
-    public Response<List<Product>> getProduct(ArrayList<String> productID) {
-        ArrayList<Product> result = secondhandMapper.getProduct(productID);
-        for (Product product : result) {
-            product.setImages(JSON.parseArray(product.getImagesJSON(), String.class));
-            product.setUTCtime(product.getTime().toInstant().toString());
-        }
-        return new Response<>(result);
-    }
-
     @Override
     public Response<List<Product>> getProductList(Integer offset, Integer limit) {
         ArrayList<Product> productArrayList;
@@ -45,6 +32,17 @@ public class SecondhandServiceImpl implements SecondhandService {
     }
 
     @Override
+    public Response<Product> getProduct(Integer productID) {
+        Product product = secondhandMapper.getProduct(productID);
+        if(product == null){
+            return new Response<>(ReturnCode.NO_SEARCH_RESULT);
+        }
+        product.setImages(JSON.parseArray(product.getImagesJSON(), String.class));
+        product.setUTCtime(product.getTime().toInstant().toString());
+        return new Response<>(product);
+    }
+
+    @Override
     @Transactional
     public Response<Object> saveProduct(Product product, Boolean save) {
         product.setImagesJSON(JSON.toJSONString(product.getImages()));
@@ -52,8 +50,6 @@ public class SecondhandServiceImpl implements SecondhandService {
         if (save) {
             secondhandMapper.saveContact(product.getUserID(), product.getContact());
         }
-        product.setVersion(System.currentTimeMillis());
-        elasticsearchOperations.save(product);
         return new Response<>();
     }
 
@@ -61,8 +57,6 @@ public class SecondhandServiceImpl implements SecondhandService {
     @Transactional
     public Response<Object> updateSecondHand(String userID, Product product) {
         secondhandMapper.updateSecondHand(userID, product);
-        product.setVersion(System.currentTimeMillis());
-        elasticsearchOperations.save(product);
         return new Response<>();
     }
 
