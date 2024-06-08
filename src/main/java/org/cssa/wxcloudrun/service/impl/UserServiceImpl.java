@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import redis.clients.jedis.JedisPooled;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
@@ -26,8 +25,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
 
-    @Autowired
-    JedisPooled jedisPooled;
 
 
     @Override

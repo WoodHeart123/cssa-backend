@@ -7,6 +7,7 @@ import org.cssa.wxcloudrun.model.CourseComment;
 import org.cssa.wxcloudrun.model.Product;
 import org.cssa.wxcloudrun.model.Response;
 import org.cssa.wxcloudrun.model.ReturnCode;
+import org.cssa.wxcloudrun.service.RedisService;
 import org.cssa.wxcloudrun.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    RedisService redisService;
+
 
     @RequestMapping(value = {"/getAuthCode"}, method = {RequestMethod.GET}, produces = "application/json")
     @Operation(summary = "获取验证码", description = "获取验证码")
@@ -39,7 +43,7 @@ public class UserController {
                                         @RequestHeader("x-wx-openid") String openid) {
         Random ran = new Random();
         int authCode = ran.nextInt(1000000);
-        authCodeCache.add(openid, authCode);
+        redisService.set(String.format("authcode:%s", openid), authCode, 300);
         userService.getAuthCode(email, authCode);
         return Response.builder().status(100).build();
     }
@@ -48,7 +52,7 @@ public class UserController {
     @Operation(summary = "验证验证码", description = "验证验证码")
     public Response<Object> verifyAuthCod(@Parameter(description = "验证码") @RequestParam Integer authCode,
                                           @RequestHeader("x-wx-openid") String openid) {
-        if (authCodeCache.get(openid) != null && Objects.equals(authCodeCache.get(openid), authCode)) {
+        if (Objects.equals(redisService.get(String.format("authcode:%s", openid)), authCode)){
             return userService.authSuccess(openid);
         } else {
             return Response.builder().status(106).message("验证码错误").build();
