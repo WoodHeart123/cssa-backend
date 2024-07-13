@@ -33,10 +33,13 @@ public interface UserMapper {
     void register(String nickname, String userID);
 
     /**
-     * update user email
+     * 更新数据库中用户的邮箱和订阅状态。
      *
-     * @param email  email
-     * @param userID userID
+     * 该方法执行一个 SQL 更新语句，设置用户表中由 'userID' 标识的用户的 'email' 和 'subscribe' 字段。
+     *
+     * @param email     要设置的用户新邮箱地址。此参数对应用户表中的 'email' 字段。
+     * @param subscribe 要设置的用户新的订阅状态。此参数对应用户表中的 'subscribe' 字段。
+     * @param userID    要更新邮箱和订阅状态的用户的唯一标识符。此参数对应用户表中的 'userID' 字段。
      */
     void updateEmail(String email, Boolean subscribe, String userID);
 
@@ -87,5 +90,13 @@ public interface UserMapper {
 
     ArrayList<Rental> getMyRental(String userID, Integer offset, Integer limit);
 
-
+    /**
+     * 获取数据库中指定用户的邮箱地址。
+     *
+     * 该方法执行一个 SQL 查询语句，根据用户的唯一标识符 'userID' 从用户表中获取对应的邮箱地址。
+     *
+     * @param userID 要获取邮箱地址的用户的唯一标识符。此参数对应用户表中的 'userID' 字段。
+     * @return 返回对应用户的邮箱地址。如果用户不存在，则返回 null。
+     */
+    String getEmail(String userID);
 }

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .content {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .unsubscribe {
+            margin-top: 20px;
+        }
+        input[type=checkbox] {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <p>亲爱的同学您好：</p>
+    <p>这是您订阅的近期CSSA的活动信息，请您查收：</p>
+    <p th:text="'#{活动标题}【' + ${活动时间} + '】：' + ${活动介绍} + '；'"></p>
+    <p>感谢您订阅CSSA邮件提醒！CSSA期待和你在麦屯的每一瞬间！</p>
+    <p>CSSA学联至上</p>
+    <div class="unsubscribe">
+        <input type="checkbox" id="unsubscribe" name="unsubscribe" value="unsubscribe">
+        <label for="unsubscribe">取消订阅邮件</label>
+    </div>
+</div>
+</body>
+</html>

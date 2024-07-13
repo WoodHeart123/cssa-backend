@@ -1,10 +1,10 @@
 package org.cssa.wxcloudrun.service;
 
-
 import org.cssa.wxcloudrun.model.CourseComment;
 import org.cssa.wxcloudrun.model.Product;
 import org.cssa.wxcloudrun.model.Rental;
 import org.cssa.wxcloudrun.model.Response;
+import org.cssa.wxcloudrun.model.Subscription;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -95,5 +95,7 @@ public interface UserService {
 
     Response<Object> setProductTime(Integer productID, String userID, Timestamp time);
 
+    Response<Boolean> subscribe(Subscription subscription);
 
+    Response<Boolean> unsubscribe(String openID);
 }

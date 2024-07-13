@@ -51,6 +51,11 @@
         WHERE userID = #{userID}
     </update>
 
+    <select id="getEmail" parameterType="String" resultType="String">
+        SELECT email FROM user
+        WHERE userID = #{userID}
+    </select>
+
     <select id="getMyComment" parameterType="Map" resultType="CourseComment">
         SELECT commentID,
                professor,

@@ -2,6 +2,7 @@ package org.cssa.wxcloudrun.service.impl;
 
 import org.cssa.wxcloudrun.dao.UserMapper;
 import org.cssa.wxcloudrun.event.AuthEvent;
+import org.cssa.wxcloudrun.event.SubscriptionEvent;
 import org.cssa.wxcloudrun.model.*;
 import org.cssa.wxcloudrun.service.UserService;
 import com.alibaba.fastjson2.JSON;
@@ -174,5 +175,41 @@ public class UserServiceImpl implements UserService {
         return new Response<>();
     }
 
+    /**
+     * 订阅用户的邮件地址。
+     *
+     * 该方法更新数据库中用户的邮箱地址，并将用户的订阅状态设置为已订阅。
+     * 然后发布一个订阅事件。
+     *
+     * @param subscription 包含用户订阅信息的对象，其中包括用户的邮箱地址和 openID。
+     * @return 返回一个包含订阅操作结果的响应对象。如果操作成功，返回 `Response<Boolean>` 包含 `true`。
+     */
+    @Override
+    public Response<Boolean> subscribe(Subscription subscription) {
+        if (subscription.getEmail().isBlank() || subscription.getOpenID().isBlank()) return new Response<>(Boolean.FALSE);
 
+        userMapper.updateEmail(subscription.getEmail(), true, subscription.getOpenID());
+        applicationContext.publishEvent(new SubscriptionEvent(this, subscription, true));
+        return new Response<>(Boolean.TRUE);
+    }
+
+    /**
+     * 取消用户的邮件订阅。
+     *
+     * 该方法根据用户的 openID 从数据库中获取用户的邮箱地址，并将用户的订阅状态设置为未订阅。
+     * 然后发布一个取消订阅事件。
+     *
+     * @param openID 要取消订阅的用户的唯一标识符。
+     * @return 返回一个包含取消订阅操作结果的响应对象。如果操作成功且用户存在，返回 `Response<Boolean>` 包含 `true`；否则返回 `false`。
+     */
+    @Override
+    public Response<Boolean> unsubscribe(String openID) {
+        String email = userMapper.getEmail(openID);
+        if (email.isBlank()) return new Response<>(Boolean.FALSE);
+
+        userMapper.updateEmail(email, false, openID);
+        SubscriptionEvent event = new SubscriptionEvent(this, new Subscription(openID, email), false);
+        applicationContext.publishEvent(event);
+        return new Response<>(Boolean.TRUE);
+    }
 }

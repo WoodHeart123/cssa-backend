@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="content">
+    <p>亲爱的同学您好：</p>
+    <br>
+    <p>感谢您订阅CSSA邮件通知服务。CSSA期待和你在麦屯的每一瞬间！</p>
+    <br>
+    <p>CSSA学联至上。</p>
+    <div class="unsubscribe">
+        <a href="javascript:void(0);" onclick="openMiniProgram()">取消订阅邮件</a>
+    </div>
+</div>
+
+<style>
+    .content {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    .unsubscribe {
+        margin-top: 20px;
+    }
+</style>
+
+<script>
+    function openMiniProgram() {
+        // 调用微信JS-SDK打开小程序
+        wx.miniProgram.navigateTo({url: '/pages/unsubscribe/unsubscribe'});
+    }
+</script>
+</body>
+</html>

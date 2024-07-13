@@ -7,6 +7,7 @@ import org.cssa.wxcloudrun.model.CourseComment;
 import org.cssa.wxcloudrun.model.Product;
 import org.cssa.wxcloudrun.model.Response;
 import org.cssa.wxcloudrun.model.ReturnCode;
+import org.cssa.wxcloudrun.model.Subscription;
 import org.cssa.wxcloudrun.service.RedisService;
 import org.cssa.wxcloudrun.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -237,6 +238,18 @@ public class UserController {
             default:
                 return new Response<>(ReturnCode.UNKNOWN_SERVICE);
         }
+    }
+
+    @RequestMapping(value = {"/subscribe"}, method = {RequestMethod.POST})
+    @Operation(summary = "订阅邮件", description = "订阅邮件")
+    public Response<Boolean> subscribe(@RequestBody Subscription subscription) {
+        return userService.subscribe(subscription);
+    }
+
+    @RequestMapping(value = {"/unsubscribe"}, method = {RequestMethod.POST})
+    @Operation(summary = "退订邮件", description = "退订邮件")
+    public Response<Boolean> unsubscribe(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
+        return userService.unsubscribe(openID);
     }
 
 }
