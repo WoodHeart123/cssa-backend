@@ -212,4 +212,17 @@ public class UserServiceImpl implements UserService {
         applicationContext.publishEvent(event);
         return new Response<>(Boolean.TRUE);
     }
+
+    /**
+     * 检查用户的邮件订阅状态。
+     *
+     * 该方法根据用户的 openID 从数据库中获取用户的订阅状态并返回。默认数据表中已有openID的相关数据。
+     *
+     * @param openID 微信用户在小程序的唯一标识符。
+     * @return 用户是否订阅了邮件服务。
+     */
+    @Override
+    public Response<Boolean> isSubscribed(String openID) {
+        return new Response<>(userMapper.isSubscribed(openID));
+    }
 }

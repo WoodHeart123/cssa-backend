@@ -99,4 +99,6 @@ public interface UserMapper {
      * @return 返回对应用户的邮箱地址。如果用户不存在，则返回 null。
      */
     String getEmail(String userID);
+
+    Boolean isSubscribed(String openID);
 }

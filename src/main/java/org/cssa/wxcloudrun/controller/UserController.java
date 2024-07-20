@@ -252,4 +252,9 @@ public class UserController {
         return userService.unsubscribe(openID);
     }
 
+    @RequestMapping(value = {"/isSubscribed"}, method = {RequestMethod.GET})
+    @Operation(summary = "检查是否订阅", description = "检查是否订阅")
+    public Response<Boolean> isSubscribed(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
+        return userService.isSubscribed(openID);
+    }
 }

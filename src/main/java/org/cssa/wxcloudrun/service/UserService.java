@@ -98,4 +98,6 @@ public interface UserService {
     Response<Boolean> subscribe(Subscription subscription);
 
     Response<Boolean> unsubscribe(String openID);
+
+    Response<Boolean> isSubscribed(String openID);
 }

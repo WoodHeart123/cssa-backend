@@ -265,5 +265,9 @@
         LIMIT #{limit}
     </select>
 
+    <select id="isSubscribed" parameterType="String" resultType="Boolean">
+        SELECT subscribe FROM user
+        WHERE userID = #{userID}
+    </select>
 
 </mapper>
