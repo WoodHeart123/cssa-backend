@@ -95,9 +95,35 @@ public interface UserService {
 
     Response<Object> setProductTime(Integer productID, String userID, Timestamp time);
 
+    /**
+     * 订阅用户的邮件地址。
+     *
+     * 该方法更新数据库中用户的邮箱地址，并将用户的订阅状态设置为已订阅。
+     * 然后发布一个订阅事件。
+     *
+     * @param subscription 包含用户订阅信息的对象，其中包括用户的邮箱地址和 openID。
+     * @return 返回一个包含订阅操作结果的响应对象。如果操作成功，返回 `Response<Boolean>` 包含 `true`。
+     */
     Response<Boolean> subscribe(Subscription subscription);
 
-    Response<Boolean> unsubscribe(String openID);
+    /**
+     * 取消用户的邮件订阅。
+     *
+     * 该方法根据用户的 openID 从数据库中获取用户的邮箱地址，并将用户的订阅状态设置为未订阅。
+     * 然后发布一个取消订阅事件。
+     *
+     * @param iD 要取消订阅的用户的唯一id，可以是openID或加密ID。
+     * @return 返回一个包含取消订阅操作结果的响应对象。如果操作成功且用户存在，返回 `Response<Boolean>` 包含 `true`；否则返回 `false`。
+     */
+    Response<Boolean> unsubscribe(String iD);
 
+    /**
+     * 检查用户的邮件订阅状态。
+     *
+     * 该方法根据用户的 openID 从数据库中获取用户的订阅状态并返回。默认数据表中已有openID的相关数据。
+     *
+     * @param openID 微信用户在小程序的唯一标识符。
+     * @return 用户是否订阅了邮件服务。
+     */
     Response<Boolean> isSubscribed(String openID);
 }

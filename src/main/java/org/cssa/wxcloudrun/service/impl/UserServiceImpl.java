@@ -26,6 +26,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    EncryptionUtil encryptionUtil;
+
 
 
     @Override
@@ -175,52 +178,41 @@ public class UserServiceImpl implements UserService {
         return new Response<>();
     }
 
-    /**
-     * 订阅用户的邮件地址。
-     *
-     * 该方法更新数据库中用户的邮箱地址，并将用户的订阅状态设置为已订阅。
-     * 然后发布一个订阅事件。
-     *
-     * @param subscription 包含用户订阅信息的对象，其中包括用户的邮箱地址和 openID。
-     * @return 返回一个包含订阅操作结果的响应对象。如果操作成功，返回 `Response<Boolean>` 包含 `true`。
-     */
     @Override
     public Response<Boolean> subscribe(Subscription subscription) {
-        if (subscription.getEmail().isBlank() || subscription.getOpenID().isBlank()) return new Response<>(Boolean.FALSE);
+        String openID = subscription.getOpenID(), email = subscription.getEmail();
+        if (openID.isBlank() || email.isBlank()) return new Response<>(Boolean.FALSE);
 
-        userMapper.updateEmail(subscription.getEmail(), true, subscription.getOpenID());
+        userMapper.updateEmail(email, true, openID);
+
+        boolean encryptedIDExists;
+        String encryptedID;
+        do {
+           encryptedID = encryptionUtil.generateEncryptedID(openID, System.currentTimeMillis());
+           encryptedIDExists = userMapper.ifEncryptedIDExists(encryptedID);
+        } while (encryptedIDExists);
+
+        userMapper.updateEncryptedID(openID,encryptedID);
+        subscription.setOpenID(encryptedID); // 使用加密ID发布事件
+
         applicationContext.publishEvent(new SubscriptionEvent(this, subscription, true));
         return new Response<>(Boolean.TRUE);
     }
 
-    /**
-     * 取消用户的邮件订阅。
-     *
-     * 该方法根据用户的 openID 从数据库中获取用户的邮箱地址，并将用户的订阅状态设置为未订阅。
-     * 然后发布一个取消订阅事件。
-     *
-     * @param openID 要取消订阅的用户的唯一标识符。
-     * @return 返回一个包含取消订阅操作结果的响应对象。如果操作成功且用户存在，返回 `Response<Boolean>` 包含 `true`；否则返回 `false`。
-     */
     @Override
-    public Response<Boolean> unsubscribe(String openID) {
+    public Response<Boolean> unsubscribe(String iD) {
+        String openID = userMapper.getOpenIDFromEncryptedID(iD);
+        if (openID == null || openID.isBlank()) openID = iD;
         String email = userMapper.getEmail(openID);
         if (email.isBlank()) return new Response<>(Boolean.FALSE);
 
         userMapper.updateEmail(email, false, openID);
+
         SubscriptionEvent event = new SubscriptionEvent(this, new Subscription(openID, email), false);
         applicationContext.publishEvent(event);
         return new Response<>(Boolean.TRUE);
     }
 
-    /**
-     * 检查用户的邮件订阅状态。
-     *
-     * 该方法根据用户的 openID 从数据库中获取用户的订阅状态并返回。默认数据表中已有openID的相关数据。
-     *
-     * @param openID 微信用户在小程序的唯一标识符。
-     * @return 用户是否订阅了邮件服务。
-     */
     @Override
     public Response<Boolean> isSubscribed(String openID) {
         return new Response<>(userMapper.isSubscribed(openID));

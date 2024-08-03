@@ -270,4 +270,20 @@
         WHERE userID = #{userID}
     </select>
 
+    <select id="getOpenIDFromEncryptedID" parameterType="String" resultType="String">
+        SELECT userID FROM user
+        WHERE encryptedID = #{encryptedID}
+    </select>
+
+    <select id="ifEncryptedIDExists" parameterType="String" resultType="Boolean">
+        SELECT EXISTS(SELECT 1 FROM user WHERE encryptedID = #{encryptedID}) AS exists_flag
+    </select>
+
+    <update id="updateEncryptedID" parameterType="Map">
+        UPDATE user
+        SET encryptedID = #{encryptedID}
+        WHERE userID = #{userID}
+    </update>
+
+
 </mapper>
