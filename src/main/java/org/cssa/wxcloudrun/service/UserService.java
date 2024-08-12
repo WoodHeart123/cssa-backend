@@ -112,10 +112,10 @@ public interface UserService {
      * 该方法根据用户的 openID 从数据库中获取用户的邮箱地址，并将用户的订阅状态设置为未订阅。
      * 然后发布一个取消订阅事件。
      *
-     * @param iD 要取消订阅的用户的唯一id，可以是openID或加密ID。
+     * @param openID 要取消订阅的用户的唯一 openId.
      * @return 返回一个包含取消订阅操作结果的响应对象。如果操作成功且用户存在，返回 `Response<Boolean>` 包含 `true`；否则返回 `false`。
      */
-    Response<Boolean> unsubscribe(String iD);
+    Response<Boolean> unsubscribe(String openID);
 
     /**
      * 检查用户的邮件订阅状态。

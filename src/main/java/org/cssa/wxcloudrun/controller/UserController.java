@@ -3,6 +3,7 @@ package org.cssa.wxcloudrun.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.cssa.wxcloudrun.config.CacheStore;
+import org.cssa.wxcloudrun.dao.UserMapper;
 import org.cssa.wxcloudrun.model.CourseComment;
 import org.cssa.wxcloudrun.model.Product;
 import org.cssa.wxcloudrun.model.Response;
@@ -36,6 +37,9 @@ public class UserController {
 
     @Autowired
     RedisService redisService;
+
+    @Autowired
+    UserMapper userMapper;
 
 
     @RequestMapping(value = {"/getAuthCode"}, method = {RequestMethod.GET}, produces = "application/json")
@@ -255,7 +259,9 @@ public class UserController {
     @RequestMapping(value = {"/unsubscribeByEncryptedID"}, method = {RequestMethod.POST})
     @Operation(summary = "退订邮件", description = "退订邮件")
     public Response<Boolean> unsubscribeByEncryptedID(@RequestParam String encryptedID) {
-        return userService.unsubscribe(encryptedID);
+        String openID = userMapper.getOpenIDFromEncryptedID(encryptedID);
+        if (openID == null || openID.isBlank()) return new Response<>(Boolean.FALSE);
+        return userService.unsubscribe(openID);
     }
 
     @RequestMapping(value = {"/isSubscribed"}, method = {RequestMethod.GET})
