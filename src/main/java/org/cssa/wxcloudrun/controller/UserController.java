@@ -251,13 +251,13 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/unsubscribeByOpenID"}, method = {RequestMethod.POST})
-    @Operation(summary = "退订邮件", description = "退订邮件")
+    @Operation(summary = "退订邮件", description = "根据微信open id退订邮件")
     public Response<Boolean> unsubscribeByOpenID(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
         return userService.unsubscribe(openID);
     }
 
     @RequestMapping(value = {"/unsubscribeByEncryptedID"}, method = {RequestMethod.POST})
-    @Operation(summary = "退订邮件", description = "退订邮件")
+    @Operation(summary = "退订邮件", description = "根据内部加密id退订邮件")
     public Response<Boolean> unsubscribeByEncryptedID(@RequestParam String encryptedID) {
         String openID = userMapper.getOpenIDFromEncryptedID(encryptedID);
         if (openID == null || openID.isBlank()) return new Response<>(Boolean.FALSE);
