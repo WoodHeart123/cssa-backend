@@ -83,6 +83,7 @@
                end_date,
                location,
                price,
+               deadline,
                capacity,
                images,
                additional_info,
