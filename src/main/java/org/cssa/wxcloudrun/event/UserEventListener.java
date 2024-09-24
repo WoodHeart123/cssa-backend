@@ -94,11 +94,15 @@ public class UserEventListener {
 
         if (event.isSubscribe()) {
             // 处理订阅确认
+            String encryptedID = userID; // 如果处理订阅，userID应为加密ID
+            // context.setVariable("encryptedID", encryptedID); 这里先注释掉。未来做网页发送退顶请求后再取消注释。
+            System.out.println("加密ID："+encryptedID);
             emailDetail.setMessage(templateEngine.process("SubscriptionConfirmed", context));
             emailDetail.setSubject("【CSSA订阅】邮件订阅确认");
             emailDetail.setReceiver(receiver);
             try {
                 emailService.sendSimpleMail(emailDetail);
+                System.out.println("邮件发送成功。");
             } catch (MessagingException e) {
                 e.printStackTrace();
             }

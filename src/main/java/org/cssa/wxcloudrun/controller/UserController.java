@@ -260,7 +260,7 @@ public class UserController {
     @Operation(summary = "退订邮件", description = "根据内部加密id退订邮件")
     public Response<Boolean> unsubscribeByEncryptedID(@RequestParam String encryptedID) {
         String openID = userMapper.getOpenIDFromEncryptedID(encryptedID);
-        if (openID == null || openID.isBlank()) return new Response<>(Boolean.FALSE);
+        if (openID == null || openID.isBlank()) return new Response<>(ReturnCode.NO_SUCH_USER);
         return userService.unsubscribe(openID);
     }
 

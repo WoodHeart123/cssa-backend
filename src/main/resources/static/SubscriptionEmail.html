@@ -1,32 +1,41 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Confirmation</title>
     <style>
-        .content {
+        body {
             font-family: Arial, sans-serif;
-            margin: 20px;
         }
-        .unsubscribe {
+        .unsubscribe-button {
+            color: #007BFF;
+            text-decoration: underline;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            font-family: inherit;
+            font-size: inherit;
+        }
+        .unsubscribe-form {
             margin-top: 20px;
         }
-        input[type=checkbox] {
-            margin-right: 10px;
+        .unsubscribe-text {
+            font-size: 12px;
+            color: #007BFF;
         }
     </style>
 </head>
 <body>
 <div class="content">
-    <p>亲爱的同学您好：</p>
-    <p>这是您订阅的近期CSSA的活动信息，请您查收：</p>
-    <p th:text="'#{活动标题}【' + ${活动时间} + '】：' + ${活动介绍} + '；'"></p>
-    <p>感谢您订阅CSSA邮件提醒！CSSA期待和你在麦屯的每一瞬间！</p>
-    <p>CSSA学联至上</p>
-    <div class="unsubscribe">
-        <input type="checkbox" id="unsubscribe" name="unsubscribe" value="unsubscribe">
-        <label for="unsubscribe">取消订阅邮件</label>
-    </div>
+    <h2>您已成功订阅CSSA的邮件服务</h2>
+    <p>感谢您订阅我们的邮件列表，您将会收到CSSA举办的最新活动信息。</p>
+    <p>CSSA期待与您在未来的活动中相见！</p>
+    <p>CSSAatUWMadison致上。</p>
+
+    <p class="unsubscribe-text">如您想退订，您可进入CSSA官方小程序，在用户界面中退订。</p>
+
+    <!--这里记得做个网页，通过网页调用post退顶请求，使用加密ID-->
 </div>
 </body>
 </html>
