@@ -3,10 +3,12 @@ package org.cssa.wxcloudrun.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.cssa.wxcloudrun.config.CacheStore;
+import org.cssa.wxcloudrun.dao.UserMapper;
 import org.cssa.wxcloudrun.model.CourseComment;
 import org.cssa.wxcloudrun.model.Product;
 import org.cssa.wxcloudrun.model.Response;
 import org.cssa.wxcloudrun.model.ReturnCode;
+import org.cssa.wxcloudrun.model.Subscription;
 import org.cssa.wxcloudrun.service.RedisService;
 import org.cssa.wxcloudrun.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,6 +37,9 @@ public class UserController {
 
     @Autowired
     RedisService redisService;
+
+    @Autowired
+    UserMapper userMapper;
 
 
     @RequestMapping(value = {"/getAuthCode"}, method = {RequestMethod.GET}, produces = "application/json")
@@ -239,4 +244,29 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = {"/subscribe"}, method = {RequestMethod.POST})
+    @Operation(summary = "订阅邮件", description = "订阅邮件")
+    public Response<Boolean> subscribe(@RequestBody Subscription subscription) {
+        return userService.subscribe(subscription);
+    }
+
+    @RequestMapping(value = {"/unsubscribeByOpenID"}, method = {RequestMethod.POST})
+    @Operation(summary = "退订邮件", description = "根据微信open id退订邮件")
+    public Response<Boolean> unsubscribeByOpenID(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
+        return userService.unsubscribe(openID);
+    }
+
+    @RequestMapping(value = {"/unsubscribeByEncryptedID"}, method = {RequestMethod.POST})
+    @Operation(summary = "退订邮件", description = "根据内部加密id退订邮件")
+    public Response<Boolean> unsubscribeByEncryptedID(@RequestParam String encryptedID) {
+        String openID = userMapper.getOpenIDFromEncryptedID(encryptedID);
+        if (openID == null || openID.isBlank()) return new Response<>(ReturnCode.NO_SUCH_USER);
+        return userService.unsubscribe(openID);
+    }
+
+    @RequestMapping(value = {"/isSubscribed"}, method = {RequestMethod.GET})
+    @Operation(summary = "检查是否订阅", description = "检查是否订阅")
+    public Response<Boolean> isSubscribed(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
+        return userService.isSubscribed(openID);
+    }
 }
