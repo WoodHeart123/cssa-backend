@@ -27,6 +27,7 @@ public class User {
     private Integer avatar;
     private String wechatID;
     private Boolean subscribe;
+    private Boolean isBlocked;
 
 
     /**
@@ -42,5 +43,6 @@ public class User {
         this.isStudent = false;
         this.avatar = 1;
         this.subscribe = false;
+        this.isBlocked = false;
     }
 }

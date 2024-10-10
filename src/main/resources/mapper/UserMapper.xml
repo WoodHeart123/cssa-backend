@@ -16,7 +16,8 @@
                avatar,
                likedCommentJSON,
                savedProductJSON,
-               subscribe
+               subscribe,
+               isBlocked
         FROM user
         WHERE userID = #{userID}
     </select>
