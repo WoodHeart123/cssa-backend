@@ -121,7 +121,6 @@ public interface UserMapper {
      */
     String getOpenIDFromEncryptedID(String encryptedID);
 
-
     /**
      * 检查指定的加密ID是否在用户表中已经存在。
      * 这个方法用于验证user数据表中是否已经包含了一个特定的加密ID，以避免重复。
@@ -146,4 +145,5 @@ public interface UserMapper {
      * @param userID 用户的微信openID。
      */
     Boolean isBlocked(String userID);
+
 }

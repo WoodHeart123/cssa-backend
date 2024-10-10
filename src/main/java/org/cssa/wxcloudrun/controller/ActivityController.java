@@ -41,6 +41,12 @@ public class ActivityController {
         return activityService.getActivityList();
     }
 
+    @Operation(summary = "获取活动详情", description = "获取特定活动的详细信息")
+    @RequestMapping(value = {"/events/{act_id}"}, method = {RequestMethod.GET}, produces = "application/json")
+    public Response<Activity> getActivity(@Parameter(description = "活动ID", required = true) @PathVariable(name = "act_id") Integer actID) {
+        return activityService.getActivity(actID);
+    }
+
     @Operation(summary = "报名活动", description = "记录用户的报名信息")
     @RequestMapping(value = {"/register"}, method = {RequestMethod.POST}, produces = "application/json")
     public Response<Object> registerActivity(@RequestBody SignupInfo signupInfo,
