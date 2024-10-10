@@ -228,4 +228,15 @@ public class UserServiceImpl implements UserService {
         } while (encryptedIDExists);
         return encryptedID;
     }
+
+    /**
+     * 检查用户的邮件订阅状态。
+     * <p>
+     * 该方法根据用户的 openID 从数据库中获取用户的被拉黑状态并返回。默认值为0 - 否。
+     *
+     * @param openID 微信用户在小程序的唯一标识符。
+     * @return 用户是否被拉黑。
+     */
+    @Override
+    public Response<Boolean> isBlocked(String openID) {return new Response<>(userMapper.isBlocked(openID));}
 }

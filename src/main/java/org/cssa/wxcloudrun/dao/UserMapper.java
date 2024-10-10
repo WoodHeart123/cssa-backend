@@ -139,4 +139,11 @@ public interface UserMapper {
      * @param encryptedID 新的加密ID，将替换当前存储的值。
      */
     void updateEncryptedID(String userID, String encryptedID);
+
+    /**
+     * 根据用户的微信openID返回用户是否被拉黑。
+     *
+     * @param userID 用户的微信openID。
+     */
+    Boolean isBlocked(String userID);
 }

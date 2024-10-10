@@ -285,5 +285,9 @@
         WHERE userID = #{userID}
     </update>
 
+    <select id="isBlocked" parameterType="String" resultType="java.lang.Boolean">
+        SELECT isBlocked FROM user
+        WHERE userID = #{userID}
+    </select>
 
 </mapper>

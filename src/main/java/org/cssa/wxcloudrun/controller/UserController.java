@@ -269,4 +269,10 @@ public class UserController {
     public Response<Boolean> isSubscribed(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
         return userService.isSubscribed(openID);
     }
+
+    @RequestMapping(value = {"isBlocked"}, method = {RequestMethod.GET})
+    @Operation(summary = "检查用户是否被拉黑", description = "检查用户是否被拉黑")
+    public Response<Boolean> isBlocked(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
+        return userService.isBlocked(openID);
+    }
 }
