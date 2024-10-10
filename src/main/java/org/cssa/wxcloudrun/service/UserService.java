@@ -136,4 +136,5 @@ public interface UserService {
      * @return 用户是否被拉黑。1-是；0-否。
      */
     Response<Boolean> isBlocked(String openID);
+
 }

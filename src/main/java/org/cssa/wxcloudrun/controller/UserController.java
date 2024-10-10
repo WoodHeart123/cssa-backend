@@ -275,4 +275,5 @@ public class UserController {
     public Response<Boolean> isBlocked(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
         return userService.isBlocked(openID);
     }
+
 }
