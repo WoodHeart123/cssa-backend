@@ -59,10 +59,12 @@ public class Ride {
 
     // 出发时间
     @Schema(description = "出发时间", example = "2026-01-05 10:00:00")
+    @JSONField(name = "departure_time")
     private Timestamp departureTime;
 
     // 返回时间 (选填)；如顺风车类型为2则为必填。
     @Schema(description = "返回时间 (选填)", example = "2026-01-05 18:00:00")
+    @JSONField(name = "return_time")
     private Timestamp returnTime;
 
     // 顺风车描述，扩展为 500 字符
@@ -87,14 +89,17 @@ public class Ride {
 
     // 预计到达时间 (选填)
     @Schema(description = "预计到达时间 (选填)", example = "2026-01-05 12:30:00")
+    @JSONField(name = "estimated_arrival_time")
     private Timestamp estimatedArrivalTime;
 
     // 被移除的时间 (可为 null)，如果不为 null，则表示顺风车信息未被移除
     @Schema(description = "顺风车信息被移除的时间 (如果不为 null，则表示未被移除)", example = "2026-01-10 15:00:00")
+    @JSONField(name = "removed_time")
     private Timestamp removedTime;
 
     // 被发布的时间 (可为 null)，如果不为 null，则表示顺风车信息已发布
     @Schema(description = "顺风车信息被发布的时间 (如果不为 null，则表示已发布)", example = "2026-01-10 15:00:00")
+    @JSONField(name = "published_time")
     private Timestamp publishedTime;
 
     // 图片列表，用户可以上传的图片信息
