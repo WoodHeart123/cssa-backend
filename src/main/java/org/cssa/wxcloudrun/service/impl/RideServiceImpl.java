@@ -1,6 +1,8 @@
 package org.cssa.wxcloudrun.service.impl;
 
+import com.alibaba.fastjson2.JSON;
 import org.cssa.wxcloudrun.dao.RideMapper;
+import org.cssa.wxcloudrun.model.Contact;
 import org.cssa.wxcloudrun.model.Response;
 import org.cssa.wxcloudrun.model.Ride;
 import org.cssa.wxcloudrun.service.RideService;
@@ -23,7 +25,10 @@ public class RideServiceImpl implements RideService {
      */
     @Override
     public Response<Ride> getRide(Integer rideID) {
-        return new Response<>(rideMapper.getRide(rideID));
+        Ride ride = rideMapper.getRide(rideID);
+        ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
+        ride.setImages(JSON.parseArray(ride.getImagesJSON(),String.class));
+        return new Response<>(ride);
     }
 
     /**
@@ -35,7 +40,12 @@ public class RideServiceImpl implements RideService {
      */
     @Override
     public Response<List<Ride>> getRideList(Integer offset, Integer limit) {
-        return new Response<>(rideMapper.getRideList(offset,limit));
+        List<Ride> rideList = rideMapper.getRideList(offset,limit);
+        rideList.forEach(ride -> {
+            ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
+            ride.setImages(JSON.parseArray(ride.getImagesJSON(),String.class));
+        });
+        return new Response<>(rideList);
     }
 
     /**
@@ -48,7 +58,12 @@ public class RideServiceImpl implements RideService {
      */
     @Override
     public Response<List<Ride>> getRemovedRideList(String userId, Integer offset, Integer limit) {
-        return new Response<>(rideMapper.getRemovedRideList(userId, offset, limit));
+        List<Ride> rideList = rideMapper.getRemovedRideList(userId,offset,limit);
+        rideList.forEach(ride -> {
+            ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
+            ride.setImages(JSON.parseArray(ride.getImagesJSON(),String.class));
+        });
+        return new Response<>(rideList);
     }
 
     /**
@@ -74,6 +89,8 @@ public class RideServiceImpl implements RideService {
      */
     @Override
     public boolean saveRide(Ride ride) {
+        ride.setContactInfoJSON(JSON.toJSONString(ride.getContactInfo()));
+        ride.setImagesJSON(JSON.toJSONString(ride.getImages()));
         return rideMapper.saveRide(ride);
     }
 
@@ -89,6 +106,8 @@ public class RideServiceImpl implements RideService {
      */
     @Override
     public boolean updateRide(String openID, Ride ride, boolean ifToPublish) {
+        ride.setContactInfoJSON(JSON.toJSONString(ride.getContactInfo()));
+        ride.setImagesJSON(JSON.toJSONString(ride.getImages()));
         return rideMapper.updateRide(openID, ride, ifToPublish);
     }
 

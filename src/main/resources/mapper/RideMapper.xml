@@ -6,13 +6,13 @@
     <select id="getRide" parameterType="Integer" resultType="org.cssa.wxcloudrun.model.Ride">
         SELECT *
         FROM ride
-        WHERE rideId = #{rideId} AND removedTime IS NULL
+        WHERE rideId = #{rideId} AND removed_time IS NULL
     </select>
 
     <select id="getRideList" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
         SELECT *
         FROM ride
-        WHERE removedTime IS NULL
+        WHERE removed_time IS NULL
         LIMIT #{offset}, #{limit}
     </select>
 
@@ -25,16 +25,17 @@
     <select id="getRemovedRideList" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
         SELECT *
         FROM ride
-        WHERE userId = #{userId} AND removedTime IS NOT NULL
+        WHERE userId = #{userId} AND removed_time IS NOT NULL
         LIMIT #{offset}, #{limit}
     </select>
 
     <insert id="saveRide" parameterType="org.cssa.wxcloudrun.model.Ride" useGeneratedKeys="true" keyProperty="rideId">
         INSERT INTO ride (userId, rideType, price, origin, destination, description, availableSeats, requestedSeats,
-                          departure_time, return_time, contactInfoJSON, make, model, estimated_arrival_time, images)
+                          departure_time, return_time, contactInfoJSON, make, model, estimated_arrival_time, imagesJSON,
+                          published_time)
         VALUES (#{userId}, #{rideType}, #{price}, #{origin}, #{destination}, #{description}, #{availableSeats},
-                #{requestedSeats}, #{departureTime}, #{returnTime}, #{contactInfo}, #{make}, #{model},
-                #{estimatedArrivalTime}, #{images})
+                #{requestedSeats}, #{departureTime}, #{returnTime}, #{contactInfoJSON}, #{make}, #{model},
+                #{estimatedArrivalTime}, #{imagesJSON}, NOW())
     </insert>
 
     <update id="updateRide" parameterType="java.util.Map">
@@ -52,19 +53,19 @@
         make = #{ride.make},
         model = #{ride.model},
         estimated_arrival_time = #{ride.estimatedArrivalTime},
-        images = #{ride.images}
+        imagesJSON = #{ride.imagesJSON}
         <if test="ifToPublish">
-            , publishedTime = NOW()
+            , published_time = NOW()
         </if>
         <if test="ifToPublish and ride.removedTime != null">
-            , removedTime = NULL
+            , removed_time = NULL
         </if>
         WHERE rideId = #{rideId} AND userId = #{openId}
     </update>
 
     <update id="removeRide" parameterType="Integer">
         UPDATE ride
-        SET removedTime = NOW()
+        SET removed_time = NOW()
         WHERE rideId = #{rideId}
     </update>
 
@@ -76,7 +77,7 @@
     <select id="isPublished" parameterType="Integer" resultType="boolean">
         SELECT COUNT(*) > 0
         FROM ride
-        WHERE rideId = #{rideId} AND publishedTime IS NOT NULL AND removedTime IS NULL
+        WHERE rideId = #{rideId} AND published_time IS NOT NULL AND removed_time IS NULL
     </select>
 
 </mapper>

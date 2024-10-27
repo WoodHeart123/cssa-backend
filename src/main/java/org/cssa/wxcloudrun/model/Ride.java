@@ -1,5 +1,6 @@
 package org.cssa.wxcloudrun.model;
 
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.annotation.JSONField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -72,6 +73,10 @@ public class Ride {
     @Schema(description = "联系信息，包括电话号码和微信 ID")
     private Contact contactInfo;
 
+    // JSON字段，隐藏用于数据库存储联系信息
+    @Schema(description = "数据库存储联系方式，不对外暴露",hidden = true)
+    private String contactInfoJSON;
+
     // 汽车品牌 (选填)
     @Schema(description = "汽车品牌 (选填)", example = "Tesla")
     private String make;
@@ -92,8 +97,10 @@ public class Ride {
     @Schema(description = "顺风车信息被发布的时间 (如果不为 null，则表示已发布)", example = "2026-01-10 15:00:00")
     private Timestamp publishedTime;
 
-    // 图片列表，用户可以上传的图片信息。无需强制类型转换，List<String>自动投射为JSON。
+    // 图片列表，用户可以上传的图片信息
     @Schema(description = "顺风车相关的图片列表", example = "[\"https://server.com/image1.jpg\", \"https://server.com/image2.jpg\"]")
     private List<String> images;
 
+    @Schema(description = "数据库存储图片，不对外暴露",hidden = true)
+    private String imagesJSON;
 }
