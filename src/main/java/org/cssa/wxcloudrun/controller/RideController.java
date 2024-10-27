@@ -56,14 +56,15 @@ public class RideController {
     }
 
     // 发布顺风车
-    @RequestMapping(value = {"/saveRide"}, method = {RequestMethod.POST})
+    @RequestMapping(value = {"/publishRide"}, method = {RequestMethod.POST})
     @Operation(summary = "发布顺风车", description = "发布顺风车")
-    public Response<Object> saveRide(@Parameter(description = "是否保存联系方式")
+    public Response<Object> publishRide(@Parameter(description = "是否保存联系方式")
                                          @RequestParam(value = "save", required = false, defaultValue = "false") Boolean ifSave,
                                      @Parameter(description = "顺风车信息") @RequestBody Ride ride,
                                      @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String userId) {
         // 内容检查
-        WechatResponse wechatResponse = weChatAPI.MsgCheck(ride.getDescription(), userId, 3);
+        String censoredContent = ride.getOrigin() + ";" + ride.getDestination() + ";" + ride.getDescription();
+        WechatResponse wechatResponse = weChatAPI.MsgCheck(censoredContent, userId, 3);
         if(wechatResponse.getResult().getLabel() >= 20000){
             return new Response<>(ReturnCode.CENSORED_UGC_CONTENT);
         }
@@ -78,7 +79,7 @@ public class RideController {
 //        }
 
         // 保存顺风车信息
-        if (rideService.saveRide(ride)) {
+        if (rideService.publishRide(ride)) {
             return new Response<>(ReturnCode.SUCCESS);
         } else {
             return new Response<>(ReturnCode.ACTION_FAILED);
@@ -121,7 +122,7 @@ public class RideController {
     }
 
     // 彻底删除顺风车 (删除顺风车)
-    @RequestMapping(value = {"/deleteRide"}, method = {RequestMethod.POST})
+    @RequestMapping(value = {"/deleteRide"}, method = {RequestMethod.DELETE})
     @Operation(summary = "删除顺风车", description = "彻底从数据库中删除顺风车信息")
     public Response<Object> deleteRide(@Parameter(description = "顺风车ID") @RequestParam Integer rideId,
                                        @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String userId) {

@@ -16,7 +16,7 @@ public interface RideMapper {
 
     boolean isRideOwnedByUser(@Param("userId") String userId, @Param("rideId") Integer rideId);
 
-    boolean saveRide(Ride ride);
+    boolean publishRide(Ride ride);
 
     boolean updateRide(@Param("userId") String userId, @Param("ride") Ride ride, @Param("ifToPublish") boolean ifPublish);
 

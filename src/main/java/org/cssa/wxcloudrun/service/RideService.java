@@ -51,7 +51,7 @@ public interface RideService {
      * @param ride 要保存的顺风车信息
      * @return 返回保存成功与否的布尔值
      */
-    boolean saveRide(Ride ride);
+    boolean publishRide(Ride ride);
 
     /**
      * 更新顺风车信息。

@@ -4,22 +4,58 @@
 <mapper namespace="org.cssa.wxcloudrun.dao.RideMapper">
 
     <select id="getRide" parameterType="Integer" resultType="org.cssa.wxcloudrun.model.Ride">
-        SELECT *
+        SELECT ride.rideId,
+               ride.userId,
+               ride.requestType,
+               ride.rideType,
+               ride.price,
+               ride.origin,
+               ride.destination,
+               ride.availableSeats,
+               ride.requestedSeats,
+               ride.departure_time AS departureTime,
+               ride.return_time AS returnTime,
+               ride.description,
+               ride.contactInfoJSON,
+               ride.make,
+               ride.model,
+               ride.estimated_arrival_time AS estimatedArrivalTime,
+               ride.removed_time AS removedTime,
+               ride.published_time AS publishedTime,
+               ride.imagesJSON
         FROM ride
-        WHERE rideId = #{rideId} AND removed_time IS NULL
+        WHERE ride.rideId = #{rideId}
     </select>
 
     <select id="getRideList" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
-        SELECT *
+        SELECT ride.rideId,
+               ride.userId,
+               ride.requestType,
+               ride.rideType,
+               ride.price,
+               ride.origin,
+               ride.destination,
+               ride.availableSeats,
+               ride.requestedSeats,
+               ride.departure_time AS departureTime,
+               ride.return_time AS returnTime,
+               ride.description,
+               ride.contactInfoJSON,
+               ride.make,
+               ride.model,
+               ride.estimated_arrival_time AS estimatedArrivalTime,
+               ride.removed_time AS removedTime,
+               ride.published_time AS publishedTime,
+               ride.imagesJSON
         FROM ride
-        WHERE removed_time IS NULL
+        WHERE ride.removed_time IS NULL
         LIMIT #{offset}, #{limit}
     </select>
 
     <select id="isRideOwnedByUser" parameterType="java.util.Map" resultType="boolean">
         SELECT COUNT(*) > 0
         FROM ride
-        WHERE userId = #{openId} AND rideId = #{rideId}
+        WHERE userId = #{userId} AND rideId = #{rideId}
     </select>
 
     <select id="getRemovedRideList" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
@@ -29,13 +65,13 @@
         LIMIT #{offset}, #{limit}
     </select>
 
-    <insert id="saveRide" parameterType="org.cssa.wxcloudrun.model.Ride" useGeneratedKeys="true" keyProperty="rideId">
+    <insert id="publishRide" parameterType="org.cssa.wxcloudrun.model.Ride" useGeneratedKeys="true" keyProperty="rideId">
         INSERT INTO ride (userId, rideType, price, origin, destination, description, availableSeats, requestedSeats,
                           departure_time, return_time, contactInfoJSON, make, model, estimated_arrival_time, imagesJSON,
                           published_time)
         VALUES (#{userId}, #{rideType}, #{price}, #{origin}, #{destination}, #{description}, #{availableSeats},
                 #{requestedSeats}, #{departureTime}, #{returnTime}, #{contactInfoJSON}, #{make}, #{model},
-                #{estimatedArrivalTime}, #{imagesJSON}, NOW())
+                #{estimatedArrivalTime}, #{imagesJSON}, CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago'))
     </insert>
 
     <update id="updateRide" parameterType="java.util.Map">
@@ -55,7 +91,7 @@
         estimated_arrival_time = #{ride.estimatedArrivalTime},
         imagesJSON = #{ride.imagesJSON}
         <if test="ifToPublish">
-            , published_time = NOW()
+            , published_time = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago')
         </if>
         <if test="ifToPublish and ride.removedTime != null">
             , removed_time = NULL
@@ -65,7 +101,7 @@
 
     <update id="removeRide" parameterType="Integer">
         UPDATE ride
-        SET removed_time = NOW()
+        SET removed_time = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago')
         WHERE rideId = #{rideId}
     </update>
 

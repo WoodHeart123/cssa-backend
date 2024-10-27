@@ -10,7 +10,11 @@ import org.jetbrains.annotations.ApiStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.sql.Timestamp;
 
 @Service
 public class RideServiceImpl implements RideService {
@@ -20,14 +24,14 @@ public class RideServiceImpl implements RideService {
     /**
      * 获取特定顺风车信息。
      *
-     * @param rideID 顺风车的唯一标识符
+     * @param rideId 顺风车的唯一标识符
      * @return 包含指定顺风车信息的响应
      */
     @Override
-    public Response<Ride> getRide(Integer rideID) {
-        Ride ride = rideMapper.getRide(rideID);
+    public Response<Ride> getRide(Integer rideId) {
+        Ride ride = rideMapper.getRide(rideId);
         ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
-        ride.setImages(JSON.parseArray(ride.getImagesJSON(),String.class));
+        ride.setImages(JSON.parseArray(ride.getImagesJSON(), String.class));
         return new Response<>(ride);
     }
 
@@ -40,12 +44,28 @@ public class RideServiceImpl implements RideService {
      */
     @Override
     public Response<List<Ride>> getRideList(Integer offset, Integer limit) {
-        List<Ride> rideList = rideMapper.getRideList(offset,limit);
+        List<Ride> rideList = rideMapper.getRideList(offset, limit);
+        Timestamp currentTime = Timestamp.valueOf(ZonedDateTime.now(ZoneId.of("America/Chicago")).toLocalDateTime());
+
+        List<Ride> returnedList = new ArrayList<>();
+
         rideList.forEach(ride -> {
-            ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
-            ride.setImages(JSON.parseArray(ride.getImagesJSON(),String.class));
+            boolean isExpired = checkIfExpired(ride, currentTime);
+
+            if (isExpired) {
+                // 更新数据库，将其标记为已移除
+                ride.setRemovedTime(currentTime);
+                removeRide(ride.getRideId());
+            } else {
+                // 只为未过期的顺风车解析 JSON 数据到 Contact 和 images 列表
+                ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
+                ride.setImages(JSON.parseArray(ride.getImagesJSON(), String.class));
+
+                returnedList.add(ride);
+            }
         });
-        return new Response<>(rideList);
+
+        return new Response<>(returnedList);
     }
 
     /**
@@ -71,13 +91,13 @@ public class RideServiceImpl implements RideService {
      * <p>
      * 该方法通过用户的微信 openID 和顺风车的 rideID 检查该顺风车是否属于该用户。
      *
-     * @param openId 用户的微信 openID，作为用户的唯一标识符
+     * @param userId 用户的微信 openID，作为用户的唯一标识符
      * @param rideID 顺风车的唯一标识符
      * @return 如果该顺风车属于该用户，则返回 true；否则返回 false
      */
     @Override
-    public boolean isRideOwnedByUser(String openId, Integer rideID) {
-        return rideMapper.isRideOwnedByUser(openId, rideID);
+    public boolean isRideOwnedByUser(String userId, Integer rideID) {
+        return rideMapper.isRideOwnedByUser(userId, rideID);
     }
 
     /**
@@ -88,10 +108,10 @@ public class RideServiceImpl implements RideService {
      * @return 返回保存成功与否的布尔值
      */
     @Override
-    public boolean saveRide(Ride ride) {
+    public boolean publishRide(Ride ride) {
         ride.setContactInfoJSON(JSON.toJSONString(ride.getContactInfo()));
         ride.setImagesJSON(JSON.toJSONString(ride.getImages()));
-        return rideMapper.saveRide(ride);
+        return rideMapper.publishRide(ride);
     }
 
     /**
@@ -129,12 +149,12 @@ public class RideServiceImpl implements RideService {
      * 彻底删除顺风车信息 (删除顺风车)。
      * 该方法会从数据库中完全删除顺风车信息，数据将不可恢复。
      *
-     * @param rideID 要删除的顺风车信息的Id
+     * @param rideId 要删除的顺风车信息的Id
      * @return 返回删除操作是否成功
      */
     @Override
-    public boolean deleteRide(Integer rideID) {
-        return rideMapper.deleteRide(rideID);
+    public boolean deleteRide(Integer rideId) {
+        return rideMapper.deleteRide(rideId);
     }
 
     /**
@@ -146,5 +166,35 @@ public class RideServiceImpl implements RideService {
     @ApiStatus.Internal
     public boolean isPublished(Integer rideID) {
         return rideMapper.isPublished(rideID);
+    }
+
+    /**
+     * 检查顺风车是否过期
+     */
+    @ApiStatus.Internal
+    private boolean checkIfExpired(Ride ride, Timestamp currentTime) {
+        System.out.println("checkIfExpired is called.");
+        if (ride.getDepartureTime() == null) {
+            // 如果没有出发时间，无法判断是否过期，直接返回 false
+            return false;
+        }
+
+        System.out.println(ride.getRideId());
+        System.out.println(ride.getDepartureTime());
+        System.out.println(currentTime);
+
+        // 单程的情况，只需要检查出发时间是否过期
+        if (ride.getRideType() == 1) {
+            return ride.getDepartureTime().before(currentTime);
+        }
+
+        // 往返的情况，需要检查出发时间和返回时间是否过期
+        if (ride.getRideType() == 2) {
+            return ride.getDepartureTime().before(currentTime) &&
+                    (ride.getReturnTime() != null && ride.getReturnTime().before(currentTime));
+        }
+
+        // 默认情况，返回 false
+        return false;
     }
 }
