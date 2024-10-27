@@ -9,15 +9,12 @@ import lombok.Data;
 @Data
 public class Contact {
 
-    // 电话号码 (可选)
     @Schema(description = "电话号码", example = "123-456-7890")
     private String phoneNumber;
 
-    // 微信 ID (可选)
     @Schema(description = "微信 ID", example = "weixin123")
     private String weChatId;
 
-    // 邮箱 （可选）
     @Schema(description = "邮箱", example = "abc@wisc.edu")
     private String email;
 }
