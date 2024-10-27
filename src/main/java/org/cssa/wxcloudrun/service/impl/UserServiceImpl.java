@@ -205,11 +205,6 @@ public class UserServiceImpl implements UserService {
         return new Response<>(Boolean.TRUE);
     }
 
-    @Override
-    public Response<Boolean> isSubscribed(String openID) {
-        return new Response<>(userMapper.isSubscribed(openID));
-    }
-
     /**
      * 为用户生成一个加密的ID。
      * 该方法使用用户的openID和当前时间戳生成一个加密ID，确保该ID在数据库中是唯一的。
@@ -232,25 +227,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Response<Boolean> isSubscribed(String openID) {
         return new Response<>(userMapper.isSubscribed(openID));
-    }
-
-    /**
-     * 为用户生成一个加密的ID。
-     * 该方法使用用户的openID和当前时间戳生成一个加密ID，确保该ID在数据库中是唯一的。
-     * 如果生成的加密ID已存在，则重新生成，直到产生一个唯一的加密ID。
-     * 此方法不在UserService中。
-     *
-     * @param openID 用户的OpenID，用作生成加密ID的基础之一。
-     * @return 返回生成的唯一加密ID。
-     */
-    public String makeAnEncryptedIdforUser(String openID) {
-        boolean encryptedIDExists;
-        String encryptedID;
-        do {
-            encryptedID = encryptionUtil.generateEncryptedID(openID, System.currentTimeMillis());
-            encryptedIDExists = userMapper.ifEncryptedIDExists(encryptedID);
-        } while (encryptedIDExists);
-        return encryptedID;
     }
 
    /**
@@ -263,4 +239,13 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Response<Boolean> isBlocked(String openID) {return new Response<>(userMapper.isBlocked(openID));}
+
+    /**
+     * 更新该用户的联系方式
+     *
+     * @param userId
+     * @param info
+     */
+    @Override
+    public void saveContact(String userId, Contact info) { userMapper.saveContact(userId,info);}
 }
