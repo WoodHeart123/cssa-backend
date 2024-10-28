@@ -95,6 +95,13 @@ public class RideController {
             @Parameter(description = "是否发布 (默认值为 false)")
             @RequestParam(value = "ifToPublish", required = false, defaultValue = "false") Boolean ifToPublish) {
 
+        // 内容检查
+        String censoredContent = ride.getOrigin() + ";" + ride.getDestination() + ";" + ride.getDescription();
+        WechatResponse wechatResponse = weChatAPI.MsgCheck(censoredContent, userId, 3);
+        if(wechatResponse.getResult().getLabel() >= 20000){
+            return new Response<>(ReturnCode.CENSORED_UGC_CONTENT);
+        }
+        System.out.println(ride);
         if (rideService.updateRide(userId, ride, ifToPublish)) {
             return new Response<>(ReturnCode.SUCCESS);
         } else {

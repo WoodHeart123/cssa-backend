@@ -18,7 +18,7 @@ public interface RideMapper {
 
     boolean publishRide(Ride ride);
 
-    boolean updateRide(@Param("userId") String userId, @Param("ride") Ride ride, @Param("ifToPublish") boolean ifPublish);
+    boolean updateRide(@Param("userId") String userId, @Param("ride") Ride ride, @Param("ifToPublish") boolean ifToPublish);
 
     boolean removeRide(@Param("rideId") Integer rideId);
 

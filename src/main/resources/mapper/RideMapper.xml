@@ -85,18 +85,16 @@
         requestedSeats = #{ride.requestedSeats},
         departure_time = #{ride.departureTime},
         return_time = #{ride.returnTime},
-        contactInfoJSON = #{ride.contactInfo},
+        contactInfoJSON = #{ride.contactInfoJSON},
         make = #{ride.make},
         model = #{ride.model},
         estimated_arrival_time = #{ride.estimatedArrivalTime},
         imagesJSON = #{ride.imagesJSON}
         <if test="ifToPublish">
             , published_time = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago')
-        </if>
-        <if test="ifToPublish and ride.removedTime != null">
             , removed_time = NULL
         </if>
-        WHERE rideId = #{rideId} AND userId = #{openId}
+        WHERE rideId = #{ride.rideId} AND userId = #{userId}
     </update>
 
     <update id="removeRide" parameterType="Integer">

@@ -57,7 +57,7 @@ public class RideServiceImpl implements RideService {
                 ride.setRemovedTime(currentTime);
                 removeRide(ride.getRideId());
             } else {
-                // 只为未过期的顺风车解析 JSON 数据到 Contact 和 images 列表
+                // 只为未过期的顺风车解析JSON数据到Contact和images列表
                 ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
                 ride.setImages(JSON.parseArray(ride.getImagesJSON(), String.class));
 
@@ -119,16 +119,16 @@ public class RideServiceImpl implements RideService {
      * 用户可以通过该方法更新顺风车信息。
      * 如果 ifPublish 参数为 true，则顺风车将被发布；如果为 false 或未提供，则顺风车仅更新而不发布。
      *
-     * @param openID 用户的微信 openID
+     * @param userId 用户的微信 openID
      * @param ride   更新后的顺风车信息
      * @param ifToPublish 是否发布顺风车，默认值为 false
      * @return 返回更新操作是否成功
      */
     @Override
-    public boolean updateRide(String openID, Ride ride, boolean ifToPublish) {
+    public boolean updateRide(String userId, Ride ride, boolean ifToPublish) {
         ride.setContactInfoJSON(JSON.toJSONString(ride.getContactInfo()));
         ride.setImagesJSON(JSON.toJSONString(ride.getImages()));
-        return rideMapper.updateRide(openID, ride, ifToPublish);
+        return rideMapper.updateRide(userId, ride, ifToPublish);
     }
 
 
