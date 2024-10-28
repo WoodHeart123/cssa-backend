@@ -229,23 +229,25 @@ public class UserServiceImpl implements UserService {
         return new Response<>(userMapper.isSubscribed(openID));
     }
 
-   /**
-     * 检查用户的邮件订阅状态。
-     * <p>
-     * 该方法根据用户的 openID 从数据库中获取用户的被拉黑状态并返回。默认值为0 - 否。
+    /**
+     * 检查用户是否被拉黑
+     *
+     * 该方法根据用户的 openID 从数据库中获取用户的被拉黑状态并返回。默认值为0-否。
      *
      * @param openID 微信用户在小程序的唯一标识符。
-     * @return 用户是否被拉黑。
+     * @return 用户是否被拉黑。1-是；0-否。
      */
     @Override
     public Response<Boolean> isBlocked(String openID) {return new Response<>(userMapper.isBlocked(openID));}
 
     /**
-     * 更新该用户的联系方式
+     * 更新指定用户的联系方式。
+     * 该方法根据用户ID更新用户的联系信息，包括电话号码、微信ID和电子邮件地址。
+     * 如果传入的联系信息字段为null或空字符串，则不会更新相应字段，保留数据库中的原有值。
      *
-     * @param userId
-     * @param info
+     * @param userId 用户的唯一标识符（ID）。
+     * @param info   包含用户联系信息的对象，包括电话号码（phoneNumber）、微信ID（weChatId）和电子邮件地址（email）。
      */
     @Override
-    public void saveContact(String userId, Contact info) { userMapper.saveContact(userId,info);}
+    public void saveContact(String userId, Contact info) { userMapper.saveContact(userId, info);}
 }

@@ -88,7 +88,7 @@ public class RideServiceImpl implements RideService {
 
     /**
      * 检查指定用户是否拥有特定的顺风车。
-     * <p>
+     *
      * 该方法通过用户的微信 openID 和顺风车的 rideID 检查该顺风车是否属于该用户。
      *
      * @param userId 用户的微信 openID，作为用户的唯一标识符

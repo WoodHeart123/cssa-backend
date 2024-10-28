@@ -2,10 +2,7 @@ package org.cssa.wxcloudrun.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.cssa.wxcloudrun.model.CourseComment;
-import org.cssa.wxcloudrun.model.Product;
-import org.cssa.wxcloudrun.model.Rental;
-import org.cssa.wxcloudrun.model.User;
+import org.cssa.wxcloudrun.model.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -144,6 +141,7 @@ public interface UserMapper {
      *
      * @param userID 用户的微信openID。
      */
-    Boolean isBlocked(String userID);
+    boolean isBlocked(String userID);
 
+    void saveContact(@Param("userId") String userId, @Param("contactInfo") Contact contactInfo);
 }

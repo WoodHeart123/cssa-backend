@@ -1,10 +1,6 @@
 package org.cssa.wxcloudrun.service;
 
-import org.cssa.wxcloudrun.model.CourseComment;
-import org.cssa.wxcloudrun.model.Product;
-import org.cssa.wxcloudrun.model.Rental;
-import org.cssa.wxcloudrun.model.Response;
-import org.cssa.wxcloudrun.model.Subscription;
+import org.cssa.wxcloudrun.model.*;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -136,5 +132,15 @@ public interface UserService {
      * @return 用户是否被拉黑。1-是；0-否。
      */
     Response<Boolean> isBlocked(String openID);
+
+    /**
+     * 更新指定用户的联系方式。
+     * 该方法根据用户ID更新用户的联系信息，包括电话号码、微信ID和电子邮件地址。
+     * 如果传入的联系信息字段为null或空字符串，则不会更新相应字段，保留数据库中的原有值。
+     *
+     * @param userId 用户的唯一标识符（ID）。
+     * @param info   包含用户联系信息的对象，包括电话号码（phoneNumber）、微信ID（weChatId）和电子邮件地址（email）。
+     */
+    void saveContact(String userId, Contact info);
 
 }

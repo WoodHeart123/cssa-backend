@@ -291,4 +291,33 @@
         WHERE userID = #{userID}
     </select>
 
+    <update id="saveContact">
+        UPDATE user
+        SET
+#             phoneNumber =
+#                 CASE
+#                     WHEN #{contactInfo.phoneNumber} IS NOT NULL
+#                         AND #{contactInfo.phoneNumber} != ''
+#                         AND #{contactInfo.phoneNumber} != phoneNumber
+#                         THEN #{contactInfo.phoneNumber}
+#                     ELSE phoneNumber
+#                     END,
+            wechatID =
+                CASE
+                    WHEN #{contactInfo.weChatId} IS NOT NULL
+                        AND #{contactInfo.weChatId} != ''
+                        AND #{contactInfo.weChatId} != wechatID
+                        THEN #{contactInfo.weChatId}
+                    ELSE wechatID
+                    END,
+            email =
+                CASE
+                    WHEN #{contactInfo.email} IS NOT NULL
+                        AND #{contactInfo.email} != ''
+                        AND #{contactInfo.email} != email
+                        THEN #{contactInfo.email}
+                    ELSE email
+                    END
+        WHERE userID = #{userId}
+    </update>
 </mapper>
