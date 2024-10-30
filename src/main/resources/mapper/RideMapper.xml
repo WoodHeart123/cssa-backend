@@ -99,7 +99,8 @@
 
     <update id="removeRide" parameterType="Integer">
         UPDATE ride
-        SET removed_time = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago')
+        SET removed_time = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago'),
+            published_time = NULL
         WHERE rideId = #{rideId}
     </update>
 
