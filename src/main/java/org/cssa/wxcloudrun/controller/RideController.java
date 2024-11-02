@@ -101,14 +101,14 @@ public class RideController {
         if(wechatResponse.getResult().getLabel() >= 20000){
             return new Response<>(ReturnCode.CENSORED_UGC_CONTENT);
         }
-        System.out.println(ride);
+
+        // 更新顺风车
         if (rideService.updateRide(userId, ride, ifToPublish)) {
             return new Response<>(ReturnCode.SUCCESS);
         } else {
             return new Response<>(ReturnCode.ACTION_FAILED);
         }
     }
-
 
     // 软删除顺风车 (移除顺风车)
     @RequestMapping(value = {"/removeRide"}, method = {RequestMethod.POST})

@@ -13,15 +13,15 @@
                ride.destination,
                ride.availableSeats,
                ride.requestedSeats,
-               ride.departure_time AS departureTime,
-               ride.return_time AS returnTime,
+               ride.departureTime AS departureTime,
+               ride.returnTime AS returnTime,
                ride.description,
                ride.contactInfoJSON,
                ride.make,
                ride.model,
-               ride.estimated_arrival_time AS estimatedArrivalTime,
-               ride.removed_time AS removedTime,
-               ride.published_time AS publishedTime,
+               ride.estimatedArrivalTime AS estimatedArrivalTime,
+               ride.removedTime AS removedTime,
+               ride.publishedTime AS publishedTime,
                ride.imagesJSON
         FROM ride
         WHERE ride.rideId = #{rideId}
@@ -37,18 +37,18 @@
                ride.destination,
                ride.availableSeats,
                ride.requestedSeats,
-               ride.departure_time AS departureTime,
-               ride.return_time AS returnTime,
+               ride.departureTime AS departureTime,
+               ride.returnTime AS returnTime,
                ride.description,
                ride.contactInfoJSON,
                ride.make,
                ride.model,
-               ride.estimated_arrival_time AS estimatedArrivalTime,
-               ride.removed_time AS removedTime,
-               ride.published_time AS publishedTime,
+               ride.estimatedArrivalTime AS estimatedArrivalTime,
+               ride.removedTime AS removedTime,
+               ride.publishedTime AS publishedTime,
                ride.imagesJSON
         FROM ride
-        WHERE ride.removed_time IS NULL
+        WHERE ride.removedTime IS NULL
         LIMIT #{offset}, #{limit}
     </select>
 
@@ -61,14 +61,14 @@
     <select id="getRemovedRideList" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
         SELECT *
         FROM ride
-        WHERE userId = #{userId} AND removed_time IS NOT NULL
+        WHERE userId = #{userId} AND removedTime IS NOT NULL
         LIMIT #{offset}, #{limit}
     </select>
 
     <insert id="publishRide" parameterType="org.cssa.wxcloudrun.model.Ride" useGeneratedKeys="true" keyProperty="rideId">
         INSERT INTO ride (userId, rideType, price, origin, destination, description, availableSeats, requestedSeats,
-                          departure_time, return_time, contactInfoJSON, make, model, estimated_arrival_time, imagesJSON,
-                          published_time)
+                          departureTime, returnTime, contactInfoJSON, make, model, estimatedArrivalTime, imagesJSON,
+                          publishedTime)
         VALUES (#{userId}, #{rideType}, #{price}, #{origin}, #{destination}, #{description}, #{availableSeats},
                 #{requestedSeats}, #{departureTime}, #{returnTime}, #{contactInfoJSON}, #{make}, #{model},
                 #{estimatedArrivalTime}, #{imagesJSON}, CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago'))
@@ -83,24 +83,24 @@
         description = #{ride.description},
         availableSeats = #{ride.availableSeats},
         requestedSeats = #{ride.requestedSeats},
-        departure_time = #{ride.departureTime},
-        return_time = #{ride.returnTime},
+        departureTime = #{ride.departureTime},
+        returnTime = #{ride.returnTime},
         contactInfoJSON = #{ride.contactInfoJSON},
         make = #{ride.make},
         model = #{ride.model},
-        estimated_arrival_time = #{ride.estimatedArrivalTime},
+        estimatedArrivalTime = #{ride.estimatedArrivalTime},
         imagesJSON = #{ride.imagesJSON}
         <if test="ifToPublish">
-            , published_time = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago')
-            , removed_time = NULL
+            , publishedTime = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago')
+            , removedTime = NULL
         </if>
         WHERE rideId = #{ride.rideId} AND userId = #{userId}
     </update>
 
     <update id="removeRide" parameterType="Integer">
         UPDATE ride
-        SET removed_time = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago'),
-            published_time = NULL
+        SET removedTime = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago'),
+            publishedTime = NULL
         WHERE rideId = #{rideId}
     </update>
 
@@ -112,7 +112,7 @@
     <select id="isPublished" parameterType="Integer" resultType="boolean">
         SELECT COUNT(*) > 0
         FROM ride
-        WHERE rideId = #{rideId} AND published_time IS NOT NULL AND removed_time IS NULL
+        WHERE rideId = #{rideId} AND publishedTime IS NOT NULL AND removedTime IS NULL
     </select>
 
 </mapper>

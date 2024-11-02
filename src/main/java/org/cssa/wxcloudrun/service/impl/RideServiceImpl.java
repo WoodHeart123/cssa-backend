@@ -179,10 +179,6 @@ public class RideServiceImpl implements RideService {
             return false;
         }
 
-        System.out.println(ride.getRideId());
-        System.out.println(ride.getDepartureTime());
-        System.out.println(currentTime);
-
         // 单程的情况，只需要检查出发时间是否过期
         if (ride.getRideType() == 1) {
             return ride.getDepartureTime().before(currentTime);

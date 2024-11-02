@@ -38,7 +38,7 @@ public class Ride {
     private Integer requestedSeats;
 
     @Schema(description = "出发时间", example = "2026-01-05 10:00:00")
-    @JSONField(name = "departure_time", format = "yyyy-MM-dd HH:mm:ss")
+    @JSONField(name = "departureTime", format = "yyyy-MM-dd HH:mm:ss")
     private Timestamp departureTime;
 
     @Schema(description = "返回时间 (选填)", example = "2026-01-05 18:00:00")
@@ -61,15 +61,15 @@ public class Ride {
     private String model;
 
     @Schema(description = "预计到达时间 (选填)", example = "2026-01-05 12:30:00")
-    @JSONField(name = "estimated_arrival_time", format = "yyyy-MM-dd HH:mm:ss")
+    @JSONField(name = "estimatedArrivalTime", format = "yyyy-MM-dd HH:mm:ss")
     private Timestamp estimatedArrivalTime;
 
     @Schema(description = "顺风车信息被移除的时间 (如果不为 null，则表示未被移除)", example = "2026-01-10T15:00:00")
-    @JSONField(name = "removed_time")
+    @JSONField(name = "removedTime")
     private Timestamp removedTime;
 
     @Schema(description = "顺风车信息被发布的时间 (如果不为 null，则表示已发布)", example = "2026-01-10T15:00:00")
-    @JSONField(name = "published_time")
+    @JSONField(name = "publishedTime")
     private Timestamp publishedTime;
 
     @Schema(description = "顺风车相关的图片列表", example = "[\"https://server.com/image1.jpg\", \"https://server.com/image2.jpg\"]")
