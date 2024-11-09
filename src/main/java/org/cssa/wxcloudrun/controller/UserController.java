@@ -279,9 +279,9 @@ public class UserController {
     @RequestMapping(value = {"/saveUserInfo"}, method = {RequestMethod.POST})
     @Operation(summary = "保存真实的用户信息",description = "保存用户目前真实的昵称和头像链接")
     public Response<Boolean> saveUserInfo(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId,
-                                          @RequestParam String nickName,
+                                          @RequestParam String nickname,
                                           @RequestParam String avatarUrl) {
-        return userService.saveUserInfo(openId, nickName, avatarUrl);
+        return userService.saveUserInfo(openId, nickname, avatarUrl);
     }
 
     @RequestMapping(value = {"/getUserInfo"}, method = {RequestMethod.GET})
