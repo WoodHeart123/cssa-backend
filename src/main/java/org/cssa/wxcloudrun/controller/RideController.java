@@ -39,13 +39,13 @@ public class RideController {
     // 获取该用户被移除的顺风车列表
     @RequestMapping(value = {"/getRemovedRideList"}, method = {RequestMethod.GET})
     @Operation(summary = "获取顺风车列表", description = "获取顺风车列表")
-    public Response<List<Ride>> getRemovedRideList(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String userId,
+    public Response<List<Ride>> getRemovedRideList(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId,
                                                    @RequestParam Integer offset,
                                                    @RequestParam Integer limit) {
-        if (userId == null || StringUtils.isEmptyOrWhitespace(userId)) {
+        if (openId == null || StringUtils.isEmptyOrWhitespace(openId)) {
             return new Response<>(ReturnCode.INVALID_USER_TOKEN);
         }
-        return rideService.getRemovedRideList(userId,offset, limit);
+        return rideService.getRemovedRideList(openId,offset, limit);
     }
 
     // 获取特定顺风车信息
@@ -61,16 +61,16 @@ public class RideController {
     public Response<Object> publishRide(@Parameter(description = "是否保存联系方式")
                                          @RequestParam(value = "save", required = false, defaultValue = "false") Boolean ifSave,
                                      @Parameter(description = "顺风车信息") @RequestBody Ride ride,
-                                     @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String userId) {
+                                     @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId) {
         // 内容检查
         String censoredContent = ride.getOrigin() + ";" + ride.getDestination() + ";" + ride.getDescription();
-        WechatResponse wechatResponse = weChatAPI.MsgCheck(censoredContent, userId, 3);
+        WechatResponse wechatResponse = weChatAPI.MsgCheck(censoredContent, openId, 3);
         if(wechatResponse.getResult().getLabel() >= 20000){
             return new Response<>(ReturnCode.CENSORED_UGC_CONTENT);
         }
 
         // 设置用户 ID
-        ride.setUserId(userId);
+        ride.setUserId(openId);
 
         // 保存联系信息到用户
 //        if (ifSave) {
@@ -91,19 +91,19 @@ public class RideController {
     @Operation(summary = "更新顺风车信息", description = "更新顺风车信息")
     public Response<Object> updateRide(
             @Parameter(description = "顺风车信息") @RequestBody Ride ride,
-            @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String userId,
+            @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId,
             @Parameter(description = "是否发布 (默认值为 false)")
             @RequestParam(value = "ifToPublish", required = false, defaultValue = "false") Boolean ifToPublish) {
 
         // 内容检查
         String censoredContent = ride.getOrigin() + ";" + ride.getDestination() + ";" + ride.getDescription();
-        WechatResponse wechatResponse = weChatAPI.MsgCheck(censoredContent, userId, 3);
+        WechatResponse wechatResponse = weChatAPI.MsgCheck(censoredContent, openId, 3);
         if(wechatResponse.getResult().getLabel() >= 20000){
             return new Response<>(ReturnCode.CENSORED_UGC_CONTENT);
         }
 
         // 更新顺风车
-        if (rideService.updateRide(userId, ride, ifToPublish)) {
+        if (rideService.updateRide(openId, ride, ifToPublish)) {
             return new Response<>(ReturnCode.SUCCESS);
         } else {
             return new Response<>(ReturnCode.ACTION_FAILED);
@@ -132,9 +132,9 @@ public class RideController {
     @RequestMapping(value = {"/deleteRide"}, method = {RequestMethod.DELETE})
     @Operation(summary = "删除顺风车", description = "彻底从数据库中删除顺风车信息")
     public Response<Object> deleteRide(@Parameter(description = "顺风车ID") @RequestParam Integer rideId,
-                                       @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String userId) {
+                                       @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId) {
         // 检查该用户是否拥有该顺风车信息
-        if (!rideService.isRideOwnedByUser(userId,rideId)) {
+        if (!rideService.isRideOwnedByUser(openId,rideId)) {
             return new Response<>(ReturnCode.RIDE_NOT_EXIST);
         }
 
