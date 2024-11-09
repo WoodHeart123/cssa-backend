@@ -15,7 +15,7 @@ public class User {
 
     private String userID;
     private String email;
-    private String nickname;
+    private String nickname; // 用户的真实昵称
     private List<Integer> likedComment;
     private String likedCommentJSON;
     private List<Integer> savedProduct;
@@ -28,6 +28,7 @@ public class User {
     private String wechatID;
     private Boolean subscribe;
     private Boolean isBlocked;
+    private String avatarUrl; // 用户的真实头像url
 
 
     /**
@@ -44,5 +45,6 @@ public class User {
         this.avatar = 1;
         this.subscribe = false;
         this.isBlocked = false;
+        this.avatarUrl = "";
     }
 }

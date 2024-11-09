@@ -17,7 +17,8 @@
                likedCommentJSON,
                savedProductJSON,
                subscribe,
-               isBlocked
+               isBlocked,
+               avatarUrl
         FROM user
         WHERE userID = #{userID}
     </select>
@@ -294,14 +295,14 @@
     <update id="saveContact">
         UPDATE user
         SET
-#             phoneNumber =
-#                 CASE
-#                     WHEN #{contactInfo.phoneNumber} IS NOT NULL
-#                         AND #{contactInfo.phoneNumber} != ''
-#                         AND #{contactInfo.phoneNumber} != phoneNumber
-#                         THEN #{contactInfo.phoneNumber}
-#                     ELSE phoneNumber
-#                     END,
+           phoneNumber =
+                CASE
+                    WHEN #{contactInfo.phoneNumber} IS NOT NULL
+                        AND #{contactInfo.phoneNumber} != ''
+                         AND #{contactInfo.phoneNumber} != phoneNumber
+                        THEN #{contactInfo.phoneNumber}
+                    ELSE phoneNumber
+                    END,
             wechatID =
                 CASE
                     WHEN #{contactInfo.weChatId} IS NOT NULL
@@ -320,4 +321,18 @@
                     END
         WHERE userID = #{userId}
     </update>
+
+    <insert id="saveUserInfo" parameterType="map">
+        UPDATE user
+        SET nickname=#{nickName},
+            avatarUrl=#{avatarUrl}
+        WHERE userID = #{userId}
+    </insert>
+
+    <select id="getUserInfo" resultType="map" parameterType="String">
+        SELECT nickname AS nickname, avatarUrl AS avatarUrl
+        FROM user
+        WHERE userID = #{userId}
+    </select>
+
 </mapper>

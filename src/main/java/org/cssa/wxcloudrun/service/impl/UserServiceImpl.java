@@ -235,7 +235,7 @@ public class UserServiceImpl implements UserService {
      * 该方法根据用户的 openID 从数据库中获取用户的被拉黑状态并返回。默认值为0-否。
      *
      * @param openID 微信用户在小程序的唯一标识符。
-     * @return 用户是否被拉黑。1-是；0-否。
+     * @return 用户是否被拉黑。true-是；false-否。
      */
     @Override
     public Response<Boolean> isBlocked(String openID) {return new Response<>(userMapper.isBlocked(openID));}
@@ -250,4 +250,28 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void saveContact(String userId, Contact info) { userMapper.saveContact(userId, info);}
+
+    /**
+     * 保存用户目前使用的微信昵称和头像到库中。
+     *
+     * @param userId    用户在小程序的唯一标识符（ID）。
+     * @param nickName  用户目前使用的昵称。
+     * @param avatarUrl 用户目前使用的头像链接。它指向微信服务器上的头像图片资源。
+     * @return
+     */
+    @Override
+    public Response<Boolean> saveUserInfo(String userId, String nickName, String avatarUrl) {
+        return new Response<>(userMapper.saveUserInfo(userId,nickName,avatarUrl));
+    }
+
+    /**
+     * 从库中获取保存的用户使用的微信昵称和头像。
+     *
+     * @param userId 用户在小程序的唯一标识符（ID）。
+     * @return 一串包含库中保存的用户昵称和头像的json数组，其格式为["nickName":"Pia~","avatarUrl":"XXXXXX"].
+     */
+    @Override
+    public Response<Object> getUserInfo(String userId) {
+        return new Response<>(userMapper.getUserInfo(userId));
+    }
 }
