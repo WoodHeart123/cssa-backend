@@ -269,4 +269,24 @@ public class UserController {
     public Response<Boolean> isSubscribed(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
         return userService.isSubscribed(openID);
     }
+
+    @RequestMapping(value = {"isBlocked"}, method = {RequestMethod.GET})
+    @Operation(summary = "检查用户是否被拉黑", description = "检查用户是否被拉黑")
+    public Response<Boolean> isBlocked(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
+        return userService.isBlocked(openID);
+    }
+
+    @RequestMapping(value = {"/saveUserInfo"}, method = {RequestMethod.POST})
+    @Operation(summary = "保存真实的用户信息",description = "保存用户目前真实的昵称和头像链接")
+    public Response<Boolean> saveUserInfo(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId,
+                                          @RequestParam String nickname,
+                                          @RequestParam String avatarUrl) {
+        return userService.saveUserInfo(openId, nickname, avatarUrl);
+    }
+
+    @RequestMapping(value = {"/getUserInfo"}, method = {RequestMethod.GET})
+    @Operation(summary = "获取真实的用户信息",description = "获取数据库中用户真实的昵称和头像链接")
+    public Response<Object> getUserInfo(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId) {
+        return userService.getUserInfo(openId);
+    }
 }

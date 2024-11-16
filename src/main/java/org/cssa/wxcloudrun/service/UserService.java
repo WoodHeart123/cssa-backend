@@ -1,10 +1,6 @@
 package org.cssa.wxcloudrun.service;
 
-import org.cssa.wxcloudrun.model.CourseComment;
-import org.cssa.wxcloudrun.model.Product;
-import org.cssa.wxcloudrun.model.Rental;
-import org.cssa.wxcloudrun.model.Response;
-import org.cssa.wxcloudrun.model.Subscription;
+import org.cssa.wxcloudrun.model.*;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -126,4 +122,42 @@ public interface UserService {
      * @return 用户是否订阅了邮件服务。
      */
     Response<Boolean> isSubscribed(String openID);
+
+    /**
+     * 检查用户是否被拉黑
+     *
+     * 该方法根据用户的 openID 从数据库中获取用户的被拉黑状态并返回。默认值为0-否。
+     *
+     * @param openID 微信用户在小程序的唯一标识符。
+     * @return 用户是否被拉黑。true-是；false-否。
+     */
+    Response<Boolean> isBlocked(String openID);
+
+    /**
+     * 更新指定用户的联系方式。
+     * 该方法根据用户ID更新用户的联系信息，包括电话号码、微信ID和电子邮件地址。
+     * 如果传入的联系信息字段为null或空字符串，则不会更新相应字段，保留数据库中的原有值。
+     *
+     * @param userId 用户的唯一标识符（ID）。
+     * @param info   包含用户联系信息的对象，包括电话号码（phoneNumber）、微信ID（weChatId）和电子邮件地址（email）。
+     */
+    void saveContact(String userId, Contact info);
+
+    /**
+     * 保存用户目前使用的微信昵称和头像到库中。
+     *
+     * @param userId 用户在小程序的唯一标识符（ID）。
+     * @param nickName 用户目前使用的昵称。
+     * @param avatarUrl 用户目前使用的头像链接。它指向微信服务器上的头像图片资源。
+     * @return
+     */
+    Response<Boolean> saveUserInfo(String userId, String nickName, String avatarUrl);
+
+    /**
+     * 从库中获取保存的用户使用的微信昵称和头像。
+     *
+     * @param userId 用户在小程序的唯一标识符（ID）。
+     * @return 一串包含库中保存的用户昵称和头像的json数组，其格式为["nickname":"Pia~","avatarUrl":"https://thirdwx.qlogo.cn/mmopen/vi_32/DXfHyaEe1zXXXXXX/132"].
+     */
+    Response<Object> getUserInfo(String userId);
 }
