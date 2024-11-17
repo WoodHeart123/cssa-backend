@@ -179,6 +179,7 @@ public class RideServiceImpl implements RideService {
      * @param rideID 顺风车信息的Id
      * @return 顺风车信息是否被发布
      */
+
     public boolean isPublished(Integer rideID) {
         return rideMapper.isPublished(rideID);
     }
