@@ -43,26 +43,43 @@ public class RideServiceImpl implements RideService {
      */
     @Override
     public Response<List<Ride>> getRideList(Integer offset, Integer limit) {
-        List<Ride> rideList = rideMapper.getRideList(offset, limit);
+        int batchSize = limit;
+        List<Ride> returnedList  = rideMapper.getRideList(offset, limit);
         Timestamp currentTime = Timestamp.valueOf(ZonedDateTime.now(ZoneId.of("America/Chicago")).toLocalDateTime());
 
-        List<Ride> returnedList = new ArrayList<>();
+        // 检查返回的顺风车中是否由未被标记但已过期的顺风车信息
+        while (returnedList.size() < limit) {
+            List<Ride> rideList = rideMapper.getRideList(offset, batchSize);
 
-        rideList.forEach(ride -> {
-            boolean isExpired = checkIfExpired(ride, currentTime);
-
-            if (isExpired) {
-                // 更新数据库，将其标记为已移除
-                ride.setRemovedTime(currentTime);
-                removeRide(ride.getRideId());
-            } else {
-                // 只为未过期的顺风车解析JSON数据到Contact和images列表
-                ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
-                ride.setImages(JSON.parseArray(ride.getImagesJSON(), String.class));
-
-                returnedList.add(ride);
+            // 数据源耗尽，退出循环
+            if (rideList.isEmpty()) {
+                break;
             }
-        });
+
+            // 遍历当前获取的顺风车列表
+            for (Ride ride : rideList) {
+                boolean isExpired = checkIfExpired(ride, currentTime); // 与当前CST时间对比检查顺风车是否过期
+
+                if (isExpired) {
+                    // 将过期顺风车标记为已移除
+                    ride.setRemovedTime(currentTime);
+                    removeRide(ride.getRideId());
+                } else {
+                    // 将有效顺风车的 JSON 数据解析到 Contact 和 images 列表
+                    ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
+                    ride.setImages(JSON.parseArray(ride.getImagesJSON(), String.class));
+                    returnedList.add(ride); // 添加到返回列表中
+
+                    // 如果返回列表已满足需求数量，退出内层循环
+                    if (returnedList.size() >= limit) {
+                        break;
+                    }
+                }
+            }
+
+            // 调整偏移量，继续获取下一批顺风车
+            offset += batchSize;
+        }
 
         return new Response<>(returnedList);
     }
@@ -171,7 +188,6 @@ public class RideServiceImpl implements RideService {
      */
 
     private boolean checkIfExpired(Ride ride, Timestamp currentTime) {
-        System.out.println("checkIfExpired is called.");
         if (ride.getDepartureTime() == null) {
             // 如果没有出发时间，无法判断是否过期，直接返回 false
             return false;
