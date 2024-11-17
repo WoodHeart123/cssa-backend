@@ -58,7 +58,7 @@
         ORDER BY activity.id
     </select>
 
-    <select id="findActivity" resultType="Activity">
+    <select id="findActivity" resultMap="ActivityMap">
         SELECT activity.*,
                COUNT(if(activity_responses.deleted_at is NULL, user_id, NULL)) as userJoinedNum
         FROM activity
