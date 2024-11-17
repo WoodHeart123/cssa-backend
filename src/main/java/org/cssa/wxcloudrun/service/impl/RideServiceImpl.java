@@ -6,7 +6,6 @@ import org.cssa.wxcloudrun.model.Contact;
 import org.cssa.wxcloudrun.model.Response;
 import org.cssa.wxcloudrun.model.Ride;
 import org.cssa.wxcloudrun.service.RideService;
-import org.jetbrains.annotations.ApiStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -163,7 +162,6 @@ public class RideServiceImpl implements RideService {
      * @param rideID 顺风车信息的Id
      * @return 顺风车信息是否被发布
      */
-    @ApiStatus.Internal
     public boolean isPublished(Integer rideID) {
         return rideMapper.isPublished(rideID);
     }
@@ -171,7 +169,7 @@ public class RideServiceImpl implements RideService {
     /**
      * 检查顺风车是否过期
      */
-    @ApiStatus.Internal
+
     private boolean checkIfExpired(Ride ride, Timestamp currentTime) {
         System.out.println("checkIfExpired is called.");
         if (ride.getDepartureTime() == null) {
