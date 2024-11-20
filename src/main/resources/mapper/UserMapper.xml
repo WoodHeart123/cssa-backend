@@ -322,12 +322,18 @@
         WHERE userID = #{userId}
     </update>
 
-    <insert id="saveUserInfo" parameterType="map">
+    <update id="saveUserInfo" parameterType="map">
         UPDATE user
-        SET nickname=#{nickName},
-            avatarUrl=#{avatarUrl}
+        <set>
+            <if test="nickName != null">
+                nickname = #{nickName},
+            </if>
+            <if test="avatarUrl != null">
+                avatarUrl = #{avatarUrl},
+            </if>
+        </set>
         WHERE userID = #{userId}
-    </insert>
+    </update>
 
     <select id="getUserInfo" resultType="map" parameterType="String">
         SELECT nickname AS nickname, avatarUrl AS avatarUrl

@@ -255,13 +255,29 @@ public class UserServiceImpl implements UserService {
      * 保存用户目前使用的微信昵称和头像到库中。
      *
      * @param userId    用户在小程序的唯一标识符（ID）。
-     * @param nickName  用户目前使用的昵称。
-     * @param avatarUrl 用户目前使用的头像链接。它指向微信服务器上的头像图片资源。
-     * @return
+     * @param nickName  用户目前使用的昵称（可选）。
+     * @param avatarUrl 用户目前使用的头像链接（可选）。它指向微信服务器上的头像图片资源。
+     * @return 是否成功更新用户信息的响应对象。
      */
     @Override
     public Response<Boolean> saveUserInfo(String userId, String nickName, String avatarUrl) {
-        return new Response<>(userMapper.saveUserInfo(userId,nickName,avatarUrl));
+        // 如果 nickName 是空字符串或仅包含空格，将其视为 null
+        if (nickName != null && nickName.isBlank()) {
+            nickName = null;
+        }
+
+        // 如果 avatarUrl 是空字符串或仅包含空格，将其视为 null
+        if (avatarUrl != null && avatarUrl.isBlank()) {
+            avatarUrl = null;
+        }
+
+        // 检查参数是否为空，如果 nickName 和 avatarUrl 都为 null，直接返回成功
+        if (nickName == null && avatarUrl == null) {
+            return new Response<>(true);
+        }
+
+        // 如果 nickName 或 avatarUrl 为 null，传递到 Mapper 时改为保留数据库原值的逻辑
+        return new Response<>(userMapper.saveUserInfo(userId, nickName, avatarUrl));
     }
 
     /**
