@@ -44,7 +44,7 @@ public class RideServiceImpl implements RideService {
     @Override
     public Response<List<Ride>> getRideList(Integer offset, Integer limit) {
         int batchSize = limit;
-        List<Ride> returnedList  = rideMapper.getRideList(offset, limit);
+        List<Ride> returnedList  = new ArrayList<>();
         Timestamp currentTime = Timestamp.valueOf(ZonedDateTime.now(ZoneId.of("America/Chicago")).toLocalDateTime());
 
         // 检查返回的顺风车中是否由未被标记但已过期的顺风车信息
