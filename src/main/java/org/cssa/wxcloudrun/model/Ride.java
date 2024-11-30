@@ -16,11 +16,11 @@ public class Ride {
     @Schema(description = "顺风车 rideID，系统自动生成", example = "123")
     private Integer rideId;
 
-    @Schema(description = "顺风车请求类型，默认值为 1（出顺风车）；2（请求顺风车）", example = "1")
-    private Integer requestType = 1;
+    @Schema(description = "顺风车请求类型，0（出顺风车)，1（请求顺风车）；默认值为0（出顺风车）", example = "0")
+    private Integer requestType = 0;
 
-    @Schema(description = "顺风车类型，1 表示单程，2 表示往返，默认值为 1（单程）", example = "1")
-    private Integer rideType = 1;
+    @Schema(description = "顺风车类型，0 表示单程，1 表示往返，默认值为 0（单程）", example = "1")
+    private Integer rideType = 0;
 
     @Schema(description = "单程每人顺风车的价格", example = "50")
     private Integer price;
