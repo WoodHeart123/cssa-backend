@@ -35,7 +35,7 @@ public class RideServiceImpl implements RideService {
     }
 
     /**
-     * 获取未被移除的顺风车列表。
+     * 获取未被移除的顺风车列表。根据发布时间排序。
      *
      * @param offset 从结果集开始的偏移量
      * @param limit  每页结果的最大数量
@@ -80,6 +80,9 @@ public class RideServiceImpl implements RideService {
             // 调整偏移量，继续获取下一批顺风车
             offset += batchSize;
         }
+
+        // 根据 publishedTime 对返回的顺风车列表进行降序排序
+        returnedList.sort((ride1, ride2) -> ride2.getPublishedTime().compareTo(ride1.getPublishedTime()));
 
         return new Response<>(returnedList);
     }

@@ -15,7 +15,7 @@ public interface RideService {
     Response<Ride> getRide(Integer rideId);
 
     /**
-     * 获取未被移除的顺风车列表。
+     * 获取未被移除的顺风车列表。根据发布时间排序。
      *
      * @param offset 从结果集开始的偏移量
      * @param limit 每页结果的最大数量
