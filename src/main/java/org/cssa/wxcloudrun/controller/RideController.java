@@ -58,10 +58,9 @@ public class RideController {
     // 发布顺风车
     @RequestMapping(value = {"/publishRide"}, method = {RequestMethod.POST})
     @Operation(summary = "发布顺风车", description = "发布顺风车")
-    public Response<Object> publishRide(@Parameter(description = "是否保存联系方式")
-                                         @RequestParam(value = "save", required = false, defaultValue = "false") Boolean ifSave,
-                                     @Parameter(description = "顺风车信息") @RequestBody Ride ride,
-                                     @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId) {
+    public Response<Object> publishRide(@Parameter(description = "是否保存联系方式") @RequestParam(value = "save", required = false, defaultValue = "false") Boolean ifSave,
+                                        @Parameter(description = "顺风车信息") @RequestBody Ride ride,
+                                        @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId) {
         // 内容检查
         String censoredContent = ride.getOrigin() + ";" + ride.getDestination() + ";" + ride.getDescription();
         WechatResponse wechatResponse = weChatAPI.MsgCheck(censoredContent, openId, 3);
