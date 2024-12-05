@@ -7,6 +7,7 @@ import org.cssa.wxcloudrun.model.Response;
 import org.cssa.wxcloudrun.model.Ride;
 import org.cssa.wxcloudrun.service.RideService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
@@ -39,17 +40,23 @@ public class RideServiceImpl implements RideService {
      *
      * @param offset 从结果集开始的偏移量
      * @param limit  每页结果的最大数量
+     * @param userId （可选）用于筛选指定用户的顺风车列表。如果为 null，则不筛选用户。
      * @return 包含未被移除的顺风车列表的响应
      */
     @Override
-    public Response<List<Ride>> getRideList(Integer offset, Integer limit) {
+    public Response<List<Ride>> getRideList(Integer offset, Integer limit, @Nullable String userId) {
         int batchSize = limit;
         List<Ride> returnedList  = new ArrayList<>();
         Timestamp currentTime = Timestamp.valueOf(ZonedDateTime.now(ZoneId.of("America/Chicago")).toLocalDateTime());
 
         // 检查返回的顺风车中是否由未被标记但已过期的顺风车信息
         while (returnedList.size() < limit) {
-            List<Ride> rideList = rideMapper.getRideList(offset, batchSize);
+            List<Ride> rideList;
+            if (userId == null) {
+                rideList = rideMapper.getRideList(offset, batchSize);
+            } else {
+                rideList = rideMapper.getRideListByUserId(userId, offset, batchSize);
+            }
 
             // 数据源耗尽，退出循环
             if (rideList.isEmpty()) {

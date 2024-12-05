@@ -1,6 +1,7 @@
 package org.cssa.wxcloudrun.service;
 import org.cssa.wxcloudrun.model.Ride;
 import org.cssa.wxcloudrun.model.Response;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -19,9 +20,11 @@ public interface RideService {
      *
      * @param offset 从结果集开始的偏移量
      * @param limit 每页结果的最大数量
+     * @param userId （可选）用于筛选指定用户的顺风车列表。如果为 null，则不筛选用户。
      * @return 包含未被移除顺风车列表的响应
      */
-    Response<List<Ride>> getRideList(Integer offset, Integer limit);
+    Response<List<Ride>> getRideList(Integer offset, Integer limit, @Nullable String userId);
+
 
     /**
      * 获取该用户被移除的顺风车列表。

@@ -33,7 +33,16 @@ public class RideController {
     @Operation(summary = "获取顺风车列表", description = "获取顺风车列表")
     public Response<List<Ride>> getRideList(@RequestParam Integer offset,
                                             @RequestParam Integer limit) {
-        return rideService.getRideList(offset, limit);
+        return rideService.getRideList(offset, limit,null);
+    }
+
+    // 获取指定用户已发布但未被移除的顺风车列表。
+    @RequestMapping(value = {"/getRideListByUserId"}, method = {RequestMethod.GET})
+    @Operation(summary = "根据userId获取顺风车列表", description = "获取顺风车列表")
+    public Response<List<Ride>> getRideListByUserId(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId,
+                                                    @RequestParam Integer offset,
+                                                    @RequestParam Integer limit) {
+        return rideService.getRideList(offset, limit, openId);
     }
 
     // 获取该用户被移除的顺风车列表
