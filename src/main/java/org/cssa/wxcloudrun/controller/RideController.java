@@ -33,7 +33,7 @@ public class RideController {
     @Operation(summary = "获取顺风车列表", description = "获取顺风车列表")
     public Response<List<Ride>> getRideList(@RequestParam Integer offset,
                                             @RequestParam Integer limit) {
-        return rideService.getRideList(offset, limit,null);
+        return rideService.getRideList(offset, limit, null);
     }
 
     // 获取指定用户已发布但未被移除的顺风车列表。
