@@ -12,93 +12,49 @@ import java.util.Map;
 @Mapper
 public interface UserMapper {
 
-    void authSuccess(String userID);
-
     /**
-     * get user's info
+     * get user's info by openID
      *
-     * @param userID user ID
+     * @param openID user ID
      * @return email, nickname
      */
-    User login(String userID);
+    User getUserByOpenID(String openID);
 
     /**
-     * user register
+     * create user
      *
-     * @param nickname WeChat nickname
-     * @param userID   user ID
+     * @param nickname nickname
      */
-    void register(String nickname, String userID);
+    User createUser(String nickname);
 
     /**
-     * 更新数据库中用户的邮箱和订阅状态。
+     * get user's info by userID
      *
-     * 该方法执行一个 SQL 更新语句，设置用户表中由 'userID' 标识的用户的 'email' 和 'subscribe' 字段。
-     *
-     * @param email     要设置的用户新邮箱地址。此参数对应用户表中的 'email' 字段。
-     * @param subscribe 要设置的用户新订阅状态。此参数对应用户表中的 'subscribe' 字段。
-     * @param userID    要更新邮箱和订阅状态的用户的唯一标识符。此参数对应用户表中的 'userID' 字段。
-     */
-    void updateEmail(String email, Boolean subscribe, String userID);
-
-    /**
-     * update user wechatID
-     *
-     * @param userID userID
-     */
-    void updateWechatID(String wechatID, String userID);
-
-
-    /**
-     * update user's avatar
-     *
-     * @param avatar a number ranged from 1 to 12
-     */
-    void updateAvatar(String userID, Integer avatar);
-
-    /**
      * @param userID user ID
-     * @param offset the starting commentID
-     * @param limit  number of comments
-     * @return list of comment with limit size
+     * @return user
      */
-    List<CourseComment> getMyComment(@Param("userID") String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
+    User getUserByID(Integer userID);
 
-    void updateComment(String userID, Integer commentID, String comment);
+    /**
+     * update user's info
+     *
+     * @param user user
+     */
+    int updateUser(User user);
 
-    void deleteComment(String userID, Integer commentID);
+    void setProductTime(Integer productID, Integer userID, Timestamp time);
 
-    void updateNickname(String nickname, String userID);
+    void clearProductTime(Integer productID, Integer userID);
 
-    List<Product> getMySecondhand(@Param("userID") String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
+    void setRentalTime(Integer rentalID, Integer userID, Timestamp time);
 
-    void updateSecondHand(String userID, Product product);
+    void clearRentalTime(Integer rentalID, Integer userID);
 
-    void deleteSecondHand(String userID, Integer productID);
-
-    void setProductTime(Integer productID, String userID, Timestamp time);
-
-    void clearProductTime(Integer productID, String userID);
-
-    void setRentalTime(Integer rentalID, String userID, Timestamp time);
-
-    void clearRentalTime(Integer rentalID, String userID);
-
-    void deleteRental(String userID, Integer rentalID);
-
-    ArrayList<Rental> getMyRental(String userID, Integer offset, Integer limit);
-
-    String getEmail(String userID);
 
     Boolean isSubscribed(String openID);
 
-    String getOpenIDFromEncryptedID(String encryptedID);
 
     Boolean ifEncryptedIDExists(String encryptedID);
-
-    void updateEncryptedID(String userID, String encryptedID);
-
-    boolean isBlocked(String userID);
 
     void saveContact(@Param("userId") String userId, @Param("contactInfo") Contact contactInfo);
 

@@ -35,7 +35,7 @@ public class UserEventListener {
     @Async
     public void register(SignupEvent signupEvent) {
         SignupInfo signupInfo = signupEvent.getSignupInfo();
-        User user = userMapper.login(signupInfo.getUserID());
+        User user = userMapper.getUserByOpenID(signupInfo.getUserID());
         Activity activity = activityMapper.findActivity(signupInfo.getActID());
         if (user.getEmail() == null) {
             return;

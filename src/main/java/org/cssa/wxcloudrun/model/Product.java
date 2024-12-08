@@ -10,11 +10,19 @@ import java.util.List;
 @Data
 public class Product {
 
+    public enum Condition {
+        NEW,
+        ALMOST_NEW,
+        USED,
+        IMPAIRED,
+    }
+
+
     @Schema(description = "商品ID", example = "1")
     private Integer productID;
 
-    @Schema(description = "发布人用户ID", example = "f3sd-21ad")
-    private String userID;
+    @Schema(description = "发布人用户ID", example = "1")
+    private Integer userID;
 
     @Schema(description = "发布人头像序号", example = "1")
     private Integer sellerAvatar;
@@ -41,8 +49,6 @@ public class Product {
     private String contact;
     @Schema(description = "商品图片URL")
     private List<String> images;
-    @Schema(hidden = true)
-    private String imagesJSON;
     @Schema(description = "商品交易方式", example = "自提")
     private String delivery;
 

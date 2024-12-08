@@ -2,21 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.cssa.wxcloudrun.dao.RentalMapper">
 
+    <resultMap id="RentalMap" type="Rental">
+        <result property="userID" column="user_id"/>
+        <result property="rentalID" column="rentalID"/>
+        <result property="sexConstraint" column="sexConstraint"/>
+        <result property="floorPlan" column="floorPlan"/>
+        <result property="description" column="description"/>
+        <result property="publishedTime" column="publishedTime"/>
+        <result property="rentalStartTime" column="rentalStartTime"/>
+        <result property="rentalEndTime" column="rentalEndTime"/>
+        <result property="price" column="price"/>
+        <result property="location" column="location"/>
+        <result property="contact" column="contact"/>
+        <result property="images" column="images" typeHandler="org.cssa.wxcloudrun.handler.JsonListTypeHandler"/>
+        <result property="sellerAvatar" column="sellerAvatar"/>
+        <result property="sellerNickname" column="sellerNickname"/>
+    </resultMap>
+
     <insert id="postRentalInfo" parameterType="Rental">
-        INSERT INTO rental (userID, rentalID, sexConstraint, floorPlan, description, publishedTime, rentalStartTime,
-                            rentalEndTime, price, location, contact, imagesJSON)
-        VALUES (#{userID}, #{rentalID}, #{sexConstraint}, #{floorPlan}, #{description}, #{publishedTime},
-                #{rentalStartTime}, #{rentalEndTime}, #{price}, #{location}, #{contact}, #{imagesJSON})
+        INSERT INTO rental (user_id, sexConstraint, floorPlan, description, publishedTime, rentalStartTime,
+                            rentalEndTime, price, location, contact, images)
+        VALUES (#{userID}, #{sexConstraint}, #{floorPlan}, #{description}, #{publishedTime},
+                #{rentalStartTime}, #{rentalEndTime}, #{price}, #{location}, #{contact}, #{images, typeHandler=org.cssa.wxcloudrun.handler.JsonListTypeHandler})
     </insert>
 
 
-    <select id="getRentalList" parameterType="Map" resultType="Rental">
-        SELECT rental.userID, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
+    <select id="getRentalList" parameterType="Map" resultMap="RentalMap">
+        SELECT rental.user_id, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
         rental.publishedTime, rental.rentalStartTime, rental.rentalEndTime, rental.price,
-        rental.location, rental.contact, rental.imagesJSON,
+        rental.location, rental.contact, rental.images,
         user.avatar as sellerAvatar, user.nickname as sellerNickname
         FROM rental
-        INNER JOIN user on rental.userID = user.userID
+        INNER JOIN user on rental.user_id = user.id
         WHERE rental.price &lt;= #{priceLimit}
         AND rental.rentalStartTime &gt;= Date_SUB(NOW(), INTERVAL 5 DAY)
         AND rental.publishedTime IS NOT NULL
@@ -28,13 +45,13 @@
         LIMIT #{offset}, #{limit}
     </select>
 
-    <select id="getRentalListByTime" parameterType="Map" resultType="Rental">
-        SELECT rental.userID, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
+    <select id="getRentalListByTime" parameterType="Map" resultMap="RentalMap">
+        SELECT rental.user_id, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
         rental.publishedTime, rental.rentalStartTime, rental.rentalEndTime, rental.price,
-        rental.location, rental.contact, rental.imagesJSON,
+        rental.location, rental.contact, rental.images,
         user.avatar as sellerAvatar, user.nickname as sellerNickname
         FROM rental
-        INNER JOIN user on rental.userID = user.userID
+        INNER JOIN user on rental.user_id = user.id
         WHERE rental.rentalID >= #{offset}
         AND rental.price &lt;= #{priceLimit}
         AND rental.rentalStartTime &lt;= Date_ADD(#{startTime}, INTERVAL 5 DAY) AND rental.rentalStartTime &gt;=
@@ -65,34 +82,47 @@
           AND userID = #{userID}
     </update>
 
-
-    <update id="updateRentalSavedList" parameterType="User">
-        UPDATE user
-        SET savedRentalJSON = #{savedRentalJSON}
-        WHERE userID = #{userID}
-    </update>
-
     <update id="saveContact">
         UPDATE user
-        SET wechatID = #{contact}
-        WHERE userID = #{userID}
+        SET wechat_id = #{contact}
+        WHERE id = #{userID}
     </update>
 
-    <select id="getRentalSavedList" resultType="User">
-        SELECT userID, savedRentalJSON
-        FROM user
-        WHERE userID = #{userID}
-    </select>
-
-    <select id="getRental" parameterType="Integer" resultType="Rental">
-        SELECT rental.userID, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
+    <select id="getRental" parameterType="Integer" resultMap="RentalMap">
+        SELECT rental.user_id, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
         rental.publishedTime, rental.rentalStartTime, rental.rentalEndTime, rental.price,
-        rental.location, rental.contact, rental.imagesJSON,
+        rental.location, rental.contact, rental.images,
         user.avatar as sellerAvatar, user.nickname as sellerNickname
         FROM rental
-        INNER JOIN user on rental.userID = user.userID
+        INNER JOIN user on rental.user_id = user.id
         WHERE rental.rentalID = #{rentalID}
         LIMIT 1
     </select>
+
+    <select id="getUserRental" resultMap="RentalMap">
+        SELECT rental.user_id,
+               rental.rentalID,
+               rental.sexConstraint,
+               rental.floorPlan,
+               rental.description,
+               rental.publishedTime,
+               rental.rentalStartTime,
+               rental.rentalEndTime,
+               rental.price,
+               rental.location,
+               rental.contact,
+               rental.images
+        FROM rental
+        WHERE user_id = #{userID}
+        ORDER BY rental.publishedTime DESC
+        LIMIT ${offset}, ${limit}
+    </select>
+
+    <delete id="deleteRental" parameterType="Map">
+        DELETE
+        FROM rental
+        WHERE rentalID = #{rentalID}
+          AND user_id = #{userID}
+    </delete>
 
 </mapper>

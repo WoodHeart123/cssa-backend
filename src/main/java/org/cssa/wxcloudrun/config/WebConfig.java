@@ -1,21 +1,31 @@
 package org.cssa.wxcloudrun.config;
 
+import org.cssa.wxcloudrun.dao.UserMapper;
+import org.cssa.wxcloudrun.util.UserArgumentResolver;
 import org.cssa.wxcloudrun.util.WeixinServiceInterceptor;
 import com.alibaba.fastjson2.JSONWriter;
 import com.alibaba.fastjson2.support.spring6.http.converter.FastJsonHttpMessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    private final UserMapper userMapper;
+
+    @Autowired
+    public WebConfig(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -60,5 +70,11 @@ public class WebConfig implements WebMvcConfigurer {
         fastJsonConfig.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
         converters.add(0, fastJsonHttpMessageConverter);
+    }
+
+    @Override
+    public void addArgumentResolvers(
+            List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new UserArgumentResolver(userMapper));
     }
 }

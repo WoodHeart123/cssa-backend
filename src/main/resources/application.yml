@@ -58,6 +58,7 @@ spring:
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml
   config-location: classpath:mapper/mybatis-config.xml
+  type-handlers-package: org.cssa.wxcloudrun.handler
 
 jwt:
   header: Authorization

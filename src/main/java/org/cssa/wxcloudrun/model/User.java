@@ -1,6 +1,9 @@
 package org.cssa.wxcloudrun.model;
 
 
+import com.alibaba.fastjson2.annotation.JSONField;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -10,41 +13,22 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
+@Builder
 public class User {
 
-    private String userID;
+    private Integer id;
+    @JSONField(serialize = false, deserialize = false)
+    private String openID;
     private String email;
     private String nickname; // 用户的真实昵称
-    private List<Integer> likedComment;
-    private String likedCommentJSON;
-    private List<Integer> savedProduct;
-    private String savedProductJSON;
     private String phoneNumber;
-    private List<Integer> savedRental;
-    private String savedRentalJSON;
     private Boolean isStudent;
     private Integer avatar;
     private String wechatID;
     private Boolean subscribe;
     private Boolean isBlocked;
-    private String avatarUrl; // 用户的真实头像url
+    private String avatarURL; // 用户的真实头像url
 
-
-    /**
-     * constructor for new user
-     *
-     * @param nickname nickname of user;
-     */
-    public User(String nickname) {
-        this.nickname = nickname;
-        this.email = null;
-        this.likedComment = new ArrayList<>();
-        this.savedProduct = new ArrayList<>();
-        this.isStudent = false;
-        this.avatar = 1;
-        this.subscribe = false;
-        this.isBlocked = false;
-        this.avatarUrl = "";
-    }
 }

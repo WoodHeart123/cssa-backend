@@ -25,7 +25,11 @@ public interface SecondhandService {
     Response<Object> saveProduct(Product product, Boolean save);
 
 
-    Response<Object> updateSecondHand(String userID, Product product);
+    Response<Object> updateSecondHand(Integer userID, Product product);
+
+    Response<List<Product>> getUserSecondhand(Integer userID, Integer offset, Integer limit);
+
+    Response<Object> deleteUserSecondHand(Integer userID, Integer productID);
 
 
 }

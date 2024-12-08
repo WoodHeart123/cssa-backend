@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.cssa.wxcloudrun.dao.SecondhandMapper">
+    
+    <resultMap id="ProductMap" type="Product">
+        <result property="productID" column="productID"/>
+        <result property="userID" column="user_id"/>
+        <result property="productTitle" column="productTitle"/>
+        <result property="productDescription" column="productDescription"/>
+        <result property="time" column="time"/>
+        <result property="price" column="price"/>
+        <result property="productCondition" column="productCondition"/>
+        <result property="contact" column="contact"/>
+        <result property="images" column="images" typeHandler="org.cssa.wxcloudrun.handler.JsonListTypeHandler"/>
+        <result property="delivery" column="delivery"/>
+        <result property="sellerAvatar" column="sellerAvatar"/>
+        <result property="sellerNickname" column="sellerNickname"/>
+    </resultMap>
 
-    <select id="getAllProductList" resultType="Product">
+    <select id="getProductList" resultMap="ProductMap">
         SELECT secondhand.productID,
                secondhand.productTitle,
                secondhand.productDescription,
@@ -10,67 +25,23 @@
                secondhand.price,
                secondhand.productCondition,
                secondhand.contact,
-               secondhand.imagesJSON,
+               secondhand.images,
                secondhand.delivery,
                COALESCE(user.avatar, 1)            as sellerAvatar,
                COALESCE(user.nickname, "微信用户") as sellerNickname
         FROM secondhand
-                 LEFT JOIN user on secondhand.userID = user.userID
+                 LEFT JOIN user on secondhand.user_id = user.id
         WHERE secondhand.time IS NOT NULL
-        ORDER BY secondhand.time DESC
-        LIMIT #{offset}, #{limit}
-    </select>
-
-    <select id="getProductList" resultType="Product">
-        SELECT secondhand.productID,
-               secondhand.productTitle,
-               secondhand.productDescription,
-               secondhand.time,
-               secondhand.price,
-               secondhand.productCondition,
-               secondhand.contact,
-               secondhand.imagesJSON,
-               secondhand.delivery,
-               COALESCE(user.avatar, 1)            as sellerAvatar,
-               COALESCE(user.nickname, "微信用户") as sellerNickname
-        FROM secondhand
-                 LEFT JOIN user on secondhand.userID = user.userID
-        WHERE secondhand.time IS NOT NULL
-        ORDER BY secondhand.time DESC
-        LIMIT #{offset}, #{limit}
-    </select>
-
-    <select id="getModifiedProducts" resultType="Product">
-        SELECT secondhand.productID,
-               secondhand.productTitle,
-               secondhand.productDescription,
-               secondhand.time,
-               secondhand.price,
-               secondhand.productCondition,
-               secondhand.contact,
-               secondhand.imagesJSON,
-               secondhand.delivery,
-               COALESCE(user.avatar, 1)            as sellerAvatar,
-               COALESCE(user.nickname, "微信用户") as sellerNickname
-        FROM secondhand
-                 LEFT JOIN user on secondhand.userID = user.userID
-        WHERE secondhand.time IS NOT NULL
-        AND secondhand.time &gt;= #{startTime}
         ORDER BY secondhand.time DESC
         LIMIT #{offset}, #{limit}
     </select>
 
     <insert id="saveProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="productID">
-        INSERT INTO secondhand (userID, productTitle, productDescription, price, productCondition, contact, imagesJSON,
+        INSERT INTO secondhand (user_id, productTitle, productDescription, price, productCondition, contact, images,
                                 delivery)
         VALUES (#{userID}, #{productTitle}, #{productDescription}, #{price}, #{productCondition}, #{contact},
-                #{imagesJSON}, #{delivery})
+                #{images, typeHandler=org.cssa.wxcloudrun.handler.JsonListTypeHandler}, #{delivery})
     </insert>
-    <select id="collect" resultType="boolean">
-        SELECT savedProductJson, userID
-        FROM user
-        WHERE userID = #{userID}
-    </select>
 
     <update id="updateSecondHand" parameterType="Map">
         UPDATE secondhand
@@ -82,25 +53,42 @@
             contact            = #{product.contact},
             delivery           = #{product.delivery},
             time               = CURRENT_TIMESTAMP
-        WHERE userID = #{userID}
+        WHERE user_id = #{userID}
           AND productID = #{product.productID}
     </update>
 
 
-    <select id="getProduct" resultType="Product">
+    <select id="getProduct" resultMap="ProductMap">
         SELECT secondhand.productID, secondhand.productTitle,secondhand.productDescription,
-        secondhand.time,secondhand.price,secondhand.productCondition,secondhand.contact,secondhand.imagesJSON,secondhand.delivery,
+        secondhand.time,secondhand.price,secondhand.productCondition,secondhand.contact,secondhand.images,secondhand.delivery,
         user.avatar as sellerAvatar, user.nickname as sellerNickname
         FROM secondhand
-        INNER JOIN user on secondhand.userID = user.userID
+        INNER JOIN user on secondhand.user_id = user.id
         WHERE secondhand.time IS NOT NULL AND secondhand.productID = #{productID}
         LIMIT 1
     </select>
 
     <update id="saveContact">
         UPDATE user
-        SET wechatID = #{contact}
-        WHERE userID = #{userID}
+        SET wechat_id = #{contact}
+        WHERE id = #{userID}
     </update>
+
+
+    <select id="getUserSecondhand" parameterType="Map" resultMap="ProductMap">
+        SELECT *
+        from secondhand
+        WHERE user_id = #{userID}
+        ORDER BY time DESC
+        LIMIT ${offset}, ${limit}
+    </select>
+
+
+    <delete id="deleteSecondHand" parameterType="Map">
+        DELETE
+        FROM secondhand
+        WHERE productID = #{productID}
+          AND user_id = #{userID}
+    </delete>
 
 </mapper>
