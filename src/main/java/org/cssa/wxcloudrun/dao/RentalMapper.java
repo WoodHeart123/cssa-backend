@@ -10,11 +10,10 @@ import java.util.ArrayList;
 @Mapper
 public interface RentalMapper {
 
-    ArrayList<Rental> getRentalListByTime(Integer offset, Integer limit, Integer priceLimit, ArrayList<String> floorplanList, Timestamp startTime, Timestamp endTime);
+    ArrayList<Rental> getRentalTimed(Integer offset, Integer limit, Integer priceLimit, ArrayList<String> floorplanList, Timestamp startTime, Timestamp endTime);
 
-    ArrayList<Rental> getRentalList(Integer offset, Integer limit, Integer priceLimit, ArrayList<String> floorplanList);
+    ArrayList<Rental> getRental(Integer offset, Integer limit, Integer priceLimit, ArrayList<String> floorplanList);
 
-    Rental getRental(Integer rentalId);
     void postRentalInfo(Rental rental);
 
     void saveContact(String userID, String contact);

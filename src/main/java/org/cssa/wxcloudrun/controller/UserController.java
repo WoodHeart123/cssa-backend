@@ -3,13 +3,10 @@ package org.cssa.wxcloudrun.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.cssa.wxcloudrun.config.CacheStore;
-import org.cssa.wxcloudrun.dao.UserMapper;
 import org.cssa.wxcloudrun.model.CourseComment;
 import org.cssa.wxcloudrun.model.Product;
 import org.cssa.wxcloudrun.model.Response;
 import org.cssa.wxcloudrun.model.ReturnCode;
-import org.cssa.wxcloudrun.model.Subscription;
-import org.cssa.wxcloudrun.service.RedisService;
 import org.cssa.wxcloudrun.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +32,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    RedisService redisService;
-
-    @Autowired
-    UserMapper userMapper;
-
 
     @RequestMapping(value = {"/getAuthCode"}, method = {RequestMethod.GET}, produces = "application/json")
     @Operation(summary = "获取验证码", description = "获取验证码")
@@ -48,7 +39,7 @@ public class UserController {
                                         @RequestHeader("x-wx-openid") String openid) {
         Random ran = new Random();
         int authCode = ran.nextInt(1000000);
-        redisService.set(String.format("authcode:%s", openid), authCode, 300);
+        authCodeCache.add(openid, authCode);
         userService.getAuthCode(email, authCode);
         return Response.builder().status(100).build();
     }
@@ -57,7 +48,7 @@ public class UserController {
     @Operation(summary = "验证验证码", description = "验证验证码")
     public Response<Object> verifyAuthCod(@Parameter(description = "验证码") @RequestParam Integer authCode,
                                           @RequestHeader("x-wx-openid") String openid) {
-        if (Objects.equals(redisService.get(String.format("authcode:%s", openid)), authCode)){
+        if (authCodeCache.get(openid) != null && Objects.equals(authCodeCache.get(openid), authCode)) {
             return userService.authSuccess(openid);
         } else {
             return Response.builder().status(106).message("验证码错误").build();
@@ -244,49 +235,4 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = {"/subscribe"}, method = {RequestMethod.POST})
-    @Operation(summary = "订阅邮件", description = "订阅邮件")
-    public Response<Boolean> subscribe(@RequestBody Subscription subscription) {
-        return userService.subscribe(subscription);
-    }
-
-    @RequestMapping(value = {"/unsubscribeByOpenID"}, method = {RequestMethod.POST})
-    @Operation(summary = "退订邮件", description = "根据微信open id退订邮件")
-    public Response<Boolean> unsubscribeByOpenID(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
-        return userService.unsubscribe(openID);
-    }
-
-    @RequestMapping(value = {"/unsubscribeByEncryptedID"}, method = {RequestMethod.POST})
-    @Operation(summary = "退订邮件", description = "根据内部加密id退订邮件")
-    public Response<Boolean> unsubscribeByEncryptedID(@RequestParam String encryptedID) {
-        String openID = userMapper.getOpenIDFromEncryptedID(encryptedID);
-        if (openID == null || openID.isBlank()) return new Response<>(ReturnCode.NO_SUCH_USER);
-        return userService.unsubscribe(openID);
-    }
-
-    @RequestMapping(value = {"/isSubscribed"}, method = {RequestMethod.GET})
-    @Operation(summary = "检查是否订阅", description = "检查是否订阅")
-    public Response<Boolean> isSubscribed(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
-        return userService.isSubscribed(openID);
-    }
-
-    @RequestMapping(value = {"isBlocked"}, method = {RequestMethod.GET})
-    @Operation(summary = "检查用户是否被拉黑", description = "检查用户是否被拉黑")
-    public Response<Boolean> isBlocked(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
-        return userService.isBlocked(openID);
-    }
-
-    @RequestMapping(value = {"/saveUserInfo"}, method = {RequestMethod.POST})
-    @Operation(summary = "保存真实的用户信息", description = "保存用户目前真实的昵称和头像链接。需要前端判断是否需要更新。")
-    public Response<Boolean> saveUserInfo(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId,
-                                          @RequestParam(required = false) String nickname,
-                                          @RequestParam(required = false) String avatarUrl) {
-        return userService.saveUserInfo(openId, nickname, avatarUrl);
-    }
-
-    @RequestMapping(value = {"/getUserInfo"}, method = {RequestMethod.GET})
-    @Operation(summary = "获取真实的用户信息",description = "获取数据库中用户真实的昵称和头像链接")
-    public Response<Object> getUserInfo(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId) {
-        return userService.getUserInfo(openId);
-    }
 }

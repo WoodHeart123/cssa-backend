@@ -19,8 +19,6 @@ public interface ActivityService {
 
     Response<List<Activity>> getActivityList();
 
-    Response<Activity> getActivity(Integer actID);
-
     Response<Object> registerActivity(SignupInfo signupInfo);
 
     Response<Object> cancelRegister(String userID, Integer actID);
