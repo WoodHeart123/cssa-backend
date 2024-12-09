@@ -33,7 +33,16 @@ public class RideController {
     @Operation(summary = "获取顺风车列表", description = "获取顺风车列表")
     public Response<List<Ride>> getRideList(@RequestParam Integer offset,
                                             @RequestParam Integer limit) {
-        return rideService.getRideList(offset, limit);
+        return rideService.getRideList(offset, limit, null);
+    }
+
+    // 获取指定用户已发布但未被移除的顺风车列表。
+    @RequestMapping(value = {"/getRideListByUserId"}, method = {RequestMethod.GET})
+    @Operation(summary = "根据userId获取顺风车列表", description = "获取顺风车列表")
+    public Response<List<Ride>> getRideListByUserId(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId,
+                                                    @RequestParam Integer offset,
+                                                    @RequestParam Integer limit) {
+        return rideService.getRideList(offset, limit, openId);
     }
 
     // 获取该用户被移除的顺风车列表
@@ -58,10 +67,9 @@ public class RideController {
     // 发布顺风车
     @RequestMapping(value = {"/publishRide"}, method = {RequestMethod.POST})
     @Operation(summary = "发布顺风车", description = "发布顺风车")
-    public Response<Object> publishRide(@Parameter(description = "是否保存联系方式")
-                                         @RequestParam(value = "save", required = false, defaultValue = "false") Boolean ifSave,
-                                     @Parameter(description = "顺风车信息") @RequestBody Ride ride,
-                                     @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId) {
+    public Response<Object> publishRide(@Parameter(description = "是否保存联系方式") @RequestParam(value = "save", required = false, defaultValue = "false") Boolean ifSave,
+                                        @Parameter(description = "顺风车信息") @RequestBody Ride ride,
+                                        @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId) {
         // 内容检查
         String censoredContent = ride.getOrigin() + ";" + ride.getDestination() + ";" + ride.getDescription();
         WechatResponse wechatResponse = weChatAPI.MsgCheck(censoredContent, openId, 3);

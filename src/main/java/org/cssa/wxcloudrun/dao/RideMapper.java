@@ -12,6 +12,8 @@ public interface RideMapper {
 
     List<Ride> getRideList(@Param("offset") Integer offset, @Param("limit") Integer limit);
 
+    List<Ride> getRideListByUserId(@Param("userId") String userId, @Param("offset") Integer offset, @Param("limit") Integer limit);
+
     List<Ride> getRemovedRideList(@Param("userId") String userId, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
     boolean isRideOwnedByUser(@Param("userId") String userId, @Param("rideId") Integer rideId);
