@@ -2,14 +2,12 @@ package org.cssa.wxcloudrun.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.cssa.wxcloudrun.model.CourseComment;
-import org.cssa.wxcloudrun.model.Product;
-import org.cssa.wxcloudrun.model.Rental;
-import org.cssa.wxcloudrun.model.User;
+import org.cssa.wxcloudrun.model.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface UserMapper {
@@ -33,10 +31,13 @@ public interface UserMapper {
     void register(String nickname, String userID);
 
     /**
-     * update user email
+     * 更新数据库中用户的邮箱和订阅状态。
      *
-     * @param email  email
-     * @param userID userID
+     * 该方法执行一个 SQL 更新语句，设置用户表中由 'userID' 标识的用户的 'email' 和 'subscribe' 字段。
+     *
+     * @param email     要设置的用户新邮箱地址。此参数对应用户表中的 'email' 字段。
+     * @param subscribe 要设置的用户新订阅状态。此参数对应用户表中的 'subscribe' 字段。
+     * @param userID    要更新邮箱和订阅状态的用户的唯一标识符。此参数对应用户表中的 'userID' 字段。
      */
     void updateEmail(String email, Boolean subscribe, String userID);
 
@@ -87,5 +88,22 @@ public interface UserMapper {
 
     ArrayList<Rental> getMyRental(String userID, Integer offset, Integer limit);
 
+    String getEmail(String userID);
+
+    Boolean isSubscribed(String openID);
+
+    String getOpenIDFromEncryptedID(String encryptedID);
+
+    Boolean ifEncryptedIDExists(String encryptedID);
+
+    void updateEncryptedID(String userID, String encryptedID);
+
+    boolean isBlocked(String userID);
+
+    void saveContact(@Param("userId") String userId, @Param("contactInfo") Contact contactInfo);
+
+    boolean saveUserInfo(@Param("userId") String userId,@Param("nickName") String nickName,@Param("avatarUrl") String avatarUrl);
+
+    Map<String, String> getUserInfo(String userId);
 
 }

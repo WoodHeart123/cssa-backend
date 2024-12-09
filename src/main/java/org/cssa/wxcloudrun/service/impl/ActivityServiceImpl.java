@@ -50,6 +50,12 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    public Response<Activity> getActivity(Integer actID) {
+        Activity act = activityMapper.findActivity(actID);
+        return new Response<>(act);
+    }
+
+    @Override
     public Response<Object> registerActivity(SignupInfo signupInfo) {
         Activity act = activityMapper.findActivity(signupInfo.getActID());
         if (act == null) {
@@ -78,6 +84,9 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public Response<List<Activity>> getRegisterList(String userID) {
         List<Activity> activityList = activityMapper.getRegisterList(userID);
+        for (Activity activity : activityList) {
+            activity.setImages((ArrayList<String>) JSON.parseArray(activity.getImagesJSON(), String.class));
+        }
         return new Response<>(activityList);
     }
 

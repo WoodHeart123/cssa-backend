@@ -24,7 +24,7 @@
     </resultMap>
 
     <select id="getActivityList" resultMap="ActivityMap">
-        SELECT activity.id    as id,
+        SELECT activity.id as id,
                COUNT(if(activity_responses.deleted_at is NULL, user_id, NULL)) as userJoinedNum,
                title,
                start_date,
@@ -58,7 +58,7 @@
         ORDER BY activity.id
     </select>
 
-    <select id="findActivity" resultType="Activity">
+    <select id="findActivity" resultMap="ActivityMap">
         SELECT activity.*,
                COUNT(if(activity_responses.deleted_at is NULL, user_id, NULL)) as userJoinedNum
         FROM activity
@@ -83,6 +83,7 @@
                end_date,
                location,
                price,
+               deadline,
                capacity,
                images,
                additional_info,

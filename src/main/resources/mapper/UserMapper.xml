@@ -16,7 +16,9 @@
                avatar,
                likedCommentJSON,
                savedProductJSON,
-               subscribe
+               subscribe,
+               isBlocked,
+               avatarUrl
         FROM user
         WHERE userID = #{userID}
     </select>
@@ -50,6 +52,11 @@
         SET avatar = #{avatar}
         WHERE userID = #{userID}
     </update>
+
+    <select id="getEmail" parameterType="String" resultType="String">
+        SELECT email FROM user
+        WHERE userID = #{userID}
+    </select>
 
     <select id="getMyComment" parameterType="Map" resultType="CourseComment">
         SELECT commentID,
@@ -260,5 +267,78 @@
         LIMIT #{limit}
     </select>
 
+    <select id="isSubscribed" parameterType="String" resultType="Boolean">
+        SELECT subscribe FROM user
+        WHERE userID = #{userID}
+    </select>
+
+    <select id="getOpenIDFromEncryptedID" parameterType="String" resultType="String">
+        SELECT userID FROM user
+        WHERE encryptedID = #{encryptedID}
+    </select>
+
+    <select id="ifEncryptedIDExists" parameterType="String" resultType="Boolean">
+        SELECT EXISTS(SELECT 1 FROM user WHERE encryptedID = #{encryptedID}) AS exists_flag
+    </select>
+
+    <update id="updateEncryptedID" parameterType="Map">
+        UPDATE user
+        SET encryptedID = #{encryptedID}
+        WHERE userID = #{userID}
+    </update>
+
+    <select id="isBlocked" parameterType="String" resultType="java.lang.Boolean">
+        SELECT isBlocked FROM user
+        WHERE userID = #{userID}
+    </select>
+
+    <update id="saveContact">
+        UPDATE user
+        SET
+           phoneNumber =
+                CASE
+                    WHEN #{contactInfo.phoneNumber} IS NOT NULL
+                        AND #{contactInfo.phoneNumber} != ''
+                         AND #{contactInfo.phoneNumber} != phoneNumber
+                        THEN #{contactInfo.phoneNumber}
+                    ELSE phoneNumber
+                    END,
+            wechatID =
+                CASE
+                    WHEN #{contactInfo.weChatId} IS NOT NULL
+                        AND #{contactInfo.weChatId} != ''
+                        AND #{contactInfo.weChatId} != wechatID
+                        THEN #{contactInfo.weChatId}
+                    ELSE wechatID
+                    END,
+            email =
+                CASE
+                    WHEN #{contactInfo.email} IS NOT NULL
+                        AND #{contactInfo.email} != ''
+                        AND #{contactInfo.email} != email
+                        THEN #{contactInfo.email}
+                    ELSE email
+                    END
+        WHERE userID = #{userId}
+    </update>
+
+    <update id="saveUserInfo" parameterType="map">
+        UPDATE user
+        <set>
+            <if test="nickName != null">
+                nickname = #{nickName},
+            </if>
+            <if test="avatarUrl != null">
+                avatarUrl = #{avatarUrl},
+            </if>
+        </set>
+        WHERE userID = #{userId}
+    </update>
+
+    <select id="getUserInfo" resultType="map" parameterType="String">
+        SELECT nickname AS nickname, avatarUrl AS avatarUrl
+        FROM user
+        WHERE userID = #{userId}
+    </select>
 
 </mapper>

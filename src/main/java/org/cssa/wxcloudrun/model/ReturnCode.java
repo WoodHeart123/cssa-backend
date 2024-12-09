@@ -19,12 +19,12 @@ public enum ReturnCode {
     UNKNOWN_SERVICE(111, "无法识别服务项目"),
     INVALID_TYPE(112, "类型错误"),
     NO_SEARCH_RESULT(113, "无搜索结果"),
-
     CAPACITY_LIMIT_EXCEED(114, "超出人数限制"),
     DEADLINE_PASSED(115, "超过活动报名截止日期"),
-
+    NO_SUCH_USER(116,"用户不存在"),
+    RIDE_NOT_EXIST(117,"顺风车信息不存在"),
+    ACTION_FAILED(118,"操作失败"),
     CENSORED_UGC_CONTENT(201, "内容被审核"),
-
     INVALID_ADMIN_INFO(301, "管理员登录信息错误");
 
 

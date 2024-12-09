@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.cssa.wxcloudrun.dao.RideMapper">
+
+    <select id="getRide" parameterType="Integer" resultType="org.cssa.wxcloudrun.model.Ride">
+        SELECT ride.rideId,
+               ride.userId,
+               ride.requestType,
+               ride.rideType,
+               ride.price,
+               ride.origin,
+               ride.destination,
+               ride.availableSeats,
+               ride.requestedSeats,
+               ride.departureTime AS departureTime,
+               ride.returnTime AS returnTime,
+               ride.description,
+               ride.contactInfoJSON,
+               ride.make,
+               ride.model,
+               ride.estimatedArrivalTime AS estimatedArrivalTime,
+               ride.removedTime AS removedTime,
+               ride.publishedTime AS publishedTime,
+               ride.imagesJSON
+        FROM ride
+        WHERE ride.rideId = #{rideId}
+    </select>
+
+    <select id="getRideList" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
+        SELECT ride.rideId,
+               ride.userId,
+               ride.requestType,
+               ride.rideType,
+               ride.price,
+               ride.origin,
+               ride.destination,
+               ride.availableSeats,
+               ride.requestedSeats,
+               ride.departureTime AS departureTime,
+               ride.returnTime AS returnTime,
+               ride.description,
+               ride.contactInfoJSON,
+               ride.make,
+               ride.model,
+               ride.estimatedArrivalTime AS estimatedArrivalTime,
+               ride.removedTime AS removedTime,
+               ride.publishedTime AS publishedTime,
+               ride.imagesJSON
+        FROM ride
+        WHERE ride.removedTime IS NULL
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="getRideListByUserId" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
+        SELECT ride.rideId,
+               ride.userId,
+               ride.requestType,
+               ride.rideType,
+               ride.price,
+               ride.origin,
+               ride.destination,
+               ride.availableSeats,
+               ride.requestedSeats,
+               ride.departureTime AS departureTime,
+               ride.returnTime AS returnTime,
+               ride.description,
+               ride.contactInfoJSON,
+               ride.make,
+               ride.model,
+               ride.estimatedArrivalTime AS estimatedArrivalTime,
+               ride.removedTime AS removedTime,
+               ride.publishedTime AS publishedTime,
+               ride.imagesJSON
+        FROM ride
+        WHERE ride.removedTime IS NULL AND ride.userId = #{rideId}
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="isRideOwnedByUser" parameterType="java.util.Map" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM ride
+        WHERE userId = #{userId} AND rideId = #{rideId}
+    </select>
+
+    <select id="getRemovedRideList" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
+        SELECT *
+        FROM ride
+        WHERE userId = #{userId} AND removedTime IS NOT NULL
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <insert id="publishRide" parameterType="org.cssa.wxcloudrun.model.Ride" useGeneratedKeys="true" keyProperty="rideId">
+        INSERT INTO ride (userId, rideType, price, origin, destination, description, availableSeats, requestedSeats,
+                          departureTime, returnTime, contactInfoJSON, make, model, estimatedArrivalTime, imagesJSON,
+                          publishedTime)
+        VALUES (#{userId}, #{rideType}, #{price}, #{origin}, #{destination}, #{description}, #{availableSeats},
+                #{requestedSeats}, #{departureTime}, #{returnTime}, #{contactInfoJSON}, #{make}, #{model},
+                #{estimatedArrivalTime}, #{imagesJSON}, CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago'))
+    </insert>
+
+    <update id="updateRide" parameterType="java.util.Map">
+        UPDATE ride
+        SET rideType = #{ride.rideType},
+        price = #{ride.price},
+        origin = #{ride.origin},
+        destination = #{ride.destination},
+        description = #{ride.description},
+        availableSeats = #{ride.availableSeats},
+        requestedSeats = #{ride.requestedSeats},
+        departureTime = #{ride.departureTime},
+        returnTime = #{ride.returnTime},
+        contactInfoJSON = #{ride.contactInfoJSON},
+        make = #{ride.make},
+        model = #{ride.model},
+        estimatedArrivalTime = #{ride.estimatedArrivalTime},
+        imagesJSON = #{ride.imagesJSON}
+        <if test="ifToPublish">
+            , publishedTime = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago')
+            , removedTime = NULL
+        </if>
+        WHERE rideId = #{ride.rideId} AND userId = #{userId}
+    </update>
+
+    <update id="removeRide" parameterType="Integer">
+        UPDATE ride
+        SET removedTime = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago'),
+            publishedTime = NULL
+        WHERE rideId = #{rideId}
+    </update>
+
+    <delete id="deleteRide" parameterType="Integer">
+        DELETE FROM ride
+        WHERE rideId = #{rideId}
+    </delete>
+
+    <select id="isPublished" parameterType="Integer" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM ride
+        WHERE rideId = #{rideId} AND publishedTime IS NOT NULL AND removedTime IS NULL
+    </select>
+
+</mapper>

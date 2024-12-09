@@ -10,7 +10,7 @@
     </insert>
 
 
-    <select id="getRental" parameterType="Map" resultType="Rental">
+    <select id="getRentalList" parameterType="Map" resultType="Rental">
         SELECT rental.userID, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
         rental.publishedTime, rental.rentalStartTime, rental.rentalEndTime, rental.price,
         rental.location, rental.contact, rental.imagesJSON,
@@ -28,7 +28,7 @@
         LIMIT #{offset}, #{limit}
     </select>
 
-    <select id="getRentalTimed" parameterType="Map" resultType="Rental">
+    <select id="getRentalListByTime" parameterType="Map" resultType="Rental">
         SELECT rental.userID, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
         rental.publishedTime, rental.rentalStartTime, rental.rentalEndTime, rental.price,
         rental.location, rental.contact, rental.imagesJSON,
@@ -82,6 +82,17 @@
         SELECT userID, savedRentalJSON
         FROM user
         WHERE userID = #{userID}
+    </select>
+
+    <select id="getRental" parameterType="Integer" resultType="Rental">
+        SELECT rental.userID, rental.rentalID, rental.sexConstraint, rental.floorPlan, rental.description,
+        rental.publishedTime, rental.rentalStartTime, rental.rentalEndTime, rental.price,
+        rental.location, rental.contact, rental.imagesJSON,
+        user.avatar as sellerAvatar, user.nickname as sellerNickname
+        FROM rental
+        INNER JOIN user on rental.userID = user.userID
+        WHERE rental.rentalID = #{rentalID}
+        LIMIT 1
     </select>
 
 </mapper>

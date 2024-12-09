@@ -2,6 +2,7 @@ package org.cssa.wxcloudrun.service.impl;
 
 import org.cssa.wxcloudrun.dao.UserMapper;
 import org.cssa.wxcloudrun.event.AuthEvent;
+import org.cssa.wxcloudrun.event.SubscriptionEvent;
 import org.cssa.wxcloudrun.model.*;
 import org.cssa.wxcloudrun.service.UserService;
 import com.alibaba.fastjson2.JSON;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import redis.clients.jedis.JedisPooled;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
@@ -27,7 +27,8 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     @Autowired
-    JedisPooled jedisPooled;
+    EncryptionUtil encryptionUtil;
+
 
 
     @Override
@@ -177,5 +178,116 @@ public class UserServiceImpl implements UserService {
         return new Response<>();
     }
 
+    @Override
+    public Response<Boolean> subscribe(Subscription subscription) {
+        String openID = subscription.getOpenID(), email = subscription.getEmail();
+        if (openID.isBlank() || email.isBlank()) return new Response<>(Boolean.FALSE);
 
+        userMapper.updateEmail(email, true, openID);
+
+        String encryptedID = makeAnEncryptedIdforUser(openID);
+        userMapper.updateEncryptedID(openID,encryptedID);
+        subscription.setOpenID(encryptedID); // 使用加密ID发布事件
+
+        applicationContext.publishEvent(new SubscriptionEvent(this, subscription, true));
+        return new Response<>(Boolean.TRUE);
+    }
+
+    @Override
+    public Response<Boolean> unsubscribe(String openID) {
+        String email = userMapper.getEmail(openID);
+        if (email.isBlank()) return new Response<>(Boolean.FALSE);
+
+        userMapper.updateEmail(email, false, openID);
+
+        SubscriptionEvent event = new SubscriptionEvent(this, new Subscription(openID, email), false);
+        applicationContext.publishEvent(event);
+        return new Response<>(Boolean.TRUE);
+    }
+
+    /**
+     * 为用户生成一个加密的ID。
+     * 该方法使用用户的openID和当前时间戳生成一个加密ID，确保该ID在数据库中是唯一的。
+     * 如果生成的加密ID已存在，则重新生成，直到产生一个唯一的加密ID。
+     * 此方法不在UserService中。
+     *
+     * @param openID 用户的OpenID，用作生成加密ID的基础之一。
+     * @return 返回生成的唯一加密ID。
+     */
+    public String makeAnEncryptedIdforUser(String openID) {
+        boolean encryptedIDExists;
+        String encryptedID;
+        do {
+            encryptedID = encryptionUtil.generateEncryptedID(openID, System.currentTimeMillis());
+            encryptedIDExists = userMapper.ifEncryptedIDExists(encryptedID);
+        } while (encryptedIDExists);
+        return encryptedID;
+    }
+
+    @Override
+    public Response<Boolean> isSubscribed(String openID) {
+        return new Response<>(userMapper.isSubscribed(openID));
+    }
+
+    /**
+     * 检查用户是否被拉黑
+     *
+     * 该方法根据用户的 openID 从数据库中获取用户的被拉黑状态并返回。默认值为0-否。
+     *
+     * @param openID 微信用户在小程序的唯一标识符。
+     * @return 用户是否被拉黑。true-是；false-否。
+     */
+    @Override
+    public Response<Boolean> isBlocked(String openID) {return new Response<>(userMapper.isBlocked(openID));}
+
+    /**
+     * 更新指定用户的联系方式。
+     * 该方法根据用户ID更新用户的联系信息，包括电话号码、微信ID和电子邮件地址。
+     * 如果传入的联系信息字段为null或空字符串，则不会更新相应字段，保留数据库中的原有值。
+     *
+     * @param userId 用户的唯一标识符（ID）。
+     * @param info   包含用户联系信息的对象，包括电话号码（phoneNumber）、微信ID（weChatId）和电子邮件地址（email）。
+     */
+    @Override
+    public void saveContact(String userId, Contact info) { userMapper.saveContact(userId, info);}
+
+    /**
+     * 保存用户目前使用的微信昵称和头像到库中。
+     *
+     * @param userId    用户在小程序的唯一标识符（ID）。
+     * @param nickName  用户目前使用的昵称（可选）。
+     * @param avatarUrl 用户目前使用的头像链接（可选）。它指向微信服务器上的头像图片资源。
+     * @return 是否成功更新用户信息的响应对象。
+     */
+    @Override
+    public Response<Boolean> saveUserInfo(String userId, String nickName, String avatarUrl) {
+        // 如果 nickName 是空字符串或仅包含空格，将其视为 null
+        if (nickName != null && nickName.isBlank()) {
+            nickName = null;
+        }
+
+        // 如果 avatarUrl 是空字符串或仅包含空格，将其视为 null
+        if (avatarUrl != null && avatarUrl.isBlank()) {
+            avatarUrl = null;
+        }
+
+        // 检查参数是否为空，如果 nickName 和 avatarUrl 都为 null，直接返回成功
+        if (nickName == null && avatarUrl == null) {
+            return new Response<>(true);
+        }
+
+        // 如果 nickName 或 avatarUrl 为 null，传递到 Mapper 时改为保留数据库原值的逻辑
+        return new Response<>(userMapper.saveUserInfo(userId, nickName, avatarUrl));
+    }
+
+    /**
+     * 从库中获取保存的用户使用的微信昵称和头像。
+     *
+     * @param userId 用户在小程序的唯一标识符（ID）。
+     * @return 一串包含库中保存的用户昵称和头像的json数组，其格式为["nickName":"Pia~","avatarUrl":"XXXXXX"].
+     */
+    @Override
+    public Response<Object> getUserInfo(String userId) {
+        return new Response<>(userMapper.getUserInfo(userId));
+    }
 }
