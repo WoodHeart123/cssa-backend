@@ -11,7 +11,8 @@ import java.util.List;
 public class Ride {
 
     @Schema(description = "微信用户的openID", example = "oABC1234567890XYZ")
-    private String userId;
+    @JSONField(name = "open_id")
+    private String openId;
 
     @Schema(description = "顺风车 rideID，系统自动生成", example = "123")
     private Integer rideId;

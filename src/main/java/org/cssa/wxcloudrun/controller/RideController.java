@@ -78,7 +78,7 @@ public class RideController {
         }
 
         // 设置用户 ID
-        ride.setUserId(openId);
+        ride.setOpenId(openId);
 
         // 保存联系信息到用户
 //        if (ifSave) {

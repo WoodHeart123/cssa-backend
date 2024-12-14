@@ -5,7 +5,7 @@
 
     <select id="getRide" parameterType="Integer" resultType="org.cssa.wxcloudrun.model.Ride">
         SELECT ride.rideId,
-               ride.userId,
+               ride.open_id,
                ride.requestType,
                ride.rideType,
                ride.price,
@@ -24,12 +24,12 @@
                ride.publishedTime AS publishedTime,
                ride.imagesJSON
         FROM ride
-        WHERE ride.rideId = #{openId}
+        WHERE ride.rideId = #{rideId}
     </select>
 
     <select id="getRideList" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
         SELECT ride.rideId,
-               ride.userId,
+               ride.open_id,
                ride.requestType,
                ride.rideType,
                ride.price,
@@ -54,7 +54,7 @@
 
     <select id="getRideListByUserId" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
         SELECT ride.rideId,
-               ride.userId,
+               ride.open_id,
                ride.requestType,
                ride.rideType,
                ride.price,
@@ -73,25 +73,25 @@
                ride.publishedTime AS publishedTime,
                ride.imagesJSON
         FROM ride
-        WHERE ride.removedTime IS NULL AND ride.userId = #{openId}
+        WHERE ride.removedTime IS NULL AND ride.open_id = #{openId}
         LIMIT #{offset}, #{limit}
     </select>
 
     <select id="isRideOwnedByUser" parameterType="java.util.Map" resultType="boolean">
         SELECT COUNT(*) > 0
         FROM ride
-        WHERE userId = #{openId} AND rideId = #{rideId}
+        WHERE open_id = #{openId} AND rideId = #{rideId}
     </select>
 
     <select id="getRemovedRideList" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
         SELECT *
         FROM ride
-        WHERE userId = #{openId} AND removedTime IS NOT NULL
+        WHERE open_id = #{openId} AND removedTime IS NOT NULL
         LIMIT #{offset}, #{limit}
     </select>
 
     <insert id="publishRide" parameterType="org.cssa.wxcloudrun.model.Ride" useGeneratedKeys="true" keyProperty="rideId">
-        INSERT INTO ride (userId, rideType, price, origin, destination, description, availableSeats, requestedSeats,
+        INSERT INTO ride (open_id, rideType, price, origin, destination, description, availableSeats, requestedSeats,
                           departureTime, returnTime, contactInfoJSON, make, model, estimatedArrivalTime, imagesJSON,
                           publishedTime)
         VALUES (#{openId}, #{rideType}, #{price}, #{origin}, #{destination}, #{description}, #{availableSeats},
@@ -119,7 +119,7 @@
             , publishedTime = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago')
             , removedTime = NULL
         </if>
-        WHERE rideId = #{ride.rideId} AND userId = #{openId}
+        WHERE rideId = #{ride.rideId} AND open_id = #{openId}
     </update>
 
     <update id="removeRide" parameterType="Integer">
