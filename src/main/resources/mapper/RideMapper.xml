@@ -24,7 +24,7 @@
                ride.publishedTime AS publishedTime,
                ride.imagesJSON
         FROM ride
-        WHERE ride.rideId = #{rideId}
+        WHERE ride.rideId = #{openId}
     </select>
 
     <select id="getRideList" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
@@ -73,20 +73,20 @@
                ride.publishedTime AS publishedTime,
                ride.imagesJSON
         FROM ride
-        WHERE ride.removedTime IS NULL AND ride.userId = #{rideId}
+        WHERE ride.removedTime IS NULL AND ride.userId = #{openId}
         LIMIT #{offset}, #{limit}
     </select>
 
     <select id="isRideOwnedByUser" parameterType="java.util.Map" resultType="boolean">
         SELECT COUNT(*) > 0
         FROM ride
-        WHERE userId = #{userId} AND rideId = #{rideId}
+        WHERE userId = #{openId} AND rideId = #{rideId}
     </select>
 
     <select id="getRemovedRideList" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
         SELECT *
         FROM ride
-        WHERE userId = #{userId} AND removedTime IS NOT NULL
+        WHERE userId = #{openId} AND removedTime IS NOT NULL
         LIMIT #{offset}, #{limit}
     </select>
 
@@ -94,7 +94,7 @@
         INSERT INTO ride (userId, rideType, price, origin, destination, description, availableSeats, requestedSeats,
                           departureTime, returnTime, contactInfoJSON, make, model, estimatedArrivalTime, imagesJSON,
                           publishedTime)
-        VALUES (#{userId}, #{rideType}, #{price}, #{origin}, #{destination}, #{description}, #{availableSeats},
+        VALUES (#{openId}, #{rideType}, #{price}, #{origin}, #{destination}, #{description}, #{availableSeats},
                 #{requestedSeats}, #{departureTime}, #{returnTime}, #{contactInfoJSON}, #{make}, #{model},
                 #{estimatedArrivalTime}, #{imagesJSON}, CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago'))
     </insert>
@@ -119,7 +119,7 @@
             , publishedTime = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago')
             , removedTime = NULL
         </if>
-        WHERE rideId = #{ride.rideId} AND userId = #{userId}
+        WHERE rideId = #{ride.rideId} AND userId = #{openId}
     </update>
 
     <update id="removeRide" parameterType="Integer">

@@ -12,15 +12,15 @@ public interface RideMapper {
 
     List<Ride> getRideList(@Param("offset") Integer offset, @Param("limit") Integer limit);
 
-    List<Ride> getRideListByUserId(@Param("userId") String userId, @Param("offset") Integer offset, @Param("limit") Integer limit);
+    List<Ride> getRideListByUserId(@Param("openId") String openId, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
-    List<Ride> getRemovedRideList(@Param("userId") String userId, @Param("offset") Integer offset, @Param("limit") Integer limit);
+    List<Ride> getRemovedRideList(@Param("openId") String openId, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
-    boolean isRideOwnedByUser(@Param("userId") String userId, @Param("rideId") Integer rideId);
+    boolean isRideOwnedByUser(@Param("openId") String openId, @Param("rideId") Integer rideId);
 
     boolean publishRide(Ride ride);
 
-    boolean updateRide(@Param("userId") String userId, @Param("ride") Ride ride, @Param("ifToPublish") boolean ifToPublish);
+    boolean updateRide(@Param("openId") String openId, @Param("ride") Ride ride, @Param("ifToPublish") boolean ifToPublish);
 
     boolean removeRide(@Param("rideId") Integer rideId);
 

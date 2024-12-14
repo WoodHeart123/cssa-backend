@@ -44,7 +44,7 @@ public class RideServiceImpl implements RideService {
      * @return 包含未被移除的顺风车列表的响应
      */
     @Override
-    public Response<List<Ride>> getRideList(Integer offset, Integer limit, @Nullable String userId) {
+    public Response<List<Ride>> getRideList(Integer offset, Integer limit, @Nullable String openId) {
         int batchSize = limit;
         List<Ride> returnedList  = new ArrayList<>();
         Timestamp currentTime = Timestamp.valueOf(ZonedDateTime.now(ZoneId.of("America/Chicago")).toLocalDateTime());
@@ -52,10 +52,10 @@ public class RideServiceImpl implements RideService {
         // 检查返回的顺风车中是否由未被标记但已过期的顺风车信息
         while (returnedList.size() < limit) {
             List<Ride> rideList;
-            if (userId == null) {
+            if (openId == null) {
                 rideList = rideMapper.getRideList(offset, batchSize);
             } else {
-                rideList = rideMapper.getRideListByUserId(userId, offset, batchSize);
+                rideList = rideMapper.getRideListByUserId(openId, offset, batchSize);
             }
 
             // 数据源耗尽，退出循环
@@ -145,16 +145,16 @@ public class RideServiceImpl implements RideService {
      * 用户可以通过该方法更新顺风车信息。
      * 如果 ifPublish 参数为 true，则顺风车将被发布；如果为 false 或未提供，则顺风车仅更新而不发布。
      *
-     * @param openId 用户的微信 openID
+     * @param userId 用户的微信 openID
      * @param ride   更新后的顺风车信息
      * @param ifToPublish 是否发布顺风车，默认值为 false
      * @return 返回更新操作是否成功
      */
     @Override
-    public boolean updateRide(String openId, Ride ride, boolean ifToPublish) {
+    public boolean updateRide(String userId, Ride ride, boolean ifToPublish) {
         ride.setContactInfoJSON(JSON.toJSONString(ride.getContactInfo()));
         ride.setImagesJSON(JSON.toJSONString(ride.getImages()));
-        return rideMapper.updateRide(openId, ride, ifToPublish);
+        return rideMapper.updateRide(userId, ride, ifToPublish);
     }
 
 

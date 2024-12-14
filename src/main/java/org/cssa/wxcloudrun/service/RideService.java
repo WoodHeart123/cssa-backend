@@ -61,12 +61,12 @@ public interface RideService {
      * 用户可以通过该方法更新顺风车信息。
      * 如果 ifPublish 参数为 true，则顺风车将被发布；如果为 false 或未提供，则顺风车仅更新而不发布。
      *
-     * @param openId 用户的微信 openID
+     * @param userId 用户的微信 openID
      * @param ride 更新后的顺风车信息
      * @param ifPublish 是否发布顺风车，默认值为 false
      * @return 返回更新操作是否成功
      */
-    boolean updateRide(String openId, Ride ride, boolean ifPublish);
+    boolean updateRide(String userId, Ride ride, boolean ifPublish);
 
     /**
      * 移除顺风车(软删除顺风车信息)。
