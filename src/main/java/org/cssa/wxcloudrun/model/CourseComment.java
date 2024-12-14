@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 public class CourseComment {
 
     @Schema(description = "用户ID", example = "adfd23fdfd")
-    private String userID;
+    private Integer userID;
     @Schema(description = "用户头像序号", example = "1")
     private Integer userAvatar;
     @Schema(description = "课程ID", example = "10")

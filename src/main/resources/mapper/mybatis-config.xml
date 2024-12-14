@@ -16,4 +16,7 @@
         <typeAlias alias="FriendPost" type="org.cssa.wxcloudrun.model.FriendPost"/>
         <typeAlias alias="FriendComment" type="org.cssa.wxcloudrun.model.FriendComment"/>
     </typeAliases>
+    <typeHandlers>
+        <typeHandler handler="org.cssa.wxcloudrun.handler.JsonListTypeHandler" javaType="java.util.List" jdbcType="LONGNVARCHAR"/>
+    </typeHandlers>
 </configuration>

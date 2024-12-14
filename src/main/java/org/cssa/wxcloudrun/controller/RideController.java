@@ -47,7 +47,7 @@ public class RideController {
 
     // 获取该用户被移除的顺风车列表
     @RequestMapping(value = {"/getRemovedRideList"}, method = {RequestMethod.GET})
-    @Operation(summary = "获取顺风车列表", description = "获取顺风车列表")
+    @Operation(summary = "获取用户被移除的顺风车列表", description = "获取用户被移除的顺风车列表")
     public Response<List<Ride>> getRemovedRideList(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId,
                                                    @RequestParam Integer offset,
                                                    @RequestParam Integer limit) {
@@ -130,24 +130,6 @@ public class RideController {
 
         // 执行软删除操作
         if (rideService.removeRide(rideId)) {
-            return new Response<>(ReturnCode.SUCCESS);
-        } else {
-            return new Response<>(ReturnCode.ACTION_FAILED);
-        }
-    }
-
-    // 彻底删除顺风车 (删除顺风车)
-    @RequestMapping(value = {"/deleteRide"}, method = {RequestMethod.DELETE})
-    @Operation(summary = "删除顺风车", description = "彻底从数据库中删除顺风车信息")
-    public Response<Object> deleteRide(@Parameter(description = "顺风车ID") @RequestParam Integer rideId,
-                                       @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId) {
-        // 检查该用户是否拥有该顺风车信息
-        if (!rideService.isRideOwnedByUser(openId,rideId)) {
-            return new Response<>(ReturnCode.RIDE_NOT_EXIST);
-        }
-
-        // 执行硬删除操作
-        if (rideService.deleteRide(rideId)) {
             return new Response<>(ReturnCode.SUCCESS);
         } else {
             return new Response<>(ReturnCode.ACTION_FAILED);

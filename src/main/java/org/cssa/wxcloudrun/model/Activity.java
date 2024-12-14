@@ -52,10 +52,6 @@ public class Activity {
     //@JSONField(serialize = false, deserialize = false)
     private String paymentJSON;
 
-    @Schema(description = "付款信息")
-    @JSONField(name = "payment")
-    private PaymentOption payment;
-
     // 数据库存储JSON, 无需对外暴露
     @Schema(hidden = true)
     //@JSONField(serialize = false, deserialize = false)

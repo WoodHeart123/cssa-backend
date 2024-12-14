@@ -2,295 +2,81 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.cssa.wxcloudrun.dao.UserMapper">
 
-    <update id="authSuccess" parameterType="String">
-        UPDATE user
-        SET isStudent = 1
-        WHERE userID = #{userID}
-    </update>
 
-    <select id="login" parameterType="String" resultType="User">
-        SELECT email,
-               nickname,
-               isStudent,
-               wechatID,
-               avatar,
-               likedCommentJSON,
-               savedProductJSON,
-               subscribe,
-               isBlocked,
-               avatarUrl
-        FROM user
-        WHERE userID = #{userID}
+    <resultMap id="UserMap" type="User">
+        <result property="id" column="id"/>
+        <result property="openID" column="user_id"/>
+        <result property="nickname" column="nickname"/>
+        <result property="avatar" column="avatar"/>
+        <result property="email" column="email"/>
+        <result property="isStudent" column="is_student"/>
+        <result property="subscribe" column="subscribe"/>
+        <result property="isBlocked" column="is_blocked"/>
+        <result property="avatarURL" column="avatar_url"/>
+    </resultMap>
+
+
+    <select id="login" parameterType="String" resultMap="UserMap">
+        SELECT * FROM user WHERE id = #{userID}
     </select>
 
-    <insert id="register" parameterType="String">
-        INSERT INTO user (userID, nickname)
-        VALUES (#{userID}, #{nickname})
+    <select id="getUserByOpenID" parameterType="String" resultMap="UserMap">
+        SELECT * FROM user WHERE open_id = #{openID}
+    </select>
+
+    <select id="getUserByID" parameterType="String" resultMap="UserMap">
+        SELECT * FROM user WHERE id = #{userID}
+    </select>
+
+    <insert id="createUser" parameterType="String" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user (nickname)
+        VALUES (#{nickname})
     </insert>
 
-    <update id="updateEmail" parameterType="Map">
+    <update id="updateUser" parameterType="User">
         UPDATE user
-        SET email     = #{email},
-            subscribe = #{subscribe}
-        WHERE userID = #{userID}
+        <set>
+            <if test="openID != null">open_id = #{openID},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="isStudent != null">is_student = #{isStudent},</if>
+            <if test="subscribe != null">subscribe = #{subscribe},</if>
+            <if test="isBlocked != null">is_blocked = #{isBlocked},</if>
+            <if test="avatarURL != null">avatar_url = #{avatarURL},</if>
+        </set>
+        WHERE id = #{id}
     </update>
 
-    <update id="updateWechatID" parameterType="String">
-        UPDATE user
-        SET wechatID = #{wechatID}
-        WHERE userID = #{userID}
-    </update>
-
-    <select id="getLikedCommentList" parameterType="String" resultType="User">
-        select userID, likedCommentJSON
-        from user
-        WHERE userID = #{userID}
-    </select>
-
-    <update id="updateAvatar">
-        UPDATE user
-        SET avatar = #{avatar}
-        WHERE userID = #{userID}
-    </update>
-
-    <select id="getEmail" parameterType="String" resultType="String">
-        SELECT email FROM user
-        WHERE userID = #{userID}
-    </select>
-
-    <select id="getMyComment" parameterType="Map" resultType="CourseComment">
-        SELECT commentID,
-               professor,
-               courseTime,
-               difficulty,
-               prefer,
-               comment,
-               likeCount,
-               commentTime,
-               courseNum,
-               courseName,
-               departmentAbrev
-        from comment
-                 INNER JOIN course
-        WHERE comment.courseID = course.courseID
-          AND commentID > #{offset}
-          AND userID = #{userID}
-        ORDER BY commentID
-        LIMIT ${limit}
-    </select>
-
-    <update id="updateComment" parameterType="Map">
-        UPDATE comment
-        SET comment = #{courseComment}
-        WHERE userID = #{userID}
-          AND commentID = #{commentID}
-    </update>
-
-    <delete id="deleteComment">
-        DELETE
-        FROM comment
-        WHERE userID = #{userID}
-          AND commentID = #{commentID}
-    </delete>
-
-    <update id="updateNickname" parameterType="String">
-        update user
-        SET nickname = #{nickname}
-        WHERE userID = #{userID}
-    </update>
-
-    <select id="getMySecondhand" parameterType="Map" resultType="Product">
-        SELECT *
-        from secondhand
-        WHERE userID = #{userID}
-        ORDER BY time DESC
-        LIMIT ${offset}, ${limit}
-    </select>
-
-    <select id="getMyProductSave" parameterType="Map" resultType="Product">
-        SELECT *
-        FROM secondhand
-        WHERE productID in
-        <foreach collection="productList" item="item" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        ORDER BY productID
-        LIMIT ${limit}
-    </select>
-
-    <select id="collect" parameterType="String" resultType="User">
-        SELECT *
-        FROM user
-        WHERE userID = #{userID}
-    </select>
-
-    <select id="getMyRentalSave" parameterType="Map" resultType="Rental">
-        SELECT *
-        FROM rental
-        WHERE rentalID in
-        <foreach collection="rentalList" item="item" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        ORDER BY rentalID
-        LIMIT ${limit}
-    </select>
-
-    <update id="updateSecondHand" parameterType="Map">
-        UPDATE secondhand
-        SET productTitle       = #{product.productTitle},
-            productDescription = #{product.productDescription},
-            price              = #{product.price},
-            productCondition   = #{product.productCondition},
-            time               = #{product.time},
-            contact            = #{product.contact},
-            imagesJSON         = #{product.imagesJSON},
-            delivery           = #{product.delivery},
-            time               = CURRENT_TIMESTAMP
-        WHERE userID = #{userID}
-          AND productID = #{product.productID}
-    </update>
-
-    <delete id="deleteSecondHand" parameterType="Map">
-        DELETE
-        FROM secondhand
-        WHERE productID = #{productID}
-          AND userID = #{userID}
-    </delete>
-
-    <delete id="deleteRental" parameterType="Map">
-        DELETE
-        FROM rental
-        WHERE rentalID = #{rentalID}
-          AND userID = #{userID}
-    </delete>
 
     <update id="setProductTime" parameterType="Map">
         UPDATE secondhand
         SET time = #{time}
-        WHERE userID = #{userID}
+        WHERE open_id = #{userID}
           AND productID = #{productID}
     </update>
 
     <update id="clearProductTime" parameterType="Map">
         UPDATE secondhand
         SET time = NULL
-        WHERE userID = #{userID}
+        WHERE open_id = #{userID}
           AND productID = #{productID}
     </update>
 
     <update id="setRentalTime" parameterType="Map">
         UPDATE rental
         SET publishedTime = #{time}
-        WHERE userID = #{userID}
+        WHERE open_id = #{userID}
           AND rentalID = #{rentalID}
     </update>
 
     <update id="clearRentalTime" parameterType="Map">
         UPDATE rental
         SET publishedTime = NULL
-        WHERE userID = #{userID}
+        WHERE open_id = #{userID}
           AND rentalID = #{rentalID}
     </update>
 
-    <select id="getMyRental" resultType="Rental">
-        SELECT rental.userID,
-               rental.rentalID,
-               rental.sexConstraint,
-               rental.floorPlan,
-               rental.description,
-               rental.publishedTime,
-               rental.rentalStartTime,
-               rental.rentalEndTime,
-               rental.price,
-               rental.location,
-               rental.contact,
-               rental.imagesJSON
-        FROM rental
-        WHERE userID = #{userID}
-        ORDER BY rental.publishedTime DESC
-        LIMIT ${offset}, ${limit}
-    </select>
-
-    <select id="getCollectID" parameterType="Map" resultType="Integer">
-        SELECT contentID
-        from collect
-        WHERE collectType = #{collectType}
-          AND userID = #{userID}
-    </select>
-
-    <select id="getProductCollectList" resultType="Product">
-        SELECT secondhand.productID,
-               secondhand.productTitle,
-               secondhand.productDescription,
-               secondhand.time,
-               secondhand.price,
-               secondhand.productCondition,
-               secondhand.contact,
-               secondhand.imagesJSON,
-               secondhand.delivery,
-               user.avatar   as sellerAvatar,
-               user.nickname as sellerNickname
-        FROM secondhand,
-             user,
-             collect
-        WHERE secondhand.userID = user.userID
-          AND collect.contentID = secondhand.productID
-          AND collect.collectType = #{collectType}
-          AND collect.collectID > #{offset}
-          AND collect.userID = #{userID}
-        LIMIT #{limit}
-    </select>
-
-    <select id="getRentalCollectList" resultType="Rental">
-        SELECT rental.userID,
-               rental.rentalID,
-               rental.sexConstraint,
-               rental.floorPlan,
-               rental.description,
-               rental.publishedTime,
-               rental.rentalStartTime,
-               rental.rentalEndTime,
-               rental.price,
-               rental.location,
-               rental.contact,
-               rental.imagesJSON,
-               user.avatar   as sellerAvatar,
-               user.nickname as sellerNickname
-        FROM rental,
-             collect,
-             user
-        WHERE rental.userID = user.userID
-          AND collect.contentID = rental.rentalID
-          AND collect.collectType = #{collectType}
-          AND collect.collectID > #{offset}
-          AND collect.userID = #{userID}
-        LIMIT #{limit}
-    </select>
-
-    <select id="isSubscribed" parameterType="String" resultType="Boolean">
-        SELECT subscribe FROM user
-        WHERE userID = #{userID}
-    </select>
-
-    <select id="getOpenIDFromEncryptedID" parameterType="String" resultType="String">
-        SELECT userID FROM user
-        WHERE encryptedID = #{encryptedID}
-    </select>
-
-    <select id="ifEncryptedIDExists" parameterType="String" resultType="Boolean">
-        SELECT EXISTS(SELECT 1 FROM user WHERE encryptedID = #{encryptedID}) AS exists_flag
-    </select>
-
-    <update id="updateEncryptedID" parameterType="Map">
-        UPDATE user
-        SET encryptedID = #{encryptedID}
-        WHERE userID = #{userID}
-    </update>
-
-    <select id="isBlocked" parameterType="String" resultType="java.lang.Boolean">
-        SELECT isBlocked FROM user
-        WHERE userID = #{userID}
-    </select>
 
     <update id="saveContact">
         UPDATE user
@@ -303,13 +89,13 @@
                         THEN #{contactInfo.phoneNumber}
                     ELSE phoneNumber
                     END,
-            wechatID =
+            wechat_id =
                 CASE
                     WHEN #{contactInfo.weChatId} IS NOT NULL
                         AND #{contactInfo.weChatId} != ''
-                        AND #{contactInfo.weChatId} != wechatID
+                        AND #{contactInfo.weChatId} != wechat_id
                         THEN #{contactInfo.weChatId}
-                    ELSE wechatID
+                    ELSE wechat_id
                     END,
             email =
                 CASE
@@ -319,26 +105,6 @@
                         THEN #{contactInfo.email}
                     ELSE email
                     END
-        WHERE userID = #{userId}
+        WHERE open_id = #{userId}
     </update>
-
-    <update id="saveUserInfo" parameterType="map">
-        UPDATE user
-        <set>
-            <if test="nickName != null">
-                nickname = #{nickName},
-            </if>
-            <if test="avatarUrl != null">
-                avatarUrl = #{avatarUrl},
-            </if>
-        </set>
-        WHERE userID = #{userId}
-    </update>
-
-    <select id="getUserInfo" resultType="map" parameterType="String">
-        SELECT nickname AS nickname, avatarUrl AS avatarUrl
-        FROM user
-        WHERE userID = #{userId}
-    </select>
-
 </mapper>

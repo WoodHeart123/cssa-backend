@@ -76,35 +76,16 @@ public class CourseServiceImpl implements CourseService {
     /**
      * Service to do what Zan controller want to request
      *
-     * @param userID    wx-openid
      * @param commentID ID of comment
      * @return success Response information if everything is recorded in Database correctly
-     * else error Response or 已点赞
      */
     @Override
     @Transactional
-    public Response<Object> zan(String userID, Integer commentID) {
-        User user = courseMapper.getUser(userID);
-        if (user.getLikedCommentJSON() == null) {
-            user.setLikedComment(new ArrayList<>());
-        } else {
-            user.setLikedComment(JSON.parseArray(user.getLikedCommentJSON(), Integer.class));
-        }
-        if (user.getLikedComment().contains(commentID)) {
-            return Response.builder().status(107).message("已点赞").build();
-        }
-        user.getLikedComment().add(commentID);
-        user.setLikedCommentJSON(JSON.toJSONString(user.getLikedComment()));
-        courseMapper.setLikeList(user);
+    public Response<Object> like(Integer commentID) {
         courseMapper.incrementCount(commentID);
         return Response.builder().status(100).message("成功").build();
     }
 
-
-    @Override
-    public Response<List<Course>> getCourse(ArrayList<String> courseID) {
-        return new Response<>(courseMapper.getCourse(courseID));
-    }
 
     @Override
     public Response<List<CourseComment>> getCommentList(Integer courseID, Integer offset, Integer limit, SortType sortType) {
@@ -121,6 +102,24 @@ public class CourseServiceImpl implements CourseService {
             }
         }
         return new Response<>(courseMapper.searchCourse(query.substring(0, i) + "%", query.substring(i) + "%"));
+    }
+
+    @Override
+    @Transactional
+    public Response<Object> updateComment(Integer userID, Integer commentID, String comment) {
+        courseMapper.updateComment(userID, commentID, comment);
+        return new Response<>();
+    }
+
+    @Override
+    public Response<List<CourseComment>> getUserComment(Integer userID, Integer offset, Integer limit) {
+        return new Response<>(courseMapper.getUserComment(userID, offset, limit));
+    }
+
+    @Override
+    public Response<Object> deleteComment(Integer userID, Integer commentID) {
+        courseMapper.deleteComment(userID, commentID);
+        return new Response<>();
     }
 
 }

@@ -40,7 +40,7 @@ public class RideServiceImpl implements RideService {
      *
      * @param offset 从结果集开始的偏移量
      * @param limit  每页结果的最大数量
-     * @param userId （可选）用于筛选指定用户的顺风车列表。如果为 null，则不筛选用户。
+     * @param openId （可选）用于筛选指定用户的顺风车列表。如果为 null，则不筛选用户。
      * @return 包含未被移除的顺风车列表的响应
      */
     @Override
@@ -97,14 +97,14 @@ public class RideServiceImpl implements RideService {
     /**
      * 获取被移除的顺风车列表。
      *
-     * @param userId 用户的微信 openID，作为用户的唯一标识符
+     * @param openId 用户的微信 openID，作为用户的唯一标识符
      * @param offset 从结果集开始的偏移量
      * @param limit  每页结果的最大数量
      * @return 包含被移除顺风车列表的响应
      */
     @Override
-    public Response<List<Ride>> getRemovedRideList(String userId, Integer offset, Integer limit) {
-        List<Ride> rideList = rideMapper.getRemovedRideList(userId,offset,limit);
+    public Response<List<Ride>> getRemovedRideList(String openId, Integer offset, Integer limit) {
+        List<Ride> rideList = rideMapper.getRemovedRideList(openId,offset,limit);
         rideList.forEach(ride -> {
             ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
             ride.setImages(JSON.parseArray(ride.getImagesJSON(),String.class));
@@ -117,13 +117,13 @@ public class RideServiceImpl implements RideService {
      *
      * 该方法通过用户的微信 openID 和顺风车的 rideID 检查该顺风车是否属于该用户。
      *
-     * @param userId 用户的微信 openID，作为用户的唯一标识符
+     * @param openId 用户的微信 openID，作为用户的唯一标识符
      * @param rideID 顺风车的唯一标识符
      * @return 如果该顺风车属于该用户，则返回 true；否则返回 false
      */
     @Override
-    public boolean isRideOwnedByUser(String userId, Integer rideID) {
-        return rideMapper.isRideOwnedByUser(userId, rideID);
+    public boolean isRideOwnedByUser(String openId, Integer rideID) {
+        return rideMapper.isRideOwnedByUser(openId, rideID);
     }
 
     /**
@@ -145,16 +145,16 @@ public class RideServiceImpl implements RideService {
      * 用户可以通过该方法更新顺风车信息。
      * 如果 ifPublish 参数为 true，则顺风车将被发布；如果为 false 或未提供，则顺风车仅更新而不发布。
      *
-     * @param userId 用户的微信 openID
+     * @param openId 用户的微信 openID
      * @param ride   更新后的顺风车信息
      * @param ifToPublish 是否发布顺风车，默认值为 false
      * @return 返回更新操作是否成功
      */
     @Override
-    public boolean updateRide(String userId, Ride ride, boolean ifToPublish) {
+    public boolean updateRide(String openId, Ride ride, boolean ifToPublish) {
         ride.setContactInfoJSON(JSON.toJSONString(ride.getContactInfo()));
         ride.setImagesJSON(JSON.toJSONString(ride.getImages()));
-        return rideMapper.updateRide(userId, ride, ifToPublish);
+        return rideMapper.updateRide(openId, ride, ifToPublish);
     }
 
 
@@ -172,18 +172,6 @@ public class RideServiceImpl implements RideService {
     }
 
     /**
-     * 彻底删除顺风车信息 (删除顺风车)。
-     * 该方法会从数据库中完全删除顺风车信息，数据将不可恢复。
-     *
-     * @param rideId 要删除的顺风车信息的Id
-     * @return 返回删除操作是否成功
-     */
-    @Override
-    public boolean deleteRide(Integer rideId) {
-        return rideMapper.deleteRide(rideId);
-    }
-
-    /**
      * 查看顺风车信息是否已发布
      *
      * @param rideID 顺风车信息的Id
@@ -197,7 +185,6 @@ public class RideServiceImpl implements RideService {
     /**
      * 检查顺风车是否过期
      */
-
     private boolean checkIfExpired(Ride ride, Timestamp currentTime) {
         if (ride.getDepartureTime() == null) {
             // 如果没有出发时间，无法判断是否过期，直接返回 false

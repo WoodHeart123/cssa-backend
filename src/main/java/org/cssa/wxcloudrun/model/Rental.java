@@ -39,7 +39,7 @@ public class Rental {
     public String contact;
     // 发布人用户ID
     @Schema(description = "发布人用户ID", example = "o1d2a3s4d5f6g7h8j9k0l1z2x3c4v5b6")
-    private String userID;
+    private Integer userID;
     // 发布人头像
     @Schema(description = "发布人头像序号", example = "1")
     private String sellerAvatar;
@@ -49,8 +49,4 @@ public class Rental {
     // 图片URL
     @Schema(description = "图片URL")
     private ArrayList<String> images;
-    @Schema(hidden = true)
-    private String imagesJSON;
-
-
 }

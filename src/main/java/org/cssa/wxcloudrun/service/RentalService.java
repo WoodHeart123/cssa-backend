@@ -17,5 +17,9 @@ public interface RentalService {
 
     Response<Rental> getRental(Integer rentalId);
 
-    Response<Object> updateRental(String userID, Rental rentalInfo);
+    Response<Object> updateRental(Integer userID, Rental rentalInfo);
+
+    Response<Object> deleteRental(Integer userID, Integer rentalID);
+
+    Response<List<Rental>> getUserRental(Integer userID, Integer offset, Integer limit);
 }
