@@ -108,10 +108,10 @@ public interface UserService {
     Response<Boolean> saveUserInfo(String userId, String nickName, String avatarUrl);
 
     /**
-     * 从库中获取保存的用户使用的微信昵称和头像。
+     * 从库中获取保存的用户使用微信昵称和头像，是否为学生。
      *
-     * @param userId 用户在小程序的唯一标识符（ID）。
+     * @param openId 用户在小程序的唯一标识符（ID）。
      * @return 一串包含库中保存的用户昵称和头像的json数组，其格式为["nickname":"Pia~","avatarUrl":"https://thirdwx.qlogo.cn/mmopen/vi_32/DXfHyaEe1zXXXXXX/132"].
      */
-    Response<Object> getUserInfo(String userId);
+    Response<Object> getUserInfo(String openId);
 }

@@ -188,7 +188,7 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/getUserInfo"}, method = {RequestMethod.GET})
-    @Operation(summary = "获取真实的用户信息",description = "获取数据库中用户真实的昵称和头像链接")
+    @Operation(summary = "获取真实的用户信息",description = "获取数据库中用户的头像链接，昵称，是否为学生")
     public Response<Object> getUserInfo(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId) {
         return userService.getUserInfo(openId);
     }

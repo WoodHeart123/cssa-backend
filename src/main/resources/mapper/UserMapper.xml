@@ -107,4 +107,12 @@
                     END
         WHERE open_id = #{userId}
     </update>
+
+    <select id="getUserInfo" parameterType="String" resultType="Map">
+        SELECT nickname,
+               avatar_url AS avatarUrl,
+               is_student AS isStudent
+        FROM user
+        WHERE open_id = #{openId}
+    </select>
 </mapper>

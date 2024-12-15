@@ -60,6 +60,6 @@ public interface UserMapper {
 
     boolean saveUserInfo(@Param("userId") String userId,@Param("nickName") String nickName,@Param("avatarUrl") String avatarUrl);
 
-    Map<String, String> getUserInfo(String userId);
+    Map<String, String> getUserInfo(String openId);
 
 }
