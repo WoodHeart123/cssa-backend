@@ -15,6 +15,8 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class RideServiceImpl implements RideService {
@@ -68,14 +70,24 @@ public class RideServiceImpl implements RideService {
                 boolean isExpired = checkIfExpired(ride, currentTime); // 与当前CST时间对比检查顺风车是否过期
 
                 if (isExpired) {
-                    // 将过期顺风车标记为已移除
-                    ride.setRemovedTime(currentTime);
+                    // 将过期顺风车移除
                     removeRide(ride.getRideId());
                 } else {
                     // 将有效顺风车的 JSON 数据解析到 Contact 和 images 列表
                     ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
                     ride.setImages(JSON.parseArray(ride.getImagesJSON(), String.class));
-                    returnedList.add(ride); // 添加到返回列表中
+
+                    // To do: 问题是数据库中正常保存显示CST，但是MyBitas映射后的时间少了14个小时；
+                    // 想个办法不要暴力转换。返回前端的发布时间应该自动转化为CST时间。
+                    if (ride.getPublishedTime() != null) {
+                        // 将 Timestamp 转换为毫秒，并强制加 14 小时
+                        long adjustedTime = ride.getPublishedTime().getTime() + (14 * 60 * 60 * 1000);
+                        // 设置回 Ride 对象
+                        ride.setPublishedTime(new Timestamp(adjustedTime));
+                    }
+
+                    // 处理好的顺风车数据添加到返回列表中
+                    returnedList.add(ride);
 
                     // 如果返回列表已满足需求数量，退出内层循环
                     if (returnedList.size() >= limit) {
@@ -108,6 +120,12 @@ public class RideServiceImpl implements RideService {
         rideList.forEach(ride -> {
             ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
             ride.setImages(JSON.parseArray(ride.getImagesJSON(),String.class));
+
+            // To do: 同publishedTime一样，想个办法不要暴力解决时间转换有的问题
+            // 将 Timestamp 转换为毫秒，并强制加 14 小时
+            long adjustedTime = ride.getRemovedTime().getTime() + (14 * 60 * 60 * 1000);
+            // 设置回 Ride 对象
+            ride.setRemovedTime(new Timestamp(adjustedTime));
         });
         return new Response<>(rideList);
     }

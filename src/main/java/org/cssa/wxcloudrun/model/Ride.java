@@ -1,6 +1,7 @@
 package org.cssa.wxcloudrun.model;
 
 import com.alibaba.fastjson2.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -70,7 +71,7 @@ public class Ride {
     private Timestamp removedTime;
 
     @Schema(description = "顺风车信息被发布的时间 (如果不为 null，则表示已发布)", example = "2026-01-10T15:00:00")
-    @JSONField(name = "publishedTime")
+    @JSONField(name = "publishedTime", format = "yyyy-MM-dd HH:mm:ss")
     private Timestamp publishedTime;
 
     @Schema(description = "顺风车相关的图片列表", example = "[\"https://server.com/image1.jpg\", \"https://server.com/image2.jpg\"]")

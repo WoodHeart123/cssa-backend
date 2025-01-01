@@ -3,91 +3,48 @@
 
 <mapper namespace="org.cssa.wxcloudrun.dao.RideMapper">
 
-    <select id="getRide" parameterType="Integer" resultType="org.cssa.wxcloudrun.model.Ride">
-        SELECT ride.rideId,
-               ride.open_id,
-               ride.requestType,
-               ride.rideType,
-               ride.price,
-               ride.origin,
-               ride.destination,
-               ride.availableSeats,
-               ride.requestedSeats,
-               ride.departureTime AS departureTime,
-               ride.returnTime AS returnTime,
-               ride.description,
-               ride.contactInfoJSON,
-               ride.make,
-               ride.model,
-               ride.estimatedArrivalTime AS estimatedArrivalTime,
-               ride.removedTime AS removedTime,
-               ride.publishedTime AS publishedTime,
-               ride.imagesJSON
-        FROM ride
-        WHERE ride.rideId = #{rideId}
+    <!-- 定义 resultMap 映射 Ride 类 -->
+    <resultMap id="rideResultMap" type="org.cssa.wxcloudrun.model.Ride">
+        <result column="open_id" property="openId" />
+        <result column="rideId" property="rideId" />
+        <result column="requestType" property="requestType" />
+        <result column="rideType" property="rideType" />
+        <result column="price" property="price" />
+        <result column="origin" property="origin" />
+        <result column="destination" property="destination" />
+        <result column="availableSeats" property="availableSeats" />
+        <result column="requestedSeats" property="requestedSeats" />
+        <result column="departureTime" property="departureTime" />
+        <result column="returnTime" property="returnTime" />
+        <result column="description" property="description" />
+        <result column="contactInfoJSON" property="contactInfoJSON" />
+        <result column="make" property="make" />
+        <result column="model" property="model" />
+        <result column="estimatedArrivalTime" property="estimatedArrivalTime" />
+        <result column="removedTime" property="removedTime" />
+        <result column="publishedTime" property="publishedTime" />
+        <result column="imagesJSON" property="imagesJSON" />
+    </resultMap>
+
+    <!-- 使用 resultMap 的查询 -->
+    <select id="getRide" parameterType="Integer" resultMap="rideResultMap">
+        SELECT * FROM ride WHERE rideId = #{rideId}
     </select>
 
-    <select id="getRideList" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
-        SELECT ride.rideId,
-               ride.open_id,
-               ride.requestType,
-               ride.rideType,
-               ride.price,
-               ride.origin,
-               ride.destination,
-               ride.availableSeats,
-               ride.requestedSeats,
-               ride.departureTime AS departureTime,
-               ride.returnTime AS returnTime,
-               ride.description,
-               ride.contactInfoJSON,
-               ride.make,
-               ride.model,
-               ride.estimatedArrivalTime AS estimatedArrivalTime,
-               ride.removedTime AS removedTime,
-               ride.publishedTime AS publishedTime,
-               ride.imagesJSON
-        FROM ride
-        WHERE ride.removedTime IS NULL
-        LIMIT #{offset}, #{limit}
+    <select id="getRideList" parameterType="java.util.Map" resultMap="rideResultMap">
+        SELECT * FROM ride WHERE removedTime IS NULL LIMIT #{offset}, #{limit}
     </select>
 
-    <select id="getRideListByUserId" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
-        SELECT ride.rideId,
-               ride.open_id,
-               ride.requestType,
-               ride.rideType,
-               ride.price,
-               ride.origin,
-               ride.destination,
-               ride.availableSeats,
-               ride.requestedSeats,
-               ride.departureTime AS departureTime,
-               ride.returnTime AS returnTime,
-               ride.description,
-               ride.contactInfoJSON,
-               ride.make,
-               ride.model,
-               ride.estimatedArrivalTime AS estimatedArrivalTime,
-               ride.removedTime AS removedTime,
-               ride.publishedTime AS publishedTime,
-               ride.imagesJSON
-        FROM ride
-        WHERE ride.removedTime IS NULL AND ride.open_id = #{openId}
-        LIMIT #{offset}, #{limit}
+    <select id="getRideListByUserId" parameterType="java.util.Map" resultMap="rideResultMap">
+        SELECT * FROM ride WHERE removedTime IS NULL AND open_id = #{openId} LIMIT #{offset}, #{limit}
     </select>
 
     <select id="isRideOwnedByUser" parameterType="java.util.Map" resultType="boolean">
-        SELECT COUNT(*) > 0
-        FROM ride
-        WHERE open_id = #{openId} AND rideId = #{rideId}
+        SELECT COUNT(*) > 0 FROM ride WHERE open_id = #{openId} AND rideId = #{rideId}
     </select>
 
-    <select id="getRemovedRideList" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
-        SELECT *
-        FROM ride
-        WHERE open_id = #{openId} AND removedTime IS NOT NULL
-        LIMIT #{offset}, #{limit}
+    <select id="getRemovedRideList" parameterType="java.util.Map" resultMap="rideResultMap">
+        SELECT * FROM ride WHERE open_id = #{openId} AND removedTime IS NOT NULL LIMIT #{offset}, #{limit}
     </select>
 
     <insert id="publishRide" parameterType="org.cssa.wxcloudrun.model.Ride" useGeneratedKeys="true" keyProperty="rideId">
@@ -130,14 +87,10 @@
     </update>
 
     <delete id="deleteRide" parameterType="Integer">
-        DELETE FROM ride
-        WHERE rideId = #{rideId}
+        DELETE FROM ride WHERE rideId = #{rideId}
     </delete>
 
     <select id="isPublished" parameterType="Integer" resultType="boolean">
-        SELECT COUNT(*) > 0
-        FROM ride
-        WHERE rideId = #{rideId} AND publishedTime IS NOT NULL AND removedTime IS NULL
+        SELECT COUNT(*) > 0 FROM ride WHERE rideId = #{rideId} AND publishedTime IS NOT NULL AND removedTime IS NULL
     </select>
-
 </mapper>
