@@ -33,11 +33,8 @@ public class Ride {
     @Schema(description = "目的地", example = "Milwaukee")
     private String destination;
 
-    @Schema(description = "出顺风车时可用座位数", example = "3")
-    private Integer availableSeats;
-
-    @Schema(description = "请求顺风车时所需座位数", example = "2")
-    private Integer requestedSeats;
+    @Schema(description = "座位数;出顺风车时为可用座位数，请求顺风车时为所需座位数", example = "3")
+    private Integer seats;
 
     @Schema(description = "出发时间", example = "2026-01-05 10:00:00")
     @JSONField(name = "departureTime", format = "yyyy-MM-dd HH:mm:ss")

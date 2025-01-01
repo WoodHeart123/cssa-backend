@@ -12,8 +12,7 @@
         <result column="price" property="price" />
         <result column="origin" property="origin" />
         <result column="destination" property="destination" />
-        <result column="availableSeats" property="availableSeats" />
-        <result column="requestedSeats" property="requestedSeats" />
+        <result column="seats" property="seats" />
         <result column="departureTime" property="departureTime" />
         <result column="returnTime" property="returnTime" />
         <result column="description" property="description" />
@@ -48,12 +47,12 @@
     </select>
 
     <insert id="publishRide" parameterType="org.cssa.wxcloudrun.model.Ride" useGeneratedKeys="true" keyProperty="rideId">
-        INSERT INTO ride (open_id, rideType, price, origin, destination, description, availableSeats, requestedSeats,
+        INSERT INTO ride (open_id, rideType, price, origin, destination, description, seats,
                           departureTime, returnTime, contactInfoJSON, make, model, estimatedArrivalTime, imagesJSON,
                           publishedTime)
-        VALUES (#{openId}, #{rideType}, #{price}, #{origin}, #{destination}, #{description}, #{availableSeats},
-                #{requestedSeats}, #{departureTime}, #{returnTime}, #{contactInfoJSON}, #{make}, #{model},
-                #{estimatedArrivalTime}, #{imagesJSON}, CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago'))
+        VALUES (#{openId}, #{rideType}, #{price}, #{origin}, #{destination}, #{description}, #{seats}, #{departureTime},
+                #{returnTime}, #{contactInfoJSON}, #{make}, #{model}, #{estimatedArrivalTime}, #{imagesJSON},
+                CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago'))
     </insert>
 
     <update id="updateRide" parameterType="java.util.Map">
@@ -63,8 +62,7 @@
         origin = #{ride.origin},
         destination = #{ride.destination},
         description = #{ride.description},
-        availableSeats = #{ride.availableSeats},
-        requestedSeats = #{ride.requestedSeats},
+        seats = #{ride.seats},
         departureTime = #{ride.departureTime},
         returnTime = #{ride.returnTime},
         contactInfoJSON = #{ride.contactInfoJSON},
