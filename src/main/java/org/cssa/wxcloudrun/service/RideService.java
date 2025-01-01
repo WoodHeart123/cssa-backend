@@ -27,14 +27,14 @@ public interface RideService {
 
 
     /**
-     * 获取该用户被移除的顺风车列表。
+     * 获取该用户被隐藏（下架）的顺风车列表。
      *
      * @param openId 用户的微信 openID，作为用户的唯一标识符
      * @param offset 从结果集开始的偏移量
      * @param limit 每页结果的最大数量
-     * @return 包含被移除顺风车列表的响应
+     * @return 包含被隐藏（下架）顺风车列表的响应
      */
-    Response<List<Ride>> getRemovedRideList(String openId,Integer offset, Integer limit);
+    Response<List<Ride>> getHiddenRideList(String openId,Integer offset, Integer limit);
 
     /**
      * 检查指定用户是否拥有特定的顺风车。
@@ -69,12 +69,22 @@ public interface RideService {
     boolean updateRide(String userId, Ride ride, boolean ifPublish);
 
     /**
-     * 移除顺风车(软删除顺风车信息)。
+     * 移除顺风车。
+     * 用户仍然可以看到或编辑该顺风车信息，但不会向公众展示。
+     * 用户无法再看到该顺风车信息。
+     *
+     * @param rideId 要移除的顺风车信息的Id
+     * @return 返回移除操作是否成功
+     */
+    boolean removeRide(Integer rideId);
+
+    /**
+     * 隐藏（下架）顺风车。
      * 该方法会将顺风车信息标记为不可见，但仍然保留在数据库中。
      * 用户仍然可以看到或编辑该顺风车信息，但不会向公众展示。
      *
      * @param rideId 要移除的顺风车信息的Id
      * @return 返回移除操作是否成功
      */
-    boolean removeRide(Integer rideId);
+    boolean hideRide(Integer rideId);
 }

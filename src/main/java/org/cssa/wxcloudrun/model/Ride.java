@@ -33,11 +33,8 @@ public class Ride {
     @Schema(description = "目的地", example = "Milwaukee")
     private String destination;
 
-    @Schema(description = "出顺风车时可用座位数", example = "3")
-    private Integer availableSeats;
-
-    @Schema(description = "请求顺风车时所需座位数", example = "2")
-    private Integer requestedSeats;
+    @Schema(description = "座位数;出顺风车时为可用座位数，请求顺风车时为所需座位数", example = "3")
+    private Integer seats;
 
     @Schema(description = "出发时间", example = "2026-01-05 10:00:00")
     @JSONField(name = "departureTime", format = "yyyy-MM-dd HH:mm:ss")
@@ -66,15 +63,15 @@ public class Ride {
     @JSONField(name = "estimatedArrivalTime", format = "yyyy-MM-dd HH:mm:ss")
     private Timestamp estimatedArrivalTime;
 
-    @Schema(description = "顺风车信息被移除的时间 (如果不为 null，则表示未被移除)", example = "2026-01-10T15:00:00")
+    @Schema(description = "顺风车信息被移除的时间 (如果不为 null，则表示未被移除)", example = "2026-01-10 15:00:00")
     @JSONField(name = "removedTime")
     private Timestamp removedTime;
 
-    @Schema(description = "顺风车信息被发布的时间 (如果不为 null，则表示已发布)", example = "2026-01-10T15:00:00")
+    @Schema(description = "顺风车信息被发布的时间 (如果不为 null，则表示已发布)", example = "2026-01-10 15:00:00")
     @JSONField(name = "publishedTime", format = "yyyy-MM-dd HH:mm:ss")
     private Timestamp publishedTime;
 
-    @Schema(description = "顺风车相关的图片列表", example = "[\"https://server.com/image1.jpg\", \"https://server.com/image2.jpg\"]")
+    @Schema(description = "顺风车相关的图片列表", example = "[\"https://example.com/image1.jpg\", \"https://example.com/image2.jpg\"]\n")
     private List<String> images;
 
     @Schema(description = "数据库内部存储图片，不对外暴露", hidden = true)

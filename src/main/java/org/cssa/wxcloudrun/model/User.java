@@ -27,8 +27,8 @@ public class User {
     private Boolean isStudent;
     private Integer avatar;
     private String wechatID;
-    private Boolean subscribe;
-    private Boolean isBlocked;
+    private Boolean subscribe; // 是否订阅邮件通知
+    private Boolean isBlocked; // 是否被拉黑
     private String avatarURL; // 用户的真实头像url
 
 }

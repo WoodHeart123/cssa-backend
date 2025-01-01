@@ -15,8 +15,6 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Service
 public class RideServiceImpl implements RideService {
@@ -49,7 +47,7 @@ public class RideServiceImpl implements RideService {
     public Response<List<Ride>> getRideList(Integer offset, Integer limit, @Nullable String openId) {
         int batchSize = limit;
         List<Ride> returnedList  = new ArrayList<>();
-        Timestamp currentTime = Timestamp.valueOf(ZonedDateTime.now(ZoneId.of("America/Chicago")).toLocalDateTime());
+        Timestamp currentCSTTime = Timestamp.valueOf(ZonedDateTime.now(ZoneId.of("America/Chicago")).toLocalDateTime());
 
         // 检查返回的顺风车中是否由未被标记但已过期的顺风车信息
         while (returnedList.size() < limit) {
@@ -67,24 +65,16 @@ public class RideServiceImpl implements RideService {
 
             // 遍历当前获取的顺风车列表
             for (Ride ride : rideList) {
-                boolean isExpired = checkIfExpired(ride, currentTime); // 与当前CST时间对比检查顺风车是否过期
+                // 与当前CST时间对比检查顺风车是否过期。
+                boolean isExpired = checkIfExpired(ride, currentCSTTime);
 
                 if (isExpired) {
-                    // 将过期顺风车移除
-                    removeRide(ride.getRideId());
-                } else {
+                    // 将过期顺风车隐藏
+                    hideRide(ride.getRideId());
+                } else if (ride.getPublishedTime() != null) {
                     // 将有效顺风车的 JSON 数据解析到 Contact 和 images 列表
                     ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
                     ride.setImages(JSON.parseArray(ride.getImagesJSON(), String.class));
-
-                    // To do: 问题是数据库中正常保存显示CST，但是MyBitas映射后的时间少了14个小时；
-                    // 想个办法不要暴力转换。返回前端的发布时间应该自动转化为CST时间。
-                    if (ride.getPublishedTime() != null) {
-                        // 将 Timestamp 转换为毫秒，并强制加 14 小时
-                        long adjustedTime = ride.getPublishedTime().getTime() + (14 * 60 * 60 * 1000);
-                        // 设置回 Ride 对象
-                        ride.setPublishedTime(new Timestamp(adjustedTime));
-                    }
 
                     // 处理好的顺风车数据添加到返回列表中
                     returnedList.add(ride);
@@ -107,25 +97,44 @@ public class RideServiceImpl implements RideService {
     }
 
     /**
-     * 获取被移除的顺风车列表。
+     * 检查顺风车是否过期
+     */
+    private boolean checkIfExpired(Ride ride, Timestamp currentTime) {
+        if (ride.getDepartureTime() == null) {
+            // 如果没有出发时间，无法判断是否过期，直接返回 false
+            return false;
+        }
+
+        // 单程的情况，只需要检查出发时间是否过期
+        if (ride.getRideType() == 1) {
+            return ride.getDepartureTime().before(currentTime);
+        }
+
+        // 往返的情况，需要检查出发时间和返回时间是否过期
+        if (ride.getRideType() == 2) {
+            return ride.getDepartureTime().before(currentTime) &&
+                    (ride.getReturnTime() != null && ride.getReturnTime().before(currentTime));
+        }
+
+        // 默认情况，返回 false
+        return false;
+    }
+
+    /**
+     * 获取该用户被隐藏（下架）的顺风车列表。
      *
      * @param openId 用户的微信 openID，作为用户的唯一标识符
      * @param offset 从结果集开始的偏移量
-     * @param limit  每页结果的最大数量
-     * @return 包含被移除顺风车列表的响应
+     * @param limit 每页结果的最大数量
+     * @return 包含被隐藏（下架）顺风车列表的响应
      */
     @Override
-    public Response<List<Ride>> getRemovedRideList(String openId, Integer offset, Integer limit) {
-        List<Ride> rideList = rideMapper.getRemovedRideList(openId,offset,limit);
+    public Response<List<Ride>> getHiddenRideList(String openId, Integer offset, Integer limit) {
+        List<Ride> rideList = rideMapper.getHiddenRideList(openId,offset,limit);
         rideList.forEach(ride -> {
+            // 将有效顺风车的 JSON 数据解析到 Contact 和 images 列表
             ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
-            ride.setImages(JSON.parseArray(ride.getImagesJSON(),String.class));
-
-            // To do: 同publishedTime一样，想个办法不要暴力解决时间转换有的问题
-            // 将 Timestamp 转换为毫秒，并强制加 14 小时
-            long adjustedTime = ride.getRemovedTime().getTime() + (14 * 60 * 60 * 1000);
-            // 设置回 Ride 对象
-            ride.setRemovedTime(new Timestamp(adjustedTime));
+            ride.setImages(JSON.parseArray(ride.getImagesJSON(), String.class));
         });
         return new Response<>(rideList);
     }
@@ -177,16 +186,30 @@ public class RideServiceImpl implements RideService {
 
 
     /**
-     * 移除顺风车(软删除顺风车信息)。
-     * 该方法会将顺风车信息标记为不可见，但仍然保留在数据库中。
+     * 移除顺风车。
      * 用户仍然可以看到或编辑该顺风车信息，但不会向公众展示。
+     * 用户无法再看到该顺风车信息。
      *
-     * @param rideID 要移除的顺风车信息的Id
+     * @param rideId 要移除的顺风车信息的Id
      * @return 返回移除操作是否成功
      */
     @Override
-    public boolean removeRide(Integer rideID) {
-        return rideMapper.removeRide(rideID);
+    public boolean removeRide(Integer rideId) {
+        return rideMapper.removeRide(rideId);
+    }
+
+    /**
+     * 隐藏（下架）顺风车。
+     *
+     * 该方法会将顺风车信息标记为“已过期”保留在数据库中。
+     * 用户仍然可以看到或编辑该顺风车信息。
+     *
+     * @param rideId 要移除的顺风车信息的Id
+     * @return 返回移除操作是否成功
+     */
+    @Override
+    public boolean hideRide(Integer rideId) {
+        return rideMapper.hideRide(rideId);
     }
 
     /**
@@ -198,29 +221,5 @@ public class RideServiceImpl implements RideService {
 
     public boolean isPublished(Integer rideID) {
         return rideMapper.isPublished(rideID);
-    }
-
-    /**
-     * 检查顺风车是否过期
-     */
-    private boolean checkIfExpired(Ride ride, Timestamp currentTime) {
-        if (ride.getDepartureTime() == null) {
-            // 如果没有出发时间，无法判断是否过期，直接返回 false
-            return false;
-        }
-
-        // 单程的情况，只需要检查出发时间是否过期
-        if (ride.getRideType() == 1) {
-            return ride.getDepartureTime().before(currentTime);
-        }
-
-        // 往返的情况，需要检查出发时间和返回时间是否过期
-        if (ride.getRideType() == 2) {
-            return ride.getDepartureTime().before(currentTime) &&
-                    (ride.getReturnTime() != null && ride.getReturnTime().before(currentTime));
-        }
-
-        // 默认情况，返回 false
-        return false;
     }
 }
