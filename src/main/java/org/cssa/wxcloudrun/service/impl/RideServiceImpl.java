@@ -69,7 +69,7 @@ public class RideServiceImpl implements RideService {
 
                 if (isExpired) {
                     // 将过期顺风车移除
-                    removeRide(ride.getRideId());
+                    hideRide(ride.getRideId());
                 } else {
                     // 将有效顺风车的 JSON 数据解析到 Contact 和 images 列表
                     ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
@@ -105,25 +105,29 @@ public class RideServiceImpl implements RideService {
     }
 
     /**
-     * 获取被移除的顺风车列表。
+     * 获取该用户被隐藏（下架）的顺风车列表。
      *
      * @param openId 用户的微信 openID，作为用户的唯一标识符
      * @param offset 从结果集开始的偏移量
-     * @param limit  每页结果的最大数量
-     * @return 包含被移除顺风车列表的响应
+     * @param limit 每页结果的最大数量
+     * @return 包含被隐藏（下架）顺风车列表的响应
      */
     @Override
-    public Response<List<Ride>> getRemovedRideList(String openId, Integer offset, Integer limit) {
-        List<Ride> rideList = rideMapper.getRemovedRideList(openId,offset,limit);
+    public Response<List<Ride>> getHiddenRideList(String openId, Integer offset, Integer limit) {
+        List<Ride> rideList = rideMapper.getHiddenRideList(openId,offset,limit);
         rideList.forEach(ride -> {
+            // 将有效顺风车的 JSON 数据解析到 Contact 和 images 列表
             ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
-            ride.setImages(JSON.parseArray(ride.getImagesJSON(),String.class));
+            ride.setImages(JSON.parseArray(ride.getImagesJSON(), String.class));
 
-            // To do: 同publishedTime一样，想个办法不要暴力解决时间转换有的问题
-            // 将 Timestamp 转换为毫秒，并强制加 14 小时
-            long adjustedTime = ride.getRemovedTime().getTime() + (14 * 60 * 60 * 1000);
-            // 设置回 Ride 对象
-            ride.setRemovedTime(new Timestamp(adjustedTime));
+            // To do: 问题是数据库中正常保存显示CST，但是MyBitas映射后的时间少了14个小时；
+            // 想个办法不要暴力转换。返回前端的发布时间应该自动转化为CST时间。
+            if (ride.getPublishedTime() != null) {
+                // 将 Timestamp 转换为毫秒，并强制加 14 小时
+                long adjustedTime = ride.getPublishedTime().getTime() + (14 * 60 * 60 * 1000);
+                // 设置回 Ride 对象
+                ride.setPublishedTime(new Timestamp(adjustedTime));
+            }
         });
         return new Response<>(rideList);
     }
@@ -175,16 +179,30 @@ public class RideServiceImpl implements RideService {
 
 
     /**
-     * 移除顺风车(软删除顺风车信息)。
-     * 该方法会将顺风车信息标记为不可见，但仍然保留在数据库中。
+     * 移除顺风车。
      * 用户仍然可以看到或编辑该顺风车信息，但不会向公众展示。
+     * 用户无法再看到该顺风车信息。
      *
-     * @param rideID 要移除的顺风车信息的Id
+     * @param rideId 要移除的顺风车信息的Id
      * @return 返回移除操作是否成功
      */
     @Override
-    public boolean removeRide(Integer rideID) {
-        return rideMapper.removeRide(rideID);
+    public boolean removeRide(Integer rideId) {
+        return rideMapper.removeRide(rideId);
+    }
+
+    /**
+     * 隐藏（下架）顺风车。
+     *
+     * 该方法会将顺风车信息标记为不可见，但仍然保留在数据库中。
+     * 用户仍然可以看到或编辑该顺风车信息，但不会向公众展示。
+     *
+     * @param rideId 要移除的顺风车信息的Id
+     * @return 返回移除操作是否成功
+     */
+    @Override
+    public boolean hideRide(Integer rideId) {
+        return rideMapper.hideRide(rideId);
     }
 
     /**

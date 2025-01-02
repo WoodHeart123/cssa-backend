@@ -14,7 +14,7 @@ public interface RideMapper {
 
     List<Ride> getRideListByUserId(@Param("openId") String openId, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
-    List<Ride> getRemovedRideList(@Param("openId") String openId, @Param("offset") Integer offset, @Param("limit") Integer limit);
+    List<Ride> getHiddenRideList(@Param("openId") String openId, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
     boolean isRideOwnedByUser(@Param("openId") String openId, @Param("rideId") Integer rideId);
 
@@ -24,7 +24,7 @@ public interface RideMapper {
 
     boolean removeRide(@Param("rideId") Integer rideId);
 
-    boolean deleteRide(@Param("rideId") Integer rideId);
+    boolean hideRide(@Param("rideId") Integer rideId);
 
     boolean isPublished(@Param("rideId") Integer rideId);
 
