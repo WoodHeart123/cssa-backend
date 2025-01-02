@@ -44,7 +44,7 @@
 
     <select id="getHiddenRideList" parameterType="java.util.Map" resultMap="rideResultMap">
         SELECT * FROM ride
-        WHERE open_id = #{openId} AND publishedTime IS NULL AND removedTime IS NOT NULL
+        WHERE open_id = #{openId} AND publishedTime IS NULL AND removedTime IS NULL
         LIMIT #{offset}, #{limit}
     </select>
 
