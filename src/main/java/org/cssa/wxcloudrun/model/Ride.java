@@ -63,11 +63,11 @@ public class Ride {
     @JSONField(name = "estimatedArrivalTime", format = "yyyy-MM-dd HH:mm:ss")
     private Timestamp estimatedArrivalTime;
 
-    @Schema(description = "顺风车信息被移除的时间 (如果不为 null，则表示未被移除)", example = "2026-01-10T15:00:00")
+    @Schema(description = "顺风车信息被移除的时间 (如果不为 null，则表示未被移除)", example = "2026-01-10 15:00:00")
     @JSONField(name = "removedTime")
     private Timestamp removedTime;
 
-    @Schema(description = "顺风车信息被发布的时间 (如果不为 null，则表示已发布)", example = "2026-01-10T15:00:00")
+    @Schema(description = "顺风车信息被发布的时间 (如果不为 null，则表示已发布)", example = "2026-01-10 15:00:00")
     @JSONField(name = "publishedTime", format = "yyyy-MM-dd HH:mm:ss")
     private Timestamp publishedTime;
 

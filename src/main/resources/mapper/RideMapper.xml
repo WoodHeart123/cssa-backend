@@ -54,7 +54,7 @@
                           publishedTime)
         VALUES (#{openId}, #{rideType}, #{price}, #{origin}, #{destination}, #{description}, #{seats}, #{departureTime},
                 #{returnTime}, #{contactInfoJSON}, #{make}, #{model}, #{estimatedArrivalTime}, #{imagesJSON},
-                CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago'))
+                CURRENT_TIMESTAMP)
     </insert>
 
     <update id="updateRide" parameterType="java.util.Map">
@@ -73,7 +73,7 @@
         estimatedArrivalTime = #{ride.estimatedArrivalTime},
         imagesJSON = #{ride.imagesJSON}
         <if test="ifToPublish">
-            , publishedTime = CONVERT_TZ(UTC_TIMESTAMP(), '+00:00', 'America/Chicago')
+            , publishedTime = CURRENT_TIMESTAMP
             , removedTime = NULL
         </if>
         WHERE rideId = #{ride.rideId} AND open_id = #{openId}

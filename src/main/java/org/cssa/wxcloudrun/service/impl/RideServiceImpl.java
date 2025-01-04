@@ -47,7 +47,7 @@ public class RideServiceImpl implements RideService {
     public Response<List<Ride>> getRideList(Integer offset, Integer limit, @Nullable String openId) {
         int batchSize = limit;
         List<Ride> returnedList  = new ArrayList<>();
-        Timestamp currentTime = Timestamp.valueOf(ZonedDateTime.now(ZoneId.of("America/Chicago")).toLocalDateTime());
+        Timestamp currentCSTTime = Timestamp.valueOf(ZonedDateTime.now(ZoneId.of("America/Chicago")).toLocalDateTime());
 
         // 检查返回的顺风车中是否由未被标记但已过期的顺风车信息
         while (returnedList.size() < limit) {
@@ -65,7 +65,8 @@ public class RideServiceImpl implements RideService {
 
             // 遍历当前获取的顺风车列表
             for (Ride ride : rideList) {
-                boolean isExpired = checkIfExpired(ride, currentTime); // 与当前CST时间对比检查顺风车是否过期
+                // 与当前CST时间对比检查顺风车是否过期。
+                boolean isExpired = checkIfExpired(ride, currentCSTTime);
 
                 if (isExpired) {
                     // 将过期顺风车移除
@@ -74,15 +75,6 @@ public class RideServiceImpl implements RideService {
                     // 将有效顺风车的 JSON 数据解析到 Contact 和 images 列表
                     ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
                     ride.setImages(JSON.parseArray(ride.getImagesJSON(), String.class));
-
-                    // To do: 问题是数据库中正常保存显示CST，但是MyBitas映射后的时间少了14个小时；
-                    // 想个办法不要暴力转换。返回前端的发布时间应该自动转化为CST时间。
-                    if (ride.getPublishedTime() != null) {
-                        // 将 Timestamp 转换为毫秒，并强制加 14 小时
-                        long adjustedTime = ride.getPublishedTime().getTime() + (14 * 60 * 60 * 1000);
-                        // 设置回 Ride 对象
-                        ride.setPublishedTime(new Timestamp(adjustedTime));
-                    }
 
                     // 处理好的顺风车数据添加到返回列表中
                     returnedList.add(ride);
@@ -119,15 +111,6 @@ public class RideServiceImpl implements RideService {
             // 将有效顺风车的 JSON 数据解析到 Contact 和 images 列表
             ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
             ride.setImages(JSON.parseArray(ride.getImagesJSON(), String.class));
-
-            // To do: 问题是数据库中正常保存显示CST，但是MyBitas映射后的时间少了14个小时；
-            // 想个办法不要暴力转换。返回前端的发布时间应该自动转化为CST时间。
-            if (ride.getPublishedTime() != null) {
-                // 将 Timestamp 转换为毫秒，并强制加 14 小时
-                long adjustedTime = ride.getPublishedTime().getTime() + (14 * 60 * 60 * 1000);
-                // 设置回 Ride 对象
-                ride.setPublishedTime(new Timestamp(adjustedTime));
-            }
         });
         return new Response<>(rideList);
     }
