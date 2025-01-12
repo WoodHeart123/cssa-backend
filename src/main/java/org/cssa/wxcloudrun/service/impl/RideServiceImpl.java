@@ -106,12 +106,12 @@ public class RideServiceImpl implements RideService {
         }
 
         // 单程的情况，只需要检查出发时间是否过期
-        if (ride.getRideType() == 1) {
+        if (ride.getRideType() == 0) {
             return ride.getDepartureTime().before(currentTime);
         }
 
         // 往返的情况，需要检查出发时间和返回时间是否过期
-        if (ride.getRideType() == 2) {
+        if (ride.getRideType() == 1) {
             return ride.getDepartureTime().before(currentTime) &&
                     (ride.getReturnTime() != null && ride.getReturnTime().before(currentTime));
         }
