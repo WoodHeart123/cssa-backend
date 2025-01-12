@@ -31,7 +31,7 @@ public class RideServiceImpl implements RideService {
     public Response<Ride> getRide(Integer rideId) {
         Ride ride = rideMapper.getRide(rideId);
         ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
-        ride.setImages(JSON.parseArray(ride.getImagesJSON(), String.class));
+        ride.setImageList(JSON.parseArray(ride.getImagesJSON(), String.class));
         return new Response<>(ride);
     }
 
@@ -74,7 +74,7 @@ public class RideServiceImpl implements RideService {
                 } else if (ride.getPublishedTime() != null) {
                     // 将有效顺风车的 JSON 数据解析到 Contact 和 images 列表
                     ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
-                    ride.setImages(JSON.parseArray(ride.getImagesJSON(), String.class));
+                    ride.setImageList(JSON.parseArray(ride.getImagesJSON(), String.class));
 
                     // 处理好的顺风车数据添加到返回列表中
                     returnedList.add(ride);
@@ -134,7 +134,7 @@ public class RideServiceImpl implements RideService {
         rideList.forEach(ride -> {
             // 将有效顺风车的 JSON 数据解析到 Contact 和 images 列表
             ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
-            ride.setImages(JSON.parseArray(ride.getImagesJSON(), String.class));
+            ride.setImageList(JSON.parseArray(ride.getImagesJSON(), String.class));
         });
         return new Response<>(rideList);
     }
@@ -180,7 +180,7 @@ public class RideServiceImpl implements RideService {
     @Override
     public boolean updateRide(String userId, Ride ride, boolean ifToPublish) {
         ride.setContactInfoJSON(JSON.toJSONString(ride.getContactInfo()));
-        ride.setImagesJSON(JSON.toJSONString(ride.getImages()));
+        ride.setImagesJSON(JSON.toJSONString(ride.getImageList()));
         return rideMapper.updateRide(userId, ride, ifToPublish);
     }
 
