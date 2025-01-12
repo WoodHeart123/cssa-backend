@@ -71,7 +71,7 @@ public class RideServiceImpl implements RideService {
                 if (isExpired) {
                     // 将过期顺风车隐藏
                     hideRide(ride.getRideId());
-                } else {
+                } else if (ride.getPublishedTime() != null) {
                     // 将有效顺风车的 JSON 数据解析到 Contact 和 images 列表
                     ride.setContactInfo(JSON.parseObject(ride.getContactInfoJSON(), Contact.class));
                     ride.setImages(JSON.parseArray(ride.getImagesJSON(), String.class));

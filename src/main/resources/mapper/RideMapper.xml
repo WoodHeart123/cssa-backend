@@ -37,7 +37,7 @@
     <select id="getRideListByUserId" parameterType="java.util.Map" resultMap="rideResultMap">
         SELECT *
         FROM ride
-        WHERE ride.publishedTime IS NULL AND removedTime IS NULL AND open_id = #{openId}
+        WHERE removedTime IS NULL AND open_id = #{openId}
         LIMIT #{offset}, #{limit}
     </select>
 
