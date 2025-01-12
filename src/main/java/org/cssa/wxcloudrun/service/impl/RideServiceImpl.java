@@ -163,7 +163,7 @@ public class RideServiceImpl implements RideService {
     @Override
     public boolean publishRide(Ride ride) {
         ride.setContactInfoJSON(JSON.toJSONString(ride.getContactInfo()));
-        ride.setImagesJSON(JSON.toJSONString(ride.getImages()));
+        ride.setImagesJSON(JSON.toJSONString(ride.getImageList()));
         return rideMapper.publishRide(ride);
     }
 

@@ -71,8 +71,8 @@ public class Ride {
     @JSONField(name = "publishedTime", format = "yyyy-MM-dd HH:mm:ss")
     private Timestamp publishedTime;
 
-    @Schema(description = "顺风车相关的图片列表", example = "[\"https://server.com/image1.jpg\", \"https://server.com/image2.jpg\"]")
-    private List<String> images;
+    @Schema(description = "顺风车相关的图片列表", example = "[ {filename: \"abcd.jpg\", filepath: \"http://tmp/123.jpg\", url: \"https://456.jpg\"} ]")
+    private List<String> imageList;
 
     @Schema(description = "数据库内部存储图片，不对外暴露", hidden = true)
     private String imagesJSON;
