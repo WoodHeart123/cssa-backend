@@ -35,7 +35,10 @@
     </select>
 
     <select id="getRideListByUserId" parameterType="java.util.Map" resultMap="rideResultMap">
-        SELECT * FROM ride WHERE removedTime IS NULL AND open_id = #{openId} LIMIT #{offset}, #{limit}
+        SELECT *
+        FROM ride
+        WHERE ride.publishedTime IS NULL AND removedTime IS NULL AND open_id = #{openId}
+        LIMIT #{offset}, #{limit}
     </select>
 
     <select id="isRideOwnedByUser" parameterType="java.util.Map" resultType="boolean">
@@ -81,7 +84,7 @@
 
     <update id="hideRide" parameterType="Integer">
         UPDATE ride
-        SET publishedTime = NULL, removedTime = NULL
+        SET publishedTime = NULL
         WHERE rideId = #{rideId}
     </update>
 

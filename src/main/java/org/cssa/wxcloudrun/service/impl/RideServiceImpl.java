@@ -69,7 +69,7 @@ public class RideServiceImpl implements RideService {
                 boolean isExpired = checkIfExpired(ride, currentCSTTime);
 
                 if (isExpired) {
-                    // 将过期顺风车移除
+                    // 将过期顺风车隐藏
                     hideRide(ride.getRideId());
                 } else {
                     // 将有效顺风车的 JSON 数据解析到 Contact 和 images 列表
@@ -94,6 +94,30 @@ public class RideServiceImpl implements RideService {
         returnedList.sort((ride1, ride2) -> ride2.getPublishedTime().compareTo(ride1.getPublishedTime()));
 
         return new Response<>(returnedList);
+    }
+
+    /**
+     * 检查顺风车是否过期
+     */
+    private boolean checkIfExpired(Ride ride, Timestamp currentTime) {
+        if (ride.getDepartureTime() == null) {
+            // 如果没有出发时间，无法判断是否过期，直接返回 false
+            return false;
+        }
+
+        // 单程的情况，只需要检查出发时间是否过期
+        if (ride.getRideType() == 1) {
+            return ride.getDepartureTime().before(currentTime);
+        }
+
+        // 往返的情况，需要检查出发时间和返回时间是否过期
+        if (ride.getRideType() == 2) {
+            return ride.getDepartureTime().before(currentTime) &&
+                    (ride.getReturnTime() != null && ride.getReturnTime().before(currentTime));
+        }
+
+        // 默认情况，返回 false
+        return false;
     }
 
     /**
@@ -177,8 +201,8 @@ public class RideServiceImpl implements RideService {
     /**
      * 隐藏（下架）顺风车。
      *
-     * 该方法会将顺风车信息标记为不可见，但仍然保留在数据库中。
-     * 用户仍然可以看到或编辑该顺风车信息，但不会向公众展示。
+     * 该方法会将顺风车信息标记为“已过期”保留在数据库中。
+     * 用户仍然可以看到或编辑该顺风车信息。
      *
      * @param rideId 要移除的顺风车信息的Id
      * @return 返回移除操作是否成功
@@ -197,29 +221,5 @@ public class RideServiceImpl implements RideService {
 
     public boolean isPublished(Integer rideID) {
         return rideMapper.isPublished(rideID);
-    }
-
-    /**
-     * 检查顺风车是否过期
-     */
-    private boolean checkIfExpired(Ride ride, Timestamp currentTime) {
-        if (ride.getDepartureTime() == null) {
-            // 如果没有出发时间，无法判断是否过期，直接返回 false
-            return false;
-        }
-
-        // 单程的情况，只需要检查出发时间是否过期
-        if (ride.getRideType() == 1) {
-            return ride.getDepartureTime().before(currentTime);
-        }
-
-        // 往返的情况，需要检查出发时间和返回时间是否过期
-        if (ride.getRideType() == 2) {
-            return ride.getDepartureTime().before(currentTime) &&
-                    (ride.getReturnTime() != null && ride.getReturnTime().before(currentTime));
-        }
-
-        // 默认情况，返回 false
-        return false;
     }
 }
