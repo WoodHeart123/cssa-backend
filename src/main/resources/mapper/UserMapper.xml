@@ -111,7 +111,8 @@
     <select id="getUserInfo" parameterType="String" resultType="Map">
         SELECT nickname,
                avatar_url AS avatarUrl,
-               is_student AS isStudent
+               is_student AS isStudent,
+               avatar AS avatar
         FROM user
         WHERE open_id = #{openId}
     </select>
