@@ -17,9 +17,13 @@ public interface RentalMapper {
     Rental getRental(Integer rentalId);
     void postRentalInfo(Rental rental);
 
-    void saveContact(String userID, String contact);
+    void saveContact(Integer userID, String contact);
 
-    void updateRental(String userID, Rental rental);
+    void updateRental(Integer userID, Rental rental);
+
+    void deleteRental(Integer userID, Integer rentalID);
+
+    ArrayList<Rental> getUserRental(Integer userID, Integer offset, Integer limit);
 
 
 }

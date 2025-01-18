@@ -24,6 +24,7 @@ public enum ReturnCode {
     NO_SUCH_USER(116,"用户不存在"),
     RIDE_NOT_EXIST(117,"顺风车信息不存在"),
     ACTION_FAILED(118,"操作失败"),
+    INVALID_FORMAT(119,"格式错误"),
     CENSORED_UGC_CONTENT(201, "内容被审核"),
     INVALID_ADMIN_INFO(301, "管理员登录信息错误");
 

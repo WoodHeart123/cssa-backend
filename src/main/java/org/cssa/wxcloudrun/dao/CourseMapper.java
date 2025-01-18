@@ -55,52 +55,27 @@ public interface CourseMapper {
     List<Department> getDepartmentList();
 
     /**
-     * Set likelist of comments of users
-     *
-     * @param user user information
-     */
-    void setLikeList(User user);
-
-    /**
      * increase likecount of comment by one
      *
      * @param commentID ID of comment
      */
     void incrementCount(Integer commentID);
 
-    /**
-     * Get user information
-     *
-     * @param userID ID of user
-     * @return user information
-     */
-    User getUser(String userID);
-
-    /**
-     * Get comment information
-     *
-     * @param commentID ID of comment
-     * @return comment information
-     */
-    CourseComment getComment(Integer commentID);
-
-    /**
-     * Add report list into a comment
-     *
-     * @param courseComment comment information
-     */
-    void addReportList(CourseComment courseComment);
-
-    /**
-     * hide a comment
-     *
-     * @param commentID ID of comment
-     */
-    void hideComment(Integer commentID);
-
     List<CourseComment> getCommentList(@Param("courseID") Integer courseID, @Param("offset") Integer offset, @Param("limit") Integer limit, @Param("orderField") String orderField);
 
-    Integer getPostCommentCount(String userID, Integer courseID);
+    Integer getPostCommentCount(Integer userID, Integer courseID);
+
+    /**
+     * @param userID user ID
+     * @param offset the starting commentID
+     * @param limit  number of comments
+     * @return list of comment with limit size
+     */
+    List<CourseComment> getUserComment(@Param("userID") Integer userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
+
+    void updateComment(Integer userID, Integer commentID, String comment);
+
+    void deleteComment(Integer userID, Integer commentID);
 
 
 }

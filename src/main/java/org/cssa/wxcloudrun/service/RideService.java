@@ -20,32 +20,32 @@ public interface RideService {
      *
      * @param offset 从结果集开始的偏移量
      * @param limit 每页结果的最大数量
-     * @param userId （可选）用于筛选指定用户的顺风车列表。如果为 null，则不筛选用户。
+     * @param openId （可选）用于筛选指定用户的顺风车列表。如果为 null，则不筛选用户。
      * @return 包含未被移除顺风车列表的响应
      */
-    Response<List<Ride>> getRideList(Integer offset, Integer limit, @Nullable String userId);
+    Response<List<Ride>> getRideList(Integer offset, Integer limit, @Nullable String openId);
 
 
     /**
-     * 获取该用户被移除的顺风车列表。
+     * 获取该用户被隐藏（下架）的顺风车列表。
      *
-     * @param userId 用户的微信 openID，作为用户的唯一标识符
+     * @param openId 用户的微信 openID，作为用户的唯一标识符
      * @param offset 从结果集开始的偏移量
      * @param limit 每页结果的最大数量
-     * @return 包含被移除顺风车列表的响应
+     * @return 包含被隐藏（下架）顺风车列表的响应
      */
-    Response<List<Ride>> getRemovedRideList(String userId,Integer offset, Integer limit);
+    Response<List<Ride>> getHiddenRideList(String openId,Integer offset, Integer limit);
 
     /**
      * 检查指定用户是否拥有特定的顺风车。
      *
      * 该方法通过用户的微信 openID 和顺风车的 rideID 检查该顺风车是否属于该用户。
      *
-     * @param userId 用户的微信 openID，作为用户的唯一标识符
+     * @param openId 用户的微信 openID，作为用户的唯一标识符
      * @param rideId 顺风车的唯一标识符
      * @return 如果该顺风车属于该用户，则返回 true；否则返回 false
      */
-    boolean isRideOwnedByUser(String userId, Integer rideId);
+    boolean isRideOwnedByUser(String openId, Integer rideId);
 
     /**
      * 保存顺风车信息。
@@ -69,9 +69,9 @@ public interface RideService {
     boolean updateRide(String userId, Ride ride, boolean ifPublish);
 
     /**
-     * 移除顺风车(软删除顺风车信息)。
-     * 该方法会将顺风车信息标记为不可见，但仍然保留在数据库中。
+     * 移除顺风车。
      * 用户仍然可以看到或编辑该顺风车信息，但不会向公众展示。
+     * 用户无法再看到该顺风车信息。
      *
      * @param rideId 要移除的顺风车信息的Id
      * @return 返回移除操作是否成功
@@ -79,11 +79,12 @@ public interface RideService {
     boolean removeRide(Integer rideId);
 
     /**
-     * 彻底删除顺风车信息 (删除顺风车)。
-     * 该方法会从数据库中完全删除顺风车信息，数据将不可恢复。
+     * 隐藏（下架）顺风车。
+     * 该方法会将顺风车信息标记为不可见，但仍然保留在数据库中。
+     * 用户仍然可以看到或编辑该顺风车信息，但不会向公众展示。
      *
-     * @param rideId 要删除的顺风车信息的Id
-     * @return 返回删除操作是否成功
+     * @param rideId 要移除的顺风车信息的Id
+     * @return 返回移除操作是否成功
      */
-    boolean deleteRide(Integer rideId);
+    boolean hideRide(Integer rideId);
 }

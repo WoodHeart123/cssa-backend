@@ -22,7 +22,9 @@ public class WeixinServiceInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         PrintWriter writer = null;
         try {
-
+            if(request.getRequestURI().contains("swagger") || request.getRequestURI().contains("v2/api-docs")){
+                return true;
+            }
             if (request.getHeader("x-wx-openid") == null) {
                 logger.info("filter user request to " + request.getRequestURI() + " because of no wx-openid");
                 response.setCharacterEncoding("utf-8");
