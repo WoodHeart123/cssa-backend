@@ -36,6 +36,34 @@
         LIMIT #{offset}, #{limit}
     </select>
 
+    <select id="searchProduct" resultMap="ProductMap">
+        SELECT secondhand.productID,
+               secondhand.productTitle,
+               secondhand.productDescription,
+               secondhand.time,
+               secondhand.price,
+               secondhand.productCondition,
+               secondhand.contact,
+               secondhand.images,
+               secondhand.delivery,
+               COALESCE(user.avatar, 1)            as sellerAvatar,
+               COALESCE(user.nickname, "微信用户") as sellerNickname
+        FROM secondhand
+                 LEFT JOIN user on secondhand.user_id = user.id
+        WHERE secondhand.time IS NOT NULL
+        <if test="productTitleFilter.length() != 0">
+            AND secondhand.productTitle LIKE CONCAT('%', #{productTitleFilter}, '%')
+        </if>
+        <if test="productConditionFilter != 'ALL'">
+            AND secondhand.productCondition = #{productConditionFilter}
+        </if>
+        <if test="productDeliveryFilter != 'ALL'">
+            AND secondhand.delivery = #{productDeliveryFilter}
+        </if>
+        ORDER BY secondhand.time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
     <insert id="saveProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="productID">
         INSERT INTO secondhand (user_id, productTitle, productDescription, price, productCondition, contact, images,
                                 delivery)

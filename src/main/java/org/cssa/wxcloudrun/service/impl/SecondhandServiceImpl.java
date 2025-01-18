@@ -5,7 +5,6 @@ import org.cssa.wxcloudrun.model.Product;
 import org.cssa.wxcloudrun.model.Response;
 import org.cssa.wxcloudrun.model.ReturnCode;
 import org.cssa.wxcloudrun.service.SecondhandService;
-import com.alibaba.fastjson2.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +24,16 @@ public class SecondhandServiceImpl implements SecondhandService {
     public Response<List<Product>> getProductList(Integer offset, Integer limit) {
         ArrayList<Product> productArrayList;
         productArrayList = secondhandMapper.getProductList(offset, limit);
+        for (Product product : productArrayList) {
+            product.setUTCtime(product.getTime().toInstant().toString());
+        }
+        return new Response<>(productArrayList);
+    }
+
+    @Override
+    public Response<List<Product>> searchProduct(String productTitleFilter, String conditionFilter, String deliveryFilter, Integer offset, Integer limit) {
+        ArrayList<Product> productArrayList;
+        productArrayList = secondhandMapper.searchProduct(productTitleFilter, conditionFilter, deliveryFilter, offset, limit);
         for (Product product : productArrayList) {
             product.setUTCtime(product.getTime().toInstant().toString());
         }
