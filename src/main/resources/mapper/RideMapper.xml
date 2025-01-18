@@ -41,6 +41,31 @@
         LIMIT #{offset}, #{limit}
     </select>
 
+    <select id="getRideListByUserId" parameterType="java.util.Map" resultType="org.cssa.wxcloudrun.model.Ride">
+        SELECT ride.rideId,
+               ride.userId,
+               ride.requestType,
+               ride.rideType,
+               ride.price,
+               ride.origin,
+               ride.destination,
+               ride.availableSeats,
+               ride.requestedSeats,
+               ride.departureTime AS departureTime,
+               ride.returnTime AS returnTime,
+               ride.description,
+               ride.contactInfoJSON,
+               ride.make,
+               ride.model,
+               ride.estimatedArrivalTime AS estimatedArrivalTime,
+               ride.removedTime AS removedTime,
+               ride.publishedTime AS publishedTime,
+               ride.imagesJSON
+        FROM ride
+        WHERE ride.removedTime IS NULL AND ride.userId = #{rideId}
+        LIMIT #{offset}, #{limit}
+    </select>
+
     <select id="isRideOwnedByUser" parameterType="java.util.Map" resultType="boolean">
         SELECT COUNT(*) > 0 FROM ride WHERE open_id = #{openId} AND rideId = #{rideId}
     </select>
