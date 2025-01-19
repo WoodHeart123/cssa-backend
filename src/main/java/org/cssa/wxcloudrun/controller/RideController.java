@@ -33,19 +33,37 @@ public class RideController {
     @Operation(summary = "获取顺风车列表", description = "获取顺风车列表")
     public Response<List<Ride>> getRideList(@RequestParam Integer offset,
                                             @RequestParam Integer limit) {
-        return rideService.getRideList(offset, limit);
+        return rideService.getRideList(offset, limit, null);
     }
 
-    // 获取该用户被移除的顺风车列表
-    @RequestMapping(value = {"/getRemovedRideList"}, method = {RequestMethod.GET})
-    @Operation(summary = "获取顺风车列表", description = "获取顺风车列表")
-    public Response<List<Ride>> getRemovedRideList(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId,
-                                                   @RequestParam Integer offset,
-                                                   @RequestParam Integer limit) {
+    // 获取指定用户已发布但未被移除的顺风车列表。
+    @RequestMapping(value = {"/getRideListByUserId"}, method = {RequestMethod.GET})
+    @Operation(summary = "根据用户微信openId获取顺风车列表", description = "获取顺风车列表")
+    public Response<List<Ride>> getRideListByUserId(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId,
+                                                    @RequestParam Integer offset,
+                                                    @RequestParam Integer limit) {
+        return rideService.getRideList(offset, limit, openId);
+    }
+
+    // 获取指定用户已发布但未被移除的顺风车列表。
+    @RequestMapping(value = {"/getRideListByUserId"}, method = {RequestMethod.GET})
+    @Operation(summary = "根据用户微信openId获取顺风车列表", description = "获取顺风车列表")
+    public Response<List<Ride>> getRideListByUserId(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId,
+                                                    @RequestParam Integer offset,
+                                                    @RequestParam Integer limit) {
+        return rideService.getRideList(offset, limit, openId);
+    }
+
+    // 获取该用户被隐藏的顺风车列表
+    @RequestMapping(value = {"/getHiddenRideList"}, method = {RequestMethod.GET})
+    @Operation(summary = "获取用户被隐藏的顺风车列表", description = "获取用户被隐藏的顺风车列表")
+    public Response<List<Ride>> getHiddenRideList(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId,
+                                                  @RequestParam Integer offset,
+                                                  @RequestParam Integer limit) {
         if (openId == null || StringUtils.isEmptyOrWhitespace(openId)) {
             return new Response<>(ReturnCode.INVALID_USER_TOKEN);
         }
-        return rideService.getRemovedRideList(openId,offset, limit);
+        return rideService.getHiddenRideList(openId,offset, limit);
     }
 
     // 获取特定顺风车信息
@@ -58,10 +76,9 @@ public class RideController {
     // 发布顺风车
     @RequestMapping(value = {"/publishRide"}, method = {RequestMethod.POST})
     @Operation(summary = "发布顺风车", description = "发布顺风车")
-    public Response<Object> publishRide(@Parameter(description = "是否保存联系方式")
-                                         @RequestParam(value = "save", required = false, defaultValue = "false") Boolean ifSave,
-                                     @Parameter(description = "顺风车信息") @RequestBody Ride ride,
-                                     @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId) {
+    public Response<Object> publishRide(@Parameter(description = "是否保存联系方式") @RequestParam(value = "save", required = false, defaultValue = "false") Boolean ifSave,
+                                        @Parameter(description = "顺风车信息") @RequestBody Ride ride,
+                                        @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId) {
         // 内容检查
         String censoredContent = ride.getOrigin() + ";" + ride.getDestination() + ";" + ride.getDescription();
         WechatResponse wechatResponse = weChatAPI.MsgCheck(censoredContent, openId, 3);
@@ -70,7 +87,7 @@ public class RideController {
         }
 
         // 设置用户 ID
-        ride.setUserId(openId);
+        ride.setOpenId(openId);
 
         // 保存联系信息到用户
 //        if (ifSave) {
@@ -110,9 +127,27 @@ public class RideController {
         }
     }
 
+    // 隐藏（下架）顺风车
+    @RequestMapping(value = {"/hideRide"}, method = {RequestMethod.POST})
+    @Operation(summary = "隐藏（下架）顺风车", description = "将顺风车从公共列表中移除，但保留在数据库中，用户仍然可以看到和编辑")
+    public Response<Object> hideRide(@Parameter(description = "顺风车ID") @RequestParam Integer rideId,
+                                     @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
+        // 检查该用户是否拥有该顺风车信息
+        if (!rideService.isRideOwnedByUser(openid,rideId)) {
+            return new Response<>(ReturnCode.RIDE_NOT_EXIST);
+        }
+
+        // 执行软删除操作
+        if (rideService.hideRide(rideId)) {
+            return new Response<>(ReturnCode.SUCCESS);
+        } else {
+            return new Response<>(ReturnCode.ACTION_FAILED);
+        }
+    }
+
     // 软删除顺风车 (移除顺风车)
     @RequestMapping(value = {"/removeRide"}, method = {RequestMethod.POST})
-    @Operation(summary = "移除顺风车", description = "将顺风车从公共列表中移除，但保留在数据库中，用户仍然可以看到和编辑")
+    @Operation(summary = "移除顺风车", description = "将顺风车从公共列表中移除，但保留在数据库中，用户无法看到和编辑")
     public Response<Object> removeRide(@Parameter(description = "顺风车ID") @RequestParam Integer rideId,
                                        @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
         // 检查该用户是否拥有该顺风车信息
@@ -122,24 +157,6 @@ public class RideController {
 
         // 执行软删除操作
         if (rideService.removeRide(rideId)) {
-            return new Response<>(ReturnCode.SUCCESS);
-        } else {
-            return new Response<>(ReturnCode.ACTION_FAILED);
-        }
-    }
-
-    // 彻底删除顺风车 (删除顺风车)
-    @RequestMapping(value = {"/deleteRide"}, method = {RequestMethod.DELETE})
-    @Operation(summary = "删除顺风车", description = "彻底从数据库中删除顺风车信息")
-    public Response<Object> deleteRide(@Parameter(description = "顺风车ID") @RequestParam Integer rideId,
-                                       @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId) {
-        // 检查该用户是否拥有该顺风车信息
-        if (!rideService.isRideOwnedByUser(openId,rideId)) {
-            return new Response<>(ReturnCode.RIDE_NOT_EXIST);
-        }
-
-        // 执行硬删除操作
-        if (rideService.deleteRide(rideId)) {
             return new Response<>(ReturnCode.SUCCESS);
         } else {
             return new Response<>(ReturnCode.ACTION_FAILED);

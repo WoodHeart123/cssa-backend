@@ -79,7 +79,7 @@
             sexConstraint   = #{rental.sexConstraint},
             publishedTime   = CURRENT_TIMESTAMP
         WHERE rentalID = #{rental.rentalID}
-          AND userID = #{userID}
+          AND open_id = #{userID}
     </update>
 
     <update id="saveContact">

@@ -52,28 +52,28 @@
     <update id="setProductTime" parameterType="Map">
         UPDATE secondhand
         SET time = #{time}
-        WHERE userID = #{userID}
+        WHERE open_id = #{userID}
           AND productID = #{productID}
     </update>
 
     <update id="clearProductTime" parameterType="Map">
         UPDATE secondhand
         SET time = NULL
-        WHERE userID = #{userID}
+        WHERE open_id = #{userID}
           AND productID = #{productID}
     </update>
 
     <update id="setRentalTime" parameterType="Map">
         UPDATE rental
         SET publishedTime = #{time}
-        WHERE userID = #{userID}
+        WHERE open_id = #{userID}
           AND rentalID = #{rentalID}
     </update>
 
     <update id="clearRentalTime" parameterType="Map">
         UPDATE rental
         SET publishedTime = NULL
-        WHERE userID = #{userID}
+        WHERE open_id = #{userID}
           AND rentalID = #{rentalID}
     </update>
 
@@ -89,13 +89,13 @@
                         THEN #{contactInfo.phoneNumber}
                     ELSE phoneNumber
                     END,
-            wechatID =
+            wechat_id =
                 CASE
                     WHEN #{contactInfo.weChatId} IS NOT NULL
                         AND #{contactInfo.weChatId} != ''
-                        AND #{contactInfo.weChatId} != wechatID
+                        AND #{contactInfo.weChatId} != wechat_id
                         THEN #{contactInfo.weChatId}
-                    ELSE wechatID
+                    ELSE wechat_id
                     END,
             email =
                 CASE
@@ -105,7 +105,16 @@
                         THEN #{contactInfo.email}
                     ELSE email
                     END
-        WHERE userID = #{userId}
+        WHERE open_id = #{userId}
     </update>
 
+    <select id="getUserInfo" parameterType="String" resultType="Map">
+        SELECT nickname,
+               avatar_url AS avatarUrl,
+               is_student AS isStudent,
+               is_blocked As isBlocked,
+               avatar AS avatar
+        FROM user
+        WHERE open_id = #{openId}
+    </select>
 </mapper>

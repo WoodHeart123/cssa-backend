@@ -137,20 +137,34 @@ public class UserController {
                 return new Response<>(ReturnCode.UNKNOWN_SERVICE);
         }
     }
+    @RequestMapping(value = {"deleteMyItem"}, method = RequestMethod.DELETE)
+    public Response<Object> deleteMyItem(@RequestParam String service,
+                                         @RequestParam Integer itemID,
+                                         @Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openid) {
+        switch (service.toLowerCase()) {
+            case "comment":
+                //return userService.deleteComment(openid, itemID);
+            case "secondhand":
+                //return userService.deleteMySecondHand(openid, itemID);
+            case "rental":
+                //return userService.deleteMyRental(openid, itemID);
+            default:
+                return new Response<>(ReturnCode.UNKNOWN_SERVICE);
+        }
+    }
 
+    @RequestMapping(value = {"/subscribe"}, method = {RequestMethod.POST})
+    @Operation(summary = "订阅邮件", description = "订阅邮件")
+    public Response<Boolean> subscribe(@RequestBody Subscription subscription) {
+        return userService.subscribe(subscription);
+    }
 
-//    @RequestMapping(value = {"/subscribe"}, method = {RequestMethod.POST})
-//    @Operation(summary = "订阅邮件", description = "订阅邮件")
-//    public Response<Boolean> subscribe(@RequestBody Subscription subscription) {
-//        return userService.subscribe(subscription);
-//    }
+    @RequestMapping(value = {"/unsubscribeByOpenID"}, method = {RequestMethod.POST})
+    @Operation(summary = "退订邮件", description = "根据微信open id退订邮件")
+    public Response<Boolean> unsubscribeByOpenID(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
+        return userService.unsubscribe(openID);
+    }
 
-//    @RequestMapping(value = {"/unsubscribeByOpenID"}, method = {RequestMethod.POST})
-//    @Operation(summary = "退订邮件", description = "根据微信open id退订邮件")
-//    public Response<Boolean> unsubscribeByOpenID(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
-//        return userService.unsubscribe(openID);
-//    }
-//
 //    @RequestMapping(value = {"/unsubscribeByEncryptedID"}, method = {RequestMethod.POST})
 //    @Operation(summary = "退订邮件", description = "根据内部加密id退订邮件")
 //    public Response<Boolean> unsubscribeByEncryptedID(@RequestParam String encryptedID) {
@@ -159,29 +173,23 @@ public class UserController {
 //        return userService.unsubscribe(openID);
 //    }
 
-//    @RequestMapping(value = {"/isSubscribed"}, method = {RequestMethod.GET})
-//    @Operation(summary = "检查是否订阅", description = "检查是否订阅")
-//    public Response<Boolean> isSubscribed(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
-//        return userService.isSubscribed(openID);
-//    }
-//
-//    @RequestMapping(value = {"isBlocked"}, method = {RequestMethod.GET})
-//    @Operation(summary = "检查用户是否被拉黑", description = "检查用户是否被拉黑")
-//    public Response<Boolean> isBlocked(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
-//        return userService.isBlocked(openID);
-//    }
-//
-//    @RequestMapping(value = {"/saveUserInfo"}, method = {RequestMethod.POST})
-//    @Operation(summary = "保存真实的用户信息",description = "保存用户目前真实的昵称和头像链接")
-//    public Response<Boolean> saveUserInfo(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId,
-//                                          @RequestParam String nickname,
-//                                          @RequestParam String avatarUrl) {
-//        return userService.saveUserInfo(openId, nickname, avatarUrl);
-//    }
-//
-//    @RequestMapping(value = {"/getUserInfo"}, method = {RequestMethod.GET})
-//    @Operation(summary = "获取真实的用户信息",description = "获取数据库中用户真实的昵称和头像链接")
-//    public Response<Object> getUserInfo(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId) {
-//        return userService.getUserInfo(openId);
-//    }
+    @RequestMapping(value = {"/isSubscribed"}, method = {RequestMethod.GET})
+    @Operation(summary = "检查是否订阅", description = "检查是否订阅")
+    public Response<Boolean> isSubscribed(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openID) {
+        return userService.isSubscribed(openID);
+    }
+
+    @RequestMapping(value = {"/saveUserInfo"}, method = {RequestMethod.POST})
+    @Operation(summary = "保存真实的用户信息", description = "保存用户目前真实的昵称和头像链接。需要前端判断是否需要更新。")
+    public Response<Boolean> saveUserInfo(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId,
+                                          @RequestParam(required = false) String nickname,
+                                          @RequestParam(required = false) String avatarUrl) {
+        return userService.saveUserInfo(openId, nickname, avatarUrl);
+    }
+
+    @RequestMapping(value = {"/getUserInfo"}, method = {RequestMethod.GET})
+    @Operation(summary = "获取真实的用户信息",description = "获取数据库中用户的头像链接，昵称，是否为学生，是否被拉黑")
+    public Response<Object> getUserInfo(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId) {
+        return userService.getUserInfo(openId);
+    }
 }
