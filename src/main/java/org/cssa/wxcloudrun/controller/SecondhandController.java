@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -24,12 +25,25 @@ public class SecondhandController {
     @Autowired
     WeChatAPI weChatAPI;
 
+    @Deprecated
     @RequestMapping(value = {"/getProductList"}, method = {RequestMethod.GET})
     @Operation(summary = "获取商品列表", description = "获取商品列表")
     public Response<List<Product>> getProductList(@RequestParam Integer offset,
                                                   @RequestParam Integer limit) {
         return secondhandService.getProductList(offset, limit);
     }
+
+    @RequestMapping(value = {"/searchProduct"}, method = {RequestMethod.GET})
+    @Operation(summary = "通过条件筛选商品列表", description = "通过条件筛选商品列表")
+    public Response<List<Product>> searchProduct(@RequestParam Optional<String> productTitleFilter,
+                                                     @RequestParam Optional<String> conditionFilter,
+                                                     @RequestParam Optional<String> deliveryFilter,
+                                                     @RequestParam Integer offset,
+                                                     @RequestParam Integer limit) {
+        return secondhandService.searchProduct(productTitleFilter.orElse(""), conditionFilter.orElse("ALL").toUpperCase(),
+                deliveryFilter.orElse("ALL").toUpperCase(), offset, limit);
+    }
+
 
     @RequestMapping(value = {"/getProduct"}, method = {RequestMethod.GET})
     @Operation(summary = "获取特定商品信息", description = "获取特定商品信息")
@@ -71,7 +85,7 @@ public class SecondhandController {
                                       @Parameter(description = "用户信息", hidden = true) @InjectUser User user) {
             System.out.println(user.getId());
             return secondhandService.getUserSecondhand(user.getId(), offset, limit);
-    };
+    }
 
 
 }
