@@ -54,11 +54,11 @@
         <if test="productTitleFilter.length() != 0">
             AND secondhand.productTitle LIKE CONCAT('%', #{productTitleFilter}, '%')
         </if>
-        <if test="productConditionFilter != 'ALL'">
-            AND secondhand.productCondition = #{productConditionFilter}
+        <if test="conditionFilter != 'ALL'">
+            AND secondhand.productCondition = #{conditionFilter}
         </if>
-        <if test="productDeliveryFilter != 'ALL'">
-            AND secondhand.delivery = #{productDeliveryFilter}
+        <if test="deliveryFilter != 'ALL'">
+            AND secondhand.delivery = #{deliveryFilter}
         </if>
         ORDER BY secondhand.time DESC
         LIMIT #{offset}, #{limit}
