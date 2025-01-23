@@ -15,12 +15,17 @@ public interface CourseService {
 
     Response<List<Department>> getDepartmentList();
 
-    Response<Object> zan(String userID, Integer commentID);
-
-    Response<List<Course>> getCourse(ArrayList<String> courseID);
+    Response<Object> like(Integer commentID);
 
     Response<List<CourseComment>> getCommentList(Integer courseID, Integer offset, Integer limit, SortType sortType);
 
     Response<List<Course>> searchCourse(String query);
+
+    Response<Object> updateComment(Integer userID, Integer commentID, String comment);
+
+    Response<List<CourseComment>> getUserComment(Integer userID, Integer offset, Integer limit);
+
+    Response<Object> deleteComment(Integer userID, Integer commentID);
+
 
 }

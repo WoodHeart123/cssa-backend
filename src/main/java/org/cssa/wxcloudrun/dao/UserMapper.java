@@ -2,90 +2,64 @@ package org.cssa.wxcloudrun.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.cssa.wxcloudrun.model.CourseComment;
-import org.cssa.wxcloudrun.model.Product;
-import org.cssa.wxcloudrun.model.Rental;
-import org.cssa.wxcloudrun.model.User;
+import org.cssa.wxcloudrun.model.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface UserMapper {
 
-    void authSuccess(String userID);
-
     /**
-     * get user's info
+     * get user's info by openID
      *
-     * @param userID user ID
+     * @param openID user ID
      * @return email, nickname
      */
-    User login(String userID);
+    User getUserByOpenID(String openID);
 
     /**
-     * user register
+     * create user
      *
-     * @param nickname WeChat nickname
-     * @param userID   user ID
+     * @param nickname nickname
      */
-    void register(String nickname, String userID);
+    User createUser(String nickname);
 
     /**
-     * update user email
+     * get user's info by userID
      *
-     * @param email  email
-     * @param userID userID
-     */
-    void updateEmail(String email, Boolean subscribe, String userID);
-
-    /**
-     * update user wechatID
-     *
-     * @param userID userID
-     */
-    void updateWechatID(String wechatID, String userID);
-
-
-    /**
-     * update user's avatar
-     *
-     * @param avatar a number ranged from 1 to 12
-     */
-    void updateAvatar(String userID, Integer avatar);
-
-    /**
      * @param userID user ID
-     * @param offset the starting commentID
-     * @param limit  number of comments
-     * @return list of comment with limit size
+     * @return user
      */
-    List<CourseComment> getMyComment(@Param("userID") String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
+    User getUserByID(Integer userID);
 
-    void updateComment(String userID, Integer commentID, String comment);
+    /**
+     * update user's info
+     *
+     * @param user user
+     */
+    int updateUser(User user);
 
-    void deleteComment(String userID, Integer commentID);
+    void setProductTime(Integer productID, Integer userID, Timestamp time);
 
-    void updateNickname(String nickname, String userID);
+    void clearProductTime(Integer productID, Integer userID);
 
-    List<Product> getMySecondhand(@Param("userID") String userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
+    void setRentalTime(Integer rentalID, Integer userID, Timestamp time);
 
-    void updateSecondHand(String userID, Product product);
+    void clearRentalTime(Integer rentalID, Integer userID);
 
-    void deleteSecondHand(String userID, Integer productID);
 
-    void setProductTime(Integer productID, String userID, Timestamp time);
+    Boolean isSubscribed(String openID);
 
-    void clearProductTime(Integer productID, String userID);
 
-    void setRentalTime(Integer rentalID, String userID, Timestamp time);
+    Boolean ifEncryptedIDExists(String encryptedID);
 
-    void clearRentalTime(Integer rentalID, String userID);
+    void saveContact(@Param("userId") String userId, @Param("contactInfo") Contact contactInfo);
 
-    void deleteRental(String userID, Integer rentalID);
+    boolean saveUserInfo(@Param("userId") String userId,@Param("nickName") String nickName,@Param("avatarUrl") String avatarUrl);
 
-    ArrayList<Rental> getMyRental(String userID, Integer offset, Integer limit);
-
+    Map<String, String> getUserInfo(String openId);
 
 }

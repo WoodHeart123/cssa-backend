@@ -3,7 +3,6 @@ package org.cssa.wxcloudrun.service.impl;
 import com.alibaba.fastjson2.JSON;
 import org.cssa.wxcloudrun.dao.ActivityMapper;
 import org.cssa.wxcloudrun.model.Activity;
-import org.cssa.wxcloudrun.model.PaymentOption;
 import org.cssa.wxcloudrun.model.Response;
 import org.cssa.wxcloudrun.model.ReturnCode;
 import org.cssa.wxcloudrun.model.SignupInfo;
@@ -43,10 +42,15 @@ public class ActivityServiceImpl implements ActivityService {
     public Response<List<Activity>> getActivityList() {
         List<Activity> activityList = activityMapper.getActivityList();
         for (Activity activity : activityList) {
-            activity.setPayment(JSON.parseObject(activity.getPaymentJSON(), PaymentOption.class));
             activity.setImages((ArrayList<String>) JSON.parseArray(activity.getImagesJSON(), String.class));
         }
         return new Response<>(activityList);
+    }
+
+    @Override
+    public Response<Activity> getActivity(Integer actID) {
+        Activity act = activityMapper.findActivity(actID);
+        return new Response<>(act);
     }
 
     @Override
@@ -78,6 +82,9 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public Response<List<Activity>> getRegisterList(String userID) {
         List<Activity> activityList = activityMapper.getRegisterList(userID);
+        for (Activity activity : activityList) {
+            activity.setImages((ArrayList<String>) JSON.parseArray(activity.getImagesJSON(), String.class));
+        }
         return new Response<>(activityList);
     }
 
