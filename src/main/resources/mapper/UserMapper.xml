@@ -52,28 +52,28 @@
     <update id="setProductTime" parameterType="Map">
         UPDATE secondhand
         SET time = #{time}
-        WHERE open_id = #{userID}
+        WHERE user_id = #{userID}
           AND productID = #{productID}
     </update>
 
     <update id="clearProductTime" parameterType="Map">
         UPDATE secondhand
         SET time = NULL
-        WHERE open_id = #{userID}
+        WHERE user_id = #{userID}
           AND productID = #{productID}
     </update>
 
     <update id="setRentalTime" parameterType="Map">
         UPDATE rental
         SET publishedTime = #{time}
-        WHERE open_id = #{userID}
+        WHERE user_id = #{userID}
           AND rentalID = #{rentalID}
     </update>
 
     <update id="clearRentalTime" parameterType="Map">
         UPDATE rental
         SET publishedTime = NULL
-        WHERE open_id = #{userID}
+        WHERE user_id = #{userID}
           AND rentalID = #{rentalID}
     </update>
 

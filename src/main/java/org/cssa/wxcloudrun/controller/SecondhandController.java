@@ -72,7 +72,7 @@ public class SecondhandController {
 
     }
 
-    @RequestMapping(value = {"/deleteUserSecondhand"}, method = RequestMethod.DELETE)
+    @RequestMapping(value = {"/deleteSecondhand"}, method = RequestMethod.DELETE)
     public Response<Object> deleteUserSecondhand(@RequestParam Integer productID,
                                          @Parameter(description = "用户信息", hidden = true) @InjectUser User user) {
         return secondhandService.deleteUserSecondHand(user.getId(), productID);
