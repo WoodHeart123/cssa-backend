@@ -25,7 +25,7 @@ public interface UserMapper {
      *
      * @param nickname nickname
      */
-    User createUser(String nickname);
+    void createUser(User user);
 
     /**
      * get user's info by userID

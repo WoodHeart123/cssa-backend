@@ -66,7 +66,7 @@ public class RentalController {
                                            @Parameter(description = "是否保存联系方式") @RequestParam Boolean save,
                                            @Parameter(description = "用户信息", hidden = true) @InjectUser User user) {
         WechatResponse wechatResponse = weChatAPI.MsgCheck(rentalInfo.getDescription() + ";" + rentalInfo.getLocation(), user.getOpenID(), 3);
-        if(wechatResponse != null && wechatResponse.getResult().getLabel() >= 20000){
+        if(wechatResponse.getResult() != null && wechatResponse.getResult().getLabel() >= 20000){
             return new Response<>(ReturnCode.CENSORED_UGC_CONTENT);
         }
         rentalInfo.setUserID(user.getId());

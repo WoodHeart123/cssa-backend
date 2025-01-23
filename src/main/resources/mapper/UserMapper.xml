@@ -28,7 +28,7 @@
         SELECT * FROM user WHERE id = #{userID}
     </select>
 
-    <insert id="createUser" parameterType="String" useGeneratedKeys="true" keyProperty="id">
+    <insert id="createUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user (nickname)
         VALUES (#{nickname})
     </insert>
