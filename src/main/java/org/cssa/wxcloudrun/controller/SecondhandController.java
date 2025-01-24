@@ -53,16 +53,15 @@ public class SecondhandController {
 
     @RequestMapping(value = {"/saveProduct"}, method = {RequestMethod.POST})
     @Operation(summary = "发布商品", description = "发布商品")
-    public Response<Object> saveProduct(@Parameter(description = "是否保存联系方式") @RequestParam Boolean save,
+    public Response<Product> saveProduct(@Parameter(description = "是否保存联系方式") @RequestParam Boolean save,
                                         @Parameter(description = "商品信息") @RequestBody Product product,
                                         @Parameter(description = "用户信息", hidden = true) @InjectUser User user) {
         WechatResponse wechatResponse = weChatAPI.MsgCheck(product.getProductTitle() + ";" + product.getProductDescription(), user.getOpenID(), 3);
-        if(wechatResponse != null && wechatResponse.getResult().getLabel() >= 20000){
+        if(wechatResponse.getResult() != null && wechatResponse.getResult().getLabel() >= 20000){
             return new Response<>(ReturnCode.CENSORED_UGC_CONTENT);
         }
         product.setUserID(user.getId());
-        secondhandService.saveProduct(product, save);
-        return new Response<>();
+        return secondhandService.saveProduct(product, save);
     }
 
     @RequestMapping(value = {"/updateSecondHand"}, method = {RequestMethod.POST})
@@ -73,7 +72,7 @@ public class SecondhandController {
 
     }
 
-    @RequestMapping(value = {"/deleteUserSecondhand"}, method = RequestMethod.DELETE)
+    @RequestMapping(value = {"/deleteSecondhand"}, method = RequestMethod.DELETE)
     public Response<Object> deleteUserSecondhand(@RequestParam Integer productID,
                                          @Parameter(description = "用户信息", hidden = true) @InjectUser User user) {
         return secondhandService.deleteUserSecondHand(user.getId(), productID);
