@@ -52,5 +52,8 @@ public class Product {
     @Schema(description = "商品交易方式", example = "自提")
     private String delivery;
 
+    @Schema(description = "卖家信息")
+    private User seller;
+
 
 }

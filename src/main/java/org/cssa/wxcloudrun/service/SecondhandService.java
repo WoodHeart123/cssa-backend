@@ -9,14 +9,6 @@ import java.util.List;
 @Service
 public interface SecondhandService {
 
-    /**
-     * @param offset      offset in sql
-     * @param limit       limit of list size
-     * @return list of product information
-     */
-
-    Response<List<Product>> getProductList(Integer offset, Integer limit);
-
     Response<List<Product>> searchProduct(String productTitleFilter, String conditionFilter, String deliveryFilter, Integer offset, Integer limit);
 
     Response<Product> getProduct(Integer productID);

@@ -25,14 +25,6 @@ public class SecondhandController {
     @Autowired
     WeChatAPI weChatAPI;
 
-    @Deprecated
-    @RequestMapping(value = {"/getProductList"}, method = {RequestMethod.GET})
-    @Operation(summary = "获取商品列表", description = "获取商品列表")
-    public Response<List<Product>> getProductList(@RequestParam Integer offset,
-                                                  @RequestParam Integer limit) {
-        return secondhandService.getProductList(offset, limit);
-    }
-
     @RequestMapping(value = {"/searchProduct"}, method = {RequestMethod.GET})
     @Operation(summary = "通过条件筛选商品列表", description = "通过条件筛选商品列表")
     public Response<List<Product>> searchProduct(@RequestParam Optional<String> productTitleFilter,

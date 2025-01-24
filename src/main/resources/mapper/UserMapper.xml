@@ -108,12 +108,12 @@
         WHERE open_id = #{userId}
     </update>
 
-    <select id="getUserInfo" parameterType="String" resultType="Map">
+    <select id="getUserInfo" parameterType="String" resultMap="UserMap">
         SELECT nickname,
-               avatar_url AS avatarUrl,
-               is_student AS isStudent,
-               is_blocked As isBlocked,
-               avatar AS avatar
+               avatar_url,
+               is_student,
+               is_blocked,
+               avatar
         FROM user
         WHERE open_id = #{openId}
     </select>

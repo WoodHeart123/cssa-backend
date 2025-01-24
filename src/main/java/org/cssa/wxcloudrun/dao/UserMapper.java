@@ -22,18 +22,8 @@ public interface UserMapper {
 
     /**
      * create user
-     *
-     * @param nickname nickname
      */
     void createUser(User user);
-
-    /**
-     * get user's info by userID
-     *
-     * @param userID user ID
-     * @return user
-     */
-    User getUserByID(Integer userID);
 
     /**
      * update user's info
