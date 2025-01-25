@@ -3,7 +3,7 @@
 <mapper namespace="org.cssa.wxcloudrun.dao.CourseMapper">
 
     <insert id="saveComment" parameterType="CourseComment">
-        INSERT INTO comment (userID, courseID, professor, courseTime, difficulty, prefer, comment, commentTime)
+        INSERT INTO comment (user_id, courseID, professor, courseTime, difficulty, prefer, comment, commentTime)
         VALUES (#{userID}, #{courseID}, #{professor}, #{courseTime}, #{difficulty}, #{prefer}, #{comment},
                 #{commentTime})
     </insert>
@@ -63,18 +63,6 @@
         WHERE commentID = #{commentID};
     </update>
 
-    <update id="setLikeList">
-        UPDATE user
-        SET likedCommentJSON= #{likedCommentJSON}
-        WHERE userID = #{userID};
-    </update>
-
-    <select id="getUser" parameterType="String" resultType="User">
-        SELECT *
-        FROM user
-        WHERE userID = #{userID}
-    </select>
-
     <update id="hideComment" parameterType="Integer">
         UPDATE comment
         SET commentTime = '1000-01-01 00:00:00'
@@ -98,7 +86,7 @@
                comment.commentTime,
                COALESCE(user.avatar, 1) AS userAvatar
         FROM comment
-                 LEFT JOIN user ON comment.userID = user.userID
+                 LEFT JOIN user ON comment.user_id = user.id
         WHERE courseID = #{courseID}
         ORDER BY ${orderField} DESC
         LIMIT #{offset}, #{limit}
@@ -108,7 +96,7 @@
         SELECT COUNT(commentID)
         from comment
         WHERE courseID = #{courseID}
-          AND userID = #{userID}
+          AND user_id = #{userID}
     </select>
 
     <select id="searchCourse" parameterType="String" resultType="Course">
@@ -144,7 +132,7 @@
                  INNER JOIN course
         WHERE comment.courseID = course.courseID
           AND commentID > #{offset}
-          AND userID = #{userID}
+          AND user_id = #{userID}
         ORDER BY commentID
         LIMIT ${limit}
     </select>
@@ -152,14 +140,14 @@
     <update id="updateComment" parameterType="Map">
         UPDATE comment
         SET comment = #{courseComment}
-        WHERE userID = #{userID}
+        WHERE user_id = #{userID}
           AND commentID = #{commentID}
     </update>
 
     <delete id="deleteComment">
         DELETE
         FROM comment
-        WHERE userID = #{userID}
+        WHERE user_id = #{userID}
           AND commentID = #{commentID}
     </delete>
 

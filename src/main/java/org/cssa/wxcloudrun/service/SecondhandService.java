@@ -21,7 +21,7 @@ public interface SecondhandService {
 
     Response<Product> getProduct(Integer productID);
 
-    Response<Object> saveProduct(Product product, Boolean save);
+    Response<Product> saveProduct(Product product, Boolean save);
 
 
     Response<Object> updateSecondHand(Integer userID, Product product);

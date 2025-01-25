@@ -36,6 +36,13 @@
         LIMIT #{offset}, #{limit}
     </select>
 
+    <insert id="saveProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="productID" keyColumn="productID">
+        INSERT INTO secondhand (user_id, productTitle, productDescription, price, productCondition, contact, images,
+                                delivery)
+        VALUES (#{userID}, #{productTitle}, #{productDescription}, #{price}, #{productCondition}, #{contact},
+                #{images, typeHandler=org.cssa.wxcloudrun.handler.JsonListTypeHandler}, #{delivery})
+    </insert>
+
     <select id="searchProduct" resultMap="ProductMap">
         SELECT secondhand.productID,
         secondhand.productTitle,
@@ -63,13 +70,6 @@
         ORDER BY secondhand.time DESC
         LIMIT #{offset}, #{limit}
     </select>
-
-    <insert id="saveProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="productID">
-        INSERT INTO secondhand (user_id, productTitle, productDescription, price, productCondition, contact, images,
-                                delivery)
-        VALUES (#{userID}, #{productTitle}, #{productDescription}, #{price}, #{productCondition}, #{contact},
-                #{images, typeHandler=org.cssa.wxcloudrun.handler.JsonListTypeHandler}, #{delivery})
-    </insert>
 
     <update id="updateSecondHand" parameterType="Map">
         UPDATE secondhand

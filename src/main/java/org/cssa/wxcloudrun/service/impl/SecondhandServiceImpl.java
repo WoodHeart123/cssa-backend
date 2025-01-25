@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,12 +53,15 @@ public class SecondhandServiceImpl implements SecondhandService {
 
     @Override
     @Transactional
-    public Response<Object> saveProduct(Product product, Boolean save) {
+    public Response<Product> saveProduct(Product product, Boolean save) {
+
         secondhandMapper.saveProduct(product);
         if (save) {
             secondhandMapper.saveContact(product.getUserID(), product.getContact());
         }
-        return new Response<>();
+        product.setTime(Timestamp.from(Instant.now()));
+        product.setUTCtime(product.getTime().toInstant().toString());
+        return new Response<>(product);
     }
 
     @Override
