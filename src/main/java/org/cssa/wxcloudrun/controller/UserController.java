@@ -179,13 +179,13 @@ public class UserController {
         return userService.isSubscribed(openID);
     }
 
-//    @RequestMapping(value = {"/saveUserInfo"}, method = {RequestMethod.POST})
-//    @Operation(summary = "保存真实的用户信息", description = "保存用户目前真实的昵称和头像链接。需要前端判断是否需要更新。")
-//    public Response<Boolean> saveUserInfo(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId,
-//                                          @RequestParam(required = false) String nickname,
-//                                          @RequestParam(required = false) String avatarUrl) {
-//        return userService.saveUserInfo(openId, nickname, avatarUrl);
-//    }
+    // @RequestMapping(value = {"/saveUserInfo"}, method = {RequestMethod.POST})
+    // @Operation(summary = "保存真实的用户信息", description = "保存用户目前真实的昵称和头像链接。需要前端判断是否需要更新。")
+    // public Response<Boolean> saveUserInfo(@Parameter(description = "微信ID") @RequestHeader("x-wx-openid") String openId,
+    //                                       @RequestParam(required = false) String nickname,
+    //                                       @RequestParam(required = false) String avatarUrl) {
+    //     return userService.saveUserInfo(openId, nickname, avatarUrl);
+    // }
 
     @RequestMapping(value = {"/getUserInfo"}, method = {RequestMethod.GET})
     @Operation(summary = "获取真实的用户信息",description = "获取数据库中用户的头像链接，昵称，是否为学生，是否被拉黑")

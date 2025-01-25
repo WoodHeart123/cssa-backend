@@ -7,11 +7,6 @@ import lombok.Data;
 import java.sql.Timestamp;
 import java.util.List;
 
-/**
- * Ride 类表示顺风车信息
- * 它包含管理广告或活动生命周期所必需的属性，
- * 如其类型、标签、相关的 URL 地址和活动期限。
- */
 @Data
 public class Ride {
 

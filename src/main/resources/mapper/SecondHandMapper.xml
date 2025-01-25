@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.cssa.wxcloudrun.dao.SecondhandMapper">
-    
+
     <resultMap id="ProductMap" type="Product">
         <result property="productID" column="productID"/>
         <result property="userID" column="user_id"/>
@@ -36,6 +36,34 @@
         LIMIT #{offset}, #{limit}
     </select>
 
+    <select id="searchProduct" resultMap="ProductMap">
+        SELECT secondhand.productID,
+        secondhand.productTitle,
+        secondhand.productDescription,
+        secondhand.time,
+        secondhand.price,
+        secondhand.productCondition,
+        secondhand.contact,
+        secondhand.images,
+        secondhand.delivery,
+        COALESCE(user.avatar, 1)            as sellerAvatar,
+        COALESCE(user.nickname, "微信用户") as sellerNickname
+        FROM secondhand
+        LEFT JOIN user on secondhand.user_id = user.id
+        WHERE secondhand.time IS NOT NULL
+        <if test="productTitleFilter.length() != 0">
+            AND secondhand.productTitle LIKE CONCAT('%', #{productTitleFilter}, '%')
+        </if>
+        <if test="conditionFilter != 'ALL'">
+            AND secondhand.productCondition = #{conditionFilter}
+        </if>
+        <if test="deliveryFilter != 'ALL'">
+            AND secondhand.delivery = #{deliveryFilter}
+        </if>
+        ORDER BY secondhand.time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
     <insert id="saveProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="productID">
         INSERT INTO secondhand (user_id, productTitle, productDescription, price, productCondition, contact, images,
                                 delivery)
@@ -60,10 +88,10 @@
 
     <select id="getProduct" resultMap="ProductMap">
         SELECT secondhand.productID, secondhand.productTitle,secondhand.productDescription,
-        secondhand.time,secondhand.price,secondhand.productCondition,secondhand.contact,secondhand.images,secondhand.delivery,
-        user.avatar as sellerAvatar, user.nickname as sellerNickname
+               secondhand.time,secondhand.price,secondhand.productCondition,secondhand.contact,secondhand.images,secondhand.delivery,
+               user.avatar as sellerAvatar, user.nickname as sellerNickname
         FROM secondhand
-        INNER JOIN user on secondhand.user_id = user.id
+                 INNER JOIN user on secondhand.user_id = user.id
         WHERE secondhand.time IS NOT NULL AND secondhand.productID = #{productID}
         LIMIT 1
     </select>
