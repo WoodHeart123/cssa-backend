@@ -4,7 +4,6 @@ package org.cssa.wxcloudrun.dao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.cssa.wxcloudrun.model.Product;
-import org.cssa.wxcloudrun.model.User;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public interface SecondhandMapper {
 
     Product getProduct(Integer productID);
 
-    ArrayList<Product> getAllProductList(Integer offset, Integer limit);
+    ArrayList<Product> searchProduct(String productTitleFilter, String conditionFilter, String deliveryFilter, Integer offset, Integer limit);
 
     void saveProduct(Product product);
 

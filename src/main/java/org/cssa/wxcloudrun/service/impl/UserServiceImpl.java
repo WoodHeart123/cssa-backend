@@ -39,8 +39,8 @@ public class UserServiceImpl implements UserService {
     public Response<Object> wechatLogin(String nickname, String openID){
         User user = userMapper.getUserByOpenID(openID);
         if (user == null) {
-            user = userMapper.createUser(nickname);
-            user.setOpenID(openID);
+            user = User.builder().nickname(nickname).openID(openID).build();
+            userMapper.createUser(user);
             userMapper.updateUser(user);
             return Response.builder().data(user).status(103).message("新用户").build();
         }

@@ -5,12 +5,12 @@ import org.cssa.wxcloudrun.model.Product;
 import org.cssa.wxcloudrun.model.Response;
 import org.cssa.wxcloudrun.model.ReturnCode;
 import org.cssa.wxcloudrun.service.SecondhandService;
-import com.alibaba.fastjson2.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +32,16 @@ public class SecondhandServiceImpl implements SecondhandService {
     }
 
     @Override
+    public Response<List<Product>> searchProduct(String productTitleFilter, String conditionFilter, String deliveryFilter, Integer offset, Integer limit) {
+        ArrayList<Product> productArrayList;
+        productArrayList = secondhandMapper.searchProduct(productTitleFilter, conditionFilter, deliveryFilter, offset, limit);
+        for (Product product : productArrayList) {
+            product.setUTCtime(product.getTime().toInstant().toString());
+        }
+        return new Response<>(productArrayList);
+    }
+
+    @Override
     public Response<Product> getProduct(Integer productID) {
         Product product = secondhandMapper.getProduct(productID);
         if(product == null){
@@ -43,12 +53,15 @@ public class SecondhandServiceImpl implements SecondhandService {
 
     @Override
     @Transactional
-    public Response<Object> saveProduct(Product product, Boolean save) {
+    public Response<Product> saveProduct(Product product, Boolean save) {
+
         secondhandMapper.saveProduct(product);
         if (save) {
             secondhandMapper.saveContact(product.getUserID(), product.getContact());
         }
-        return new Response<>();
+        product.setTime(Timestamp.from(Instant.now()));
+        product.setUTCtime(product.getTime().toInstant().toString());
+        return new Response<>(product);
     }
 
     @Override
