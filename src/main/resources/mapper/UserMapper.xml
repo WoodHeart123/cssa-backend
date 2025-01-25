@@ -108,13 +108,6 @@
         WHERE open_id = #{userId}
     </update>
 
-    <update id="saveUserInfo" parameterType="Map">
-        UPDATE user
-        SET nickname = #{nickName},
-            avatar_url = #{avatarUrl}
-        WHERE open_id = #{userId}
-    </update>
-
     <select id="getUserInfo" parameterType="String" resultType="Map">
         SELECT nickname,
                avatar_url AS avatarUrl,

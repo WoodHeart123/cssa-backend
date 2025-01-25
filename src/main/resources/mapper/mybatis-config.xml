@@ -3,6 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true" />
+    </settings>
+
     <typeAliases>
         <typeAlias alias="Activity" type="org.cssa.wxcloudrun.model.Activity"/>
         <typeAlias alias="SignupInfo" type="org.cssa.wxcloudrun.model.SignupInfo"/>
@@ -15,7 +19,10 @@
         <typeAlias alias="OperationLog" type="org.cssa.wxcloudrun.model.OperationLog"/>
         <typeAlias alias="FriendPost" type="org.cssa.wxcloudrun.model.FriendPost"/>
         <typeAlias alias="FriendComment" type="org.cssa.wxcloudrun.model.FriendComment"/>
+        <typeAlias alias="Ride" type="org.cssa.wxcloudrun.model.Ride" />
+        <typeAlias alias="Promotion" type="org.cssa.wxcloudrun.model.Promotion" />
     </typeAliases>
+
     <typeHandlers>
         <typeHandler handler="org.cssa.wxcloudrun.handler.JsonListTypeHandler" javaType="java.util.List" jdbcType="LONGNVARCHAR"/>
     </typeHandlers>

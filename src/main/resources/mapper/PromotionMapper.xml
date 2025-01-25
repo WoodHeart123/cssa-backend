@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.cssa.wxcloudrun.dao.PromotionMapper">
+    <!-- 定义 promotionResultMap 映射 Promotion 类 -->
+    <resultMap id="promotionResultMap" type="org.cssa.wxcloudrun.model.Promotion">
+        <!-- 主键映射 -->
+        <id property="promotionId" column="promotion_id" />
+
+        <!-- 常规属性映射 -->
+        <result property="type" column="type" />
+        <result property="label" column="label" />
+        <result property="imageUrl" column="image_url" />
+        <result property="targetUrl" column="target_url" />
+        <result property="startDate" column="start_date" />
+        <result property="endDate" column="end_date" />
+        <result property="isDefault" column="is_default" />
+    </resultMap>
+
+    <insert id="createPromotion" parameterType="org.cssa.wxcloudrun.model.Promotion">
+        INSERT INTO promotion (type, label, image_url, target_url, start_date, end_date, is_default)
+        VALUES (
+                   #{type},
+                   #{label},
+                   #{imageUrl},
+                   #{targetUrl},
+                   #{startDate},
+                   #{endDate},
+                   #{isDefault}
+               );
+    </insert>
+
+    <!-- 获取正在进行的推广活动 -->
+    <select id="getOngoingPromotions" resultMap="promotionResultMap">
+        SELECT * FROM promotion
+        <where>
+            <!-- 检查是否正在进行 -->
+            start_date &lt;= CONVERT_TZ(CURRENT_DATE, '+00:00', '-06:00')
+            AND end_date &gt;= CONVERT_TZ(CURRENT_DATE, '+00:00', '-06:00')
+            <!-- 如果是默认背景图片，直接返回 -->
+            OR is_default = 1
+            <!-- 根据类型过滤 -->
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+        </where>
+        ORDER BY promotion_id DESC
+    </select>
+</mapper>
