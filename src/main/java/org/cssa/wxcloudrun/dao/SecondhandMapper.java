@@ -11,8 +11,6 @@ import java.util.List;
 @Mapper
 public interface SecondhandMapper {
 
-    ArrayList<Product> getProductList(Integer offset, Integer limit);
-
     Product getProduct(Integer productID);
 
     ArrayList<Product> searchProduct(String productTitleFilter, String conditionFilter, String deliveryFilter, Integer offset, Integer limit);

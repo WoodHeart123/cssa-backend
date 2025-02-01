@@ -3,38 +3,23 @@
 <mapper namespace="org.cssa.wxcloudrun.dao.SecondhandMapper">
 
     <resultMap id="ProductMap" type="Product">
-        <result property="productID" column="productID"/>
+        <result property="productID" column="product_id"/>
         <result property="userID" column="user_id"/>
-        <result property="productTitle" column="productTitle"/>
-        <result property="productDescription" column="productDescription"/>
+        <result property="productTitle" column="product_title"/>
+        <result property="productDescription" column="product_description"/>
         <result property="time" column="time"/>
         <result property="price" column="price"/>
-        <result property="productCondition" column="productCondition"/>
+        <result property="productCondition" column="product_condition"/>
         <result property="contact" column="contact"/>
         <result property="images" column="images" typeHandler="org.cssa.wxcloudrun.handler.JsonListTypeHandler"/>
         <result property="delivery" column="delivery"/>
-        <result property="sellerAvatar" column="sellerAvatar"/>
-        <result property="sellerNickname" column="sellerNickname"/>
+        <association property="seller"  javaType="User" >
+            <id property="id" column="seller_id"/>
+            <result property="nickname" column="seller_nickname"/>
+            <result property="avatar" column="seller_avatar"/>
+            <result property="isStudent" column="seller_is_student"/>
+        </association>
     </resultMap>
-
-    <select id="getProductList" resultMap="ProductMap">
-        SELECT secondhand.productID,
-               secondhand.productTitle,
-               secondhand.productDescription,
-               secondhand.time,
-               secondhand.price,
-               secondhand.productCondition,
-               secondhand.contact,
-               secondhand.images,
-               secondhand.delivery,
-               COALESCE(user.avatar, 1)            as sellerAvatar,
-               COALESCE(user.nickname, "微信用户") as sellerNickname
-        FROM secondhand
-                 LEFT JOIN user on secondhand.user_id = user.id
-        WHERE secondhand.time IS NOT NULL
-        ORDER BY secondhand.time DESC
-        LIMIT #{offset}, #{limit}
-    </select>
 
     <insert id="saveProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="productID" keyColumn="productID">
         INSERT INTO secondhand (user_id, productTitle, productDescription, price, productCondition, contact, images,
@@ -44,17 +29,20 @@
     </insert>
 
     <select id="searchProduct" resultMap="ProductMap">
-        SELECT secondhand.productID,
-        secondhand.productTitle,
-        secondhand.productDescription,
+        SELECT secondhand.productID as product_id,
+        secondhand.productTitle as product_title,
+        secondhand.productDescription as product_description,
         secondhand.time,
         secondhand.price,
-        secondhand.productCondition,
+        secondhand.productCondition as product_condition,
         secondhand.contact,
         secondhand.images,
         secondhand.delivery,
-        COALESCE(user.avatar, 1)            as sellerAvatar,
-        COALESCE(user.nickname, "微信用户") as sellerNickname
+        secondhand.user_id,
+        user.id as seller_id,
+        user.avatar as seller_avatar,
+        user.nickname as seller_nickname,
+        user.is_student as  seller_is_student
         FROM secondhand
         LEFT JOIN user on secondhand.user_id = user.id
         WHERE secondhand.time IS NOT NULL
