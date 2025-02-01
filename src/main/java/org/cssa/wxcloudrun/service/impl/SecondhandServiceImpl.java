@@ -54,6 +54,7 @@ public class SecondhandServiceImpl implements SecondhandService {
     @Override
     @Transactional
     public Response<Product> saveProduct(Product product, Boolean save) {
+
         secondhandMapper.saveProduct(product);
         if (save) {
             secondhandMapper.saveContact(product.getUserID(), product.getContact());

@@ -26,7 +26,4 @@ public interface SecondhandMapper {
     List<Product> getUserSecondhand(@Param("userID") Integer userID, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
     void deleteSecondHand(Integer userID, Integer productID);
-
-
-
 }
