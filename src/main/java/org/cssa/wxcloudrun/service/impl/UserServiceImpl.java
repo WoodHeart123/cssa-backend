@@ -1,0 +1,177 @@
+package org.cssa.wxcloudrun.service.impl;
+
+import org.cssa.wxcloudrun.dao.UserMapper;
+import org.cssa.wxcloudrun.event.AuthEvent;
+import org.cssa.wxcloudrun.event.SubscriptionEvent;
+import org.cssa.wxcloudrun.model.*;
+import org.cssa.wxcloudrun.service.UserService;
+import com.alibaba.fastjson2.JSON;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.UnsupportedEncodingException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+@Service
+public class UserServiceImpl implements UserService {
+    @Autowired
+    ApplicationContext applicationContext;
+
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
+    EncryptionUtil encryptionUtil;
+
+    @Override
+    public void getAuthCode(String email, Integer authCode) {
+        applicationContext.publishEvent(new AuthEvent(this, email, authCode));
+    }
+
+
+    @Override
+    public Response<Object> wechatLogin(String nickname, String openID){
+        User user = userMapper.getUserByOpenID(openID);
+        if (user == null) {
+            user = User.builder().nickname(nickname).openID(openID).build();
+            userMapper.createUser(user);
+            userMapper.updateUser(user);
+            return Response.builder().data(user).status(103).message("新用户").build();
+        }
+        return new Response<>(user);
+    }
+
+    public Response<Object> updateUser(User user) {
+        userMapper.updateUser(user);
+        return new Response<>();
+    }
+
+    @Override
+    public Response<Object> setRentalTime(Integer rentalID, Integer userID, Timestamp time) {
+        if (time.equals(new Timestamp(0))) {
+            userMapper.clearRentalTime(rentalID, userID);
+        } else {
+            userMapper.setRentalTime(rentalID, userID, time);
+        }
+        return new Response<>();
+    }
+
+    @Override
+    @Transactional
+    public Response<Object> setProductTime(Integer productID, Integer userID, Timestamp time) {
+        if (time.equals(new Timestamp(0))) {
+            userMapper.clearProductTime(productID, userID);
+        } else {
+            userMapper.setProductTime(productID, userID, time);
+        }
+        return new Response<>();
+    }
+
+    @Override
+    public Response<Boolean> subscribe(Subscription subscription) {
+        String openID = subscription.getOpenID(), email = subscription.getEmail();
+        if (openID.isBlank() || email.isBlank()) return new Response<>(Boolean.FALSE);
+
+        //userMapper.updateEmail(email, true, openID);
+
+        String encryptedID = makeAnEncryptedIdforUser(openID);
+        //userMapper.updateEncryptedID(openID,encryptedID);
+        subscription.setOpenID(encryptedID); // 使用加密ID发布事件
+
+        applicationContext.publishEvent(new SubscriptionEvent(this, subscription, true));
+        return new Response<>(Boolean.TRUE);
+    }
+
+    @Override
+    public Response<Boolean> unsubscribe(String openID) {
+        String email = userMapper.getUserByOpenID(openID).getEmail();
+        if (email.isBlank()) return new Response<>(Boolean.FALSE);
+
+        //userMapper.updateEmail(email, false, openID);
+
+        SubscriptionEvent event = new SubscriptionEvent(this, new Subscription(openID, email), false);
+        applicationContext.publishEvent(event);
+        return new Response<>(Boolean.TRUE);
+    }
+
+    /**
+     * 为用户生成一个加密的ID。
+     * 该方法使用用户的openID和当前时间戳生成一个加密ID，确保该ID在数据库中是唯一的。
+     * 如果生成的加密ID已存在，则重新生成，直到产生一个唯一的加密ID。
+     * 此方法不在UserService中。
+     *
+     * @param openID 用户的OpenID，用作生成加密ID的基础之一。
+     * @return 返回生成的唯一加密ID。
+     */
+    public String makeAnEncryptedIdforUser(String openID) {
+        boolean encryptedIDExists;
+        String encryptedID;
+        do {
+            encryptedID = encryptionUtil.generateEncryptedID(openID, System.currentTimeMillis());
+            encryptedIDExists = userMapper.ifEncryptedIDExists(encryptedID);
+        } while (encryptedIDExists);
+        return encryptedID;
+    }
+
+    @Override
+    public Response<Boolean> isSubscribed(String openID) {
+        return new Response<>(userMapper.isSubscribed(openID));
+    }
+
+    /**
+     * 更新指定用户的联系方式。
+     * 该方法根据用户ID更新用户的联系信息，包括电话号码、微信ID和电子邮件地址。
+     * 如果传入的联系信息字段为null或空字符串，则不会更新相应字段，保留数据库中的原有值。
+     *
+     * @param userId 用户的唯一标识符（ID）。
+     * @param info   包含用户联系信息的对象，包括电话号码（phoneNumber）、微信ID（weChatId）和电子邮件地址（email）。
+     */
+    @Override
+    public void saveContact(String userId, Contact info) { userMapper.saveContact(userId, info);}
+
+    /**
+     * 保存用户目前使用的微信昵称和头像到库中。
+     *
+     * @param userId    用户在小程序的唯一标识符（ID）。
+     * @param nickName  用户目前使用的昵称（可选）。
+     * @param avatarUrl 用户目前使用的头像链接（可选）。它指向微信服务器上的头像图片资源。
+     * @return 是否成功更新用户信息的响应对象。
+     */
+    @Override
+    public Response<Boolean> saveUserInfo(String userId, String nickName, String avatarUrl) {
+        // 如果 nickName 是空字符串或仅包含空格，将其视为 null
+        if (nickName != null && nickName.isBlank()) {
+            nickName = null;
+        }
+
+        // 如果 avatarUrl 是空字符串或仅包含空格，将其视为 null
+        if (avatarUrl != null && avatarUrl.isBlank()) {
+            avatarUrl = null;
+        }
+
+        // 检查参数是否为空，如果 nickName 和 avatarUrl 都为 null，直接返回成功
+        if (nickName == null && avatarUrl == null) {
+            return new Response<>(true);
+        }
+
+        // 如果 nickName 或 avatarUrl 为 null，传递到 Mapper 时改为保留数据库原值的逻辑
+        return new Response<>(userMapper.saveUserInfo(userId, nickName, avatarUrl));
+    }
+
+    /**
+     * 从库中获取保存的用户信息
+     *
+     * @param openId 用户在小程序的唯一标识符（ID）。
+     * @return 一串包含库中保存的用户昵称和头像的json数组，
+     */
+    @Override
+    public Response<Object> getUserByOpenID(String openId) {
+        return new Response<>(userMapper.getUserByOpenID(openId));
+    }
+}

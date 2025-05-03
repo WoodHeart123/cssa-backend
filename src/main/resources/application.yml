@@ -1,0 +1,95 @@
+server:
+  port: 80
+
+cssa:
+  wxcloudrun:
+    swagger:
+      enable: true
+      title: CSSA-Backend
+      description: 小程序后端接口文档
+      base-package: org.cssa.wxcloudrun.controller
+
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DB}?characterEncoding=utf-8&useUnicode=true&serverTimezone=Asia/Shanghai
+    username: ${MYSQL_USERNAME}
+    password: ${MySQL_PASSWORD}
+
+  data:
+    redis:
+      host: ${REDIS_ADDRESS}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+      database: 0
+      lettuce:
+        pool:
+          max-idle: 8
+          min-idle: 0
+          max-active: 16
+          max-wait: -1ms
+
+
+  mvc:
+    view:
+      suffix: .html
+      prefix: /
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  application:
+    name: CSSA-Backend
+
+
+  mail:
+    host: smtpdm.aliyun.com
+    port: 465
+    username: noreply@cssaatuwmadison.com.cn
+    password: ${EMAIL_PASSWORD}
+    protocol: smtps
+    default-encoding: UTF-8
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+      ssl.trust: smtpdm.aliyun.com
+
+
+mybatis:
+  mapper-locations: classpath*:mapper/*Mapper.xml
+  config-location: classpath:mapper/mybatis-config.xml
+  type-handlers-package: org.cssa.wxcloudrun.handler
+
+jwt:
+  header: Authorization
+  secret: ${JWT_SECRET}
+  expiration: 31536000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
+  metrics:
+    tags:
+      application: CSSA-Backend
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+        step: 1m
+        descriptions: true
+
+springdoc:
+  swagger-ui:
+    path: /doc/swagger-ui.html
+  api-docs:
+    path: /doc/v3/api
+  packages-to-scan: org.cssa.wxcloudrun.controller
+  paths-to-match: /**
+

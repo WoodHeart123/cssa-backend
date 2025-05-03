@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.cssa.wxcloudrun.dao.PromotionMapper">
+    <!-- 定义 promotionResultMap 映射 Promotion 类 -->
+    <resultMap id="promotionResultMap" type="org.cssa.wxcloudrun.model.Promotion">
+        <!-- 主键映射 -->
+        <id property="promotionId" column="promotion_id" />
+
+        <!-- 常规属性映射 -->
+        <result property="type" column="type" />
+        <result property="label" column="label" />
+        <result property="imageUrl" column="image_url" />
+        <result property="targetUrl" column="target_url" />
+        <result property="startDate" column="start_date" />
+        <result property="endDate" column="end_date" />
+        <result property="inPage" column="in_page" />
+    </resultMap>
+
+    <insert id="createPromotion" parameterType="org.cssa.wxcloudrun.model.Promotion">
+        INSERT INTO promotion (type, label, image_url, target_url, start_date, end_date, in_page)
+        VALUES (
+                   #{type},
+                   #{label},
+                   #{imageUrl},
+                   #{targetUrl},
+                   #{startDate},
+                   #{endDate},
+                   #{inPage}
+               );
+    </insert>
+
+    <!-- 获取正在进行的主页推广活动 -->
+    <select id="getOngoingMainPromotions" resultMap="promotionResultMap">
+        (
+        SELECT * FROM promotion
+        <where>
+            in_page = 0
+            AND start_date &lt;= CONVERT_TZ(CURRENT_DATE, '+00:00', '-06:00')
+            AND (
+            end_date IS NULL
+            OR end_date &gt;= CONVERT_TZ(CURRENT_DATE, '+00:00', '-06:00')
+            )
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+        </where>
+        )
+        ORDER BY promotion_id DESC
+    </select>
+
+    <!-- 获取正在进行的页面推广活动 -->
+    <select id="getOngoingPagePromotions" resultMap="promotionResultMap">
+        (
+        SELECT * FROM promotion
+        <where>
+            in_page = 1
+            AND start_date &lt;= CONVERT_TZ(CURRENT_DATE, '+00:00', '-06:00')
+            AND (
+            end_date IS NULL
+            OR end_date &gt;= CONVERT_TZ(CURRENT_DATE, '+00:00', '-06:00')
+            )
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+        </where>
+        )
+        ORDER BY promotion_id DESC
+    </select>
+</mapper>

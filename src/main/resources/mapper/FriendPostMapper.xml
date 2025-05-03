@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.cssa.wxcloudrun.dao.FriendPostMapper">
+
+    <resultMap id="FriendPostMap" type="FriendPost">
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="deletedAt" column="deleted_at"/>
+        <result property="imagesJSON" column="images"/>
+        <result property="userID" column="user_id"/>
+    </resultMap>
+
+    <resultMap id="FriendCommentMap" type="FriendComment">
+        <result property="createdAt" column="created_at"/>
+        <result property="postID" column="post_id"/>
+        <result property="userID" column="user_id"/>
+    </resultMap>
+
+    <insert id="createFriendComment" parameterType="FriendComment">
+        INSERT INTO friend_comment (user_id, post_id, content)
+        VALUE(#{userID}, #{postID}, #{content})
+    </insert>
+
+    <select id="getFriendCommentList" resultMap="FriendCommentMap">
+        SELECT friend_comment.id,
+               friend_comment.user_id,
+               friend_comment.post_id,
+               friend_comment.content,
+               friend_comment.created_at,
+               COALESCE(user.avatar, 1)            as  userAvatar,
+               COALESCE(user.nickname, "微信用户")  as  userNickname
+        FROM friend_comment
+                 LEFT JOIN user ON friend_comment.user_id = user.userID
+        WHERE friend_comment.post_id = #{postID}
+        ORDER BY id
+        LIMIT #{offset}, #{limit}
+    </select>
+
+
+    <insert id="createFriendPost" parameterType="FriendPost">
+        INSERT INTO friend_post (user_id, title, description, images)
+        VALUES (#{userID}, #{title}, #{description}, #{imagesJSON})
+    </insert>
+
+    <select id="getFriendPostList" parameterType="Integer" resultMap="FriendPostMap">
+        SELECT id,
+               user_id,
+               title,
+               description,
+               images,
+               updated_at,
+               COALESCE(user.avatar, 1)            as  userAvatar,
+               COALESCE(user.nickname, "微信用户")  as  userNickname
+        FROM friend_post
+        LEFT JOIN user ON friend_post.user_id = user.userID
+        WHERE id &gt; #{offset}
+        ORDER BY id
+        LIMIT #{limit}
+    </select>
+
+</mapper>

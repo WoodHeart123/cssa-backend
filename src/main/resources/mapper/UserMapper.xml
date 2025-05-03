@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.cssa.wxcloudrun.dao.UserMapper">
+
+
+    <resultMap id="UserMap" type="User">
+        <result property="id" column="id"/>
+        <result property="openID" column="open_id"/>
+        <result property="nickname" column="nickname"/>
+        <result property="avatar" column="avatar"/>
+        <result property="email" column="email"/>
+        <result property="isStudent" column="is_student"/>
+        <result property="subscribe" column="subscribe"/>
+        <result property="isBlocked" column="is_blocked"/>
+        <result property="avatarUrl" column="avatar_url"/>
+    </resultMap>
+
+
+    <select id="login" parameterType="String" resultMap="UserMap">
+        SELECT * FROM user WHERE id = #{userID}
+    </select>
+
+    <select id="getUserByOpenID" parameterType="String" resultMap="UserMap">
+        SELECT * FROM user WHERE open_id = #{openID}
+    </select>
+
+    <select id="getUserByID" parameterType="String" resultMap="UserMap">
+        SELECT * FROM user WHERE id = #{userID}
+    </select>
+
+    <insert id="createUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user (nickname)
+        VALUES (#{nickname})
+    </insert>
+
+    <update id="updateUser" parameterType="User">
+        UPDATE user
+        <set>
+            <if test="openID != null">open_id = #{openID},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="isStudent != null">is_student = #{isStudent},</if>
+            <if test="subscribe != null">subscribe = #{subscribe},</if>
+            <if test="isBlocked != null">is_blocked = #{isBlocked},</if>
+            <if test="avatarURL != null">avatar_url = #{avatarURL},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <update id="setProductTime" parameterType="Map">
+        UPDATE secondhand
+        SET time = #{time}
+        WHERE user_id = #{userID}
+          AND productID = #{productID}
+    </update>
+
+    <update id="clearProductTime" parameterType="Map">
+        UPDATE secondhand
+        SET time = NULL
+        WHERE user_id = #{userID}
+          AND productID = #{productID}
+    </update>
+
+    <update id="setRentalTime" parameterType="Map">
+        UPDATE rental
+        SET publishedTime = #{time}
+        WHERE user_id = #{userID}
+          AND rentalID = #{rentalID}
+    </update>
+
+    <update id="clearRentalTime" parameterType="Map">
+        UPDATE rental
+        SET publishedTime = NULL
+        WHERE user_id = #{userID}
+          AND rentalID = #{rentalID}
+    </update>
+
+
+    <update id="saveContact">
+        UPDATE user
+        SET
+           phoneNumber =
+                CASE
+                    WHEN #{contactInfo.phoneNumber} IS NOT NULL
+                        AND #{contactInfo.phoneNumber} != ''
+                         AND #{contactInfo.phoneNumber} != phoneNumber
+                        THEN #{contactInfo.phoneNumber}
+                    ELSE phoneNumber
+                    END,
+            wechat_id =
+                CASE
+                    WHEN #{contactInfo.weChatId} IS NOT NULL
+                        AND #{contactInfo.weChatId} != ''
+                        AND #{contactInfo.weChatId} != wechat_id
+                        THEN #{contactInfo.weChatId}
+                    ELSE wechat_id
+                    END,
+            email =
+                CASE
+                    WHEN #{contactInfo.email} IS NOT NULL
+                        AND #{contactInfo.email} != ''
+                        AND #{contactInfo.email} != email
+                        THEN #{contactInfo.email}
+                    ELSE email
+                    END
+        WHERE open_id = #{userId}
+    </update>
+</mapper>
