@@ -17,7 +17,7 @@ public class Promotion {
     @Schema(description = "推广id", example = "1")
     private Integer promotionId;
 
-    @Schema(description = "推广类型；0：广告，1：活动", example = "1")
+    @Schema(description = "推广类型；0：商家广告，1：CSSA活动", example = "1")
     private Integer type;
 
     @Schema(description = "每个推广的文字标签", example = "1")

@@ -29,8 +29,8 @@ public class PromotionController {
         return promotionService.getOngoingMainPromotions(type);
     }
 
-    @RequestMapping(value = {"/getOngoingPagePromotions"}, method = {RequestMethod.GET})
-    @Operation(summary = "获取正在进行中的推广活动", description = "根据类型获取当前正在进行中的推广活动。如果类型为 null，则返回所有类型的活动。")
+    @RequestMapping(value = {"/getOngoingInPagePromotions"}, method = {RequestMethod.GET})
+    @Operation(summary = "获取正在进行中的页面推广活动", description = "获取正在进行中的页面推广活动。如果类型为 null，则返回所有类型的活动。")
     public Response<List<Promotion>> getOngoingPagePromotions() {
         return promotionService.getOngoingPagePromotions();
     }
